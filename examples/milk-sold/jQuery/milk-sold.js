@@ -5,7 +5,7 @@ $(function(){
 	var nc = farmbuild.nutrientcalculator;
 	nc.googleAnalytic.username = 'SpatialVision';
 
-	$('#app-version').text(farmbuild.nutrientcalculator.sampleCodeVersion);
+	$('#app-version').text(farmbuild.examples.nutrientcalculator.version);
 
 	$('#calculateByPercentage').submit(function(event){
 		var milkSoldPerYearInLitre = $('#milkSoldPerYearInLitreP').val(),

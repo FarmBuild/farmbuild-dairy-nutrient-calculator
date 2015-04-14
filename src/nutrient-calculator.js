@@ -8,40 +8,57 @@
 
 'use strict';
 
-/**
- * nutrientCalculator/NutrientCalculator class
- * @module nutrientCalculator/NutrientCalculator
- */
 angular.module('farmbuild.nutrientCalculator')
 
 	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic) {
 		var NutrientCalculator = {};
 
+		/**
+		 * Adds nutrientCalculator's required data to farmData
+		 * @method farmbuild.nutrientCalculator.create
+		 * @param {!object} farmData - Basic farm data
+		 * @returns {object} updated farmData
+		 * @public
+		 * @static
+		 */
 		NutrientCalculator.create = function(farmData){
-			farmData.nutrientCalculator = {};
+			if(!farmData.name) {
+				return undefined;
+			}
+			farmData.dateCreated = new Date();
+			farmData.dateLastUpdated = new Date();
+			farmData.nutrientCalculator = {
+				milkSold: {
+
+				}
+			};
 			return farmData;
 		};
 
+		/**
+		 * Adds nutrientCalculator block to farmData
+		 * @method farmbuild.nutrientCalculator.load
+		 * @param {!object} farmData - Basic farm data
+		 * @returns {object} updated farmData
+		 * @public
+		 * @static
+		 */
 		NutrientCalculator.load = function(farmData){
-				//'farmerName',
-				//'farmName',
-				//'street',
-				//'town',
-				//'state',
-				//'postcode',
-				//'yearEnding',
-				//'herdProfile',
-				//'animalWeight',
-				//'milkingDays',
-				//'totalMilkingCows',
-				//'totalFarmArea',
-				//'milkingArea',
-				//'nonMilkingArea'
+			if(!farmData.name) {
+				return undefined;
+			}
+			farmData.nutrientCalculator = {
+				milkSold: {
+
+				}
+			};
+			return farmData;
 		};
 
-		NutrientCalculator.milkSold = MilkSold;
-		NutrientCalculator.googleAnalytic = GoogleAnalytic;
+		NutrientCalculator.MilkSold = MilkSold;
+		NutrientCalculator.GoogleAnalytic = GoogleAnalytic;
 
 		window.farmbuild.nutrientcalculator = NutrientCalculator;
+
 		return NutrientCalculator;
 	});

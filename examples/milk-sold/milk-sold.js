@@ -3,12 +3,12 @@
 angular.module('farmbuild.nutrientCalculator.examples.milkSold', ['farmbuild.nutrientCalculator'])
 
 	.run(function($rootScope){
-		$rootScope.appVersion = farmbuild.nutrientcalculator.sampleCodeVersion;
+		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
 	.controller('MilkSoldCtrl', function ($scope, NutrientCalculator) {
 
-		NutrientCalculator.googleAnalytic.username = 'SpatialVision';
+		NutrientCalculator.GoogleAnalytic.username = 'SpatialVision';
 
 		$scope.result =  {
 				milkSoldPerYearInLitre: '-',

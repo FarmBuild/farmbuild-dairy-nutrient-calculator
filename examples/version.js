@@ -1,3 +1,7 @@
 'use strict';
 
-window.farmbuild.nutrientcalculator.sampleCodeVersion = '0.1';
+window.farmbuild.examples = {
+	nutrientcalculator: {
+		version: '0.1'
+	}
+};

@@ -5328,12 +5328,24 @@ angular.module("farmbuild.nutrientCalculator", []);
 angular.module("farmbuild.nutrientCalculator").factory("NutrientCalculator", function(MilkSold, GoogleAnalytic) {
     var NutrientCalculator = {};
     NutrientCalculator.create = function(farmData) {
-        farmData.nutrientCalculator = {};
+        if (!farmData.name) {
+            return undefined;
+        }
+        farmData.dateCreated = new Date();
+        farmData.dateLastUpdated = new Date();
+        farmData.nutrientCalculator = {
+            milkSold: {}
+        };
         return farmData;
     };
-    NutrientCalculator.load = function(farmData) {};
-    NutrientCalculator.milkSold = MilkSold;
-    NutrientCalculator.googleAnalytic = GoogleAnalytic;
+    NutrientCalculator.load = function(farmData) {
+        farmData.nutrientCalculator = {
+            milkSold: {}
+        };
+        return farmData;
+    };
+    NutrientCalculator.MilkSold = MilkSold;
+    NutrientCalculator.GoogleAnalytic = GoogleAnalytic;
     window.farmbuild.nutrientcalculator = NutrientCalculator;
     return NutrientCalculator;
 });
@@ -5420,8 +5432,12 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
 
 angular.module("farmbuild.nutrientCalculator").run(function(NutrientCalculator) {});
 
-window.farmbuild = {
-    nutrientcalculator: {}
-};
+if (typeof window.farmbuild === "undefined") {
+    window.farmbuild = {
+        nutrientcalculator: {}
+    };
+} else {
+    window.farmbuild.nutrientcalculator = {};
+}
 
 angular.injector([ "ng", "farmbuild.nutrientCalculator" ]);

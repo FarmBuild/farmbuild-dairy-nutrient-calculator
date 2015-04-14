@@ -45,6 +45,5 @@
 
     "dist": "npm run clean & npm run generate-docs & npm run concat & npm run uglify"
 
-
   }
 }
