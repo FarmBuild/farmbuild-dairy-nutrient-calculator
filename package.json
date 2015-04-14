@@ -2,8 +2,8 @@
   "name": "farmbuild-dairy-nutrient-calculator",
   "private": true,
   "version": "0.0.1",
-  "description": "This project is a prototype application to show the complete cycle of development, test and qa in farm build project",
-  "repository": "https://github.com/SpatialVision/farm-build-nutrient-calculator",
+  "description": "This project is the dairy nutrient calculator module of farm build JavaScript library",
+  "repository": "https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator",
   "license": "MIT",
   "devDependencies": {
     "karma": "~0.10",
