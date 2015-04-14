@@ -15,4 +15,4 @@ To get you started simply download this repository using <a href="https://github
 
 For more information about API and Testing see the [Wiki](https://github.com/SpatialVision/farm-build-nutrient-calculator/wiki) section.
 
-[![Build Status](https://api.travis-ci.org/SpatialVision/farm-build-nutrient-calculator.svg?branch=master)](https://travis-ci.org/SpatialVision/farm-build-nutrient-calculator)
+[![Build Status](https://travis-ci.org/FarmBuild/farmbuild-dairy-nutrient-calculator.svg?branch=master)](https://travis-ci.org/FarmBuild/farmbuild-dairy-nutrient-calculator)
