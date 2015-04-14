@@ -9,6 +9,7 @@ module.exports = function(config){
       'src/api-define.js',
       'src/google-analytic/google-analytic-src.js',
       'src/milk-sold/milk-sold-src.js',
+      'src/nutrient-calculator.js',
       'src/api-init.js',
       'src/**/*.js'
     ],
