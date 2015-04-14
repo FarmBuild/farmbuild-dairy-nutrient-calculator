@@ -4,7 +4,7 @@
  * nutrientCalculator/GoogleAnalytic class
  * @module nutrientCalculator/GoogleAnalytic
  */
-angular.module('farmBuild.nutrientCalculator')
+angular.module('farmbuild.nutrientCalculator')
 
 	.factory('GoogleAnalytic', function () {
 
@@ -15,6 +15,5 @@ angular.module('farmBuild.nutrientCalculator')
 		 * @public
 		*/
 		exports.username = 'anonymous';
-		window.farmbuild.nutrientcalculator.GoogleAnalytic = exports;
 		return exports;
 	});

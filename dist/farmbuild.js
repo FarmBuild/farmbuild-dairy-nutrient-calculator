@@ -5321,20 +5321,34 @@
 
 "use strict";
 
-angular.module("farmBuild.nutrientCalculator", []);
+angular.module("farmbuild.nutrientCalculator", []);
 
 "use strict";
 
-angular.module("farmBuild.nutrientCalculator").factory("GoogleAnalytic", function() {
+angular.module("farmbuild.nutrientCalculator").factory("NutrientCalculator", function(MilkSold, GoogleAnalytic) {
+    var NutrientCalculator = {};
+    NutrientCalculator.create = function(farmData) {
+        farmData.nutrientCalculator = {};
+        return farmData;
+    };
+    NutrientCalculator.load = function(farmData) {};
+    NutrientCalculator.milkSold = MilkSold;
+    NutrientCalculator.googleAnalytic = GoogleAnalytic;
+    window.farmbuild.nutrientcalculator = NutrientCalculator;
+    return NutrientCalculator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("GoogleAnalytic", function() {
     var exports = {};
     exports.username = "anonymous";
-    window.farmbuild.nutrientcalculator.GoogleAnalytic = exports;
     return exports;
 });
 
 "use strict";
 
-angular.module("farmBuild.nutrientCalculator").factory("MilkSold", function() {
+angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
     var MilkSold = {};
     MilkSold.nutrientOfMilkSoldByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
         var milkProteinInKg, milkFatInKg;
@@ -5399,16 +5413,15 @@ angular.module("farmBuild.nutrientCalculator").factory("MilkSold", function() {
     function _isNumber(value) {
         return !isNaN(parseFloat(value)) && isFinite(value);
     }
-    window.farmbuild.nutrientcalculator.MilkSold = MilkSold;
     return MilkSold;
 });
 
 "use strict";
 
-angular.module("farmBuild.nutrientCalculator").run(function(GoogleAnalytic, MilkSold) {});
+angular.module("farmbuild.nutrientCalculator").run(function(NutrientCalculator) {});
 
 window.farmbuild = {
     nutrientcalculator: {}
 };
 
-angular.injector([ "ng", "farmBuild.nutrientCalculator" ]);
+angular.injector([ "ng", "farmbuild.nutrientCalculator" ]);

@@ -1,11 +1,11 @@
 'use strict';
 
-describe('farmBuild.nutrientCalculator module', function() {
+describe('farmbuild.nutrientCalculator module', function() {
 
  // instantiate service
   var GoogleAnalytic, MilkSold;
 
-  beforeEach(module('farmBuild.nutrientCalculator'));
+  beforeEach(module('farmbuild.nutrientCalculator'));
 
   beforeEach(inject(function (_GoogleAnalytic_, _MilkSold_) {
     GoogleAnalytic = _GoogleAnalytic_,

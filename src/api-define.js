@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('farmBuild.nutrientCalculator', []);
+angular.module('farmbuild.nutrientCalculator', []);

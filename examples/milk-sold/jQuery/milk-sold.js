@@ -3,7 +3,7 @@
 $(function(){
 
 	var nc = farmbuild.nutrientcalculator;
-	nc.GoogleAnalytic.username = 'SpatialVision';
+	nc.googleAnalytic.username = 'SpatialVision';
 
 	$('#app-version').text(farmbuild.nutrientcalculator.sampleCodeVersion);
 

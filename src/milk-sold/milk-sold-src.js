@@ -12,7 +12,7 @@
  * nutrientCalculator/MilkSold class
  * @module nutrientCalculator/MilkSold
  */
-angular.module('farmBuild.nutrientCalculator')
+angular.module('farmbuild.nutrientCalculator')
 
 	.factory('MilkSold', function () {
 
@@ -162,7 +162,6 @@ angular.module('farmBuild.nutrientCalculator')
 			return !isNaN(parseFloat(value)) && isFinite(value);
 		}
 
-		window.farmbuild.nutrientcalculator.MilkSold = MilkSold;
 		return MilkSold;
 
 	});

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>google-analytic/google-analytic-src.js - Documentation</title>
+    <title>nutrient-calculator.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">google-analytic/google-analytic-src.js</h1>
+    <h1 class="page-title">nutrient-calculator.js</h1>
     
 
     
@@ -38,24 +38,52 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.0.1
+ */
+
+'use strict';
 
 /**
- * nutrientCalculator/GoogleAnalytic class
- * @module nutrientCalculator/GoogleAnalytic
+ * nutrientCalculator/NutrientCalculator class
+ * @module nutrientCalculator/NutrientCalculator
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('GoogleAnalytic', function () {
+	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic) {
+		var NutrientCalculator = {};
 
-		var exports = {};
+		NutrientCalculator.create = function(farmData){
+			farmData.nutrientCalculator = {};
+			return farmData;
+		};
 
-		/**
-		* @property {string} username - Username of the api user
-		 * @public
-		*/
-		exports.username = 'anonymous';
-		return exports;
+		NutrientCalculator.load = function(farmData){
+				//'farmerName',
+				//'farmName',
+				//'street',
+				//'town',
+				//'state',
+				//'postcode',
+				//'yearEnding',
+				//'herdProfile',
+				//'animalWeight',
+				//'milkingDays',
+				//'totalMilkingCows',
+				//'totalFarmArea',
+				//'milkingArea',
+				//'nonMilkingArea'
+		};
+
+		NutrientCalculator.milkSold = MilkSold;
+		NutrientCalculator.googleAnalytic = GoogleAnalytic;
+
+		window.farmbuild.nutrientcalculator = NutrientCalculator;
+		return NutrientCalculator;
 	});</code></pre>
         </article>
     </section>
