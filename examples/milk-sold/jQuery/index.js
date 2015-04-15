@@ -28,7 +28,7 @@ $(function(){
 
 		console.log('calculateByPercentage form Submit > MilkSold.nutrientOfMilkSoldByPercent');
 
-		result = nc.MilkSold.nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
+		result = nc.milkSold.nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
 		resultMilkSoldPerYearInLitre.text(result.milkSoldPerYearInLitre);
 		resultMilkFatInKg.text(result.milkFatInKg);
 		resultMilkFatPercentage.text(result.milkFatPercentage);
@@ -67,7 +67,7 @@ $(function(){
 
 		console.log('calculateByKg form Submit > MilkSold.nutrientOfMilkSoldByKg');
 
-		result = nc.MilkSold.nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
+		result = nc.milkSold.nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
 		resultMilkSoldPerYearInLitre.text(result.milkSoldPerYearInLitre);
 		resultMilkFatInKg.text(result.milkFatInKg);
 		resultMilkFatPercentage.text(result.milkFatPercentage);

@@ -7,15 +7,15 @@ describe('Farm web nutrient calculator', function() {
   describe('milk-sold', function() {
 
     beforeEach(function() {
-      browser.get('milk-sold/milk-sold.html');
+      browser.get('milk-sold/index.html');
     });
 
-    it('should render sample when user navigates to /milk-sold.html', function() {
+    it('should render sample when user navigates to /index.html', function() {
       expect(element.all(by.css('body h3')).first().getText()).
         toMatch('Farm Build Nutrient Calculator');
     });
 
-    it('should render sample when user navigates to /milk-sold.html', function() {
+    it('should render sample when user navigates to /index.html', function() {
       expect(element(by.model('milkSoldPerYearInLitre')).sendKeys('10000').getAttribute('value')).
         toBe('10000');
       expect(element(by.model('milkProteinPercentage')).sendKeys('10').getAttribute('value')).

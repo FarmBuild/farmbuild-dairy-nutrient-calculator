@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html ng-app="farmbuild.nutrientCalculator.examples.milkSold">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Farm Build Nutrient Calculator - angularJS example</title>
+    <title>Farm Build Nutrient Calculator - jQuery example</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../../main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
-<body ng-controller="MilkSoldCtrl">
+<body>
 <h3>
-    Farm Build Nutrient Calculator - angularJS example
+    Farm Build Nutrient Calculator - jQuery example
 </h3>
 <hr/>
-<form ng-submit="nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage)" role="form" novalidate>
+<form id="calculateByPercentage" role="form" novalidate>
     <fieldset>
         <legend>
             Nutrient of Milk Sold (%)
@@ -22,17 +22,17 @@
 
         <form-item class="form-group col-md-6">
             <label>Milk Sold Per Year (Litre)</label>
-            <input name="milkSoldPerYearInLitre" ng-model="milkSoldPerYearInLitre" type="number" class="form-control">
+            <input id="milkSoldPerYearInLitreP" type="number" class="form-control">
         </form-item>
 
         <form-item class="form-group col-md-6">
             <label>Milk Protein (%)</label>
-            <input name="milkProteinPercentage" ng-model="milkProteinPercentage" type="number" class="form-control">
+            <input id="milkProteinPercentage" type="number" class="form-control">
         </form-item>
 
         <form-item class="form-group col-md-6">
             <label>Milk Fat (%)</label>
-            <input name="milkFatPercentage" ng-model="milkFatPercentage" type="number" class="form-control">
+            <input id="milkFatPercentage" type="number" class="form-control">
         </form-item>
 
         <buttons class="col-md-12">
@@ -40,7 +40,7 @@
         </buttons>
     </fieldset>
 </form>
-<form ng-submit="nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg)" role="form" novalidate>
+<form id="calculateByKg" role="form" novalidate>
     <fieldset>
         <legend>
             Nutrient of Milk Sold (Kg)
@@ -48,17 +48,17 @@
 
         <form-item class="form-group col-md-6">
             <label>Milk Sold Per Year (Litre)</label>
-            <input name="milkSoldPerYearInLitre" ng-model="milkSoldPerYearInLitre" type="number" class="form-control">
+            <input id="milkSoldPerYearInLitreKg" type="number" class="form-control">
         </form-item>
 
         <form-item class="form-group col-md-6">
             <label>Milk Protein (Kg)</label>
-            <input name="milkProteinInKg" ng-model="milkProteinInKg" type="number" class="form-control">
+            <input id="milkProteinInKg" type="number" class="form-control">
         </form-item>
 
         <form-item class="form-group col-md-6">
             <label>Milk Fat (Kg)</label>
-            <input name="milkFatInKg" ng-model="milkFatInKg" type="number" class="form-control">
+            <input id="milkFatInKg" type="number" class="form-control">
         </form-item>
 
         <buttons class="col-md-12">
@@ -66,51 +66,52 @@
         </buttons>
     </fieldset>
 </form>
-<summary class="summary">
+<summary>
     <fieldset>
         <legend>
             Summary
         </legend>
         <form-item class="form-group col-sm-6">
-            <p>Milk Sold Per Year (Litre): <span ng-bind="result.milkSoldPerYearInLitre"></span></p>
+            <p>Milk Sold Per Year (Litre): <span id="resultMilkSoldPerYearInLitre"></span></p>
         </form-item>
         <form-item class="form-group col-sm-6">
-            <p>Milk Fat (Kg): <span ng-bind="result.milkFatInKg"></span></p>
-            <p>Milk Fat (%): <span ng-bind="result.milkFatPercentage"></span></p>
+            <p>Milk Fat (Kg): <span id="resultMilkFatInKg"></span></p>
+            <p>Milk Fat (%): <span id="resultMilkFatPercentage"></span></p>
         </form-item>
         <form-item class="form-group col-sm-6">
-            <p>Milk Protein (Kg): <span ng-bind="result.milkProteinInKg"></span></p>
-            <p>Milk Protein (%): <span ng-bind="result.milkProteinPercentage"></span></p>
+            <p>Milk Protein (Kg): <span id="resultMilkProteinInKg"></span></p>
+            <p>Milk Protein (%): <span id="resultMilkProteinPercentage"></span></p>
         </form-item>
         <form-item class="form-group col-sm-6">
-            <p>Nitrogen (Kg): <span ng-bind="result.nitrogenInKg"></span></p>
-            <p>Nitrogen (%): <span ng-bind="result.nitrogenPercentage"></span></p>
+            <p>Nitrogen (Kg): <span id="resultNitrogenInKg"></span></p>
+            <p>Nitrogen (%): <span id="resultNitrogenPercentage"></span></p>
         </form-item>
         <form-item class="form-group col-sm-6">
-            <p>Phosphorus (Kg): <span ng-bind="result.phosphorusInKg"></span></p>
-            <p>Phosphorus (%): <span ng-bind="result.phosphorusPercentage"></span></p>
+            <p>Phosphorus (Kg): <span id="resultPhosphorusInKg"></span></p>
+            <p>Phosphorus (%): <span id="resultPhosphorusPercentage"></span></p>
         </form-item>
         <form-item class="form-group col-sm-6">
-            <p>Potassium (Kg): <span ng-bind="result.potassiumInKg"></span></p>
-            <p>Potassium (%): <span ng-bind="result.potassiumPercentage"></span></p>
+            <p>Potassium (Kg): <span id="resultPotassiumInKg"></span></p>
+            <p>Potassium (%): <span id="resultPotassiumPercentage"></span></p>
         </form-item>
         <form-item class="form-group col-sm-6">
-            <p>Sulphur (Kg): <span ng-bind="result.sulphurInKg"></span></p>
-            <p>Sulphur (%): <span ng-bind="result.sulphurPercentage"></span></p>
+            <p>Sulphur (Kg): <span id="resultSulphurInKg"></span></p>
+            <p>Sulphur (%): <span id="resultSulphurPercentage"></span></p>
         </form-item>
     </fieldset>
 </summary>
 <hr/>
 <version class="col-md-12">
-    Version: <span ng-bind="appVersion"></span>
+    Version: <span id="app-version"></span>
 </version>
 
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
 -->
-<script src="../../dist/farmbuild.min.js"></script>
-<script src="../version.js"></script>
-<script src="milk-sold.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../dist/farmbuild.nutrientcalculator.min.js"></script>
+<script src="../../version.js"></script>
+<script src="index.js"></script>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>

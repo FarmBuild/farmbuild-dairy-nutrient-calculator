@@ -6,11 +6,10 @@ module.exports = function(config){
     files : [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'src/api-define.js',
-      'src/google-analytic/google-analytic-src.js',
-      'src/milk-sold/milk-sold-src.js',
       'src/nutrient-calculator.js',
-      'src/api-init.js',
+      'src/google-analytic/index.src.js',
+      'src/milk-sold/index.src.js',
+      'src/index.js',
       'src/**/*.js'
     ],
 

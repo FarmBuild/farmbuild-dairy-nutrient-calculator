@@ -20,24 +20,14 @@
             Add new farm
         </legend>
 
-        <!--'farmerName',-->
-        <!--'farmName',-->
-        <!--'street',-->
-        <!--'town',-->
-        <!--'state',-->
-        <!--'postcode',-->
-        <!--'yearEnding',-->
-        <!--'herdProfile',-->
-        <!--'animalWeight',-->
-        <!--'milkingDays',-->
-        <!--'totalMilkingCows',-->
-        <!--'totalFarmArea',-->
-        <!--'milkingArea',-->
-        <!--'nonMilkingArea'-->
-
         <form-item class="form-group col-md-6">
             <label>Farm Name</label>
             <input name="farmName" ng-model="farmData.name" type="text" class="form-control">
+        </form-item>
+
+        <form-item class="form-group col-md-6">
+            <label>Farmer Name</label>
+            <input name="farmName" ng-model="farmData.farmerName" type="text" class="form-control">
         </form-item>
 
         <form-item class="form-group col-md-6">
@@ -88,9 +78,9 @@
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
 -->
-<script src="../../dist/farmbuild.min.js"></script>
+<script src="../../dist/farmbuild.nutrientcalculator.min.js"></script>
 <script src="../version.js"></script>
-<script src="farm-input.js"></script>
+<script src="index.js"></script>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>

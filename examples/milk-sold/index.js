@@ -8,7 +8,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold', ['farmbuild.nut
 
 	.controller('MilkSoldCtrl', function ($scope, NutrientCalculator) {
 
-		NutrientCalculator.GoogleAnalytic.username = 'SpatialVision';
+		NutrientCalculator.googleAnalytic.username = 'SpatialVision';
 
 		$scope.result =  {
 				milkSoldPerYearInLitre: '-',
@@ -27,7 +27,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold', ['farmbuild.nut
 			};
 
 		$scope.nutrientOfMilkSoldByPercent = function (milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
-			$scope.result = NutrientCalculator.MilkSold.nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
+			$scope.result = NutrientCalculator.milkSold.nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
 			if ($scope.result) {
 				$scope.milkFatInKg = $scope.result.milkFatInKg;
 				$scope.milkProteinInKg = $scope.result.milkProteinInKg;
@@ -35,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold', ['farmbuild.nut
 		};
 
 		$scope.nutrientOfMilkSoldByKg = function (milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
-			$scope.result = NutrientCalculator.MilkSold.nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
+			$scope.result = NutrientCalculator.milkSold.nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
 			if ($scope.result) {
 				$scope.milkFatPercentage = $scope.result.milkFatPercentage;
 				$scope.milkProteinPercentage = $scope.result.milkProteinPercentage;
