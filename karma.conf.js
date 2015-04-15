@@ -10,6 +10,7 @@ module.exports = function(config){
       'src/google-analytic/index.src.js',
       'src/milk-sold/index.src.js',
       'src/index.js',
+      'src/*.js',
       'src/**/*.js'
     ],
 
