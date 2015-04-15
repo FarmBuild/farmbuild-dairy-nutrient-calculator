@@ -14,28 +14,6 @@ angular.module('farmbuild.nutrientCalculator', [])
 		var NutrientCalculator = {};
 
 		/**
-		 * Adds nutrientCalculator's required data to farmData
-		 * @method farmbuild.nutrientCalculator.create
-		 * @param {!object} farmData - Basic farm data
-		 * @returns {object} updated farmData
-		 * @public
-		 * @static
-		 */
-		NutrientCalculator.create = function(farmData){
-			if(!farmData.name) {
-				return undefined;
-			}
-			farmData.dateCreated = new Date();
-			farmData.dateLastUpdated = new Date();
-			farmData.nutrientCalculator = {
-				milkSold: {
-
-				}
-			};
-			return farmData;
-		};
-
-		/**
 		 * Adds nutrientCalculator block to farmData
 		 * @method farmbuild.nutrientCalculator.load
 		 * @param {!object} farmData - Basic farm data
@@ -43,18 +21,19 @@ angular.module('farmbuild.nutrientCalculator', [])
 		 * @public
 		 * @static
 		 */
-		NutrientCalculator.load = function(farmData){
-			if(!farmData.name) {
+		NutrientCalculator.load = function (farmData) {
+			if (!farmData.name) {
 				return undefined;
 			}
-			farmData.nutrientCalculator = {
-				milkSold: {
-
-				}
-			};
+			if (!farmData.nutrientCalculator) {
+				farmData.nutrientCalculator = {
+					milkSold: {}
+				};
+			}
 			return farmData;
 		};
 
+		// Provide a shortcut for modules
 		NutrientCalculator.milkSold = MilkSold;
 		NutrientCalculator.googleAnalytic = GoogleAnalytic;
 

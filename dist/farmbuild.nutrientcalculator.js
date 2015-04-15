@@ -5323,24 +5323,15 @@
 
 angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic) {
     var NutrientCalculator = {};
-    NutrientCalculator.create = function(farmData) {
-        if (!farmData.name) {
-            return undefined;
-        }
-        farmData.dateCreated = new Date();
-        farmData.dateLastUpdated = new Date();
-        farmData.nutrientCalculator = {
-            milkSold: {}
-        };
-        return farmData;
-    };
     NutrientCalculator.load = function(farmData) {
         if (!farmData.name) {
             return undefined;
         }
-        farmData.nutrientCalculator = {
-            milkSold: {}
-        };
+        if (!farmData.nutrientCalculator) {
+            farmData.nutrientCalculator = {
+                milkSold: {}
+            };
+        }
         return farmData;
     };
     NutrientCalculator.milkSold = MilkSold;

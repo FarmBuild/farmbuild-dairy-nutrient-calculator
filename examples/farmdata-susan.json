@@ -48,5 +48,22 @@
       },
       "area" : 0.87
     }
-  ]
+  ],
+  "nutrientCalculator": {
+    "milkSold": {
+      "milkSoldPerYearInLitre": 100000.00,
+      "milkFatInKg": 700.00,
+      "milkFatPercentage": 0.70,
+      "milkProteinInKg": 500.00,
+      "milkProteinPercentage": 0.50,
+      "nitrogenInKg": 78.99,
+      "nitrogenPercentage": 0.08,
+      "phosphorusInKg": 60.32,
+      "phosphorusPercentage": 0.06,
+      "potassiumInKg": 140.00,
+      "potassiumPercentage": 0.14,
+      "sulphurInKg": 60.00,
+      "sulphurPercentage": 0.06
+    }
+  }
 }

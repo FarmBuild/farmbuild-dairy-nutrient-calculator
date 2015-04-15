@@ -8,7 +8,7 @@ body, html {
 
 body {
   font-family: arial, sans-serif;
-  padding: 40px 20px;
+  padding: 20px 0;
 }
 
 buttons {
@@ -16,12 +16,8 @@ buttons {
   display: block;
 }
 
-summary {
-  margin: 0 30px 30px;
-}
-
 form {
-  margin-bottom: 100px;
+  margin-bottom: 30px;
 }
 
 form-item, form-section, form-item-container {
@@ -53,8 +49,13 @@ form label {
   width: 180px;
 }
 
-form fieldset {
+content{
   margin: 0 30px 30px;
+  display: block;
+}
+
+summary {
+  margin-bottom: 30px;
 }
 
 form textarea {
@@ -66,6 +67,9 @@ form textarea {
 
 version {
   display: block;
-  height: 60px;
+  height: 40px;
+  border-top:solid 1px #eaeaea;
+  padding: 10px 0;
+  margin-top: 30px;
 }
 
