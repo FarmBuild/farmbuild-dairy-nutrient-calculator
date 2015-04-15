@@ -11,7 +11,7 @@
 </head>
 <body ng-controller="FarmCtrl">
 <content>
-    <form ng-submit="load()" role="form" name="form" novalidate>
+    <form role="form" name="form" novalidate>
         <h3>
             Farmbuild Diary Nutrient Calculator
             <small>(angularJS)</small>
@@ -19,10 +19,10 @@
         <hr/>
         <form-item class="form-group col-md-6">
             <label>Please select your farm data</label>
-            <input name="farmData" type="file" ng-model="myfile" class="form-control" >
+            <input name="farmData" type="file" on-read-file="load($fileContent)" class="form-control" >
         </form-item>
         <buttons class="col-md-12">
-            <button type="submit" class="btn btn-primary">Load farm data</button>
+            <button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)">Export farm data</button>
         </buttons>
         <div class="clearfix"></div>
     </form>
