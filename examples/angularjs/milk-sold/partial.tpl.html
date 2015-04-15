@@ -27,7 +27,8 @@
     <buttons class="col-md-12">
         <button type="button"
                 class="btn btn-primary"
-                ng-click="milkSold()">
+                ng-click="milkSold()"
+                ng-disabled="!farmData.nutrientCalculator.milkSold">
             Update milk sold
         </button>
     </buttons>
