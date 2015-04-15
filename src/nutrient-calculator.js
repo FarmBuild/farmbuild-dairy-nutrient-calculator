@@ -8,6 +8,10 @@
 
 'use strict';
 
+/**
+ * nutrientCalculator
+ * @module nutrientCalculator
+ */
 angular.module('farmbuild.nutrientCalculator', [])
 
 	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic) {
@@ -15,8 +19,8 @@ angular.module('farmbuild.nutrientCalculator', [])
 
 		/**
 		 * Adds nutrientCalculator block to farmData
-		 * @method farmbuild.nutrientCalculator.load
-		 * @param {!object} farmData - Basic farm data
+		 * @method load
+		 * @param {!object} farmData - Saved farm data or default in case of new
 		 * @returns {object} updated farmData
 		 * @public
 		 * @static
