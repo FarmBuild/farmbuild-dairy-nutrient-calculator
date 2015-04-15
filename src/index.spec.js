@@ -11,11 +11,18 @@ describe('farmbuild.nutrientCalculator module', function() {
     NutrientCalculator = _NutrientCalculator_;
   }));
 
-  describe('MilkSold factory', function(){
-
+  describe('NutrientCalculator factory', function(){
     it('NutrientCalculator should be defined', inject(function() {
       expect(NutrientCalculator).toBeDefined();
     }));
 
+    it('NutrientCalculator should be defined', inject(function() {
+      var farmData = {name: 'Parham\'s farm'};
+      farmData = NutrientCalculator.load(farmData);
+      expect(farmData.nutrientCalculator).toBeDefined();
+    }));
   });
+
+
+
 });
