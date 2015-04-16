@@ -5,10 +5,10 @@ describe('farmbuild.nutrientCalculator module', function() {
  // define NutrientCalculator service
   var NutrientCalculator;
 
-  // instantiate farmbuild.nutrientCalculator module
+  // inject farmbuild.nutrientCalculator module
   beforeEach(module('farmbuild.nutrientCalculator'));
 
-  // instantiate NutrientCalculator service
+  // inject NutrientCalculator service
   beforeEach(inject(function (_NutrientCalculator_) {
     NutrientCalculator = _NutrientCalculator_;
   }));
@@ -28,17 +28,17 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('NutrientCalculator.load should add nutrientCalculator block', inject(function() {
-      var farmData = {name: 'Parham\'s farm'};
+      var farmData = {name: 'Susan\'s farm'};
       farmData = NutrientCalculator.load(farmData);
       expect(farmData.nutrientCalculator).toBeDefined();
     }));
 
     it('NutrientCalculator.load return value should have the correct name', inject(function() {
-      var name = 'Parham\'s farm', farmData = {name: name};
+      var name = 'Susan\'s farm', farmData = {name: name};
       farmData = NutrientCalculator.load(farmData);
       expect(farmData.name).toMatch(name);
     }));
 
   });
-  
+
 });
