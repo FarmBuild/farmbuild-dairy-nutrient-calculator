@@ -22,9 +22,33 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('Calculate MilkSold nutrient by %', inject(function() {
-      var nutrientByPercentage = MilkSold.nutrientOfMilkSoldByPercent(100, 10, 90);
-      expect(nutrientByPercentage).toBeDefined();
+      var nutrientByPercentage = MilkSold.nutrientOfMilkSoldByPercent(10000);
+      expect(nutrientByPercentage).toBeUndefined();
     }));
+
+    it('Calculate MilkSold nutrient by %', inject(function() {
+      var nutrientByPercentage = MilkSold.nutrientOfMilkSoldByPercent(10000, 4);
+      expect(nutrientByPercentage).toBeUndefined();
+    }));
+
+    it('Calculate MilkSold nutrient by %', inject(function() {
+      var nutrientByPercentage = MilkSold.nutrientOfMilkSoldByPercent(10000, 4, 3.5);
+      expect(nutrientByPercentage).toBeDefined();
+      expect(nutrientByPercentage.milkSoldPerYearInLitre).toEqual(10000);
+      expect(nutrientByPercentage.milkProteinInKg).toEqual(400);
+      expect(nutrientByPercentage.milkProteinPercentage).toEqual(4);
+      expect(nutrientByPercentage.milkFatInKg).toEqual(350);
+      expect(nutrientByPercentage.milkFatPercentage).toEqual(3.5);
+      expect(nutrientByPercentage.nitrogenInKg).toEqual(63.19);
+      expect(nutrientByPercentage.nitrogenPercentage).toEqual(0.63);
+      expect(nutrientByPercentage.phosphorusInKg).toEqual(9.14);
+      expect(nutrientByPercentage.phosphorusPercentage).toEqual(0.09);
+      expect(nutrientByPercentage.potassiumInKg).toEqual(14);
+      expect(nutrientByPercentage.potassiumPercentage).toEqual(0.14);
+      expect(nutrientByPercentage.sulphurInKg).toEqual(6);
+      expect(nutrientByPercentage.sulphurPercentage).toEqual(0.06);
+    }));
+
 
     it('Calculate MilkSold nutrient by % and kg should have same result', inject(function() {
       var nutrientByPercentage = MilkSold.nutrientOfMilkSoldByPercent(1000, 10, 90);

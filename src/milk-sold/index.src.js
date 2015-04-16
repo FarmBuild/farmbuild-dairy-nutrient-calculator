@@ -130,19 +130,19 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg = (milkSoldPerYearInLitre * phosphorusPercentage / 100);
 
 			return {
-				milkSoldPerYearInLitre: milkSoldPerYearInLitre.toFixed(2),
-				milkFatInKg: milkFatInKg.toFixed(2),
-				milkFatPercentage: milkFatPercentage.toFixed(2),
-				milkProteinInKg: milkProteinInKg.toFixed(2),
-				milkProteinPercentage: milkProteinPercentage.toFixed(2),
-				nitrogenInKg: nitrogenInKg.toFixed(2),
-				nitrogenPercentage: nitrogenPercentage.toFixed(2),
-				phosphorusInKg: phosphorusInKg.toFixed(2),
-				phosphorusPercentage: phosphorusPercentage.toFixed(2),
-				potassiumInKg: potassiumInKg.toFixed(2),
-				potassiumPercentage: potassiumPercentage.toFixed(2),
-				sulphurInKg: sulphurInKg.toFixed(2),
-				sulphurPercentage: sulphurPercentage.toFixed(2)
+				milkSoldPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
+				milkFatInKg: _toFixNumber(milkFatInKg, 2),
+				milkFatPercentage: _toFixNumber(milkFatPercentage, 2),
+				milkProteinInKg: _toFixNumber(milkProteinInKg, 2),
+				milkProteinPercentage: _toFixNumber(milkProteinPercentage, 2),
+				nitrogenInKg: _toFixNumber(nitrogenInKg, 2),
+				nitrogenPercentage: _toFixNumber(nitrogenPercentage, 2),
+				phosphorusInKg: _toFixNumber(phosphorusInKg, 2),
+				phosphorusPercentage: _toFixNumber(phosphorusPercentage, 2),
+				potassiumInKg: _toFixNumber(potassiumInKg, 2),
+				potassiumPercentage: _toFixNumber(potassiumPercentage, 2),
+				sulphurInKg: _toFixNumber(sulphurInKg, 2),
+				sulphurPercentage: _toFixNumber(sulphurPercentage, 2)
 			};
 
 		}
@@ -180,6 +180,18 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		function _isNumber(value) {
 			return !isNaN(parseFloat(value)) && isFinite(value);
+		}
+
+		/**
+		 * Returns true if value is a number
+		 * @method _isNumber
+		 * @param {!number} decimalPrecision - The value to be examined as a number
+		 * @param {!number} value - The value to be examined as a number
+		 * @returns {number}
+		 * @private
+		 */
+		function _toFixNumber(value, decimalPrecision) {
+			return parseFloat(value.toFixed(decimalPrecision));
 		}
 
 		return MilkSold;

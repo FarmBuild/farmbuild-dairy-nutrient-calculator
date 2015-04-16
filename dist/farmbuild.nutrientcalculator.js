@@ -5357,7 +5357,7 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
         milkProteinPercentage = parseFloat(milkProteinPercentage);
         milkFatPercentage = parseFloat(milkFatPercentage);
-        if (!_validateInput(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {
+        if (!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {
             return undefined;
         }
         milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
@@ -5369,14 +5369,14 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
         milkProteinInKg = parseFloat(milkProteinInKg);
         milkFatInKg = parseFloat(milkFatInKg);
-        if (!_validateInput(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, "kg")) {
+        if (!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, "kg")) {
             return undefined;
         }
         milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
         milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
         return _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
     };
-    function _validateInput(milkSoldPerYearInLitre, milkProtein, milkFat, unit) {
+    function _validateInputs(milkSoldPerYearInLitre, milkProtein, milkFat, unit) {
         if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
             return false;
         }
@@ -5397,19 +5397,19 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
     function _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
         var nitrogenPercentage = milkProteinPercentage / 6.33, phosphorusPercentage = .0111 * milkFatPercentage + .05255, potassiumPercentage = .14, sulphurPercentage = .06, nitrogenInKg = milkSoldPerYearInLitre * nitrogenPercentage / 100, potassiumInKg = milkSoldPerYearInLitre * potassiumPercentage / 100, sulphurInKg = milkSoldPerYearInLitre * sulphurPercentage / 100, phosphorusInKg = milkSoldPerYearInLitre * phosphorusPercentage / 100;
         return {
-            milkSoldPerYearInLitre: milkSoldPerYearInLitre.toFixed(2),
-            milkFatInKg: milkFatInKg.toFixed(2),
-            milkFatPercentage: milkFatPercentage.toFixed(2),
-            milkProteinInKg: milkProteinInKg.toFixed(2),
-            milkProteinPercentage: milkProteinPercentage.toFixed(2),
-            nitrogenInKg: nitrogenInKg.toFixed(2),
-            nitrogenPercentage: nitrogenPercentage.toFixed(2),
-            phosphorusInKg: phosphorusInKg.toFixed(2),
-            phosphorusPercentage: phosphorusPercentage.toFixed(2),
-            potassiumInKg: potassiumInKg.toFixed(2),
-            potassiumPercentage: potassiumPercentage.toFixed(2),
-            sulphurInKg: sulphurInKg.toFixed(2),
-            sulphurPercentage: sulphurPercentage.toFixed(2)
+            milkSoldPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
+            milkFatInKg: _toFixNumber(milkFatInKg, 2),
+            milkFatPercentage: _toFixNumber(milkFatPercentage, 2),
+            milkProteinInKg: _toFixNumber(milkProteinInKg, 2),
+            milkProteinPercentage: _toFixNumber(milkProteinPercentage, 2),
+            nitrogenInKg: _toFixNumber(nitrogenInKg, 2),
+            nitrogenPercentage: _toFixNumber(nitrogenPercentage, 2),
+            phosphorusInKg: _toFixNumber(phosphorusInKg, 2),
+            phosphorusPercentage: _toFixNumber(phosphorusPercentage, 2),
+            potassiumInKg: _toFixNumber(potassiumInKg, 2),
+            potassiumPercentage: _toFixNumber(potassiumPercentage, 2),
+            sulphurInKg: _toFixNumber(sulphurInKg, 2),
+            sulphurPercentage: _toFixNumber(sulphurPercentage, 2)
         };
     }
     function _kgToPercentage(valueInKg, totalInLitre) {
@@ -5420,6 +5420,9 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
     }
     function _isNumber(value) {
         return !isNaN(parseFloat(value)) && isFinite(value);
+    }
+    function _toFixNumber(value, decimalPrecision) {
+        return parseFloat(value.toFixed(decimalPrecision));
     }
     return MilkSold;
 });
