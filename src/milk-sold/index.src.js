@@ -35,15 +35,7 @@ angular.module('farmbuild.nutrientCalculator')
 			milkProteinPercentage = parseFloat(milkProteinPercentage);
 			milkFatPercentage = parseFloat(milkFatPercentage);
 
-			if (!milkSoldPerYearInLitre || !milkProteinPercentage || !milkFatPercentage) {
-				return undefined;
-			}
-
-			if(!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProteinPercentage) || !_isNumber(milkFatPercentage)){
-				return undefined;
-			}
-
-			if(milkProteinPercentage + milkFatPercentage > 100){
+			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, '%')){
 				return undefined;
 			}
 
@@ -70,15 +62,7 @@ angular.module('farmbuild.nutrientCalculator')
 			milkProteinInKg = parseFloat(milkProteinInKg);
 			milkFatInKg = parseFloat(milkFatInKg);
 
-			if (!milkSoldPerYearInLitre || !milkFatInKg || !milkProteinInKg) {
-				return undefined;
-			}
-
-			if(!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProteinInKg) || !_isNumber(milkFatInKg)){
-				return undefined;
-			}
-
-			if(milkFatInKg + milkProteinInKg > milkSoldPerYearInLitre){
+			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, 'kg')){
 				return undefined;
 			}
 
@@ -87,6 +71,42 @@ angular.module('farmbuild.nutrientCalculator')
 			return _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
 
 		};
+
+		/**
+		 * Returns true if input values are valid
+		 * @method _validateInputs
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre
+		 * @param {!number} milkProtein - Quantity of milk fat in Kilograms/Percentage
+		 * @param {!number} milkFat - Quantity of milk protein in Kilograms/Percentage
+		 * @param {!string} unit - Percentage or Kg
+		 * @returns {boolean} validity of input values
+		 * @private
+		 */
+		function _validateInputs(milkSoldPerYearInLitre, milkProtein, milkFat, unit){
+
+			if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
+				return false;
+			}
+
+			if(!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProtein) || !_isNumber(milkFat)){
+				return false;
+			}
+
+			if(milkSoldPerYearInLitre < 0 || milkProtein < 0 || milkFat < 0){
+				return false;
+			}
+
+			if(unit === '%' && milkProtein + milkFat > 100){
+				return false;
+			}
+
+			if(unit === 'kg' && milkProtein + milkFat > milkSoldPerYearInLitre){
+				return false;
+			}
+
+			return true;
+
+		}
 
 		/**
 		 * Returns nutrient data of milk

@@ -23,13 +23,18 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 					$scope.farmData.nutrientCalculator.milkSold.milkSoldPerYearInLitre,
 					$scope.farmData.nutrientCalculator.milkSold.milkProteinPercentage,
 					$scope.farmData.nutrientCalculator.milkSold.milkFatPercentage)
-		}
+		};
+
+/*		$scope.exportFarmData = function(farmData){
+			var blob = new Blob([angular.toJson(farmData)], { type: 'application/json' }),
+					url = window.URL.createObjectURL(blob);
+			return url;
+		}*/
 
 		$scope.exportFarmData = function(farmData){
-			var url = 'data:text/json;charset=utf8,' + encodeURIComponent(angular.toJson(farmData));
-			window.open(url, '_blank');
-			window.focus();
-		}
+			var blob = new Blob([angular.toJson(farmData)], { type: 'application/json' });
+			$scope.exUrl = URL.createObjectURL(blob);
+		};
 
 	})
 

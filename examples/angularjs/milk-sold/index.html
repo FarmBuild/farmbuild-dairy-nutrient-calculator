@@ -77,8 +77,13 @@
             <legend>
                 Summary
             </legend>
+            <error class="col-sm-12 bg-danger" ng-show="noResult">
+                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
+            </error>
             <form-item class="form-group col-sm-6">
-                <p>Milk Sold Per Year (Litre): <span ng-bind="result.milkSoldPerYearInLitre"></span></p>
+                <p>Milk Sold Per Year (Litre):
+                    <span ng-bind="result.milkSoldPerYearInLitre"></span>
+                </p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Milk Fat (Kg): <span ng-bind="result.milkFatInKg"></span></p>

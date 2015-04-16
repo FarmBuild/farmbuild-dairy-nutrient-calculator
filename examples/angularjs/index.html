@@ -22,7 +22,8 @@
             <input name="farmData" type="file" on-read-file="load($fileContent)" class="form-control" >
         </form-item>
         <buttons class="col-md-12">
-            <button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>
+            <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
+            <a type="button" class="btn btn-primary" ng-href="{{exUrl}}" ng-disabled="!farmData.name" download="data.json">Export farm data</a>
         </buttons>
         <div class="clearfix"></div>
     </form>

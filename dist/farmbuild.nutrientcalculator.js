@@ -5357,13 +5357,7 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
         milkProteinPercentage = parseFloat(milkProteinPercentage);
         milkFatPercentage = parseFloat(milkFatPercentage);
-        if (!milkSoldPerYearInLitre || !milkProteinPercentage || !milkFatPercentage) {
-            return undefined;
-        }
-        if (!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProteinPercentage) || !_isNumber(milkFatPercentage)) {
-            return undefined;
-        }
-        if (milkProteinPercentage + milkFatPercentage > 100) {
+        if (!_validateInput(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {
             return undefined;
         }
         milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
@@ -5375,19 +5369,31 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
         milkProteinInKg = parseFloat(milkProteinInKg);
         milkFatInKg = parseFloat(milkFatInKg);
-        if (!milkSoldPerYearInLitre || !milkFatInKg || !milkProteinInKg) {
-            return undefined;
-        }
-        if (!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProteinInKg) || !_isNumber(milkFatInKg)) {
-            return undefined;
-        }
-        if (milkFatInKg + milkProteinInKg > milkSoldPerYearInLitre) {
+        if (!_validateInput(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, "kg")) {
             return undefined;
         }
         milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
         milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
         return _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
     };
+    function _validateInput(milkSoldPerYearInLitre, milkProtein, milkFat, unit) {
+        if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
+            return false;
+        }
+        if (!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProtein) || !_isNumber(milkFat)) {
+            return false;
+        }
+        if (milkSoldPerYearInLitre < 0 || milkProtein < 0 || milkFat < 0) {
+            return false;
+        }
+        if (unit === "%" && milkProtein + milkFat > 100) {
+            return false;
+        }
+        if (unit === "kg" && milkProtein + milkFat > milkSoldPerYearInLitre) {
+            return false;
+        }
+        return true;
+    }
     function _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
         var nitrogenPercentage = milkProteinPercentage / 6.33, phosphorusPercentage = .0111 * milkFatPercentage + .05255, potassiumPercentage = .14, sulphurPercentage = .06, nitrogenInKg = milkSoldPerYearInLitre * nitrogenPercentage / 100, potassiumInKg = milkSoldPerYearInLitre * potassiumPercentage / 100, sulphurInKg = milkSoldPerYearInLitre * sulphurPercentage / 100, phosphorusInKg = milkSoldPerYearInLitre * phosphorusPercentage / 100;
         return {
