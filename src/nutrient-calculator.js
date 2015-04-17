@@ -12,9 +12,9 @@
  * nutrientCalculator
  * @module nutrientCalculator
  */
-angular.module('farmbuild.nutrientCalculator', [])
+angular.module('farmbuild.nutrientCalculator', ['farmbuild.farmdata'])
 
-	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic) {
+	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic, FarmData) {
 		var NutrientCalculator = {};
 
 		/**
@@ -26,9 +26,10 @@ angular.module('farmbuild.nutrientCalculator', [])
 		 * @static
 		 */
 		NutrientCalculator.load = function (farmData) {
-			if (!farmData.name) {
+			if (!FarmData.isFarmData(farmData)) {
 				return undefined;
 			}
+
 			if (!farmData.nutrientCalculator) {
 				farmData.nutrientCalculator = {
 					milkSold: {}
