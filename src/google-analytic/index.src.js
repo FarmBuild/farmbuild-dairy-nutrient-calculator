@@ -16,4 +16,5 @@ angular.module('farmbuild.nutrientCalculator')
 		*/
 		exports.username = 'anonymous';
 		return exports;
+
 	});

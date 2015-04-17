@@ -21,9 +21,9 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates nutrient from milk sold, input values are in percentage
 		 * @method nutrientOfMilkSoldByPercent
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre
-		 * @param {!number} milkProteinPercentage - Percentage of milk protein
-		 * @param {!number} milkFatPercentage - Percentage of milk fat
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0 and can have up to 2 decimal places
 		 * @returns {object} milk nutrient data
 		 * @public
 		 * @static
@@ -48,9 +48,9 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates nutrient from milk sold, input values are in Kg
 		 * @method nutrientOfMilkSoldByKg
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre
-		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms
-		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms, value must be > 0 and can have up to 2 decimal places
 		 * @returns {object} milk nutrient data
 		 * @public
 		 * @static
@@ -75,9 +75,9 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Returns true if input values are valid
 		 * @method _validateInputs
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre
-		 * @param {!number} milkProtein - Quantity of milk fat in Kilograms/Percentage
-		 * @param {!number} milkFat - Quantity of milk protein in Kilograms/Percentage
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkProtein - Quantity of milk fat in Kilograms/Percentage, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkFat - Quantity of milk protein in Kilograms/Percentage, value must be > 0 and can have up to 2 decimal places
 		 * @param {!string} unit - Percentage or Kg
 		 * @returns {boolean} validity of input values
 		 * @private
@@ -111,11 +111,11 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Returns nutrient data of milk
 		 * @method _nutrientInMilkSold
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre
-		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms
-		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms.
-		 * @param {!number} milkProteinPercentage - Percentage of milk protein
-		 * @param {!number} milkFatPercentage - Percentage of milk fat
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0 and can have up to 2 decimal places
 		 * @returns {object} milk nutrient data
 		 * @private
 		 */
