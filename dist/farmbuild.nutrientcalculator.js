@@ -5321,7 +5321,7 @@
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic) {
+angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic, AnimalPurchased) {
     var NutrientCalculator = {};
     NutrientCalculator.load = function(farmData) {
         if (!farmData.name) {
@@ -5336,8 +5336,35 @@ angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator",
     };
     NutrientCalculator.milkSold = MilkSold;
     NutrientCalculator.googleAnalytic = GoogleAnalytic;
+    NutrientCalculator.animalPurchased = AnimalPurchased;
     window.farmbuild.nutrientcalculator = NutrientCalculator;
     return NutrientCalculator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", function(Validations) {
+    var AnimalPurchased = {}, _isNumber = Validations.isNumber;
+    AnimalPurchased.incoming = [];
+    AnimalPurchased.calculate = function(incomings) {
+        AnimalPurchased.incoming = incomings;
+        if (incomings.length === 0) {
+            return undefined;
+        }
+        return "";
+    };
+    AnimalPurchased.add = function(type, count) {
+        count = parseInt(count);
+        if (!_isNumber(count)) {
+            return undefined;
+        }
+        AnimalPurchased.incoming.push({
+            type: type,
+            count: count
+        });
+        return AnimalPurchased;
+    };
+    return AnimalPurchased;
 });
 
 "use strict";
@@ -5350,9 +5377,9 @@ angular.module("farmbuild.nutrientCalculator").factory("GoogleAnalytic", functio
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
-    var MilkSold = {};
-    MilkSold.nutrientOfMilkSoldByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
+angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Validations) {
+    var MilkSold = {}, _isNumber = Validations.isNumber;
+    MilkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
         var milkProteinInKg, milkFatInKg;
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
         milkProteinPercentage = parseFloat(milkProteinPercentage);
@@ -5362,9 +5389,9 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         }
         milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
         milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
-        return _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+        return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
     };
-    MilkSold.nutrientOfMilkSoldByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
+    MilkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
         var milkProteinPercentage, milkFatPercentage;
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
         milkProteinInKg = parseFloat(milkProteinInKg);
@@ -5374,7 +5401,7 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         }
         milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
         milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
-        return _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+        return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
     };
     function _validateInputs(milkSoldPerYearInLitre, milkProtein, milkFat, unit) {
         if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
@@ -5394,14 +5421,14 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
         }
         return true;
     }
-    function _nutrientInMilkSold(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
+    function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
         var nitrogenPercentage = milkProteinPercentage / 6.33, phosphorusPercentage = .0111 * milkFatPercentage + .05255, potassiumPercentage = .14, sulphurPercentage = .06, nitrogenInKg = milkSoldPerYearInLitre * nitrogenPercentage / 100, potassiumInKg = milkSoldPerYearInLitre * potassiumPercentage / 100, sulphurInKg = milkSoldPerYearInLitre * sulphurPercentage / 100, phosphorusInKg = milkSoldPerYearInLitre * phosphorusPercentage / 100;
         return {
-            milkSoldPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
-            milkFatInKg: _toFixNumber(milkFatInKg, 2),
-            milkFatPercentage: _toFixNumber(milkFatPercentage, 2),
-            milkProteinInKg: _toFixNumber(milkProteinInKg, 2),
-            milkProteinPercentage: _toFixNumber(milkProteinPercentage, 2),
+            totalPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
+            fatInKg: _toFixNumber(milkFatInKg, 2),
+            fatPercentage: _toFixNumber(milkFatPercentage, 2),
+            proteinInKg: _toFixNumber(milkProteinInKg, 2),
+            proteinPercentage: _toFixNumber(milkProteinPercentage, 2),
             nitrogenInKg: _toFixNumber(nitrogenInKg, 2),
             nitrogenPercentage: _toFixNumber(nitrogenPercentage, 2),
             phosphorusInKg: _toFixNumber(phosphorusInKg, 2),
@@ -5418,13 +5445,16 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function() {
     function _percentageToKg(valuePercentage, totalInLitre) {
         return valuePercentage * totalInLitre / 100;
     }
-    function _isNumber(value) {
-        return !isNaN(parseFloat(value)) && isFinite(value);
-    }
     function _toFixNumber(value, decimalPrecision) {
         return parseFloat(value.toFixed(decimalPrecision));
     }
     return MilkSold;
+});
+
+angular.module("farmbuild.nutrientCalculator").factory("Validations", function($log) {
+    var Validations = {};
+    Validations.isNumber = angular.isNumber;
+    return Validations;
 });
 
 "use strict";

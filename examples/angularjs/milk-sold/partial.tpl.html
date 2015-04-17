@@ -38,17 +38,17 @@
     <hr/>
     <form-item class="form-group col-sm-6">
         <p>Milk Sold Per Year (Litre): <span
-                ng-bind="farmData.nutrientCalculator.milkSold.milkSoldPerYearInLitre | number : decimalPrecision"></span></p>
+                ng-bind="farmData.nutrientCalculator.milkSold.totalPerYearInLitre | number : decimalPrecision"></span></p>
     </form-item>
     <form-item class="form-group col-sm-6">
-        <p>Milk Fat (Kg): <span ng-bind="farmData.nutrientCalculator.milkSold.milkFatInKg | number : decimalPrecision"></span></p>
+        <p>Milk Fat (Kg): <span ng-bind="farmData.nutrientCalculator.milkSold.fatInKg | number : decimalPrecision"></span></p>
 
-        <p>Milk Fat (%): <span ng-bind="farmData.nutrientCalculator.milkSold.milkFatPercentage | number : decimalPrecision"></span></p>
+        <p>Milk Fat (%): <span ng-bind="farmData.nutrientCalculator.milkSold.fatPercentage | number : decimalPrecision"></span></p>
     </form-item>
     <form-item class="form-group col-sm-6">
-        <p>Milk Protein (Kg): <span ng-bind="farmData.nutrientCalculator.milkSold.milkProteinInKg | number : decimalPrecision"></span></p>
+        <p>Milk Protein (Kg): <span ng-bind="farmData.nutrientCalculator.milkSold.proteinInKg | number : decimalPrecision"></span></p>
 
-        <p>Milk Protein (%): <span ng-bind="farmData.nutrientCalculator.milkSold.milkProteinPercentage | number : decimalPrecision"></span></p>
+        <p>Milk Protein (%): <span ng-bind="farmData.nutrientCalculator.milkSold.proteinPercentage | number : decimalPrecision"></span></p>
     </form-item>
     <form-item class="form-group col-sm-6">
         <p>Nitrogen (Kg): <span ng-bind="farmData.nutrientCalculator.milkSold.nitrogenInKg | number : decimalPrecision"></span></p>

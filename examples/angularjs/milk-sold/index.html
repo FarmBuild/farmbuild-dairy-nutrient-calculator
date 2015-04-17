@@ -16,7 +16,7 @@
         <small>(angularJS)</small>
     </h3>
     <hr/>
-    <form ng-submit="nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage)"
+    <form ng-submit="calculateByPercent(totalPerYearInLitre, proteinPercentage, fatPercentage)"
           role="form" novalidate>
         <fieldset>
             <legend>
@@ -25,18 +25,18 @@
 
             <form-item class="form-group col-md-6">
                 <label>Milk Sold Per Year (Litre)</label>
-                <input name="milkSoldPerYearInLitre" ng-model="milkSoldPerYearInLitre" type="number"
+                <input name="totalPerYearInLitre" ng-model="totalPerYearInLitre" type="number"
                        class="form-control">
             </form-item>
 
             <form-item class="form-group col-md-6">
                 <label>Milk Protein (%)</label>
-                <input name="milkProteinPercentage" ng-model="milkProteinPercentage" type="number" class="form-control">
+                <input name="proteinPercentage" ng-model="proteinPercentage" type="number" class="form-control">
             </form-item>
 
             <form-item class="form-group col-md-6">
                 <label>Milk Fat (%)</label>
-                <input name="milkFatPercentage" ng-model="milkFatPercentage" type="number" class="form-control">
+                <input name="fatPercentage" ng-model="fatPercentage" type="number" class="form-control">
             </form-item>
 
             <buttons class="col-md-12">
@@ -44,7 +44,7 @@
             </buttons>
         </fieldset>
     </form>
-    <form ng-submit="nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg)" role="form"
+    <form ng-submit="calculateByKg(totalPerYearInLitre, proteinInKg, fatInKg)" role="form"
           novalidate>
         <fieldset>
             <legend>
@@ -53,7 +53,7 @@
 
             <form-item class="form-group col-md-6">
                 <label>Milk Sold Per Year (Litre)</label>
-                <input name="milkSoldPerYearInLitre" ng-model="milkSoldPerYearInLitre" type="number"
+                <input name="totalPerYearInLitre" ng-model="totalPerYearInLitre" type="number"
                        class="form-control">
             </form-item>
 
@@ -82,18 +82,18 @@
             </error>
             <form-item class="form-group col-sm-6">
                 <p>Milk Sold Per Year (Litre):
-                    <span ng-bind="result.milkSoldPerYearInLitre"></span>
+                    <span ng-bind="result.totalPerYearInLitre"></span>
                 </p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Milk Fat (Kg): <span ng-bind="result.milkFatInKg"></span></p>
+                <p>Milk Fat (Kg): <span ng-bind="result.fatInKg"></span></p>
 
-                <p>Milk Fat (%): <span ng-bind="result.milkFatPercentage"></span></p>
+                <p>Milk Fat (%): <span ng-bind="result.fatPercentage"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Milk Protein (Kg): <span ng-bind="result.milkProteinInKg"></span></p>
+                <p>Milk Protein (Kg): <span ng-bind="result.proteinInKg"></span></p>
 
-                <p>Milk Protein (%): <span ng-bind="result.milkProteinPercentage"></span></p>
+                <p>Milk Protein (%): <span ng-bind="result.proteinPercentage"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Nitrogen (Kg): <span ng-bind="result.nitrogenInKg"></span></p>

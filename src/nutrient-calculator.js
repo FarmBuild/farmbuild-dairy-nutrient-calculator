@@ -14,7 +14,7 @@
  */
 angular.module('farmbuild.nutrientCalculator', [])
 
-	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic) {
+	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic, AnimalPurchased) {
 		var NutrientCalculator = {};
 
 		/**
@@ -40,6 +40,7 @@ angular.module('farmbuild.nutrientCalculator', [])
 		// Provide a shortcut for modules
 		NutrientCalculator.milkSold = MilkSold;
 		NutrientCalculator.googleAnalytic = GoogleAnalytic;
+		NutrientCalculator.animalPurchased = AnimalPurchased;
 
 		window.farmbuild.nutrientcalculator = NutrientCalculator;
 

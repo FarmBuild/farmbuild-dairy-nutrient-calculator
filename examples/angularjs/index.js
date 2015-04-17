@@ -19,10 +19,10 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		$scope.milkSold = function () {
 			$scope.farmData.nutrientCalculator.milkSold =
-				NutrientCalculator.milkSold.nutrientOfMilkSoldByPercent(
-					$scope.farmData.nutrientCalculator.milkSold.milkSoldPerYearInLitre,
-					$scope.farmData.nutrientCalculator.milkSold.milkProteinPercentage,
-					$scope.farmData.nutrientCalculator.milkSold.milkFatPercentage)
+				NutrientCalculator.milkSold.calculateByPercent(
+					$scope.farmData.nutrientCalculator.milkSold.totalPerYearInLitre,
+					$scope.farmData.nutrientCalculator.milkSold.proteinPercentage,
+					$scope.farmData.nutrientCalculator.milkSold.fatPercentage)
 		};
 
 /*		$scope.exportFarmData = function(farmData){

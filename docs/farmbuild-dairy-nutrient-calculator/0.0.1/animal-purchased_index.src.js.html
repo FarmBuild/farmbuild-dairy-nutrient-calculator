@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>animal-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">animal-purchased/index.src.js</h1>
     
 
     
@@ -39,53 +39,66 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.0.1
- */
+* @since 0.0.1
+* @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+* @license The MIT License
+* @author Spatial Vision
+* @version 0.0.1
+*/
 
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/AnimalPurchased class
+ * @module nutrientCalculator/AnimalPurchased
  */
-angular.module('farmbuild.nutrientCalculator', [])
+angular.module('farmbuild.nutrientCalculator')
 
-	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic, AnimalPurchased) {
-		var NutrientCalculator = {};
+	.factory('AnimalPurchased', function (Validations) {
+
+		var AnimalPurchased = {},
+				_isNumber = Validations.isNumber;
+
+		AnimalPurchased.incoming = [];
 
 		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
+		 * Calculates total nutrient imported on to the farm in animals
+		 * @method calculate
+		 * @param {!array} incomings - Array of purchased animals, each item contains details of the animal {type, count}
+		 * @returns {object} nutrient data of animals purchased
 		 * @public
 		 * @static
 		 */
-		NutrientCalculator.load = function (farmData) {
-			if (!farmData.name) {
+
+		AnimalPurchased.calculate = function(incomings) {
+
+			AnimalPurchased.incoming = incomings;
+
+			if(incomings.length === 0){
 				return undefined;
 			}
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {}
-				};
-			}
-			return farmData;
+
+			return '';
+
 		};
 
-		// Provide a shortcut for modules
-		NutrientCalculator.milkSold = MilkSold;
-		NutrientCalculator.googleAnalytic = GoogleAnalytic;
-		NutrientCalculator.animalPurchased = AnimalPurchased;
+		AnimalPurchased.add = function(type, count) {
+			count = parseInt(count);
+			if(!_isNumber(count)){
+				return undefined;
+			}
+			AnimalPurchased.incoming.push({
+				type:type,
+				count: count
+			});
+			return AnimalPurchased;
+		};
 
-		window.farmbuild.nutrientcalculator = NutrientCalculator;
 
-		return NutrientCalculator;
-	});</code></pre>
+		return AnimalPurchased;
+
+	});
+</code></pre>
         </article>
     </section>
 

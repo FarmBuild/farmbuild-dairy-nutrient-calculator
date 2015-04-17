@@ -27,16 +27,16 @@ $(function(){
 			errorMsg = $('#errorMsg'),
 			result;
 
-		console.log('calculateByPercentage form Submit > MilkSold.nutrientOfMilkSoldByPercent');
+		console.log('calculateByPercentage form Submit > MilkSold.calculateByPercent');
 
 		errorMsg.hide();
-		result = nc.milkSold.nutrientOfMilkSoldByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
+		result = nc.milkSold.calculateByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
 		if(result) {
-			resultMilkSoldPerYearInLitre.text(result.milkSoldPerYearInLitre);
-			resultMilkFatInKg.text(result.milkFatInKg);
-			resultMilkFatPercentage.text(result.milkFatPercentage);
-			resultMilkProteinInKg.text(result.milkProteinInKg);
-			resultMilkProteinPercentage.text(result.milkProteinPercentage);
+			resultMilkSoldPerYearInLitre.text(result.totalPerYearInLitre);
+			resultMilkFatInKg.text(result.fatInKg);
+			resultMilkFatPercentage.text(result.fatPercentage);
+			resultMilkProteinInKg.text(result.proteinInKg);
+			resultMilkProteinPercentage.text(result.proteinPercentage);
 			resultNitrogenInKg.text(result.nitrogenInKg);
 			resultNitrogenPercentage.text(result.nitrogenPercentage);
 			resultPhosphorusInKg.text(result.phosphorusInKg);
@@ -72,16 +72,16 @@ $(function(){
 			errorMsg = $('#errorMsg'),
 			result;
 
-		console.log('calculateByKg form Submit > MilkSold.nutrientOfMilkSoldByKg');
+		console.log('calculateByKg form Submit > MilkSold.calculateByKg');
 
 		errorMsg.hide();
-		result = nc.milkSold.nutrientOfMilkSoldByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
+		result = nc.milkSold.calculateByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
 		if(result) {
-			resultMilkSoldPerYearInLitre.text(result.milkSoldPerYearInLitre);
-			resultMilkFatInKg.text(result.milkFatInKg);
-			resultMilkFatPercentage.text(result.milkFatPercentage);
-			resultMilkProteinInKg.text(result.milkProteinInKg);
-			resultMilkProteinPercentage.text(result.milkProteinPercentage);
+			resultMilkSoldPerYearInLitre.text(result.totalPerYearInLitre);
+			resultMilkFatInKg.text(result.fatInKg);
+			resultMilkFatPercentage.text(result.fatPercentage);
+			resultMilkProteinInKg.text(result.proteinInKg);
+			resultMilkProteinPercentage.text(result.proteinPercentage);
 			resultNitrogenInKg.text(result.nitrogenInKg);
 			resultNitrogenPercentage.text(result.nitrogenPercentage);
 			resultPhosphorusInKg.text(result.phosphorusInKg);
