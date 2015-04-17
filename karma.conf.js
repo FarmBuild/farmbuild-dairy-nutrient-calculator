@@ -6,6 +6,7 @@ module.exports = function(config){
     files : [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/farmbuild-farmdata/dist/farmbuild-farmdata.js',
       'src/nutrient-calculator.js',
       'src/google-analytic/index.src.js',
       'src/animal-purchased/index.src.js',
