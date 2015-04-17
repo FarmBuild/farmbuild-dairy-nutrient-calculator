@@ -11,17 +11,17 @@ describe('Service: Validations', function () {
     Validations = _Validations_;
   }));
 
-  describe('requires should return false for "P"', function() {
+  describe('Testing isNumber function with different inputs', function() {
 
-    it('requires should return false for "P"', inject(function () {
+    it('isNumber should return false for "P"', inject(function () {
       expect(Validations.isNumber('P')).toBeFalsy();
     }));
 
-    it('requires should return true for "2"', inject(function () {
+    it('isNumber should return true for "2"', inject(function () {
       expect(Validations.isNumber(2)).toBeTruthy();
     }));
 
-    it('requires should return true for "2.1"', inject(function () {
+    it('isNumber should return true for "2.1"', inject(function () {
       expect(Validations.isNumber(2.1)).toBeTruthy();
     }));
 
