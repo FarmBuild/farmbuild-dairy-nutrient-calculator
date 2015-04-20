@@ -1,8 +1,11 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic, AnimalsPurchased) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic, AnimalsPurchased, FarmData) {
     var NutrientCalculator = {};
     NutrientCalculator.load = function(farmData) {
+        if (!FarmData.isFarmData(farmData)) {
+            return undefined;
+        }
         if (!farmData.nutrientCalculator) {
             farmData.nutrientCalculator = {
                 milkSold: {}
