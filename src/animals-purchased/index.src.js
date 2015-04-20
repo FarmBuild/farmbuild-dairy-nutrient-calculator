@@ -30,7 +30,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		AnimalsPurchased.calculate = function (animals) {
-			var count = 0,
+			var numberOfAnimals = 0,
 				weight = 0,
 				nitrogenInKg = 0,
 				phosphorusInKg = 0,
@@ -57,14 +57,14 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 
 				animalWeight = _types[animal.type].weight;
-				animalCount = animal.count;
+				animalCount = animal.numberOfAnimals;
 
 				if (!_isPositiveNumber(animalCount)) {
 					return undefined;
 				}
 
 				weight += animalWeight * animalCount;
-				count += animalCount;
+				numberOfAnimals += animalCount;
 				nitrogenInKg += (nitrogenPercentage * animalWeight * animalCount) / 100;
 				phosphorusInKg += (phosphorusPercentage * animalWeight * animalCount) / 100;
 				potassiumInKg += (potassiumPercentage * animalWeight * animalCount) / 100;
@@ -78,7 +78,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 			return {
 				animals: incomings,
-				numberOfAnimals: count,
+				numberOfAnimals: numberOfAnimals,
 				weight: weight,
 				nitrogenInKg: nitrogenInKg,
 				phosphorusInKg: phosphorusInKg,

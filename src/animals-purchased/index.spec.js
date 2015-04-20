@@ -29,12 +29,12 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('AnimalsPurchased.calculate should return nutrient data', inject(function() {
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}])).toBeDefined();
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}]).animals).toBeDefined();
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}]).weight).toEqual(1800);
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}]).numberOfAnimals).toEqual(3);
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}]).sulphurInKg).toEqual(14.4);
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}]).nitrogenInKg).toEqual(50.4);
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:2}, {type:'averageAdult', numberOfAnimals:1}])).toBeDefined();
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:2}, {type:'averageAdult', numberOfAnimals:1}]).animals).toBeDefined();
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:2}, {type:'averageAdult', numberOfAnimals:1}]).weight).toEqual(1800);
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:2}, {type:'averageAdult', numberOfAnimals:1}]).numberOfAnimals).toEqual(3);
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:2}, {type:'averageAdult', numberOfAnimals:1}]).sulphurInKg).toEqual(14.4);
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:2}, {type:'averageAdult', numberOfAnimals:1}]).nitrogenInKg).toEqual(50.4);
     }));
 
     it('AnimalsPurchased.addType should return undefined if animals parameter passed is not correct (alphabetical name, number for weight)', inject(function() {
@@ -43,7 +43,7 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('AnimalsPurchased.calculate should return undefined for negative number', inject(function() {
-      expect(AnimalsPurchased.calculate([{type:'heavyAdult', count:-2}, {type:'averageAdult', count:-1}])).toBeUndefined();
+      expect(AnimalsPurchased.calculate([{type:'heavyAdult', numberOfAnimals:-2}, {type:'averageAdult', numberOfAnimals:-1}])).toBeUndefined();
     }));
 
   });

@@ -6355,7 +6355,7 @@ angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
 angular.module("farmbuild.nutrientCalculator").factory("AnimalsPurchased", function(Validations, animalTypes) {
     var AnimalsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
     AnimalsPurchased.calculate = function(animals) {
-        var count = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
+        var numberOfAnimals = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!animals || animals.length === 0) {
             return undefined;
         }
@@ -6365,12 +6365,12 @@ angular.module("farmbuild.nutrientCalculator").factory("AnimalsPurchased", funct
                 return undefined;
             }
             animalWeight = _types[animal.type].weight;
-            animalCount = animal.count;
+            animalCount = animal.numberOfAnimals;
             if (!_isPositiveNumber(animalCount)) {
                 return undefined;
             }
             weight += animalWeight * animalCount;
-            count += animalCount;
+            numberOfAnimals += animalCount;
             nitrogenInKg += nitrogenPercentage * animalWeight * animalCount / 100;
             phosphorusInKg += phosphorusPercentage * animalWeight * animalCount / 100;
             potassiumInKg += potassiumPercentage * animalWeight * animalCount / 100;
@@ -6383,7 +6383,7 @@ angular.module("farmbuild.nutrientCalculator").factory("AnimalsPurchased", funct
         }
         return {
             animals: incomings,
-            numberOfAnimals: count,
+            numberOfAnimals: numberOfAnimals,
             weight: weight,
             nitrogenInKg: nitrogenInKg,
             phosphorusInKg: phosphorusInKg,
