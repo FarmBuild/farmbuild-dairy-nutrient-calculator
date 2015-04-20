@@ -6310,7 +6310,7 @@
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic, AnimalPurchased) {
+angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic, AnimalsPurchased) {
     var NutrientCalculator = {};
     NutrientCalculator.load = function(farmData) {
         if (!farmData.nutrientCalculator) {
@@ -6322,7 +6322,7 @@ angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator",
     };
     NutrientCalculator.milkSold = MilkSold;
     NutrientCalculator.googleAnalytic = GoogleAnalytic;
-    NutrientCalculator.animalPurchased = AnimalPurchased;
+    NutrientCalculator.animalsPurchased = AnimalsPurchased;
     window.farmbuild.nutrientcalculator = NutrientCalculator;
     return NutrientCalculator;
 });
@@ -6352,9 +6352,9 @@ angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", function(Validations, animalTypes) {
-    var AnimalPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
-    AnimalPurchased.calculate = function(animals) {
+angular.module("farmbuild.nutrientCalculator").factory("AnimalsPurchased", function(Validations, animalTypes) {
+    var AnimalsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
+    AnimalsPurchased.calculate = function(animals) {
         var count = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!animals || animals.length === 0) {
             return undefined;
@@ -6391,7 +6391,7 @@ angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", functi
             sulphurInKg: sulphurInKg
         };
     };
-    AnimalPurchased.addType = function(name, weight) {
+    AnimalsPurchased.addType = function(name, weight) {
         if (!_isPositiveNumber(weight)) {
             return undefined;
         }
@@ -6403,12 +6403,12 @@ angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", functi
             name: name,
             weight: weight
         };
-        return AnimalPurchased;
+        return AnimalsPurchased;
     };
-    AnimalPurchased.types = function() {
+    AnimalsPurchased.types = function() {
         return _types;
     };
-    return AnimalPurchased;
+    return AnimalsPurchased;
 });
 
 "use strict";

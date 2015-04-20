@@ -9,14 +9,14 @@
 'use strict';
 
 /**
- * nutrientCalculator/AnimalPurchased class
- * @module nutrientCalculator/AnimalPurchased
+ * nutrientCalculator/AnimalsPurchased class
+ * @module nutrientCalculator/AnimalsPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('AnimalPurchased', function (Validations, animalTypes) {
+	.factory('AnimalsPurchased', function (Validations, animalTypes) {
 
-		var AnimalPurchased = {},
+		var AnimalsPurchased = {},
 			_isPositiveNumber = Validations.isPositiveNumber,
 			_isAlphabet = Validations.isAlphabet,
 			_types = animalTypes;
@@ -29,7 +29,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		AnimalPurchased.calculate = function (animals) {
+		AnimalsPurchased.calculate = function (animals) {
 			var count = 0,
 				weight = 0,
 				nitrogenInKg = 0,
@@ -93,11 +93,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @method addType
 		 * @param {!string} name - name of new type, can only contain alphabetical values with no space or special characters
 		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} animalPurchased - useful for chaining multiple add()
+		 * @returns {object} AnimalsPurchased - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		AnimalPurchased.addType = function (name, weight) {
+		AnimalsPurchased.addType = function (name, weight) {
 			if (!_isPositiveNumber(weight)) {
 				return undefined;
 			}
@@ -113,7 +113,7 @@ angular.module('farmbuild.nutrientCalculator')
 				weight: weight
 			};
 
-			return AnimalPurchased;
+			return AnimalsPurchased;
 		};
 
 
@@ -124,10 +124,10 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		AnimalPurchased.types = function () {
+		AnimalsPurchased.types = function () {
 			return _types;
 		};
 
-		return AnimalPurchased;
+		return AnimalsPurchased;
 
 	});
