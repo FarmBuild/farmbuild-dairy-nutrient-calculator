@@ -4,7 +4,7 @@ module.exports = function(config){
     basePath : '',
 
     files : [
-      'bower_components/angular/angular.js',
+      'bower_components/farmbuild-core/dist/farmbuild-core.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/farmbuild-farmdata/dist/farmbuild-farmdata.js',
       'src/nutrient-calculator.js',
