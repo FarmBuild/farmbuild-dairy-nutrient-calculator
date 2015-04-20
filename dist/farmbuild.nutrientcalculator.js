@@ -6353,38 +6353,46 @@ angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", function(Validations, animalTypes) {
-    var AnimalPurchased = {}, _isNumber = Validations.isNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
+    var AnimalPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
     AnimalPurchased.calculate = function(animals) {
-        var count = 0, weight = 0, nitrogen = 0, phosphorus = 0, potassium = 0, sulphur = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [];
+        var count = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!animals || animals.length === 0) {
             return undefined;
         }
-        angular.forEach(animals, function(animal) {
-            var animalWeight = _types[animal.type].weight, animalCount = animal.count;
+        for (i; i < animals.length; i++) {
+            var animalWeight, animalCount, animal = animals[i];
+            if (!animal.type || !_types[animal.type]) {
+                return undefined;
+            }
+            animalWeight = _types[animal.type].weight;
+            animalCount = animal.count;
+            if (!_isPositiveNumber(animalCount)) {
+                return undefined;
+            }
             weight += animalWeight * animalCount;
             count += animalCount;
-            nitrogen += nitrogenPercentage * animalWeight * animalCount / 100;
-            phosphorus += phosphorusPercentage * animalWeight * animalCount / 100;
-            potassium += potassiumPercentage * animalWeight * animalCount / 100;
-            sulphur += sulphurPercentage * animalWeight * animalCount / 100;
+            nitrogenInKg += nitrogenPercentage * animalWeight * animalCount / 100;
+            phosphorusInKg += phosphorusPercentage * animalWeight * animalCount / 100;
+            potassiumInKg += potassiumPercentage * animalWeight * animalCount / 100;
+            sulphurInKg += sulphurPercentage * animalWeight * animalCount / 100;
             incomings.push({
                 name: _types[animal.type].name,
                 numberOfAnimals: animalCount,
                 weight: _types[animal.type].weight
             });
-        });
+        }
         return {
             animals: incomings,
             numberOfAnimals: count,
             weight: weight,
-            nitrogenInKg: nitrogen,
-            phosphorusInKg: phosphorus,
-            potassiumInKg: potassium,
-            sulphurInKg: sulphur
+            nitrogenInKg: nitrogenInKg,
+            phosphorusInKg: phosphorusInKg,
+            potassiumInKg: potassiumInKg,
+            sulphurInKg: sulphurInKg
         };
     };
     AnimalPurchased.addType = function(name, weight) {
-        if (!_isNumber(weight)) {
+        if (!_isPositiveNumber(weight)) {
             return undefined;
         }
         if (!name || !_isAlphabet(name)) {
@@ -6414,27 +6422,27 @@ angular.module("farmbuild.nutrientCalculator").factory("GoogleAnalytic", functio
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Validations) {
-    var MilkSold = {}, _isNumber = Validations.isNumber;
+    var MilkSold = {}, _isPositiveNumber = Validations.isPositiveNumber;
     MilkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
         var milkProteinInKg, milkFatInKg;
-        milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-        milkProteinPercentage = parseFloat(milkProteinPercentage);
-        milkFatPercentage = parseFloat(milkFatPercentage);
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {
             return undefined;
         }
+        milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
+        milkProteinPercentage = parseFloat(milkProteinPercentage);
+        milkFatPercentage = parseFloat(milkFatPercentage);
         milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
         milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
         return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
     };
     MilkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
         var milkProteinPercentage, milkFatPercentage;
-        milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-        milkProteinInKg = parseFloat(milkProteinInKg);
-        milkFatInKg = parseFloat(milkFatInKg);
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, "kg")) {
             return undefined;
         }
+        milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
+        milkProteinInKg = parseFloat(milkProteinInKg);
+        milkFatInKg = parseFloat(milkFatInKg);
         milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
         milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
         return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
@@ -6443,10 +6451,7 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
         if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
             return false;
         }
-        if (!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProtein) || !_isNumber(milkFat)) {
-            return false;
-        }
-        if (milkSoldPerYearInLitre < 0 || milkProtein < 0 || milkFat < 0) {
+        if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProtein) || !_isPositiveNumber(milkFat)) {
             return false;
         }
         if (unit === "%" && milkProtein + milkFat > 100) {
@@ -6460,19 +6465,19 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
     function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
         var nitrogenPercentage = milkProteinPercentage / 6.33, phosphorusPercentage = .0111 * milkFatPercentage + .05255, potassiumPercentage = .14, sulphurPercentage = .06, nitrogenInKg = milkSoldPerYearInLitre * nitrogenPercentage / 100, potassiumInKg = milkSoldPerYearInLitre * potassiumPercentage / 100, sulphurInKg = milkSoldPerYearInLitre * sulphurPercentage / 100, phosphorusInKg = milkSoldPerYearInLitre * phosphorusPercentage / 100;
         return {
-            totalPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
-            fatInKg: _toFixNumber(milkFatInKg, 2),
-            fatPercentage: _toFixNumber(milkFatPercentage, 2),
-            proteinInKg: _toFixNumber(milkProteinInKg, 2),
-            proteinPercentage: _toFixNumber(milkProteinPercentage, 2),
-            nitrogenInKg: _toFixNumber(nitrogenInKg, 2),
-            nitrogenPercentage: _toFixNumber(nitrogenPercentage, 2),
-            phosphorusInKg: _toFixNumber(phosphorusInKg, 2),
-            phosphorusPercentage: _toFixNumber(phosphorusPercentage, 2),
-            potassiumInKg: _toFixNumber(potassiumInKg, 2),
-            potassiumPercentage: _toFixNumber(potassiumPercentage, 2),
-            sulphurInKg: _toFixNumber(sulphurInKg, 2),
-            sulphurPercentage: _toFixNumber(sulphurPercentage, 2)
+            totalPerYearInLitre: milkSoldPerYearInLitre,
+            fatInKg: milkFatInKg,
+            fatPercentage: milkFatPercentage,
+            proteinInKg: milkProteinInKg,
+            proteinPercentage: milkProteinPercentage,
+            nitrogenInKg: nitrogenInKg,
+            nitrogenPercentage: nitrogenPercentage,
+            phosphorusInKg: phosphorusInKg,
+            phosphorusPercentage: phosphorusPercentage,
+            potassiumInKg: potassiumInKg,
+            potassiumPercentage: potassiumPercentage,
+            sulphurInKg: sulphurInKg,
+            sulphurPercentage: sulphurPercentage
         };
     }
     function _kgToPercentage(valueInKg, totalInLitre) {
@@ -6481,16 +6486,13 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
     function _percentageToKg(valuePercentage, totalInLitre) {
         return valuePercentage * totalInLitre / 100;
     }
-    function _toFixNumber(value, decimalPrecision) {
-        return parseFloat(value.toFixed(decimalPrecision));
-    }
     return MilkSold;
 });
 
 angular.module("farmbuild.nutrientCalculator").factory("Validations", function($log) {
     var Validations = {};
-    Validations.isNumber = function(value) {
-        return !isNaN(value) && angular.isNumber(value);
+    Validations.isPositiveNumber = function(value) {
+        return !isNaN(value) && angular.isNumber(value) && isFinite(value) && parseFloat(value) > 0;
     };
     Validations.isAlphabet = function(value) {
         var regex = /^[A-Za-z]+$/gi;

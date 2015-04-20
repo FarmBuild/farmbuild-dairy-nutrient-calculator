@@ -51,18 +51,26 @@ describe('Service: Validations', function () {
 
   });
 
-  describe('Testing isNumber function with different inputs', function() {
+  describe('Testing isPositiveNumber function with different inputs', function() {
 
     it('isNumber should return false for "P"', inject(function () {
-      expect(Validations.isNumber('P')).toBeFalsy();
+      expect(Validations.isPositiveNumber('P')).toBeFalsy();
+    }));
+
+    it('isNumber should return true for "-2"', inject(function () {
+      expect(Validations.isPositiveNumber(-2)).toBeFalsy();
+    }));
+
+    it('isNumber should return true for "-2"', inject(function () {
+      expect(Validations.isPositiveNumber(-2.2322323)).toBeFalsy();
     }));
 
     it('isNumber should return true for "2"', inject(function () {
-      expect(Validations.isNumber(2)).toBeTruthy();
+      expect(Validations.isPositiveNumber(2)).toBeTruthy();
     }));
 
     it('isNumber should return true for "2.1"', inject(function () {
-      expect(Validations.isNumber(2.1)).toBeTruthy();
+      expect(Validations.isPositiveNumber(2.1)).toBeTruthy();
     }));
 
   });

@@ -17,7 +17,7 @@ angular.module('farmbuild.nutrientCalculator')
 	.factory('MilkSold', function (Validations) {
 
 		var MilkSold = {},
-				_isNumber = Validations.isNumber;
+				_isPositiveNumber = Validations.isPositiveNumber;
 
 		/**
 		 * Calculates nutrient from milk sold, input values are in percentage
@@ -32,13 +32,13 @@ angular.module('farmbuild.nutrientCalculator')
 		MilkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			var milkProteinInKg, milkFatInKg;
 
-			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-			milkProteinPercentage = parseFloat(milkProteinPercentage);
-			milkFatPercentage = parseFloat(milkFatPercentage);
-
 			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, '%')){
 				return undefined;
 			}
+
+			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
+			milkProteinPercentage = parseFloat(milkProteinPercentage);
+			milkFatPercentage = parseFloat(milkFatPercentage);
 
 			milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
 			milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
@@ -59,13 +59,13 @@ angular.module('farmbuild.nutrientCalculator')
 		MilkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
 			var milkProteinPercentage, milkFatPercentage;
 
-			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-			milkProteinInKg = parseFloat(milkProteinInKg);
-			milkFatInKg = parseFloat(milkFatInKg);
-
 			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, 'kg')){
 				return undefined;
 			}
+
+			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
+			milkProteinInKg = parseFloat(milkProteinInKg);
+			milkFatInKg = parseFloat(milkFatInKg);
 
 			milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
 			milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
@@ -89,11 +89,7 @@ angular.module('farmbuild.nutrientCalculator')
 				return false;
 			}
 
-			if(!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProtein) || !_isNumber(milkFat)){
-				return false;
-			}
-
-			if(milkSoldPerYearInLitre < 0 || milkProtein < 0 || milkFat < 0){
+			if(!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProtein) || !_isPositiveNumber(milkFat)){
 				return false;
 			}
 
@@ -131,19 +127,19 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg = (milkSoldPerYearInLitre * phosphorusPercentage / 100);
 
 			return {
-				totalPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
-				fatInKg: _toFixNumber(milkFatInKg, 2),
-				fatPercentage: _toFixNumber(milkFatPercentage, 2),
-				proteinInKg: _toFixNumber(milkProteinInKg, 2),
-				proteinPercentage: _toFixNumber(milkProteinPercentage, 2),
-				nitrogenInKg: _toFixNumber(nitrogenInKg, 2),
-				nitrogenPercentage: _toFixNumber(nitrogenPercentage, 2),
-				phosphorusInKg: _toFixNumber(phosphorusInKg, 2),
-				phosphorusPercentage: _toFixNumber(phosphorusPercentage, 2),
-				potassiumInKg: _toFixNumber(potassiumInKg, 2),
-				potassiumPercentage: _toFixNumber(potassiumPercentage, 2),
-				sulphurInKg: _toFixNumber(sulphurInKg, 2),
-				sulphurPercentage: _toFixNumber(sulphurPercentage, 2)
+				totalPerYearInLitre: milkSoldPerYearInLitre,
+				fatInKg: milkFatInKg,
+				fatPercentage: milkFatPercentage,
+				proteinInKg: milkProteinInKg,
+				proteinPercentage: milkProteinPercentage,
+				nitrogenInKg: nitrogenInKg,
+				nitrogenPercentage: nitrogenPercentage,
+				phosphorusInKg: phosphorusInKg,
+				phosphorusPercentage: phosphorusPercentage,
+				potassiumInKg: potassiumInKg,
+				potassiumPercentage: potassiumPercentage,
+				sulphurInKg: sulphurInKg,
+				sulphurPercentage: sulphurPercentage
 			};
 
 		}
@@ -170,18 +166,6 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		function _percentageToKg(valuePercentage, totalInLitre) {
 			return (valuePercentage * totalInLitre) / 100;
-		}
-
-		/**
-		 * Returns round the value with decimalPrecision passed
-		 * @method _isNumber
-		 * @param {!number} decimalPrecision - The value to be examined as a number
-		 * @param {!number} value - The value to be examined as a number
-		 * @returns {number}
-		 * @private
-		 */
-		function _toFixNumber(value, decimalPrecision) {
-			return parseFloat(value.toFixed(decimalPrecision));
 		}
 
 		return MilkSold;

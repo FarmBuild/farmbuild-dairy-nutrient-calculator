@@ -25,7 +25,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
     it('AnimalPurchased.addTypes should return new type if type\'s is valid', inject(function() {
       expect(AnimalPurchased.addType('newType', 50)).toBeDefined();
-      expect(AnimalPurchased.addType('newType', 50).addType).toBeDefined();
+      expect(AnimalPurchased.addType('newType', 50.4).addType).toBeDefined();
     }));
 
     it('AnimalPurchased.calculate should return nutrient data', inject(function() {
@@ -37,9 +37,13 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(AnimalPurchased.calculate([{type:'heavyAdult', count:2}, {type:'averageAdult', count:1}]).nitrogenInKg).toEqual(50.4);
     }));
 
-    it('AnimalPurchased.calculate should return undefined if animals parameter is not passed', inject(function() {
-      expect(AnimalPurchased.addType('newType', 50)).toBeDefined();
-      expect(AnimalPurchased.addType('newType', 50).addType).toBeDefined();
+    it('AnimalPurchased.addType should return undefined if animals parameter passed is not correct (alphabetical name, number for weight)', inject(function() {
+      expect(AnimalPurchased.addType('@', 50)).toBeUndefined();
+      expect(AnimalPurchased.addType('newType', -50)).toBeUndefined();
+    }));
+
+    it('AnimalPurchased.calculate should return undefined for negative number', inject(function() {
+      expect(AnimalPurchased.calculate([{type:'heavyAdult', count:-2}, {type:'averageAdult', count:-1}])).toBeUndefined();
     }));
 
   });
