@@ -14,22 +14,21 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('AnimalPurchased', function (Validations, CattleTypes) {
+	.factory('AnimalPurchased', function (Validations, animalTypes) {
 
 		var AnimalPurchased = {},
-			_isNumber = Validations.isNumber;
-
-		AnimalPurchased.incomings = [];
+			_isNumber = Validations.isNumber,
+			_types = animalTypes;
 
 		/**
 		 * Calculates total nutrient imported on to the farm in animals
 		 * @method calculate
-		 * @param {array} incomings - Array of purchased animals, each item contains details of the animal {type, count}
+		 * @param {array} animals - Array of purchased animals, each item contains details of the animal {type, count}
 		 * @returns {object} nutrient data of animals purchased
 		 * @public
 		 * @static
 		 */
-		AnimalPurchased.calculate = function (incomings) {
+		AnimalPurchased.calculate = function (animals) {
 			var count = 0,
 				weight = 0,
 				nitrogen = 0,
@@ -39,29 +38,28 @@ angular.module('farmbuild.nutrientCalculator')
 				nitrogenPercentage = 2.8,
 				phosphorusPercentage = 0.72,
 				potassiumPercentage = 0.2,
-				sulphurPercentage = 0.8;
+				sulphurPercentage = 0.8,
+				incomings = [];
 
-			if(incomings && incomings.length > 0) {
-				AnimalPurchased.incomings = AnimalPurchased.incomings.concat(incomings);
-			}
-
-			if (AnimalPurchased.incomings.length === 0) {
+			if (!animals || animals.length === 0) {
 				return undefined;
 			}
 
-			angular.forEach(AnimalPurchased.incomings, function (animal) {
-				var baseWeight = CattleTypes[animal.type].weight,
-					baseCount = animal.count;
-					weight += CattleTypes[animal.type].weight * baseCount;
-					count += baseCount;
-					nitrogen += (nitrogenPercentage * baseWeight * baseCount)/100;
-					phosphorus += (phosphorusPercentage * baseWeight * baseCount)/100;
-					potassium += (potassiumPercentage * baseWeight * baseCount)/100;
-					sulphur += (sulphurPercentage * baseWeight * baseCount)/100;
+			angular.forEach(animals, function (animal) {
+				var animalWeight = _types[animal.type].weight,
+					animalCount = animal.count;
+				weight += animalWeight * animalCount;
+				count += animalCount;
+				nitrogen += (nitrogenPercentage * animalWeight * animalCount) / 100;
+				phosphorus += (phosphorusPercentage * animalWeight * animalCount) / 100;
+				potassium += (potassiumPercentage * animalWeight * animalCount) / 100;
+				sulphur += (sulphurPercentage * animalWeight * animalCount) / 100;
+				incomings.push({name: _types[animal.type].name, numberOfAnimals: animalCount, weight: _types[animal.type].weight})
 			});
 			
 			return {
-				count: count,
+				animals: incomings,
+				numberOfAnimals: count,
 				weight: weight,
 				nitrogenInKg: nitrogen,
 				phosphorusInKg: phosphorus,
@@ -72,32 +70,42 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Adds animal(s) for nutrient calculation
-		 * @method add
-		 * @param {!object} type - Type of animal {name, weight}
-		 * @param {!number} count - Number of animal of this type
-		 * @returns {object} AnimalPurchased class - useful for chaining if needed
+		 * Adds a new animal type for nutrient calculation
+		 * @method addType
+		 * @param {!string} name - name of new type
+		 * @param {!number} weight - average weight of this type
+		 * @returns {object} animalPurchased - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		AnimalPurchased.add = function (type, count) {
-			count = parseInt(count);
-			if (!_isNumber(count)) {
+		AnimalPurchased.addType = function (name, weight) {
+			weight = parseFloat(weight);
+			if (!_isNumber(weight)) {
 				return undefined;
 			}
 
-			if (!type.weight || !type.name) {
+			if (!name) {
 				return undefined;
 			}
 
-			CattleTypes[type.name] = type;
-
-			AnimalPurchased.incomings.push({
-				type: type.name,
-				count: count
-			});
+			_types[name] = {
+				name: name,
+				weight: weight
+			};
 
 			return AnimalPurchased;
+		};
+
+
+		/**
+		 * Returns current animal's type collection
+		 * @method types
+		 * @returns {object} Types - animal's type collection
+		 * @public
+		 * @static
+		 */
+		AnimalPurchased.types = function(){
+			return _types;
 		};
 
 		return AnimalPurchased;

@@ -1,5 +1,5 @@
 angular.module('farmbuild.nutrientCalculator').
-	constant('CattleTypes', {
+	constant('animalTypes', {
 		heavyAdult: {
 			name: 'Heavy adult cattle',
 			weight: 650
