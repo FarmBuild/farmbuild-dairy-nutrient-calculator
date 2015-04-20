@@ -23,7 +23,7 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates total nutrient imported on to the farm in animals
 		 * @method calculate
-		 * @param {array} animals - Array of purchased animals, each item contains details of the animal {type, count}
+		 * @param {!array} animals - Array of purchased animals, each item contains details of the animal {type, count}
 		 * @returns {object} nutrient data of animals purchased
 		 * @public
 		 * @static
