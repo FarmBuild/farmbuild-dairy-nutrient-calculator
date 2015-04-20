@@ -49,6 +49,24 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(nutrientByPercentage.sulphurPercentage).toEqual(0.06);
     }));
 
+    it('Calculate MilkSold nutrient by Kg', inject(function() {
+      var nutrientByKg = MilkSold.calculateByKg(1000, 10, 20);
+      expect(nutrientByKg).toBeDefined();
+      expect(nutrientByKg.totalPerYearInLitre).toEqual(1000);
+      expect(nutrientByKg.proteinInKg).toEqual(10);
+      expect(nutrientByKg.proteinPercentage).toEqual(1);
+      expect(nutrientByKg.fatInKg).toEqual(20);
+      expect(nutrientByKg.fatPercentage).toEqual(2);
+      expect(nutrientByKg.nitrogenInKg).toEqual(1.579778830963665);
+      expect(nutrientByKg.nitrogenPercentage).toEqual(0.1579778830963665);
+      expect(nutrientByKg.phosphorusInKg).toEqual(0.7475);
+      expect(nutrientByKg.phosphorusPercentage).toEqual(0.07475);
+      expect(nutrientByKg.potassiumInKg).toEqual(1.4);
+      expect(nutrientByKg.potassiumPercentage).toEqual(0.14);
+      expect(nutrientByKg.sulphurInKg).toEqual(0.6);
+      expect(nutrientByKg.sulphurPercentage).toEqual(0.06);
+    }));
+
     it('Calculate MilkSold nutrient by Kg should return undefined for negative number', inject(function() {
       var nutrientByPercentage = MilkSold.calculateByPercent(-10000, 4, 3.5);
       expect(nutrientByPercentage).toBeUndefined();

@@ -6,29 +6,42 @@ angular.module('farmbuild.nutrientCalculator.examples.animalsPurchased', ['farmb
 		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
-	.controller('AnimalsPurchasedCtrl', function ($scope, $rootScope, AnimalsPurchased, animalTypes, Validations) {
+	.controller('AnimalsPurchasedCtrl', function ($scope, $rootScope, AnimalsPurchased, Validations) {
 
-		var isPositiveNumber = Validations.isPositiveNumber;
+		var isPositiveNumber = Validations.isPositiveNumber, animalTypes = AnimalsPurchased.types();
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
-		$scope.animalTypes = [];
 		$scope.animals = [];
 		$scope.noResult = false;
+		$scope.animalTypes = [];
 
-		for (var key in animalTypes) {
-			$scope.animalTypes.push({
-				name: animalTypes[key].name,
-				type: key,
-				weight: animalTypes[key].weight
-			});
-		};
+		function animalTypesToArray(){
+			var types = [];
+			for (var key in animalTypes) {
+				types.push({
+					name: animalTypes[key].name,
+					type: key,
+					weight: animalTypes[key].weight
+				});
+			};
+			return types;
+		}
 
 		$scope.calculate = function (animals, form) {
 			$scope.result = AnimalsPurchased.calculate(animals);
 			$scope.noResult = !$scope.result;
 		};
 
-		$scope.addType = function (type, form) {
+		$scope.addAnimalType = function (type, form) {
+
+			//Validate type
+			if(!type || !type.name || !type.weight){
+				$scope.noResult = true;
+				return;
+			}
+
 			$scope.noResult = !AnimalsPurchased.addType(type.name, type.weight);
+			$scope.animalTypes = animalTypesToArray();
+			$scope.type = '';
 		};
 
 		$scope.addAnimals = function (animalType, numberOfAnimals, form) {
@@ -53,5 +66,7 @@ angular.module('farmbuild.nutrientCalculator.examples.animalsPurchased', ['farmb
 			$scope.numberOfAnimals = '';
 			$scope.result = {};
 		};
+
+		$scope.animalTypes = animalTypesToArray();
 
 	});

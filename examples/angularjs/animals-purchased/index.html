@@ -16,12 +16,16 @@
         <small>(angularJS)</small>
     </h3>
     <hr/>
-    <form role="form" name="form" ng-submit="addType(type, form)" novalidate>
-           <fieldset>
+    <form role="form" name="form" ng-submit="addAnimalType(type, form)" novalidate>
+        <fieldset>
             <legend>
-                Total nutrient imported on to the farm in animals
+                Here is a list of animals available, please add a new type if necessary.
             </legend>
-
+            <error class="col-sm-12 bg-danger" ng-if="noResult">
+                There is a problem with input values. Please read <a
+                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
+                more information
+            </error>
             <form-item class="form-group col-lg-9 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
@@ -34,13 +38,13 @@
                     <tr class="form-input">
                         <td>
                             <input name="typeName" id="typeName"
-                                   ng-model="type.name" type="text" class="form-control" />
+                                   ng-model="type.name" type="text" class="form-control"/>
                         </td>
                         <td>
                             <input name="typeWeight" id="typeWeight"
-                                   ng-model="type.weight" type="number" class="form-control" />
+                                   ng-model="type.weight" type="number" class="form-control"/>
                         </td>
-                          <td>
+                        <td>
                             <button type="submit" class="btn btn-primary">
                                 <i class="icon fa fa-plus"></i>
                                 Add
@@ -55,14 +59,18 @@
                 </table>
             </form-item>
         </fieldset>
-        </form>
-        <hr/>
+    </form>
+    <hr/>
     <form role="form" name="form" ng-submit="calculate(animals, form)" novalidate>
         <fieldset>
             <legend>
-                Total nutrient imported on to the farm in animals
+                Please enter the combination of animals available in the farm to calculate the nutrient
             </legend>
-
+            <error class="col-sm-12 bg-danger" ng-if="noResult">
+                There is a problem with input values. Please read <a
+                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
+                more information
+            </error>
             <form-item class="form-group col-lg-9 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
@@ -84,7 +92,7 @@
                         </td>
                         <td>
                             <input name="numberOfAnimals" id="numberOfAnimals"
-                                   ng-model="numberOfAnimals" type="number" class="form-control" />
+                                   ng-model="numberOfAnimals" type="number" class="form-control"/>
                         </td>
                         <td>
                             <span ng-bind='animalType.weight'></span>
@@ -93,7 +101,8 @@
                             <span ng-bind='animalType.weight*numberOfAnimals | number'></span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary" ng-click="addAnimals(animalType, numberOfAnimals, form)">
+                            <button type="button" class="btn btn-primary"
+                                    ng-click="addAnimals(animalType, numberOfAnimals, form)">
                                 <i class="icon fa fa-plus"></i>
                                 Add
                             </button>
@@ -122,10 +131,12 @@
     <summary>
         <fieldset>
             <legend>
-                Summary
+                Summary - Total nutrient imported on to the farm in animals
             </legend>
             <error class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
+                There is a problem with input values. Please read <a
+                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
+                more information
             </error>
             <form-item class="form-group col-sm-6">
                 <p>Number of Animals:
