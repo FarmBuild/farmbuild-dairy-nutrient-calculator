@@ -18,6 +18,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		var AnimalPurchased = {},
 			_isNumber = Validations.isNumber,
+			_isAlphabet = Validations.isAlphabet,
 			_types = animalTypes;
 
 		/**
@@ -72,7 +73,7 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Adds a new animal type for nutrient calculation
 		 * @method addType
-		 * @param {!string} name - name of new type
+		 * @param {!string} name - name of new type, can only contain alphabetical values with no space or special characters
 		 * @param {!number} weight - average weight of this type in Kg
 		 * @returns {object} animalPurchased - useful for chaining multiple add()
 		 * @public
@@ -84,7 +85,7 @@ angular.module('farmbuild.nutrientCalculator')
 				return undefined;
 			}
 
-			if (!name) {
+			if (!name || !_isAlphabet(name)) {
 				return undefined;
 			}
 

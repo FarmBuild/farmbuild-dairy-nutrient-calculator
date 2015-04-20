@@ -6353,7 +6353,7 @@ angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", function(Validations, animalTypes) {
-    var AnimalPurchased = {}, _isNumber = Validations.isNumber, _types = animalTypes;
+    var AnimalPurchased = {}, _isNumber = Validations.isNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
     AnimalPurchased.calculate = function(animals) {
         var count = 0, weight = 0, nitrogen = 0, phosphorus = 0, potassium = 0, sulphur = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [];
         if (!animals || animals.length === 0) {
@@ -6388,7 +6388,9 @@ angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", functi
         if (!_isNumber(weight)) {
             return undefined;
         }
-        if (!name) {
+        console.log("!_isAlphabet(name)", !_isAlphabet(name));
+        console.log("!name", !name);
+        if (!name || !_isAlphabet(name)) {
             return undefined;
         }
         _types[name] = {
@@ -6490,6 +6492,10 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
 angular.module("farmbuild.nutrientCalculator").factory("Validations", function($log) {
     var Validations = {};
     Validations.isNumber = angular.isNumber;
+    Validations.isAlphabet = function(value) {
+        var regex = /^[A-Za-z]+$/gi;
+        return regex.test(value);
+    };
     return Validations;
 });
 
