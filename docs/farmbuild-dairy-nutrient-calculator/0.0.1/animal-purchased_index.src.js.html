@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_AnimalPurchased.html">nutrientCalculator/AnimalPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_AnimalPurchased.html#.calculate">calculate</a></li></ul></li><li><a href="module-nutrientCalculator_GoogleAnalytic.html">nutrientCalculator/GoogleAnalytic</a></li><li><a href="module-nutrientCalculator_MilkSold.html">nutrientCalculator/MilkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_AnimalPurchased.html">nutrientCalculator/AnimalPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_AnimalPurchased.html#.add">add</a></li><li data-type='method'><a href="module-nutrientCalculator_AnimalPurchased.html#.calculate">calculate</a></li></ul></li><li><a href="module-nutrientCalculator_GoogleAnalytic.html">nutrientCalculator/GoogleAnalytic</a></li><li><a href="module-nutrientCalculator_MilkSold.html">nutrientCalculator/MilkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -39,12 +39,12 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
-* @since 0.0.1
-* @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
-* @license The MIT License
-* @author Spatial Vision
-* @version 0.0.1
-*/
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.0.1
+ */
 
 'use strict';
 
@@ -54,46 +54,91 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('AnimalPurchased', function (Validations) {
+	.factory('AnimalPurchased', function (Validations, CattleTypes) {
 
 		var AnimalPurchased = {},
-				_isNumber = Validations.isNumber;
+			_isNumber = Validations.isNumber;
 
-		AnimalPurchased.incoming = [];
+		AnimalPurchased.incomings = [];
 
 		/**
 		 * Calculates total nutrient imported on to the farm in animals
 		 * @method calculate
-		 * @param {!array} incomings - Array of purchased animals, each item contains details of the animal {type, count}
+		 * @param {array} incomings - Array of purchased animals, each item contains details of the animal {type, count}
 		 * @returns {object} nutrient data of animals purchased
 		 * @public
 		 * @static
 		 */
+		AnimalPurchased.calculate = function (incomings) {
+			var count = 0,
+				weight = 0,
+				nitrogen = 0,
+				phosphorus = 0,
+				potassium = 0,
+				sulphur = 0,
+				nitrogenPercentage = 2.8,
+				phosphorusPercentage = 0.72,
+				potassiumPercentage = 0.2,
+				sulphurPercentage = 0.8;
 
-		AnimalPurchased.calculate = function(incomings) {
+			if(incomings &amp;&amp; incomings.length > 0) {
+				AnimalPurchased.incomings = AnimalPurchased.incomings.concat(incomings);
+			}
 
-			AnimalPurchased.incoming = incomings;
-
-			if(incomings.length === 0){
+			if (AnimalPurchased.incomings.length === 0) {
 				return undefined;
 			}
 
-			return '';
+			angular.forEach(AnimalPurchased.incomings, function (animal) {
+				var baseWeight = CattleTypes[animal.type].weight,
+					baseCount = animal.count;
+					weight += CattleTypes[animal.type].weight * baseCount;
+					count += baseCount;
+					nitrogen += (nitrogenPercentage * baseWeight * baseCount)/100;
+					phosphorus += (phosphorusPercentage * baseWeight * baseCount)/100;
+					potassium += (potassiumPercentage * baseWeight * baseCount)/100;
+					sulphur += (sulphurPercentage * baseWeight * baseCount)/100;
+			});
+			
+			return {
+				count: count,
+				weight: weight,
+				nitrogenInKg: nitrogen,
+				phosphorusInKg: phosphorus,
+				potassiumInKg: potassium,
+				sulphurInKg: sulphur
+			};
 
 		};
 
-		AnimalPurchased.add = function(type, count) {
+		/**
+		 * Adds animal(s) for nutrient calculation
+		 * @method add
+		 * @param {!object} type - Type of animal {name, weight}
+		 * @param {!number} count - Number of animal of this type
+		 * @returns {object} AnimalPurchased class - useful for chaining if needed
+		 * @public
+		 * @static
+		 */
+		AnimalPurchased.add = function (type, count) {
 			count = parseInt(count);
-			if(!_isNumber(count)){
+			if (!_isNumber(count)) {
 				return undefined;
 			}
-			AnimalPurchased.incoming.push({
-				type:type,
+
+			if (!type.weight || !type.name) {
+				return undefined;
+			}
+
+			CattleTypes[type.name] = type;
+
+			AnimalPurchased.incomings.push({
+				type: type.name,
 				count: count
 			});
+
 			return AnimalPurchased;
 		};
-
 
 		return AnimalPurchased;
 
@@ -110,7 +155,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Fri Apr 17 2015 16:18:34 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Apr 20 2015 10:18:13 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -2,7 +2,7 @@
 
 describe('farmbuild.nutrientCalculator module', function() {
 
- // instantiate service
+  // instantiate service
   var AnimalPurchased;
 
   beforeEach(module('farmbuild.nutrientCalculator'));
@@ -18,4 +18,5 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
   });
+  
 });

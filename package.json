@@ -33,7 +33,7 @@
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor protractor.conf.js",
 
-    "clean": "rm -rf dist/* & rm -rf docs/*",
+    "clean": "rm -rf dist/* && rm -rf docs/*",
 
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json",
 
@@ -43,7 +43,7 @@
 
     "uglify": "uglifyjs bower_components/angular/angular.min.js src/nutrient-calculator.js src/**/*.src.js src/index.js --source-map dist/farmbuild.nutrientcalculator.min.js.map --source-map-url farmbuild.nutrientcalculator.min.js.map -o dist/farmbuild.nutrientcalculator.min.js -v -c",
 
-    "dist": "npm run clean & npm run generate-docs & npm run concat & npm run uglify"
+    "dist": "npm run clean && npm run generate-docs && npm run concat && npm run uglify"
 
   }
 }

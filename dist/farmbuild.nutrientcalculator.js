@@ -5324,9 +5324,6 @@
 angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator", function(MilkSold, GoogleAnalytic, AnimalPurchased) {
     var NutrientCalculator = {};
     NutrientCalculator.load = function(farmData) {
-        if (!farmData.name) {
-            return undefined;
-        }
         if (!farmData.nutrientCalculator) {
             farmData.nutrientCalculator = {
                 milkSold: {}
@@ -5341,25 +5338,71 @@ angular.module("farmbuild.nutrientCalculator", []).factory("NutrientCalculator",
     return NutrientCalculator;
 });
 
+angular.module("farmbuild.nutrientCalculator").constant("CattleTypes", {
+    heavyAdult: {
+        name: "Heavy adult cattle",
+        weight: 650
+    },
+    averageAdult: {
+        name: "Average adult cattle",
+        weight: 500
+    },
+    yearling: {
+        name: "Yearling",
+        weight: 300
+    },
+    weanedYoungStock: {
+        name: "Weaned young stock",
+        weight: 120
+    },
+    bobbyCalves: {
+        name: "Bobby calve",
+        weight: 40
+    }
+});
+
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", function(Validations) {
+angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", function(Validations, CattleTypes) {
     var AnimalPurchased = {}, _isNumber = Validations.isNumber;
-    AnimalPurchased.incoming = [];
+    AnimalPurchased.incomings = [];
     AnimalPurchased.calculate = function(incomings) {
-        AnimalPurchased.incoming = incomings;
-        if (incomings.length === 0) {
+        var count = 0, weight = 0, nitrogen = 0, phosphorus = 0, potassium = 0, sulphur = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8;
+        if (incomings && incomings.length > 0) {
+            AnimalPurchased.incomings = AnimalPurchased.incomings.concat(incomings);
+        }
+        if (AnimalPurchased.incomings.length === 0) {
             return undefined;
         }
-        return "";
+        angular.forEach(AnimalPurchased.incomings, function(animal) {
+            var baseWeight = CattleTypes[animal.type].weight, baseCount = animal.count;
+            weight += CattleTypes[animal.type].weight * baseCount;
+            count += baseCount;
+            nitrogen += nitrogenPercentage * baseWeight * baseCount / 100;
+            phosphorus += phosphorusPercentage * baseWeight * baseCount / 100;
+            potassium += potassiumPercentage * baseWeight * baseCount / 100;
+            sulphur += sulphurPercentage * baseWeight * baseCount / 100;
+        });
+        return {
+            count: count,
+            weight: weight,
+            nitrogenInKg: nitrogen,
+            phosphorusInKg: phosphorus,
+            potassiumInKg: potassium,
+            sulphurInKg: sulphur
+        };
     };
     AnimalPurchased.add = function(type, count) {
         count = parseInt(count);
         if (!_isNumber(count)) {
             return undefined;
         }
-        AnimalPurchased.incoming.push({
-            type: type,
+        if (!type.weight || !type.name) {
+            return undefined;
+        }
+        CattleTypes[type.name] = type;
+        AnimalPurchased.incomings.push({
+            type: type.name,
             count: count
         });
         return AnimalPurchased;
