@@ -73,7 +73,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * Adds a new animal type for nutrient calculation
 		 * @method addType
 		 * @param {!string} name - name of new type
-		 * @param {!number} weight - average weight of this type
+		 * @param {!number} weight - average weight of this type in Kg
 		 * @returns {object} animalPurchased - useful for chaining multiple add()
 		 * @public
 		 * @static
