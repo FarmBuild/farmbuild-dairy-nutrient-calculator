@@ -59,12 +59,12 @@
 
             <form-item class="form-group col-md-6">
                 <label>Milk Protein (Kg)</label>
-                <input name="milkProteinInKg" ng-model="milkProteinInKg" type="number" class="form-control">
+                <input name="proteinInKg" ng-model="proteinInKg" type="number" class="form-control">
             </form-item>
 
             <form-item class="form-group col-md-6">
                 <label>Milk Fat (Kg)</label>
-                <input name="milkFatInKg" ng-model="milkFatInKg" type="number" class="form-control">
+                <input name="fatInKg" ng-model="fatInKg" type="number" class="form-control">
             </form-item>
 
             <buttons class="col-md-12">
@@ -82,38 +82,38 @@
             </error>
             <form-item class="form-group col-sm-6">
                 <p>Milk Sold Per Year (Litre):
-                    <span ng-bind="result.totalPerYearInLitre"></span>
+                    <span ng-bind="result.totalPerYearInLitre | number : decimalPrecision"></span>
                 </p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Milk Fat (Kg): <span ng-bind="result.fatInKg"></span></p>
+                <p>Milk Fat (Kg): <span ng-bind="result.fatInKg | number : decimalPrecision"></span></p>
 
-                <p>Milk Fat (%): <span ng-bind="result.fatPercentage"></span></p>
+                <p>Milk Fat (%): <span ng-bind="result.fatPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Milk Protein (Kg): <span ng-bind="result.proteinInKg"></span></p>
+                <p>Milk Protein (Kg): <span ng-bind="result.proteinInKg | number : decimalPrecision"></span></p>
 
-                <p>Milk Protein (%): <span ng-bind="result.proteinPercentage"></span></p>
+                <p>Milk Protein (%): <span ng-bind="result.proteinPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Nitrogen (Kg): <span ng-bind="result.nitrogenInKg"></span></p>
+                <p>Nitrogen (Kg): <span ng-bind="result.nitrogenInKg | number : decimalPrecision"></span></p>
 
-                <p>Nitrogen (%): <span ng-bind="result.nitrogenPercentage"></span></p>
+                <p>Nitrogen (%): <span ng-bind="result.nitrogenPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Phosphorus (Kg): <span ng-bind="result.phosphorusInKg"></span></p>
+                <p>Phosphorus (Kg): <span ng-bind="result.phosphorusInKg | number : decimalPrecision"></span></p>
 
-                <p>Phosphorus (%): <span ng-bind="result.phosphorusPercentage"></span></p>
+                <p>Phosphorus (%): <span ng-bind="result.phosphorusPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Potassium (Kg): <span ng-bind="result.potassiumInKg"></span></p>
+                <p>Potassium (Kg): <span ng-bind="result.potassiumInKg | number : decimalPrecision"></span></p>
 
-                <p>Potassium (%): <span ng-bind="result.potassiumPercentage"></span></p>
+                <p>Potassium (%): <span ng-bind="result.potassiumPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Sulphur (Kg): <span ng-bind="result.sulphurInKg"></span></p>
+                <p>Sulphur (Kg): <span ng-bind="result.sulphurInKg | number : decimalPrecision"></span></p>
 
-                <p>Sulphur (%): <span ng-bind="result.sulphurPercentage"></span></p>
+                <p>Sulphur (%): <span ng-bind="result.sulphurPercentage | number : decimalPrecision"></span></p>
             </form-item>
         </fieldset>
     </summary>
