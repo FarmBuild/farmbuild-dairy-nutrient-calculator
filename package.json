@@ -15,7 +15,8 @@
     "minami": "~1.1.0",
     "jsdoc": "3.3.0-beta3",
     "uglify-js": "2.4.19",
-    "jshint":"2.6.3"
+    "jshint":"2.6.3",
+    "ncp":"2.0.0"
   },
   "scripts": {
     "postinstall": "bower install",
@@ -39,11 +40,13 @@
 
     "jshint": " node_modules/.bin/jshint -c .jshintrc --filename src/**/*-src.js src/nutrient-calculator.js --verbose --show-non-errors",
 
-    "concat": "uglifyjs bower_components/angular/angular.min.js src/nutrient-calculator.js src/**/*.src.js src/index.js -o dist/farmbuild.nutrientcalculator.js -v -b",
+    "concat": "uglifyjs src/nutrient-calculator.js src/**/*.src.js src/index.js -o dist/farmbuild-nutrientcalculator.js -v -b",
 
-    "uglify": "uglifyjs bower_components/angular/angular.min.js src/nutrient-calculator.js src/**/*.src.js src/index.js --source-map dist/farmbuild.nutrientcalculator.min.js.map --source-map-url farmbuild.nutrientcalculator.min.js.map -o dist/farmbuild.nutrientcalculator.min.js -v -c",
+    "uglify": "uglifyjs dist/farmbuild-nutrientcalculator.js --source-map dist/farmbuild-nutrientcalculator.min.js.map --source-map-url farmbuild-nutrientcalculator.min.js.map -o dist/farmbuild-nutrientcalculator.min.js -v -c",
 
-    "dist": "npm run clean & npm run generate-docs & npm run concat & npm run uglify"
+    "copy-core":"ncp bower_components/farmbuild-core/dist/ dist/ && ncp bower_components/farmbuild-farmdata/dist/ dist/",
+
+    "dist": "npm run clean && npm run generate-docs && npm run concat && npm run uglify && npm run copy-core"
 
   }
 }

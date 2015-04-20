@@ -12,7 +12,9 @@
  * nutrientCalculator
  * @module nutrientCalculator
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator',
+  ['farmbuild.core',
+   'farmbuild.farmdata'])
 
 	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic, AnimalPurchased, FarmData) {
 		var NutrientCalculator = {};
