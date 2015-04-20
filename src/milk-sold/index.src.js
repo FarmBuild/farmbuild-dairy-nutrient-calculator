@@ -17,14 +17,14 @@ angular.module('farmbuild.nutrientCalculator')
 	.factory('MilkSold', function (Validations) {
 
 		var MilkSold = {},
-				_isNumber = Validations.isNumber;
+				_isPositiveNumber = Validations.isPositiveNumber;
 
 		/**
 		 * Calculates nutrient from milk sold, input values are in percentage
 		 * @method calculateByPercent
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0
+		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0
+		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0
 		 * @returns {object} milk nutrient data
 		 * @public
 		 * @static
@@ -32,13 +32,13 @@ angular.module('farmbuild.nutrientCalculator')
 		MilkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			var milkProteinInKg, milkFatInKg;
 
-			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-			milkProteinPercentage = parseFloat(milkProteinPercentage);
-			milkFatPercentage = parseFloat(milkFatPercentage);
-
 			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, '%')){
 				return undefined;
 			}
+
+			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
+			milkProteinPercentage = parseFloat(milkProteinPercentage);
+			milkFatPercentage = parseFloat(milkFatPercentage);
 
 			milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
 			milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
@@ -49,9 +49,9 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates nutrient from milk sold, input values are in Kg
 		 * @method calculateByKg
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0
+		 * @param {!number} milkFatInKg - Quantity of milk fat in Kg, value must be > 0
+		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kg, value must be > 0
 		 * @returns {object} milk nutrient data
 		 * @public
 		 * @static
@@ -59,13 +59,13 @@ angular.module('farmbuild.nutrientCalculator')
 		MilkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
 			var milkProteinPercentage, milkFatPercentage;
 
-			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-			milkProteinInKg = parseFloat(milkProteinInKg);
-			milkFatInKg = parseFloat(milkFatInKg);
-
 			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, 'kg')){
 				return undefined;
 			}
+
+			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
+			milkProteinInKg = parseFloat(milkProteinInKg);
+			milkFatInKg = parseFloat(milkFatInKg);
 
 			milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
 			milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
@@ -76,9 +76,9 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Returns true if input values are valid
 		 * @method _validateInputs
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkProtein - Quantity of milk fat in Kilograms/Percentage, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkFat - Quantity of milk protein in Kilograms/Percentage, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0
+		 * @param {!number} milkProtein - Quantity of milk fat in Kg/Percentage, value must be > 0
+		 * @param {!number} milkFat - Quantity of milk protein in Kg/Percentage, value must be > 0
 		 * @param {!string} unit - Percentage or Kg
 		 * @returns {boolean} validity of input values
 		 * @private
@@ -89,11 +89,7 @@ angular.module('farmbuild.nutrientCalculator')
 				return false;
 			}
 
-			if(!_isNumber(milkSoldPerYearInLitre) || !_isNumber(milkProtein) || !_isNumber(milkFat)){
-				return false;
-			}
-
-			if(milkSoldPerYearInLitre < 0 || milkProtein < 0 || milkFat < 0){
+			if(!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProtein) || !_isPositiveNumber(milkFat)){
 				return false;
 			}
 
@@ -113,10 +109,10 @@ angular.module('farmbuild.nutrientCalculator')
 		 * Returns nutrient data of milk
 		 * @method _calculate
 		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0 and can have up to 2 decimal places
+		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms, value must be > 0
+		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms, value must be > 0
+		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0
+		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0
 		 * @returns {object} milk nutrient data
 		 * @private
 		 */
@@ -131,19 +127,19 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg = (milkSoldPerYearInLitre * phosphorusPercentage / 100);
 
 			return {
-				totalPerYearInLitre: _toFixNumber(milkSoldPerYearInLitre, 2),
-				fatInKg: _toFixNumber(milkFatInKg, 2),
-				fatPercentage: _toFixNumber(milkFatPercentage, 2),
-				proteinInKg: _toFixNumber(milkProteinInKg, 2),
-				proteinPercentage: _toFixNumber(milkProteinPercentage, 2),
-				nitrogenInKg: _toFixNumber(nitrogenInKg, 2),
-				nitrogenPercentage: _toFixNumber(nitrogenPercentage, 2),
-				phosphorusInKg: _toFixNumber(phosphorusInKg, 2),
-				phosphorusPercentage: _toFixNumber(phosphorusPercentage, 2),
-				potassiumInKg: _toFixNumber(potassiumInKg, 2),
-				potassiumPercentage: _toFixNumber(potassiumPercentage, 2),
-				sulphurInKg: _toFixNumber(sulphurInKg, 2),
-				sulphurPercentage: _toFixNumber(sulphurPercentage, 2)
+				totalPerYearInLitre: milkSoldPerYearInLitre,
+				fatInKg: milkFatInKg,
+				fatPercentage: milkFatPercentage,
+				proteinInKg: milkProteinInKg,
+				proteinPercentage: milkProteinPercentage,
+				nitrogenInKg: nitrogenInKg,
+				nitrogenPercentage: nitrogenPercentage,
+				phosphorusInKg: phosphorusInKg,
+				phosphorusPercentage: phosphorusPercentage,
+				potassiumInKg: potassiumInKg,
+				potassiumPercentage: potassiumPercentage,
+				sulphurInKg: sulphurInKg,
+				sulphurPercentage: sulphurPercentage
 			};
 
 		}
@@ -170,18 +166,6 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		function _percentageToKg(valuePercentage, totalInLitre) {
 			return (valuePercentage * totalInLitre) / 100;
-		}
-
-		/**
-		 * Returns round the value with decimalPrecision passed
-		 * @method _isNumber
-		 * @param {!number} decimalPrecision - The value to be examined as a number
-		 * @param {!number} value - The value to be examined as a number
-		 * @returns {number}
-		 * @private
-		 */
-		function _toFixNumber(value, decimalPrecision) {
-			return parseFloat(value.toFixed(decimalPrecision));
 		}
 
 		return MilkSold;

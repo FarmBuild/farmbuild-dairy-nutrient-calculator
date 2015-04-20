@@ -65,6 +65,10 @@ form textarea {
   max-height: 150px;
 }
 
+table {
+  border: solid 1px #ccc;
+}
+
 version {
   display: block;
   height: 40px;
