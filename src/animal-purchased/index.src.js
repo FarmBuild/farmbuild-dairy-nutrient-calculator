@@ -80,7 +80,6 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		AnimalPurchased.addType = function (name, weight) {
-			weight = parseFloat(weight);
 			if (!_isNumber(weight)) {
 				return undefined;
 			}
@@ -88,6 +87,8 @@ angular.module('farmbuild.nutrientCalculator')
 			if (!name || !_isAlphabet(name)) {
 				return undefined;
 			}
+
+			weight = parseFloat(weight);
 
 			_types[name] = {
 				name: name,

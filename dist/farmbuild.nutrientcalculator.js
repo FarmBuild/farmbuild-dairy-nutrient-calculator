@@ -6384,15 +6384,13 @@ angular.module("farmbuild.nutrientCalculator").factory("AnimalPurchased", functi
         };
     };
     AnimalPurchased.addType = function(name, weight) {
-        weight = parseFloat(weight);
         if (!_isNumber(weight)) {
             return undefined;
         }
-        console.log("!_isAlphabet(name)", !_isAlphabet(name));
-        console.log("!name", !name);
         if (!name || !_isAlphabet(name)) {
             return undefined;
         }
+        weight = parseFloat(weight);
         _types[name] = {
             name: name,
             weight: weight
@@ -6491,7 +6489,9 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
 
 angular.module("farmbuild.nutrientCalculator").factory("Validations", function($log) {
     var Validations = {};
-    Validations.isNumber = angular.isNumber;
+    Validations.isNumber = function(value) {
+        return !isNaN(value) && angular.isNumber(value);
+    };
     Validations.isAlphabet = function(value) {
         var regex = /^[A-Za-z]+$/gi;
         return regex.test(value);

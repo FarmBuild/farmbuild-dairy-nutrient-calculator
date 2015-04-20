@@ -4,7 +4,9 @@ angular.module('farmbuild.nutrientCalculator')
 
     var Validations = {};
 
-    Validations.isNumber = angular.isNumber;
+    Validations.isNumber = function(value) {
+      return !isNaN(value) && angular.isNumber(value);
+    };
 
     Validations.isAlphabet =  function(value){
       var regex = /^[A-Za-z]+$/ig;
