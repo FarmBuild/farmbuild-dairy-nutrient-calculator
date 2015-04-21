@@ -9,10 +9,11 @@ To get you started simply download this repository using <a href="https://github
 
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/milk-sold/index.html" target="_blank">Milk Sold - angularJS example</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/jquery/milk-sold/index.html" target="_blank">Milk Sold - jQuery example</a>
-* <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/animals-purchased/index.html" target="_blank">Animals Purchased - angularJS example</a>
+* <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/cows-purchased/index.html" target="_blank">Cows Purchased - angularJS example</a>
+* <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/cows-culled/index.html" target="_blank">Cows Culled - angularJS example</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/index.html" target="_blank">Nutrient Calculator - angularJS example</a>
 
-<a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/docs/farmbuild-dairy-nutrient-calculator/0.0.7/index.html" target="_blank">API documentation</a>
+<a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/docs/farmbuild-dairy-nutrient-calculator/0.0.8/index.html" target="_blank">API documentation</a>
 
 
 For more information about API and Testing see the [Wiki](https://github.com/SpatialVision/farm-build-nutrient-calculator/wiki) section.
