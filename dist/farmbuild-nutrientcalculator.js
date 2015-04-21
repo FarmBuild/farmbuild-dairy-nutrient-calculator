@@ -20,27 +20,65 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     return NutrientCalculator;
 });
 
-angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
-    heavyAdult: {
-        name: "Heavy adult cattle",
-        weight: 650
-    },
-    averageAdult: {
-        name: "Average adult cattle",
-        weight: 500
-    },
-    yearling: {
-        name: "Yearling",
-        weight: 300
-    },
-    weanedYoungStock: {
-        name: "Weaned young stock",
-        weight: 120
-    },
-    bobbyCalves: {
-        name: "Bobby calve",
-        weight: 40
-    }
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("AnimalsCulled", function(Validations, animalTypes) {
+    var AnimalsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
+    AnimalsCulled.calculate = function(animals) {
+        var numberOfAnimals = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
+        if (!animals || animals.length === 0) {
+            return undefined;
+        }
+        for (i; i < animals.length; i++) {
+            var animalWeight, animalCount, animal = animals[i];
+            if (!animal.type || !_types[animal.type]) {
+                return undefined;
+            }
+            animalWeight = _types[animal.type].weight;
+            animalCount = animal.numberOfAnimals;
+            if (!_isPositiveNumber(animalCount)) {
+                return undefined;
+            }
+            weight += animalWeight * animalCount;
+            numberOfAnimals += animalCount;
+            nitrogenInKg += nitrogenPercentage * animalWeight * animalCount / 100;
+            phosphorusInKg += phosphorusPercentage * animalWeight * animalCount / 100;
+            potassiumInKg += potassiumPercentage * animalWeight * animalCount / 100;
+            sulphurInKg += sulphurPercentage * animalWeight * animalCount / 100;
+            incomings.push({
+                name: _types[animal.type].name,
+                numberOfAnimals: animalCount,
+                weight: _types[animal.type].weight
+            });
+        }
+        return {
+            animals: incomings,
+            numberOfAnimals: numberOfAnimals,
+            weight: weight,
+            nitrogenInKg: nitrogenInKg,
+            phosphorusInKg: phosphorusInKg,
+            potassiumInKg: potassiumInKg,
+            sulphurInKg: sulphurInKg
+        };
+    };
+    AnimalsCulled.addType = function(name, weight) {
+        if (!_isPositiveNumber(weight)) {
+            return undefined;
+        }
+        if (!name || !_isAlphabet(name)) {
+            return undefined;
+        }
+        weight = parseFloat(weight);
+        _types[name] = {
+            name: name,
+            weight: weight
+        };
+        return AnimalsCulled;
+    };
+    AnimalsCulled.types = function() {
+        return _types;
+    };
+    return AnimalsCulled;
 });
 
 "use strict";
@@ -192,6 +230,29 @@ angular.module("farmbuild.nutrientCalculator").factory("Validations", function($
         return regex.test(value);
     };
     return Validations;
+});
+
+angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
+    heavyAdult: {
+        name: "Heavy adult cattle",
+        weight: 650
+    },
+    averageAdult: {
+        name: "Average adult cattle",
+        weight: 500
+    },
+    yearling: {
+        name: "Yearling",
+        weight: 300
+    },
+    weanedYoungStock: {
+        name: "Weaned young stock",
+        weight: 120
+    },
+    bobbyCalves: {
+        name: "Bobby calve",
+        weight: 40
+    }
 });
 
 "use strict";
