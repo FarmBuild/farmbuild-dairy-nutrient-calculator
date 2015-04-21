@@ -2,7 +2,8 @@
 
 $(function(){
 
-	var nc = farmbuild.nutrientcalculator;
+	var nc = farmbuild.nutrientcalculator,
+		decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	nc.googleAnalytic.username = 'SpatialVision';
 
 	$('#app-version').text(farmbuild.examples.nutrientcalculator.version);
@@ -32,19 +33,19 @@ $(function(){
 		errorMsg.hide();
 		result = nc.milkSold.calculateByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
 		if(result) {
-			resultMilkSoldPerYearInLitre.text(result.totalPerYearInLitre);
-			resultMilkFatInKg.text(result.fatInKg);
-			resultMilkFatPercentage.text(result.fatPercentage);
-			resultMilkProteinInKg.text(result.proteinInKg);
-			resultMilkProteinPercentage.text(result.proteinPercentage);
-			resultNitrogenInKg.text(result.nitrogenInKg);
-			resultNitrogenPercentage.text(result.nitrogenPercentage);
-			resultPhosphorusInKg.text(result.phosphorusInKg);
-			resultPhosphorusPercentage.text(result.phosphorusPercentage);
-			resultPotassiumInKg.text(result.potassiumInKg);
-			resultPotassiumPercentage.text(result.potassiumPercentage);
-			resultSulphurInKg.text(result.sulphurInKg);
-			resultSulphurPercentage.text(result.sulphurPercentage);
+			resultMilkSoldPerYearInLitre.text(parseFloat(result.totalPerYearInLitre).toFixed(decimalPrecision));
+			resultMilkFatInKg.text(parseFloat(result.fatInKg).toFixed(decimalPrecision));
+			resultMilkFatPercentage.text(parseFloat(result.fatPercentage).toFixed(decimalPrecision));
+			resultMilkProteinInKg.text(parseFloat(result.proteinInKg).toFixed(decimalPrecision));
+			resultMilkProteinPercentage.text(parseFloat(result.proteinPercentage).toFixed(decimalPrecision));
+			resultNitrogenInKg.text(parseFloat(result.nitrogenInKg).toFixed(decimalPrecision));
+			resultNitrogenPercentage.text(parseFloat(result.nitrogenPercentage).toFixed(decimalPrecision));
+			resultPhosphorusInKg.text(parseFloat(result.phosphorusInKg).toFixed(decimalPrecision));
+			resultPhosphorusPercentage.text(parseFloat(result.phosphorusPercentage).toFixed(decimalPrecision));
+			resultPotassiumInKg.text(parseFloat(result.potassiumInKg).toFixed(decimalPrecision));
+			resultPotassiumPercentage.text(parseFloat(result.potassiumPercentage).toFixed(decimalPrecision));
+			resultSulphurInKg.text(parseFloat(result.sulphurInKg).toFixed(decimalPrecision));
+			resultSulphurPercentage.text(parseFloat(result.sulphurPercentage).toFixed(decimalPrecision));
 		} else {
 			errorMsg.show();
 		}
@@ -77,19 +78,19 @@ $(function(){
 		errorMsg.hide();
 		result = nc.milkSold.calculateByKg(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg);
 		if(result) {
-			resultMilkSoldPerYearInLitre.text(result.totalPerYearInLitre);
-			resultMilkFatInKg.text(result.fatInKg);
-			resultMilkFatPercentage.text(result.fatPercentage);
-			resultMilkProteinInKg.text(result.proteinInKg);
-			resultMilkProteinPercentage.text(result.proteinPercentage);
-			resultNitrogenInKg.text(result.nitrogenInKg);
-			resultNitrogenPercentage.text(result.nitrogenPercentage);
-			resultPhosphorusInKg.text(result.phosphorusInKg);
-			resultPhosphorusPercentage.text(result.phosphorusPercentage);
-			resultPotassiumInKg.text(result.potassiumInKg);
-			resultPotassiumPercentage.text(result.potassiumPercentage);
-			resultSulphurInKg.text(result.sulphurInKg);
-			resultSulphurPercentage.text(result.sulphurPercentage);
+			resultMilkSoldPerYearInLitre.text(parseFloat(result.totalPerYearInLitre).toFixed(decimalPrecision));
+			resultMilkFatInKg.text(parseFloat(result.fatInKg).toFixed(decimalPrecision));
+			resultMilkFatPercentage.text(parseFloat(result.fatPercentage).toFixed(decimalPrecision));
+			resultMilkProteinInKg.text(parseFloat(result.proteinInKg).toFixed(decimalPrecision));
+			resultMilkProteinPercentage.text(parseFloat(result.proteinPercentage).toFixed(decimalPrecision));
+			resultNitrogenInKg.text(parseFloat(result.nitrogenInKg).toFixed(decimalPrecision));
+			resultNitrogenPercentage.text(parseFloat(result.nitrogenPercentage).toFixed(decimalPrecision));
+			resultPhosphorusInKg.text(parseFloat(result.phosphorusInKg).toFixed(decimalPrecision));
+			resultPhosphorusPercentage.text(parseFloat(result.phosphorusPercentage).toFixed(decimalPrecision));
+			resultPotassiumInKg.text(parseFloat(result.potassiumInKg).toFixed(decimalPrecision));
+			resultPotassiumPercentage.text(parseFloat(result.potassiumPercentage).toFixed(decimalPrecision));
+			resultSulphurInKg.text(parseFloat(result.sulphurInKg).toFixed(decimalPrecision));
+			resultSulphurPercentage.text(parseFloat(result.sulphurPercentage).toFixed(decimalPrecision));
 		} else {
 			errorMsg.show();
 		}
