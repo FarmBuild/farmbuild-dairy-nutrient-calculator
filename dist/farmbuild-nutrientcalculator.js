@@ -253,7 +253,7 @@ angular.module("farmbuild.nutrientCalculator").factory("Validations", function($
         return regex.test(value);
     };
     Validations.isAlphanumeric = function(value) {
-        var regex = /^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9]*$/gi;
+        var regex = /^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9 _]*$/gi;
         return regex.test(value);
     };
     return Validations;
