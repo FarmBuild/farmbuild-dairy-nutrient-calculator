@@ -9,7 +9,7 @@ module.exports = function(config){
       'bower_components/farmbuild-farmdata/dist/farmbuild-farmdata.js',
       'src/nutrient-calculator.js',
       'src/google-analytic/index.src.js',
-      'src/animals-purchased/animalTypes.conf.src.js',
+      'src/animalTypes.conf.src.js',
       'src/animals-purchased/index.src.js',
       'src/validations/index.src.js',
       'src/milk-sold/index.src.js',
