@@ -9,28 +9,28 @@
 'use strict';
 
 /**
- * nutrientCalculator/AnimalsPurchased class
- * @module nutrientCalculator/AnimalsPurchased
+ * nutrientCalculator/CowsPurchased class
+ * @module nutrientCalculator/CowsPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('AnimalsPurchased', function (Validations, animalTypes) {
+	.factory('CowsPurchased', function (Validations, animalTypes) {
 
-		var AnimalsPurchased = {},
+		var CowsPurchased = {},
 			_isPositiveNumber = Validations.isPositiveNumber,
 			_isAlphabet = Validations.isAlphabet,
 			_types = animalTypes;
 
 		/**
-		 * Calculates total nutrient imported on to the farm in animals
+		 * Calculates total nutrient imported on to the farm in cows
 		 * @method calculate
-		 * @param {!array} animals - Array of purchased animals, each item contains details of the animal {type, count}
-		 * @returns {object} nutrient data of animals purchased
+		 * @param {!array} cows - Array of purchased cows, each item contains details of the animal {type, count}
+		 * @returns {object} nutrient data of cows purchased
 		 * @public
 		 * @static
 		 */
-		AnimalsPurchased.calculate = function (animals) {
-			var numberOfAnimals = 0,
+		CowsPurchased.calculate = function (cows) {
+			var numberOfCows = 0,
 				weight = 0,
 				nitrogenInKg = 0,
 				phosphorusInKg = 0,
@@ -43,42 +43,42 @@ angular.module('farmbuild.nutrientCalculator')
 				incomings = [],
 				i = 0;
 
-			if (!animals || animals.length === 0) {
+			if (!cows || cows.length === 0) {
 				return undefined;
 			}
 
-			for (i; i < animals.length; i++) {
+			for (i; i < cows.length; i++) {
 				var animalWeight,
 					animalCount,
-					animal = animals[i];
+					animal = cows[i];
 
 				if (!animal.type || !_types[animal.type]) {
 					return undefined;
 				}
 
 				animalWeight = _types[animal.type].weight;
-				animalCount = animal.numberOfAnimals;
+				animalCount = animal.numberOfCows;
 
 				if (!_isPositiveNumber(animalCount)) {
 					return undefined;
 				}
 
 				weight += animalWeight * animalCount;
-				numberOfAnimals += animalCount;
+				numberOfCows += animalCount;
 				nitrogenInKg += (nitrogenPercentage * animalWeight * animalCount) / 100;
 				phosphorusInKg += (phosphorusPercentage * animalWeight * animalCount) / 100;
 				potassiumInKg += (potassiumPercentage * animalWeight * animalCount) / 100;
 				sulphurInKg += (sulphurPercentage * animalWeight * animalCount) / 100;
 				incomings.push({
 					name: _types[animal.type].name,
-					numberOfAnimals: animalCount,
+					numberOfCows: animalCount,
 					weight: _types[animal.type].weight
 				})
 			}
 
 			return {
-				animals: incomings,
-				numberOfAnimals: numberOfAnimals,
+				cows: incomings,
+				numberOfCows: numberOfCows,
 				weight: weight,
 				nitrogenInKg: nitrogenInKg,
 				phosphorusInKg: phosphorusInKg,
@@ -93,11 +93,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @method addType
 		 * @param {!string} name - name of new type, can only contain alphabetical values with no space or special characters
 		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} AnimalsPurchased - useful for chaining multiple add()
+		 * @returns {object} CowsPurchased - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		AnimalsPurchased.addType = function (name, weight) {
+		CowsPurchased.addType = function (name, weight) {
 			if (!_isPositiveNumber(weight)) {
 				return undefined;
 			}
@@ -113,7 +113,7 @@ angular.module('farmbuild.nutrientCalculator')
 				weight: weight
 			};
 
-			return AnimalsPurchased;
+			return CowsPurchased;
 		};
 
 
@@ -124,10 +124,10 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		AnimalsPurchased.types = function () {
+		CowsPurchased.types = function () {
 			return _types;
 		};
 
-		return AnimalsPurchased;
+		return CowsPurchased;
 
 	});

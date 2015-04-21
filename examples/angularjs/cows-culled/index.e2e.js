@@ -4,24 +4,24 @@
 
 describe('Farm web nutrient calculator', function() {
   
-  describe('animals-culled', function() {
+  describe('cows-culled', function() {
     
     beforeEach(function() {
-      browser.get('angularjs/animals-culled/index.html');
+      browser.get('angularjs/cows-culled/index.html');
     });
     
-    it('should render sample when user navigates to angularjs/animals-culled/index.html', function() {
+    it('should render sample when user navigates to angularjs/cows-culled/index.html', function() {
       expect(element.all(by.css('body h3')).first().getText()).
-        toContain('Farmbuild Diary Nutrient Calculator - Animals Culled');
+        toContain('Farmbuild Diary Nutrient Calculator - Cows Culled');
     });
     
     it('should add new animal', function() {
       expect(element(by.model('animalType')).sendKeys('Heavy adult cattle (650 Kg)').getAttribute('value')).
         toBe('0');
-      expect(element(by.model('numberOfAnimals')).sendKeys('12').getAttribute('value')).
+      expect(element(by.model('numberOfCows')).sendKeys('12').getAttribute('value')).
         toBe('12');
       element(by.buttonText('Add Animal')).click().then(function(){
-        expect(element.all(by.css('table#animalsTbl tr')).count()).
+        expect(element.all(by.css('table#cowsTbl tr')).count()).
           toMatch(3);
       });
     });
@@ -29,10 +29,10 @@ describe('Farm web nutrient calculator', function() {
     it('should calculate nutrient', function() {
       expect(element(by.model('animalType')).sendKeys('Heavy adult cattle (650 Kg)').getAttribute('value')).
         toBe('0');
-      expect(element(by.model('numberOfAnimals')).sendKeys('12').getAttribute('value')).
+      expect(element(by.model('numberOfCows')).sendKeys('12').getAttribute('value')).
         toBe('12');
       element(by.buttonText('Add Animal')).click().then(function(){
-        expect(element.all(by.css('table#animalsTbl tr')).count()).
+        expect(element.all(by.css('table#cowsTbl tr')).count()).
           toMatch(3);
       })
       element(by.buttonText('Calculate nutrient')).click().then(function(){
@@ -53,10 +53,10 @@ describe('Farm web nutrient calculator', function() {
       
       expect(element(by.model('animalType')).sendKeys('Test (100)').getAttribute('value')).
         toBe('5');
-      expect(element(by.model('numberOfAnimals')).sendKeys('2').getAttribute('value')).
+      expect(element(by.model('numberOfCows')).sendKeys('2').getAttribute('value')).
         toBe('2');
       element(by.buttonText('Add Animal')).click().then(function(){
-        expect(element.all(by.css('table#animalsTbl tr')).count()).
+        expect(element.all(by.css('table#cowsTbl tr')).count()).
           toMatch(3);
       })
       

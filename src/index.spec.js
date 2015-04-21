@@ -28,7 +28,7 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('NutrientCalculator.animalsPurchased should be defined', inject(function() {
-      expect(NutrientCalculator.animalsPurchased).toBeDefined();
+      expect(NutrientCalculator.cowsPurchased).toBeDefined();
     }));
 
     it('NutrientCalculator.load should add nutrientCalculator block', inject(function() {

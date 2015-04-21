@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('farmbuild.nutrientCalculator.examples.animalsPurchased', ['farmbuild.nutrientCalculator'])
+angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuild.nutrientCalculator'])
 
 	.run(function($rootScope){
 		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
-	.controller('AnimalsPurchasedCtrl', function ($scope, $rootScope, AnimalsPurchased, Validations) {
+	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, CowsPurchased, Validations) {
 
-		var isPositiveNumber = Validations.isPositiveNumber, animalTypes = AnimalsPurchased.types();
+		var isPositiveNumber = Validations.isPositiveNumber, animalTypes = CowsPurchased.types();
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
-		$scope.animals = [];
+		$scope.cows = [];
 		$scope.noResult = false;
 		$scope.animalTypes = [];
 
@@ -26,8 +26,8 @@ angular.module('farmbuild.nutrientCalculator.examples.animalsPurchased', ['farmb
 			return types;
 		}
 
-		$scope.calculate = function (animals, form) {
-			$scope.result = AnimalsPurchased.calculate(animals);
+		$scope.calculate = function (cows, form) {
+			$scope.result = CowsPurchased.calculate(cows);
 			$scope.noResult = !$scope.result;
 		};
 
@@ -39,31 +39,31 @@ angular.module('farmbuild.nutrientCalculator.examples.animalsPurchased', ['farmb
 				return;
 			}
 
-			$scope.noResult = !AnimalsPurchased.addType(type.name, type.weight);
+			$scope.noResult = !CowsPurchased.addType(type.name, type.weight);
 			$scope.animalTypes = animalTypesToArray();
 			$scope.type = '';
 		};
 
-		$scope.addAnimals = function (animalType, numberOfAnimals, form) {
+		$scope.addCows = function (animalType, numberOfCows, form) {
 
 			$scope.noResult = false;
 			
-			//Validate numberOfAnimals to be a valid number
-			if(!animalType || !isPositiveNumber(numberOfAnimals)){
+			//Validate numberOfCows to be a valid number
+			if(!animalType || !isPositiveNumber(numberOfCows)){
 				$scope.noResult = true;
 				return;
 			}
 
-			$scope.animals.push({
+			$scope.cows.push({
 				type: animalType.type,
 				name: animalType.name,
 				weight: animalType.weight,
-				numberOfAnimals: numberOfAnimals
+				numberOfCows: numberOfCows
 			});
 
 			//reset form
 			$scope.animalType = '';
-			$scope.numberOfAnimals = '';
+			$scope.numberOfCows = '';
 			$scope.result = {};
 		};
 
