@@ -32,6 +32,16 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			$scope.cowTypes = CowsPurchased.types();
 			$scope.type = '';
 		};
+		
+		
+
+		$scope.removeCows = function (index, form) {
+
+			if (index > -1) {
+			   $scope.cows.splice(index, 1);
+			}
+
+		};
 
 		$scope.addCows = function (cowType, numberOfCows, form) {
 

@@ -114,8 +114,8 @@
                         <td ng-bind="cow.weight | number"></td>
                         <td>{{(cow.numberOfCows * cow.weight) | number}}</td>
                         <td>
-                            <button type="button" class="btn btn-link" ng-click="removeVehicle($index, form)">
-                                <i class="fa fa-remove"></i>
+                            <button type="button" class="btn btn-link" ng-click="removeCows($index, form)">
+                                Remove
                             </button>
                         </td>
                     </tr>
