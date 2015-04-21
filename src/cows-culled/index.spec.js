@@ -29,12 +29,12 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('CowsCulled.calculate should return nutrient data', inject(function() {
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}])).toBeDefined();
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).cows).toBeDefined();
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).weight).toEqual(1800);
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).numberOfCows).toEqual(3);
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).sulphurInKg).toEqual(14.4);
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).nitrogenInKg).toEqual(50.4);
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}])).toBeDefined();
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).cows).toBeDefined();
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).weight).toEqual(1800);
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).numberOfCows).toEqual(3);
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).sulphurInKg).toEqual(14.4);
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).nitrogenInKg).toEqual(50.4);
     }));
 
     it('CowsCulled.addType should return undefined if cows parameter passed is not correct (alphabetical name, number for weight)', inject(function() {
@@ -43,7 +43,7 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('CowsCulled.calculate should return undefined for negative number', inject(function() {
-      expect(CowsCulled.calculate([{type:'heavyAdult', numberOfCows:-2}, {type:'averageAdult', numberOfCows:-1}])).toBeUndefined();
+      expect(CowsCulled.calculate([{type:'Heavy adult cattle', numberOfCows:-2}, {type:'Average adult cattle', numberOfCows:-1}])).toBeUndefined();
     }));
 
   });

@@ -17,7 +17,7 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(CowsPurchased).toBeDefined();
     }));
 
-    it('CowsPurchased.addTypes should return undefined if type\'s name is not alphabetical', inject(function() {
+    it('CowsPurchased.addTypes should return undefined if type\'s name is not alphanumeric', inject(function() {
       expect(CowsPurchased.addType(2, 50)).toBeUndefined();
       expect(CowsPurchased.addType('!2', 50)).toBeUndefined();
       expect(CowsPurchased.addType('new', 'w')).toBeUndefined();
@@ -29,12 +29,12 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('CowsPurchased.calculate should return nutrient data', inject(function() {
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}])).toBeDefined();
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).cows).toBeDefined();
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).weight).toEqual(1800);
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).numberOfCows).toEqual(3);
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).sulphurInKg).toEqual(14.4);
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:2}, {type:'averageAdult', numberOfCows:1}]).nitrogenInKg).toEqual(50.4);
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}])).toBeDefined();
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).cows).toBeDefined();
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).weight).toEqual(1800);
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).numberOfCows).toEqual(3);
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).sulphurInKg).toEqual(14.4);
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:2}, {type:'Average adult cattle', numberOfCows:1}]).nitrogenInKg).toEqual(50.4);
     }));
 
     it('CowsPurchased.addType should return undefined if cows parameter passed is not correct (alphabetical name, number for weight)', inject(function() {
@@ -43,7 +43,7 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('CowsPurchased.calculate should return undefined for negative number', inject(function() {
-      expect(CowsPurchased.calculate([{type:'heavyAdult', numberOfCows:-2}, {type:'averageAdult', numberOfCows:-1}])).toBeUndefined();
+      expect(CowsPurchased.calculate([{type:'Heavy adult cattle', numberOfCows:-2}, {type:'Average adult cattle', numberOfCows:-1}])).toBeUndefined();
     }));
 
   });

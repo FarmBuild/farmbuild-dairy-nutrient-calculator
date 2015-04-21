@@ -23,33 +23,45 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Validations, animalTypes) {
-    var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
+angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Validations, references) {
+    var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
+    function _findType(toFind) {
+        console.log(toFind);
+        var found;
+        angular.forEach(_types, function(type) {
+            if (type.name === toFind) {
+                found = type;
+            }
+        });
+        console.log(found);
+        return found;
+    }
     CowsCulled.calculate = function(cows) {
-        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
+        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], cowType, i = 0;
         if (!cows || cows.length === 0) {
             return undefined;
         }
         for (i; i < cows.length; i++) {
-            var animalWeight, animalCount, animal = cows[i];
-            if (!animal.type || !_types[animal.type]) {
+            var cowWeight, cowCount, cow = cows[i];
+            if (!cow.type || !_findType(cow.type)) {
                 return undefined;
             }
-            animalWeight = _types[animal.type].weight;
-            animalCount = animal.numberOfCows;
-            if (!_isPositiveNumber(animalCount)) {
+            cowType = _findType(cow.type);
+            cowWeight = cowType.weight;
+            cowCount = cow.numberOfCows;
+            if (!_isPositiveNumber(cowCount)) {
                 return undefined;
             }
-            weight += animalWeight * animalCount;
-            numberOfCows += animalCount;
-            nitrogenInKg += nitrogenPercentage * animalWeight * animalCount / 100;
-            phosphorusInKg += phosphorusPercentage * animalWeight * animalCount / 100;
-            potassiumInKg += potassiumPercentage * animalWeight * animalCount / 100;
-            sulphurInKg += sulphurPercentage * animalWeight * animalCount / 100;
+            weight += cowWeight * cowCount;
+            numberOfCows += cowCount;
+            nitrogenInKg += nitrogenPercentage * cowWeight * cowCount / 100;
+            phosphorusInKg += phosphorusPercentage * cowWeight * cowCount / 100;
+            potassiumInKg += potassiumPercentage * cowWeight * cowCount / 100;
+            sulphurInKg += sulphurPercentage * cowWeight * cowCount / 100;
             incomings.push({
-                name: _types[animal.type].name,
-                numberOfCows: animalCount,
-                weight: _types[animal.type].weight
+                name: cowType.name,
+                numberOfCows: cowCount,
+                weight: cowType.weight
             });
         }
         return {
@@ -66,14 +78,14 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
         if (!_isPositiveNumber(weight)) {
             return undefined;
         }
-        if (!name || !_isAlphabet(name)) {
+        if (!name || !_isAlphanumeric(name)) {
             return undefined;
         }
         weight = parseFloat(weight);
-        _types[name] = {
+        _types.push({
             name: name,
             weight: weight
-        };
+        });
         return CowsCulled;
     };
     CowsCulled.types = function() {
@@ -84,33 +96,43 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function(Validations, animalTypes) {
-    var CowsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphabet = Validations.isAlphabet, _types = animalTypes;
+angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function(Validations, references) {
+    var CowsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
+    function _findType(toFind) {
+        var found;
+        angular.forEach(_types, function(type) {
+            if (type.name === toFind) {
+                found = type;
+            }
+        });
+        return found;
+    }
     CowsPurchased.calculate = function(cows) {
-        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
+        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], cowType, i = 0;
         if (!cows || cows.length === 0) {
             return undefined;
         }
         for (i; i < cows.length; i++) {
-            var animalWeight, animalCount, animal = cows[i];
-            if (!animal.type || !_types[animal.type]) {
+            var cowWeight, cowCount, cow = cows[i];
+            if (!cow.type || !_findType(cow.type)) {
                 return undefined;
             }
-            animalWeight = _types[animal.type].weight;
-            animalCount = animal.numberOfCows;
-            if (!_isPositiveNumber(animalCount)) {
+            cowType = _findType(cow.type);
+            cowWeight = cowType.weight;
+            cowCount = cow.numberOfCows;
+            if (!_isPositiveNumber(cowCount)) {
                 return undefined;
             }
-            weight += animalWeight * animalCount;
-            numberOfCows += animalCount;
-            nitrogenInKg += nitrogenPercentage * animalWeight * animalCount / 100;
-            phosphorusInKg += phosphorusPercentage * animalWeight * animalCount / 100;
-            potassiumInKg += potassiumPercentage * animalWeight * animalCount / 100;
-            sulphurInKg += sulphurPercentage * animalWeight * animalCount / 100;
+            weight += cowWeight * cowCount;
+            numberOfCows += cowCount;
+            nitrogenInKg += nitrogenPercentage * cowWeight * cowCount / 100;
+            phosphorusInKg += phosphorusPercentage * cowWeight * cowCount / 100;
+            potassiumInKg += potassiumPercentage * cowWeight * cowCount / 100;
+            sulphurInKg += sulphurPercentage * cowWeight * cowCount / 100;
             incomings.push({
-                name: _types[animal.type].name,
-                numberOfCows: animalCount,
-                weight: _types[animal.type].weight
+                name: cowType.name,
+                numberOfCows: cowCount,
+                weight: cowType.weight
             });
         }
         return {
@@ -127,14 +149,14 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
         if (!_isPositiveNumber(weight)) {
             return undefined;
         }
-        if (!name || !_isAlphabet(name)) {
+        if (!name || !_isAlphanumeric(name)) {
             return undefined;
         }
         weight = parseFloat(weight);
-        _types[name] = {
+        _types.push({
             name: name,
             weight: weight
-        };
+        });
         return CowsPurchased;
     };
     CowsPurchased.types = function() {
@@ -230,30 +252,30 @@ angular.module("farmbuild.nutrientCalculator").factory("Validations", function($
         var regex = /^[A-Za-z]+$/gi;
         return regex.test(value);
     };
+    Validations.isAlphanumeric = function(value) {
+        var regex = /^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9]*$/gi;
+        return regex.test(value);
+    };
     return Validations;
 });
 
-angular.module("farmbuild.nutrientCalculator").constant("animalTypes", {
-    heavyAdult: {
+angular.module("farmbuild.nutrientCalculator").constant("references", {
+    cowTypes: [ {
         name: "Heavy adult cattle",
         weight: 650
-    },
-    averageAdult: {
+    }, {
         name: "Average adult cattle",
         weight: 500
-    },
-    yearling: {
+    }, {
         name: "Yearling",
         weight: 300
-    },
-    weanedYoungStock: {
+    }, {
         name: "Weaned young stock",
         weight: 120
-    },
-    bobbyCalves: {
+    }, {
         name: "Bobby calve",
         weight: 40
-    }
+    } ]
 });
 
 "use strict";

@@ -8,42 +8,19 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 
 	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, CowsPurchased, Validations) {
 
-		var isPositiveNumber = Validations.isPositiveNumber, animalTypes = CowsPurchased.types();
+		var isPositiveNumber = Validations.isPositiveNumber;
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.cows = [];
 		$scope.noResult = false;
-		$scope.animalTypes = [];
+		$scope.cowTypes = CowsPurchased.types();
 
-
-		function sortFn(a, b) {
-				if (a.name > b.name) {
-					return 1;
-				}
-				if (a.name < b.name) {
-					return -1;
-				}
-				// a must be equal to b
-				return 0;
-		}
-
-		function animalTypesToArray(){
-			var types = [];
-			for (var key in animalTypes) {
-				types.push({
-					name: animalTypes[key].name,
-					type: key,
-					weight: animalTypes[key].weight
-				});
-			};
-			return types.sort(sortFn);
-		}
 
 		$scope.calculate = function (cows, form) {
 			$scope.result = CowsPurchased.calculate(cows);
 			$scope.noResult = !$scope.result;
 		};
 
-		$scope.addAnimalType = function (type, form) {
+		$scope.addCowType = function (type, form) {
 
 			//Validate type
 			if(!type || !type.name || !type.weight){
@@ -52,33 +29,30 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			}
 
 			$scope.noResult = !CowsPurchased.addType(type.name, type.weight);
-			$scope.animalTypes = animalTypesToArray();
+			$scope.cowTypes = CowsPurchased.types();
 			$scope.type = '';
 		};
 
-		$scope.addCows = function (animalType, numberOfCows, form) {
+		$scope.addCows = function (cowType, numberOfCows, form) {
 
 			$scope.noResult = false;
 			
 			//Validate numberOfCows to be a valid number
-			if(!animalType || !isPositiveNumber(numberOfCows)){
+			if(!cowType || !isPositiveNumber(numberOfCows)){
 				$scope.noResult = true;
 				return;
 			}
 
 			$scope.cows.push({
-				type: animalType.type,
-				name: animalType.name,
-				weight: animalType.weight,
+				type: cowType.name,
+				weight: cowType.weight,
 				numberOfCows: numberOfCows
 			});
 
 			//reset form
-			$scope.animalType = '';
+			$scope.cowType = '';
 			$scope.numberOfCows = '';
 			$scope.result = {};
 		};
-
-		$scope.animalTypes = animalTypesToArray();
 
 	});

@@ -15,21 +15,21 @@ describe('Farm web nutrient calculator', function() {
         toContain('Farmbuild Diary Nutrient Calculator - Cows Culled');
     });
     
-    it('should add new animal', function() {
-      expect(element(by.model('animalType')).sendKeys('Heavy adult cattle (650 Kg)'));
+    it('should add new cow', function() {
+      expect(element(by.model('cowType')).sendKeys('Heavy adult cattle (650 Kg)'));
       expect(element(by.model('numberOfCows')).sendKeys('12').getAttribute('value')).
         toBe('12');
-      element(by.buttonText('Add Animal')).click().then(function(){
+      element(by.buttonText('Add Cow')).click().then(function(){
         expect(element.all(by.css('table#cowsTbl tr')).count()).
           toMatch(3);
       });
     });
     
     it('should calculate nutrient', function() {
-      expect(element(by.model('animalType')).sendKeys('Heavy adult cattle (650 Kg)'));
+      expect(element(by.model('cowType')).sendKeys('Heavy adult cattle (650 Kg)'));
       expect(element(by.model('numberOfCows')).sendKeys('12').getAttribute('value')).
         toBe('12');
-      element(by.buttonText('Add Animal')).click().then(function(){
+      element(by.buttonText('Add Cow')).click().then(function(){
         expect(element.all(by.css('table#cowsTbl tr')).count()).
           toMatch(3);
       })
@@ -39,20 +39,20 @@ describe('Farm web nutrient calculator', function() {
       });
     });
     
-    it('should add new animal type and use it for adding a new animal', function() {
+    it('should add new cow type and use it for adding a new cow', function() {
       expect(element(by.model('type.name')).sendKeys('Test').getAttribute('value')).
         toBe('Test');
       expect(element(by.model('type.weight')).sendKeys('100').getAttribute('value')).
         toBe('100');
       element(by.buttonText('Add Type')).click().then(function(){
-        expect(element.all(by.css('table#animalTypesTbl tr')).count()).
+        expect(element.all(by.css('table#cowTypesTbl tr')).count()).
           toMatch(8);
       });
       
-      expect(element(by.model('animalType')).sendKeys('Test (100)'));
+      expect(element(by.model('cowType')).sendKeys('Test (100)'));
       expect(element(by.model('numberOfCows')).sendKeys('2').getAttribute('value')).
         toBe('2');
-      element(by.buttonText('Add Animal')).click().then(function(){
+      element(by.buttonText('Add Cow')).click().then(function(){
         expect(element.all(by.css('table#cowsTbl tr')).count()).
           toMatch(3);
       })

@@ -14,17 +14,27 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('CowsPurchased', function (Validations, animalTypes) {
+	.factory('CowsPurchased', function (Validations, references) {
 
 		var CowsPurchased = {},
 			_isPositiveNumber = Validations.isPositiveNumber,
-			_isAlphabet = Validations.isAlphabet,
-			_types = animalTypes;
+			_isAlphanumeric = Validations.isAlphanumeric,
+			_types = references.cowTypes;
+
+		function _findType(toFind) {
+			var found;
+			angular.forEach(_types, function(type){
+				if(type.name === toFind){
+					found = type;
+				}
+			})
+			return found;
+		}
 
 		/**
 		 * Calculates total nutrient imported on to the farm in cows
 		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the animal {type, count}
+		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type, count}
 		 * @returns {object} nutrient data of cows purchased
 		 * @public
 		 * @static
@@ -41,6 +51,7 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumPercentage = 0.2,
 				sulphurPercentage = 0.8,
 				incomings = [],
+				cowType,
 				i = 0;
 
 			if (!cows || cows.length === 0) {
@@ -48,31 +59,32 @@ angular.module('farmbuild.nutrientCalculator')
 			}
 
 			for (i; i < cows.length; i++) {
-				var animalWeight,
-					animalCount,
-					animal = cows[i];
+				var cowWeight,
+					cowCount,
+					cow = cows[i];
 
-				if (!animal.type || !_types[animal.type]) {
+				if (!cow.type || !_findType(cow.type)) {
 					return undefined;
 				}
 
-				animalWeight = _types[animal.type].weight;
-				animalCount = animal.numberOfCows;
+				cowType = _findType(cow.type);
+				cowWeight = cowType.weight;
+				cowCount = cow.numberOfCows;
 
-				if (!_isPositiveNumber(animalCount)) {
+				if (!_isPositiveNumber(cowCount)) {
 					return undefined;
 				}
 
-				weight += animalWeight * animalCount;
-				numberOfCows += animalCount;
-				nitrogenInKg += (nitrogenPercentage * animalWeight * animalCount) / 100;
-				phosphorusInKg += (phosphorusPercentage * animalWeight * animalCount) / 100;
-				potassiumInKg += (potassiumPercentage * animalWeight * animalCount) / 100;
-				sulphurInKg += (sulphurPercentage * animalWeight * animalCount) / 100;
+				weight += cowWeight * cowCount;
+				numberOfCows += cowCount;
+				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
+				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
+				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
+				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
 				incomings.push({
-					name: _types[animal.type].name,
-					numberOfCows: animalCount,
-					weight: _types[animal.type].weight
+					name: cowType.name,
+					numberOfCows: cowCount,
+					weight: cowType.weight
 				})
 			}
 
@@ -89,9 +101,9 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Adds a new animal type for nutrient calculation
+		 * Adds a new cow type for nutrient calculation
 		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphabetical values with no space or special characters
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
 		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
 		 * @returns {object} CowsPurchased - useful for chaining multiple add()
 		 * @public
@@ -102,25 +114,25 @@ angular.module('farmbuild.nutrientCalculator')
 				return undefined;
 			}
 
-			if (!name || !_isAlphabet(name)) {
+			if (!name || !_isAlphanumeric(name)) {
 				return undefined;
 			}
 
 			weight = parseFloat(weight);
 
-			_types[name] = {
+			_types.push({
 				name: name,
 				weight: weight
-			};
+			});
 
 			return CowsPurchased;
 		};
 
 
 		/**
-		 * Returns current animal's type collection
+		 * Returns current cow's type collection
 		 * @method types
-		 * @returns {object} Types - animal's type collection
+		 * @returns {object} Types - cow's type collection
 		 * @public
 		 * @static
 		 */
