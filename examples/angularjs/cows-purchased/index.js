@@ -23,7 +23,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 					weight: animalTypes[key].weight
 				});
 			};
-			return types;
+			return types.sort();
 		}
 
 		$scope.calculate = function (cows, form) {
