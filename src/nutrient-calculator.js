@@ -32,7 +32,9 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 
 			if (!farmData.nutrientCalculator) {
 				farmData.nutrientCalculator = {
-					milkSold: {}
+					milkSold: {},
+					cowsCulled: {},
+					cowsPurchased: {}
 				};
 			}
 			return farmData;
