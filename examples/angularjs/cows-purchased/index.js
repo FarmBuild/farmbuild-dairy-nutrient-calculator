@@ -14,6 +14,18 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$scope.noResult = false;
 		$scope.animalTypes = [];
 
+
+		function sortFn(a, b) {
+				if (a.name > b.name) {
+					return 1;
+				}
+				if (a.name < b.name) {
+					return -1;
+				}
+				// a must be equal to b
+				return 0;
+		}
+
 		function animalTypesToArray(){
 			var types = [];
 			for (var key in animalTypes) {
@@ -23,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 					weight: animalTypes[key].weight
 				});
 			};
-			return types.sort();
+			return types.sort(sortFn);
 		}
 
 		$scope.calculate = function (cows, form) {
