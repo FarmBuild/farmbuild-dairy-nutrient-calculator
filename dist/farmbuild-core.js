@@ -6308,7 +6308,19 @@
 
 !window.angular.$$csp() && window.angular.element(document).find("head").prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
 
+"use strict";
+
+if (!angular) {
+    var version = "1.3.15";
+    console.error("farmbuild requires angular JS " + version + ", please include e.g. https://ajax.googleapis.com/ajax/libs/angularjs/" + version + "/angular.min.js ");
+    throw new Error("FarmBuild requires angular " + version + ", please load it before the farmbuild.core module.");
+}
+
 angular.module("farmbuild.core", []);
+
+window.farmbuild = {
+    core: {}
+};
 
 "use strict";
 
@@ -6320,28 +6332,3 @@ angular.module("farmbuild.core").factory("GoogleAnalytics", function($window) {
     $window.farmbuild.core.GoogleAnalytics = GoogleAnalytics;
     return GoogleAnalytics;
 });
-
-"use strict";
-
-angular.module("farmbuild.core").factory("UserProfiles", function($window) {
-    var UserProfiles = {};
-    UserProfiles.isAvailable = function() {
-        return typeof ga !== "undefined";
-    };
-    $window.farmbuild.core.UserProfiles = UserProfiles;
-    return UserProfiles;
-});
-
-"use strict";
-
-if (!angular) {
-    console.error("farmbuild requires angular JS 1.3.x, please include e.g. ");
-}
-
-angular.module("farmbuild.core").run(function($log) {
-    $log.info("Welcome to FarmBuild core project....");
-});
-
-window.farmbuild = {
-    core: {}
-};
