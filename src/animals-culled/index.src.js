@@ -9,27 +9,27 @@
 'use strict';
 
 /**
- * nutrientCalculator/AnimalsPurchased class
- * @module nutrientCalculator/AnimalsPurchased
+ * nutrientCalculator/AnimalsCulled class
+ * @module nutrientCalculator/AnimalsCulled
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('AnimalsPurchased', function (Validations, animalTypes) {
+	.factory('AnimalsCulled', function (Validations, animalTypes) {
 
-		var AnimalsPurchased = {},
+		var AnimalsCulled = {},
 			_isPositiveNumber = Validations.isPositiveNumber,
 			_isAlphabet = Validations.isAlphabet,
 			_types = animalTypes;
 
 		/**
-		 * Calculates total nutrient imported on to the farm in animals
+		 * Calculates total nutrient exported from the farm in culled animals
 		 * @method calculate
 		 * @param {!array} animals - Array of purchased animals, each item contains details of the animal {type, count}
 		 * @returns {object} nutrient data of animals purchased
 		 * @public
 		 * @static
 		 */
-		AnimalsPurchased.calculate = function (animals) {
+		AnimalsCulled.calculate = function (animals) {
 			var numberOfAnimals = 0,
 				weight = 0,
 				nitrogenInKg = 0,
@@ -93,11 +93,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @method addType
 		 * @param {!string} name - name of new type, can only contain alphabetical values with no space or special characters
 		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} AnimalsPurchased - useful for chaining multiple add()
+		 * @returns {object} AnimalsCulled - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		AnimalsPurchased.addType = function (name, weight) {
+		AnimalsCulled.addType = function (name, weight) {
 			if (!_isPositiveNumber(weight)) {
 				return undefined;
 			}
@@ -113,7 +113,7 @@ angular.module('farmbuild.nutrientCalculator')
 				weight: weight
 			};
 
-			return AnimalsPurchased;
+			return AnimalsCulled;
 		};
 
 
@@ -124,10 +124,10 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		AnimalsPurchased.types = function () {
+		AnimalsCulled.types = function () {
 			return _types;
 		};
 
-		return AnimalsPurchased;
+		return AnimalsCulled;
 
 	});

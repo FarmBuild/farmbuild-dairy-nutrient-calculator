@@ -24,7 +24,7 @@ describe('Farm web nutrient calculator', function() {
         toBe('90');
       element(by.buttonText('Calculate by percentage')).click().then(function(){
         expect(element.all(by.css('summary .form-group')).first().getText()).
-          toMatch('10000');
+          toMatch('10,000.00');
       });
     });
 

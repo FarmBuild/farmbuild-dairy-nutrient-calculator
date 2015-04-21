@@ -5,7 +5,7 @@ angular.module('farmbuild.nutrientCalculator')
     var Validations = {};
 
     Validations.isPositiveNumber = function(value) {
-      return !isNaN(value) && angular.isNumber(value) && isFinite(value) && parseFloat(value) > 0;
+      return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) > 0;
     };
 
     Validations.isAlphabet =  function(value){
