@@ -26,15 +26,6 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
 
 angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Validations, references) {
     var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
-    function _findTypeByName(name) {
-        var foundIndexes = [];
-        angular.forEach(_types, function(type, index) {
-            if (type.name === name) {
-                foundIndexes.push(index);
-            }
-        });
-        return foundIndexes;
-    }
     CowsCulled.calculate = function(cows) {
         var NumberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -87,17 +78,13 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
         return CowsCulled;
     };
     CowsCulled.removeTypeByName = function(name) {
-        var typeIndexes;
         if (!name) {
             return undefined;
         }
-        typeIndexes = _findTypeByName(name);
-        console.log(typeIndexes);
-        if (typeIndexes.length === 0) {
-            return undefined;
-        }
-        angular.forEach(typeIndexes, function(indexValue) {
-            _types.splice(indexValue, 1);
+        angular.forEach(_types, function(type, i) {
+            if (type.name === name) {
+                _types.splice(i, 1);
+            }
         });
         return _types;
     };
@@ -178,6 +165,24 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
             weight: weight
         });
         return CowsPurchased;
+    };
+    CowsCulled.removeTypeByName = function(name) {
+        if (!name) {
+            return undefined;
+        }
+        angular.forEach(_types, function(type, i) {
+            if (type.name === name) {
+                _types.splice(i, 1);
+            }
+        });
+        return _types;
+    };
+    CowsCulled.removeTypeByIndex = function(index) {
+        if (!index || index < 0) {
+            return undefined;
+        }
+        _types.splice(index, 1);
+        return _types;
     };
     CowsPurchased.types = function() {
         return _types;

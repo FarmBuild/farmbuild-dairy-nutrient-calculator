@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_CowsCulled.html">nutrientCalculator/CowsCulled</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.removeType">removeType</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.removeType">removeType</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_CowsPurchased.html">nutrientCalculator/CowsPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_MilkSold.html">nutrientCalculator/MilkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_CowsCulled.html">nutrientCalculator/CowsCulled</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsCulled.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_CowsPurchased.html">nutrientCalculator/CowsPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_CowsPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_MilkSold.html">nutrientCalculator/MilkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_MilkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -61,24 +61,6 @@ angular.module('farmbuild.nutrientCalculator')
 			_isAlphanumeric = Validations.isAlphanumeric,
 			_types = references.cowTypes;
 
-
-		/**
-		 * Calculates total nutrient exported from the farm in culled cows
-		 * @method _findTypeByName
-		 * @param {!String} name - name of the type to find
-		 * @returns {Array} Array of indexes found with this name in types Array or empty Array if nothing is found
-		 * @private
-		 * @static
-		 */
-		function _findTypeByName(name) {
-			var foundIndexes = [];
-			angular.forEach(_types, function(type, index){
-				if(type.name === name){
-					foundIndexes.push(index);
-				}
-			});
-			return foundIndexes;
-		}
 
 		/**
 		 * Calculates total nutrient exported from the farm in culled cows
@@ -177,7 +159,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		/**
 		 * Remove this cow type from cow types collection
-		 * @method removeType
+		 * @method removeTypeByName
 		 * @param {!String} name - name of the type you want to remove.
 		 * @returns {Object} CowsCulled - useful for chaining multiple add()
 		 * @public
@@ -185,22 +167,14 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		CowsCulled.removeTypeByName = function (name) {
 
-			var typeIndexes;
-
 			if (!name) {
 				return undefined;
 			}
 
-
-			typeIndexes = _findTypeByName(name);
-			console.log(typeIndexes);
-
-			if(typeIndexes.length === 0){
-				return undefined;
-			}
-
-			angular.forEach(typeIndexes, function(indexValue){
-				_types.splice(indexValue, 1);
+			angular.forEach(_types, function(type, i){
+				if(type.name === name){
+					_types.splice(i, 1)
+				}
 			});
 
 			return _types;
@@ -208,7 +182,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		/**
 		 * Remove this cow type from cow types collection
-		 * @method removeType
+		 * @method removeTypeByIndex
 		 * @param {!String} index - index of the type you want to remove in types Array.
 		 * @returns {Object} CowsCulled - useful for chaining multiple add()
 		 * @public
@@ -252,7 +226,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Apr 22 2015 18:34:57 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Apr 22 2015 11:27:14 GMT+0000 (UTC) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

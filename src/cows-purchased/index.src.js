@@ -127,6 +127,48 @@ angular.module('farmbuild.nutrientCalculator')
 
 			return CowsPurchased;
 		};
+		
+				/**
+		 * Remove this cow type from cow types collection
+		 * @method removeTypeByName
+		 * @param {!String} name - name of the type you want to remove.
+		 * @returns {Object} CowsCulled - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		CowsCulled.removeTypeByName = function (name) {
+
+			if (!name) {
+				return undefined;
+			}
+
+			angular.forEach(_types, function(type, i){
+				if(type.name === name){
+					_types.splice(i, 1)
+				}
+			});
+
+			return _types;
+		};
+
+		/**
+		 * Remove this cow type from cow types collection
+		 * @method removeTypeByIndex
+		 * @param {!String} index - index of the type you want to remove in types Array.
+		 * @returns {Object} CowsCulled - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		CowsCulled.removeTypeByIndex = function (index) {
+
+			if (!index || index < 0) {
+				return undefined;
+			}
+
+			_types.splice(index, 1);
+
+			return _types;
+		};
 
 
 		/**

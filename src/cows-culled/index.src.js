@@ -24,24 +24,6 @@ angular.module('farmbuild.nutrientCalculator')
 
 		/**
 		 * Calculates total nutrient exported from the farm in culled cows
-		 * @method _findTypeByName
-		 * @param {!String} name - name of the type to find
-		 * @returns {Array} Array of indexes found with this name in types Array or empty Array if nothing is found
-		 * @private
-		 * @static
-		 */
-		function _findTypeByName(name) {
-			var foundIndexes = [];
-			angular.forEach(_types, function(type, index){
-				if(type.name === name){
-					foundIndexes.push(index);
-				}
-			});
-			return foundIndexes;
-		}
-
-		/**
-		 * Calculates total nutrient exported from the farm in culled cows
 		 * @method calculate
 		 * @param {!Array} cows - Array of purchased cows, each item contains details of the cow {type, count}
 		 * @returns {Object} nutrient data of cows purchased
@@ -137,7 +119,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		/**
 		 * Remove this cow type from cow types collection
-		 * @method removeType
+		 * @method removeTypeByName
 		 * @param {!String} name - name of the type you want to remove.
 		 * @returns {Object} CowsCulled - useful for chaining multiple add()
 		 * @public
@@ -145,22 +127,14 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		CowsCulled.removeTypeByName = function (name) {
 
-			var typeIndexes;
-
 			if (!name) {
 				return undefined;
 			}
 
-
-			typeIndexes = _findTypeByName(name);
-			console.log(typeIndexes);
-
-			if(typeIndexes.length === 0){
-				return undefined;
-			}
-
-			angular.forEach(typeIndexes, function(indexValue){
-				_types.splice(indexValue, 1);
+			angular.forEach(_types, function(type, i){
+				if(type.name === name){
+					_types.splice(i, 1)
+				}
 			});
 
 			return _types;
@@ -168,7 +142,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		/**
 		 * Remove this cow type from cow types collection
-		 * @method removeType
+		 * @method removeTypeByIndex
 		 * @param {!String} index - index of the type you want to remove in types Array.
 		 * @returns {Object} CowsCulled - useful for chaining multiple add()
 		 * @public
