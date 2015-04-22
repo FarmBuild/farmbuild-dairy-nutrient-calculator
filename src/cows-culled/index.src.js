@@ -3,7 +3,7 @@
  * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
  * @license The MIT License
  * @author Spatial Vision
- * @version 0.0.7
+ * @version 0.1.0
  */
 
 'use strict';
@@ -112,6 +112,34 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		CowsCulled.addType = function (name, weight) {
+			if (!_isPositiveNumber(weight)) {
+				return undefined;
+			}
+
+			if (!name || !_isAlphanumeric(name)) {
+				return undefined;
+			}
+
+			weight = parseFloat(weight);
+
+			_types.push({
+				name: name,
+				weight: weight
+			});
+
+			return CowsCulled;
+		};
+
+		/**
+		 * Remove this cow type from cow types collection
+		 * @method removeType
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
+		 * @returns {object} CowsCulled - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		CowsCulled.removeType = function (name, weight) {
 			if (!_isPositiveNumber(weight)) {
 				return undefined;
 			}
