@@ -149,7 +149,7 @@
 
     
 
-    <h4 class="name" id=".addType"><span class="type-signature">(static) </span>addType<span class="signature">(name<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".addType"><span class="type-signature">(static) </span>addType<span class="signature">(name<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
@@ -198,7 +198,7 @@
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
             
@@ -221,7 +221,7 @@
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">number</span>
 
 
             
@@ -272,7 +272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line92">line 92</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line91">line 91</a>
     </li></ul></dd>
     
 
@@ -310,7 +310,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -325,14 +325,14 @@
 
     
 
-    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(cows<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(cows<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Calculates total nutrient exported from the farm in culled cows</p>
+    <p>Calculates total nutrient imported on to the farm in cows</p>
 </div>
 
 
@@ -374,7 +374,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type">array</span>
 
 
             
@@ -384,7 +384,7 @@
 
             
 
-            <td class="description last"><p>Array of purchased cows, each item contains details of the cow {type, count}</p></td>
+            <td class="description last"><p>Array of culled cows, each item contains details of the cow {type{name, weight}, numberOfCows}</p></td>
         </tr>
 
     
@@ -425,7 +425,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line25">line 25</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -452,7 +452,7 @@
 
         
 <div class="param-desc">
-    <p>nutrient data of cows purchased</p>
+    <p>nutrient data of cows culled</p>
 </div>
 
 
@@ -463,7 +463,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -485,7 +485,7 @@
 
 
 <div class="description">
-    <p>Remove this cow type from cow types collection</p>
+    <p>Remove this cow from cow types types</p>
 </div>
 
 
@@ -537,7 +537,7 @@
 
             
 
-            <td class="description last"><p>index of the type you want to remove in types Array.</p></td>
+            <td class="description last"><p>index (starts from 0) of the type you want to remove in types Array</p></td>
         </tr>
 
     
@@ -578,7 +578,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line143">line 143</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -605,7 +605,7 @@
 
         
 <div class="param-desc">
-    <p>CowsCulled - useful for chaining multiple add()</p>
+    <p>CowsCulled - useful for chaining functions</p>
 </div>
 
 
@@ -638,7 +638,7 @@
 
 
 <div class="description">
-    <p>Remove this cow type from cow types collection</p>
+    <p>Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed</p>
 </div>
 
 
@@ -731,7 +731,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line120">line 120</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -758,7 +758,7 @@
 
         
 <div class="param-desc">
-    <p>CowsCulled - useful for chaining multiple add()</p>
+    <p>CowsCulled - useful for chaining functions</p>
 </div>
 
 
@@ -784,14 +784,14 @@
 
     
 
-    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns current cow's type collection</p>
+    <p>Returns current cow types</p>
 </div>
 
 
@@ -835,7 +835,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line163">line 163</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line162">line 162</a>
     </li></ul></dd>
     
 
@@ -862,7 +862,7 @@
 
         
 <div class="param-desc">
-    <p>Types - cow's type collection</p>
+    <p>Types - cow types array</p>
 </div>
 
 
@@ -873,7 +873,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -901,7 +901,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Apr 22 2015 11:38:10 GMT+0000 (UTC) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu Apr 23 2015 08:00:52 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

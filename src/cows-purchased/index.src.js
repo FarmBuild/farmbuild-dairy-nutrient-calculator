@@ -24,7 +24,7 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates total nutrient imported on to the farm in cows
 		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type, count}
+		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type{name, weight}, numberOfCows}
 		 * @returns {object} nutrient data of cows purchased
 		 * @public
 		 * @static
@@ -117,10 +117,10 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 		
 				/**
-		 * Remove this cow type from cow types collection
+		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
 		 * @method removeTypeByName
 		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} CowsCulled - useful for chaining multiple add()
+		 * @returns {Object} CowsCulled - useful for chaining functions
 		 * @public
 		 * @static
 		 */
@@ -140,10 +140,10 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Remove this cow type from cow types collection
+		 * Remove this cow from cow types types
 		 * @method removeTypeByIndex
-		 * @param {!String} index - index of the type you want to remove in types Array.
-		 * @returns {Object} CowsCulled - useful for chaining multiple add()
+		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
+		 * @returns {Object} CowsCulled - useful for chaining functions
 		 * @public
 		 * @static
 		 */
@@ -160,9 +160,9 @@ angular.module('farmbuild.nutrientCalculator')
 
 
 		/**
-		 * Returns current cow's type collection
+		 * Returns current cow types
 		 * @method types
-		 * @returns {object} Types - cow's type collection
+		 * @returns {object} Types - cow types array
 		 * @public
 		 * @static
 		 */

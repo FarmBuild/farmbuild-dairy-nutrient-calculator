@@ -51,7 +51,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			}
 
 			$scope.cows.push({
-				type: cowType.name,
+				name: cowType.name,
 				weight: cowType.weight,
 				numberOfCows: numberOfCows
 			});

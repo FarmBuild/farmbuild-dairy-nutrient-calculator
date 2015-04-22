@@ -109,7 +109,7 @@
                         </td>
                     </tr>
                     <tr ng-repeat="cow in cows">
-                        <td ng-bind="cow.type"></td>
+                        <td ng-bind="cow.name"></td>
                         <td ng-bind="cow.numberOfCows"></td>
                         <td ng-bind="cow.weight | number"></td>
                         <td>{{(cow.numberOfCows * cow.weight) | number}}</td>

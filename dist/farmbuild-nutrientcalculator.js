@@ -27,35 +27,35 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
 angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Validations, references) {
     var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
     CowsCulled.calculate = function(cows) {
-        var NumberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
+        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
             return undefined;
         }
         for (i; i < cows.length; i++) {
             var cowWeight, cowCount, cow = cows[i];
-            if (!cow.weight || !cow.name) {
+            if (!cow.name || !cow.weight) {
                 return undefined;
             }
             cowWeight = cow.weight;
-            cowCount = cow.NumberOfCows;
+            cowCount = cow.numberOfCows;
             if (!_isPositiveNumber(cowCount)) {
                 return undefined;
             }
             weight += cowWeight * cowCount;
-            NumberOfCows += cowCount;
+            numberOfCows += cowCount;
             nitrogenInKg += nitrogenPercentage * cowWeight * cowCount / 100;
             phosphorusInKg += phosphorusPercentage * cowWeight * cowCount / 100;
             potassiumInKg += potassiumPercentage * cowWeight * cowCount / 100;
             sulphurInKg += sulphurPercentage * cowWeight * cowCount / 100;
             incomings.push({
                 name: cow.name,
-                NumberOfCows: cowCount,
+                numberOfCows: cowCount,
                 weight: cow.weight
             });
         }
         return {
             cows: incomings,
-            NumberOfCows: NumberOfCows,
+            numberOfCows: numberOfCows,
             weight: weight,
             nitrogenInKg: nitrogenInKg,
             phosphorusInKg: phosphorusInKg,
@@ -105,27 +105,17 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
 
 angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function(Validations, references) {
     var CowsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
-    function _findType(toFind) {
-        var found;
-        angular.forEach(_types, function(type) {
-            if (type.name === toFind) {
-                found = type;
-            }
-        });
-        return found;
-    }
     CowsPurchased.calculate = function(cows) {
-        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], cowType, i = 0;
+        var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
             return undefined;
         }
         for (i; i < cows.length; i++) {
             var cowWeight, cowCount, cow = cows[i];
-            if (!cow.type || !_findType(cow.type)) {
+            if (!cow.name || !cow.weight) {
                 return undefined;
             }
-            cowType = _findType(cow.type);
-            cowWeight = cowType.weight;
+            cowWeight = cow.weight;
             cowCount = cow.numberOfCows;
             if (!_isPositiveNumber(cowCount)) {
                 return undefined;
@@ -137,9 +127,9 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
             potassiumInKg += potassiumPercentage * cowWeight * cowCount / 100;
             sulphurInKg += sulphurPercentage * cowWeight * cowCount / 100;
             incomings.push({
-                name: cowType.name,
+                name: cow.name,
                 numberOfCows: cowCount,
-                weight: cowType.weight
+                weight: cow.weight
             });
         }
         return {
