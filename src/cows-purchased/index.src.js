@@ -21,16 +21,6 @@ angular.module('farmbuild.nutrientCalculator')
 			_isAlphanumeric = Validations.isAlphanumeric,
 			_types = references.cowTypes;
 
-		function _findType(toFind) {
-			var found;
-			angular.forEach(_types, function(type){
-				if(type.name === toFind){
-					found = type;
-				}
-			});
-			return found;
-		}
-
 		/**
 		 * Calculates total nutrient imported on to the farm in cows
 		 * @method calculate
@@ -51,7 +41,6 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumPercentage = 0.2,
 				sulphurPercentage = 0.8,
 				incomings = [],
-				cowType,
 				i = 0;
 
 			if (!cows || cows.length === 0) {
@@ -63,12 +52,11 @@ angular.module('farmbuild.nutrientCalculator')
 					cowCount,
 					cow = cows[i];
 
-				if (!cow.type || !_findType(cow.type)) {
+				if (!cow.name || !cow.weight) {
 					return undefined;
 				}
 
-				cowType = _findType(cow.type);
-				cowWeight = cowType.weight;
+				cowWeight = cow.weight;
 				cowCount = cow.numberOfCows;
 
 				if (!_isPositiveNumber(cowCount)) {
@@ -82,9 +70,9 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
 				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
 				incomings.push({
-					name: cowType.name,
+					name: cow.name,
 					numberOfCows: cowCount,
-					weight: cowType.weight
+					weight: cow.weight
 				});
 			}
 
