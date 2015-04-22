@@ -74,7 +74,7 @@ angular.module('farmbuild.nutrientCalculator')
 					name: cow.name,
 					NumberOfCows: cowCount,
 					weight: cow.weight
-				})
+				});
 			}
 
 			return {
@@ -133,7 +133,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 			angular.forEach(_types, function(type, i){
 				if(type.name === name){
-					_types.splice(i, 1)
+					_types.splice(i, 1);
 				}
 			});
 

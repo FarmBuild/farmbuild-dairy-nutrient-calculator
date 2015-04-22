@@ -27,7 +27,7 @@ angular.module('farmbuild.nutrientCalculator')
 				if(type.name === toFind){
 					found = type;
 				}
-			})
+			});
 			return found;
 		}
 
@@ -85,7 +85,7 @@ angular.module('farmbuild.nutrientCalculator')
 					name: cowType.name,
 					numberOfCows: cowCount,
 					weight: cowType.weight
-				})
+				});
 			}
 
 			return {
@@ -136,7 +136,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsCulled.removeTypeByName = function (name) {
+		CowsPurchased.removeTypeByName = function (name) {
 
 			if (!name) {
 				return undefined;
@@ -144,7 +144,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 			angular.forEach(_types, function(type, i){
 				if(type.name === name){
-					_types.splice(i, 1)
+					_types.splice(i, 1);
 				}
 			});
 
@@ -159,7 +159,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsCulled.removeTypeByIndex = function (index) {
+		CowsPurchased.removeTypeByIndex = function (index) {
 
 			if (!index || index < 0) {
 				return undefined;

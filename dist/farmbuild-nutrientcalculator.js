@@ -166,7 +166,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
         });
         return CowsPurchased;
     };
-    CowsCulled.removeTypeByName = function(name) {
+    CowsPurchased.removeTypeByName = function(name) {
         if (!name) {
             return undefined;
         }
@@ -177,7 +177,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
         });
         return _types;
     };
-    CowsCulled.removeTypeByIndex = function(index) {
+    CowsPurchased.removeTypeByIndex = function(index) {
         if (!index || index < 0) {
             return undefined;
         }
