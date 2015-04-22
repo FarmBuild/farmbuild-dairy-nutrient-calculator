@@ -9,8 +9,6 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold', ['farmbuild.nut
 
 	.controller('MilkSoldCtrl', function ($scope, MilkSold, NutrientCalculator) {
 
-		NutrientCalculator.googleAnalytic.username = 'SpatialVision';
-
 		$scope.calculateByPercent = function (milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			$scope.result = MilkSold.calculateByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
 			if ($scope.result) {

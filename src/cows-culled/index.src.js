@@ -21,28 +21,35 @@ angular.module('farmbuild.nutrientCalculator')
 			_isAlphanumeric = Validations.isAlphanumeric,
 			_types = references.cowTypes;
 
-		function _findType(toFind) {
-			console.log(toFind);
-			var found;
-			angular.forEach(_types, function(type){
-				if(type.name === toFind){
-					found = type;
+
+		/**
+		 * Calculates total nutrient exported from the farm in culled cows
+		 * @method _findTypeByName
+		 * @param {!String} name - name of the type to find
+		 * @returns {Array} Array of indexes found with this name in types Array or empty Array if nothing is found
+		 * @private
+		 * @static
+		 */
+		function _findTypeByName(name) {
+			var foundIndexes = [];
+			angular.forEach(_types, function(type, index){
+				if(type.name === name){
+					foundIndexes.push(index);
 				}
 			});
-			console.log(found);
-			return found;
+			return foundIndexes;
 		}
 
 		/**
 		 * Calculates total nutrient exported from the farm in culled cows
 		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type, count}
-		 * @returns {object} nutrient data of cows purchased
+		 * @param {!Array} cows - Array of purchased cows, each item contains details of the cow {type, count}
+		 * @returns {Object} nutrient data of cows purchased
 		 * @public
 		 * @static
 		 */
 		CowsCulled.calculate = function (cows) {
-			var numberOfCows = 0,
+			var NumberOfCows = 0,
 				weight = 0,
 				nitrogenInKg = 0,
 				phosphorusInKg = 0,
@@ -53,7 +60,6 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumPercentage = 0.2,
 				sulphurPercentage = 0.8,
 				incomings = [],
-				cowType,
 				i = 0;
 
 			if (!cows || cows.length === 0) {
@@ -65,34 +71,33 @@ angular.module('farmbuild.nutrientCalculator')
 					cowCount,
 					cow = cows[i];
 
-				if (!cow.type || !_findType(cow.type)) {
+				if (!cow.weight || !cow.name) {
 					return undefined;
 				}
 
-				cowType = _findType(cow.type);
-				cowWeight = cowType.weight;
-				cowCount = cow.numberOfCows;
+				cowWeight = cow.weight;
+				cowCount = cow.NumberOfCows;
 
 				if (!_isPositiveNumber(cowCount)) {
 					return undefined;
 				}
 
 				weight += cowWeight * cowCount;
-				numberOfCows += cowCount;
+				NumberOfCows += cowCount;
 				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
 				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
 				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
 				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
 				incomings.push({
-					name: cowType.name,
-					numberOfCows: cowCount,
-					weight: cowType.weight
+					name: cow.name,
+					NumberOfCows: cowCount,
+					weight: cow.weight
 				})
 			}
 
 			return {
 				cows: incomings,
-				numberOfCows: numberOfCows,
+				NumberOfCows: NumberOfCows,
 				weight: weight,
 				nitrogenInKg: nitrogenInKg,
 				phosphorusInKg: phosphorusInKg,
@@ -105,9 +110,9 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Adds a new cow type for nutrient calculation
 		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} CowsCulled - useful for chaining multiple add()
+		 * @param {!String} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!Number} weight - average weight of this type in Kg, value must be > 0
+		 * @returns {Object} CowsCulled - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
@@ -133,36 +138,58 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Remove this cow type from cow types collection
 		 * @method removeType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} CowsCulled - useful for chaining multiple add()
+		 * @param {!String} name - name of the type you want to remove.
+		 * @returns {Object} CowsCulled - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		CowsCulled.removeType = function (name, weight) {
-			if (!_isPositiveNumber(weight)) {
+		CowsCulled.removeTypeByName = function (name) {
+
+			var typeIndexes;
+
+			if (!name) {
 				return undefined;
 			}
 
-			if (!name || !_isAlphanumeric(name)) {
+
+			typeIndexes = _findTypeByName(name);
+			console.log(typeIndexes);
+
+			if(typeIndexes.length === 0){
 				return undefined;
 			}
 
-			weight = parseFloat(weight);
-
-			_types.push({
-				name: name,
-				weight: weight
+			angular.forEach(typeIndexes, function(indexValue){
+				_types.splice(indexValue, 1);
 			});
 
-			return CowsCulled;
+			return _types;
+		};
+
+		/**
+		 * Remove this cow type from cow types collection
+		 * @method removeType
+		 * @param {!String} index - index of the type you want to remove in types Array.
+		 * @returns {Object} CowsCulled - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		CowsCulled.removeTypeByIndex = function (index) {
+
+			if (!index || index < 0) {
+				return undefined;
+			}
+
+			_types.splice(index, 1);
+
+			return _types;
 		};
 
 
 		/**
 		 * Returns current cow's type collection
 		 * @method types
-		 * @returns {object} Types - cow's type collection
+		 * @returns {Object} Types - cow's type collection
 		 * @public
 		 * @static
 		 */
