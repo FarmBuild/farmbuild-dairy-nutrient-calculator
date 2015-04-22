@@ -19,7 +19,7 @@ angular.module('farmbuild.nutrientCalculator')
 		var CowsPurchased = {},
 			_isPositiveNumber = Validations.isPositiveNumber,
 			_isAlphanumeric = Validations.isAlphanumeric,
-			_types = references.cowTypes;
+			_types = angular.copy(references.cowTypes);
 
 		/**
 		 * Calculates total nutrient imported on to the farm in cows
@@ -140,7 +140,7 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Remove this cow from cow types types
+		 * Remove this cow from cow types
 		 * @method removeTypeByIndex
 		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
 		 * @returns {Object} CowsCulled - useful for chaining functions
@@ -149,7 +149,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		CowsPurchased.removeTypeByIndex = function (index) {
 
-			if (!index || index < 0) {
+			if (!index || index < 0 || index > _types.length-1) {
 				return undefined;
 			}
 

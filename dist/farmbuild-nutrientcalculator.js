@@ -25,7 +25,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Validations, references) {
-    var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
+    var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
     CowsCulled.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -89,7 +89,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
         return _types;
     };
     CowsCulled.removeTypeByIndex = function(index) {
-        if (!index || index < 0) {
+        if (!index || index < 0 || index > _types.length - 1) {
             return undefined;
         }
         _types.splice(index, 1);
@@ -104,7 +104,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function(Validations, references) {
-    var CowsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = references.cowTypes;
+    var CowsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
     CowsPurchased.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -168,7 +168,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
         return _types;
     };
     CowsPurchased.removeTypeByIndex = function(index) {
-        if (!index || index < 0) {
+        if (!index || index < 0 || index > _types.length - 1) {
             return undefined;
         }
         _types.splice(index, 1);
