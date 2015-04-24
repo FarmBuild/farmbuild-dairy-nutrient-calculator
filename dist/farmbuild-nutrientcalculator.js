@@ -1,8 +1,8 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("NutrientCalculator", function(MilkSold, CowsPurchased, CowsCulled, FarmData) {
-    var NutrientCalculator = {};
-    NutrientCalculator.load = function(farmData) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, FarmData) {
+    var nutrientCalculator = {};
+    nutrientCalculator.load = function(farmData) {
         if (!FarmData.isFarmData(farmData)) {
             return undefined;
         }
@@ -15,18 +15,18 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         }
         return farmData;
     };
-    NutrientCalculator.milkSold = MilkSold;
-    NutrientCalculator.cowsPurchased = CowsPurchased;
-    NutrientCalculator.cowsCulled = CowsCulled;
-    window.farmbuild.nutrientcalculator = NutrientCalculator;
-    return NutrientCalculator;
+    nutrientCalculator.milkSold = milkSold;
+    nutrientCalculator.cowsPurchased = cowsPurchased;
+    nutrientCalculator.cowsCulled = cowsCulled;
+    window.farmbuild.nutrientcalculator = nutrientCalculator;
+    return nutrientCalculator;
 });
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Validations, references) {
-    var CowsCulled = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
-    CowsCulled.calculate = function(cows) {
+angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, references) {
+    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
+    cowsCulled.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
             return undefined;
@@ -63,7 +63,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
             sulphurInKg: sulphurInKg
         };
     };
-    CowsCulled.addType = function(name, weight) {
+    cowsCulled.addType = function(name, weight) {
         if (!_isPositiveNumber(weight)) {
             return undefined;
         }
@@ -75,9 +75,9 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
             name: name,
             weight: weight
         });
-        return CowsCulled;
+        return cowsCulled;
     };
-    CowsCulled.removeTypeByName = function(name) {
+    cowsCulled.removeTypeByName = function(name) {
         if (!name) {
             return undefined;
         }
@@ -88,24 +88,24 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsCulled", function(Va
         });
         return _types;
     };
-    CowsCulled.removeTypeByIndex = function(index) {
+    cowsCulled.removeTypeByIndex = function(index) {
         if (!index || index < 0 || index > _types.length - 1) {
             return undefined;
         }
         _types.splice(index, 1);
         return _types;
     };
-    CowsCulled.types = function() {
+    cowsCulled.types = function() {
         return _types;
     };
-    return CowsCulled;
+    return cowsCulled;
 });
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function(Validations, references) {
-    var CowsPurchased = {}, _isPositiveNumber = Validations.isPositiveNumber, _isAlphanumeric = Validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
-    CowsPurchased.calculate = function(cows) {
+angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function(validations, references) {
+    var cowsPurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
+    cowsPurchased.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
             return undefined;
@@ -142,7 +142,7 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
             sulphurInKg: sulphurInKg
         };
     };
-    CowsPurchased.addType = function(name, weight) {
+    cowsPurchased.addType = function(name, weight) {
         if (!_isPositiveNumber(weight)) {
             return undefined;
         }
@@ -154,9 +154,9 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
             name: name,
             weight: weight
         });
-        return CowsPurchased;
+        return cowsPurchased;
     };
-    CowsPurchased.removeTypeByName = function(name) {
+    cowsPurchased.removeTypeByName = function(name) {
         if (!name) {
             return undefined;
         }
@@ -167,24 +167,24 @@ angular.module("farmbuild.nutrientCalculator").factory("CowsPurchased", function
         });
         return _types;
     };
-    CowsPurchased.removeTypeByIndex = function(index) {
+    cowsPurchased.removeTypeByIndex = function(index) {
         if (!index || index < 0 || index > _types.length - 1) {
             return undefined;
         }
         _types.splice(index, 1);
         return _types;
     };
-    CowsPurchased.types = function() {
+    cowsPurchased.types = function() {
         return _types;
     };
-    return CowsPurchased;
+    return cowsPurchased;
 });
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Validations) {
-    var MilkSold = {}, _isPositiveNumber = Validations.isPositiveNumber;
-    MilkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
+angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(validations) {
+    var milkSold = {}, _isPositiveNumber = validations.isPositiveNumber;
+    milkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
         var milkProteinInKg, milkFatInKg;
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {
             return undefined;
@@ -196,7 +196,7 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
         milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
         return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
     };
-    MilkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
+    milkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
         var milkProteinPercentage, milkFatPercentage;
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, "kg")) {
             return undefined;
@@ -247,23 +247,23 @@ angular.module("farmbuild.nutrientCalculator").factory("MilkSold", function(Vali
     function _percentageToKg(valuePercentage, totalInLitre) {
         return valuePercentage * totalInLitre / 100;
     }
-    return MilkSold;
+    return milkSold;
 });
 
-angular.module("farmbuild.nutrientCalculator").factory("Validations", function($log) {
-    var Validations = {};
-    Validations.isPositiveNumber = function(value) {
+angular.module("farmbuild.nutrientCalculator").factory("validations", function($log) {
+    var validations = {};
+    validations.isPositiveNumber = function(value) {
         return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) > 0;
     };
-    Validations.isAlphabet = function(value) {
+    validations.isAlphabet = function(value) {
         var regex = /^[A-Za-z]+$/gi;
         return regex.test(value);
     };
-    Validations.isAlphanumeric = function(value) {
+    validations.isAlphanumeric = function(value) {
         var regex = /^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9 _]*$/gi;
         return regex.test(value);
     };
-    return Validations;
+    return validations;
 });
 
 angular.module("farmbuild.nutrientCalculator").constant("references", {
@@ -287,7 +287,7 @@ angular.module("farmbuild.nutrientCalculator").constant("references", {
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").run(function(NutrientCalculator) {});
+angular.module("farmbuild.nutrientCalculator").run(function(nutrientCalculator) {});
 
 if (typeof window.farmbuild === "undefined") {
     window.farmbuild = {

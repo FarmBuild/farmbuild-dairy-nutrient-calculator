@@ -8,7 +8,6 @@ module.exports = function(config){
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/farmbuild-farmdata/dist/farmbuild-farmdata.js',
       'src/nutrient-calculator.js',
-      'src/google-analytic/index.src.js',
       'src/references.conf.src.js',
       'src/cows-purchased/index.src.js',
       'src/cows-culled/index.src.js',

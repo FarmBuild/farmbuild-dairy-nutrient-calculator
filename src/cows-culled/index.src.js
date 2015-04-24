@@ -9,27 +9,27 @@
 'use strict';
 
 /**
- * nutrientCalculator/CowsCulled class
- * @module nutrientCalculator/CowsCulled
+ * nutrientCalculator/cowsCulled class
+ * @module nutrientCalculator/cowsCulled
  */
 angular.module('farmbuild.nutrientCalculator')
 	
-	.factory('CowsCulled', function (Validations, references) {
+	.factory('cowsCulled', function (validations, references) {
 		
-		var CowsCulled = {},
-			_isPositiveNumber = Validations.isPositiveNumber,
-			_isAlphanumeric = Validations.isAlphanumeric,
+		var cowsCulled = {},
+			_isPositiveNumber = validations.isPositiveNumber,
+			_isAlphanumeric = validations.isAlphanumeric,
 			_types = angular.copy(references.cowTypes);
 		
 		/**
-		 * Calculates total nutrient imported on to the farm in cows
+		 * Calculates total nutrient exported from the farm in cows culled
 		 * @method calculate
 		 * @param {!array} cows - Array of culled cows, each item contains details of the cow {type{name, weight}, numberOfCows}
 		 * @returns {object} nutrient data of cows culled
 		 * @public
 		 * @static
 		 */
-		CowsCulled.calculate = function (cows) {
+		cowsCulled.calculate = function (cows) {
 			var numberOfCows = 0,
 				weight = 0,
 				nitrogenInKg = 0,
@@ -93,11 +93,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @method addType
 		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
 		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} CowsCulled - useful for chaining multiple add()
+		 * @returns {object} cowsCulled - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		CowsCulled.addType = function (name, weight) {
+		cowsCulled.addType = function (name, weight) {
 			if (!_isPositiveNumber(weight)) {
 				return undefined;
 			}
@@ -113,18 +113,18 @@ angular.module('farmbuild.nutrientCalculator')
 				weight: weight
 			});
 			
-			return CowsCulled;
+			return cowsCulled;
 		};
 		
 		/**
 		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
 		 * @method removeTypeByName
 		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} CowsCulled - useful for chaining functions
+		 * @returns {Object} cowsCulled - useful for chaining functions
 		 * @public
 		 * @static
 		 */
-		CowsCulled.removeTypeByName = function (name) {
+		cowsCulled.removeTypeByName = function (name) {
 			
 			if (!name) {
 				return undefined;
@@ -143,11 +143,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * Remove this cow from cow types
 		 * @method removeTypeByIndex
 		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
-		 * @returns {Object} CowsCulled - useful for chaining functions
+		 * @returns {Object} cowsCulled - useful for chaining functions
 		 * @public
 		 * @static
 		 */
-		CowsCulled.removeTypeByIndex = function (index) {
+		cowsCulled.removeTypeByIndex = function (index) {
 			
 			if (!index || index < 0 || index > _types.length-1) {
 				return undefined;
@@ -166,10 +166,10 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsCulled.types = function () {
+		cowsCulled.types = function () {
 			return _types;
 		};
 		
-		return CowsCulled;
+		return cowsCulled;
 		
 	});

@@ -5,13 +5,13 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	})
 
-	.controller('FarmCtrl', function ($scope, NutrientCalculator) {
+	.controller('FarmCtrl', function ($scope, nutrientCalculator) {
 
 		$scope.farmData = {};
 
 		$scope.load = function ($fileContent) {
 			try {
-				$scope.farmData = NutrientCalculator.load(angular.fromJson($fileContent));
+				$scope.farmData = nutrientCalculator.load(angular.fromJson($fileContent));
 			} catch(e){
 				console.error('farmbuild.nutrientCalculator.examples > load: Your file should be in json format')
 			}
@@ -19,7 +19,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		$scope.milkSold = function () {
 			$scope.farmData.nutrientCalculator.milkSold =
-				NutrientCalculator.milkSold.calculateByPercent(
+				nutrientCalculator.milkSold.calculateByPercent(
 					$scope.farmData.nutrientCalculator.milkSold.totalPerYearInLitre,
 					$scope.farmData.nutrientCalculator.milkSold.proteinPercentage,
 					$scope.farmData.nutrientCalculator.milkSold.fatPercentage)

@@ -1,25 +1,25 @@
 angular.module('farmbuild.nutrientCalculator')
-  .factory('Validations',
+  .factory('validations',
   function ($log) {
 
-    var Validations = {};
+    var validations = {};
 
-    Validations.isPositiveNumber = function(value) {
+    validations.isPositiveNumber = function(value) {
       return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) > 0;
     };
 
-    Validations.isAlphabet =  function(value){
+    validations.isAlphabet =  function(value){
       var regex = /^[A-Za-z]+$/ig;
       return regex.test(value);
     };
 
-    Validations.isAlphanumeric =  function(value){
+    validations.isAlphanumeric =  function(value){
       var regex = /^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9 _]*$/ig;
       return regex.test(value);
     };
 
 
-    return Validations;
+    return validations;
 
   }
 );

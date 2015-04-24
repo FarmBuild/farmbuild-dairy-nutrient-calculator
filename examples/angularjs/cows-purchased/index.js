@@ -6,17 +6,17 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
-	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, CowsPurchased, Validations) {
+	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, cowsPurchased, validations) {
 
-		var isPositiveNumber = Validations.isPositiveNumber;
+		var isPositiveNumber = validations.isPositiveNumber;
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.cows = [];
 		$scope.noResult = false;
-		$scope.cowTypes = CowsPurchased.types();
+		$scope.cowTypes = cowsPurchased.types();
 
 
 		$scope.calculate = function (cows, form) {
-			$scope.result = CowsPurchased.calculate(cows);
+			$scope.result = cowsPurchased.calculate(cows);
 			$scope.noResult = !$scope.result;
 		};
 
@@ -28,8 +28,8 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 				return;
 			}
 
-			$scope.noResult = !CowsPurchased.addType(type.name, type.weight);
-			$scope.cowTypes = CowsPurchased.types();
+			$scope.noResult = !cowsPurchased.addType(type.name, type.weight);
+			$scope.cowTypes = cowsPurchased.types();
 			$scope.type = '';
 		};
 		

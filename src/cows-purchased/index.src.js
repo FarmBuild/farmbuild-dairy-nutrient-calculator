@@ -9,16 +9,16 @@
 'use strict';
 
 /**
- * nutrientCalculator/CowsPurchased class
- * @module nutrientCalculator/CowsPurchased
+ * nutrientCalculator/cowsPurchased class
+ * @module nutrientCalculator/cowsPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('CowsPurchased', function (Validations, references) {
+	.factory('cowsPurchased', function (validations, references) {
 
-		var CowsPurchased = {},
-			_isPositiveNumber = Validations.isPositiveNumber,
-			_isAlphanumeric = Validations.isAlphanumeric,
+		var cowsPurchased = {},
+			_isPositiveNumber = validations.isPositiveNumber,
+			_isAlphanumeric = validations.isAlphanumeric,
 			_types = angular.copy(references.cowTypes);
 
 		/**
@@ -29,7 +29,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsPurchased.calculate = function (cows) {
+		cowsPurchased.calculate = function (cows) {
 			var numberOfCows = 0,
 				weight = 0,
 				nitrogenInKg = 0,
@@ -93,11 +93,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @method addType
 		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
 		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} CowsPurchased - useful for chaining multiple add()
+		 * @returns {object} cowsPurchased - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		CowsPurchased.addType = function (name, weight) {
+		cowsPurchased.addType = function (name, weight) {
 			if (!_isPositiveNumber(weight)) {
 				return undefined;
 			}
@@ -113,7 +113,7 @@ angular.module('farmbuild.nutrientCalculator')
 				weight: weight
 			});
 
-			return CowsPurchased;
+			return cowsPurchased;
 		};
 		
 				/**
@@ -124,7 +124,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsPurchased.removeTypeByName = function (name) {
+		cowsPurchased.removeTypeByName = function (name) {
 
 			if (!name) {
 				return undefined;
@@ -147,7 +147,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsPurchased.removeTypeByIndex = function (index) {
+		cowsPurchased.removeTypeByIndex = function (index) {
 
 			if (!index || index < 0 || index > _types.length-1) {
 				return undefined;
@@ -166,10 +166,10 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		CowsPurchased.types = function () {
+		cowsPurchased.types = function () {
 			return _types;
 		};
 
-		return CowsPurchased;
+		return cowsPurchased;
 
 	});

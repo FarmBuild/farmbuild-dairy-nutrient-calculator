@@ -14,8 +14,8 @@
  */
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 
-	.factory('NutrientCalculator', function (MilkSold, CowsPurchased, CowsCulled, FarmData) {
-		var NutrientCalculator = {};
+	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, FarmData) {
+		var nutrientCalculator = {};
 
 		/**
 		 * Adds nutrientCalculator block to farmData
@@ -25,7 +25,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		 * @public
 		 * @static
 		 */
-		NutrientCalculator.load = function (farmData) {
+		nutrientCalculator.load = function (farmData) {
 			if (!FarmData.isFarmData(farmData)) {
 				return undefined;
 			}
@@ -41,11 +41,11 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		};
 
 		// Provide a shortcut for modules
-		NutrientCalculator.milkSold = MilkSold;
-		NutrientCalculator.cowsPurchased = CowsPurchased;
-		NutrientCalculator.cowsCulled = CowsCulled;
+		nutrientCalculator.milkSold = milkSold;
+		nutrientCalculator.cowsPurchased = cowsPurchased;
+		nutrientCalculator.cowsCulled = cowsCulled;
 
-		window.farmbuild.nutrientcalculator = NutrientCalculator;
+		window.farmbuild.nutrientcalculator = nutrientCalculator;
 
-		return NutrientCalculator;
+		return nutrientCalculator;
 	});

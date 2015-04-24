@@ -1,7 +1,7 @@
 'use strict';
 
 // Inject modules
-angular.module('farmbuild.nutrientCalculator').run(function(NutrientCalculator){});
+angular.module('farmbuild.nutrientCalculator').run(function(nutrientCalculator){});
 
 if(typeof window.farmbuild === 'undefined') {
 	window.farmbuild = {
