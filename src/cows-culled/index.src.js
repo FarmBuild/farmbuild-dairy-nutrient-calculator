@@ -9,7 +9,7 @@
 'use strict';
 
 /**
- * nutrientCalculator/cowsCulled class
+ * nutrientCalculator/cowsCulled singleton
  * @module nutrientCalculator/cowsCulled
  */
 angular.module('farmbuild.nutrientCalculator')
