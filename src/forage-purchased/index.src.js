@@ -36,12 +36,12 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg = 0,
 				potassiumInKg = 0,
 				sulphurInKg = 0,
-				MEInKg = 0,
+				meInKg = 0,
 				nitrogenPercentage = 2.88,
 				phosphorusPercentage = 0.33,
 				potassiumPercentage = 2.29,
 				sulphurPercentage = 0.57,
-				MEPercentage = 9.06,
+				mePercentage = 9.06,
 				incomings = [],
 				i = 0;
 
@@ -80,13 +80,13 @@ angular.module('farmbuild.nutrientCalculator')
 			return {
 				forages: incomings,
 				weight: totalWeight,
-				DMWeight: totalDMWeight,
+				dmWeight: totalDMWeight,
 				nitrogenInKg: nitrogenInKg,
 				phosphorusInKg: phosphorusInKg,
 				potassiumInKg: potassiumInKg,
 				sulphurInKg: sulphurInKg,
-				MEPercentage: MEPercentage,
-				MEInKg: MEInKg
+				mePercentage: mePercentage,
+				meInKg: meInKg
 			};
 
 		};

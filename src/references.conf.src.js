@@ -24,6 +24,15 @@ angular.module('farmbuild.nutrientCalculator').
 		],
 
 		forageTypes: [
+			{
+				name: 'Cereal hay',
+				mePercentage: 8.32,
+				wetRatio: 84.74,
+				sulphurPercentage: 0.17,
+				potassiumPercentage: 1.83,
+				phosphorusPercentage: 0.22,
+				nitrogenPercentage: 1.54
+			},
 			'Average crop',
 			'Average hay',
 			'Average silage',

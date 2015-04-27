@@ -14,8 +14,11 @@
  */
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragePurchased, FarmData) {
+	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragePurchased, FarmData, $log) {
 		var nutrientCalculator = {};
+
+		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+		console.log(window.farmbuild.nutrientcalculator);
 
 		/**
 		 * Adds nutrientCalculator block to farmData
@@ -45,8 +48,15 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		nutrientCalculator.cowsPurchased = cowsPurchased;
 		nutrientCalculator.cowsCulled = cowsCulled;
 		nutrientCalculator.foragePurchased = foragePurchased;
+		nutrientCalculator.version = '0.1.0';
 
-		window.farmbuild.nutrientcalculator = nutrientCalculator;
+		if(typeof window.farmbuild === 'undefined') {
+			window.farmbuild = {
+				nutrientcalculator: nutrientCalculator
+			};
+		} else {
+			window.farmbuild.nutrientcalculator = nutrientCalculator;
+		}
 
 		return nutrientCalculator;
 	});

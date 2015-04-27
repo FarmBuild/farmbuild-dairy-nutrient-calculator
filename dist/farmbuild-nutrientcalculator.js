@@ -1,7 +1,9 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragePurchased, FarmData) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragePurchased, FarmData, $log) {
     var nutrientCalculator = {};
+    $log.info("Welcome to Farm Dairy Nutrient Calculator ...");
+    console.log(window.farmbuild.nutrientcalculator);
     nutrientCalculator.load = function(farmData) {
         if (!FarmData.isFarmData(farmData)) {
             return undefined;
@@ -19,7 +21,14 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.cowsPurchased = cowsPurchased;
     nutrientCalculator.cowsCulled = cowsCulled;
     nutrientCalculator.foragePurchased = foragePurchased;
-    window.farmbuild.nutrientcalculator = nutrientCalculator;
+    nutrientCalculator.version = "0.1.0";
+    if (typeof window.farmbuild === "undefined") {
+        window.farmbuild = {
+            nutrientcalculator: nutrientCalculator
+        };
+    } else {
+        window.farmbuild.nutrientcalculator = nutrientCalculator;
+    }
     return nutrientCalculator;
 });
 
@@ -186,7 +195,7 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
 angular.module("farmbuild.nutrientCalculator").factory("foragePurchased", function(validations, references) {
     var foragePurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.forageTypes);
     foragePurchased.calculate = function(forages) {
-        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, MEInKg = 0, nitrogenPercentage = 2.88, phosphorusPercentage = .33, potassiumPercentage = 2.29, sulphurPercentage = .57, MEPercentage = 9.06, incomings = [], i = 0;
+        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, meInKg = 0, nitrogenPercentage = 2.88, phosphorusPercentage = .33, potassiumPercentage = 2.29, sulphurPercentage = .57, mePercentage = 9.06, incomings = [], i = 0;
         if (!forages || forages.length === 0) {
             return undefined;
         }
@@ -214,13 +223,13 @@ angular.module("farmbuild.nutrientCalculator").factory("foragePurchased", functi
         return {
             forages: incomings,
             weight: totalWeight,
-            DMWeight: totalDMWeight,
+            dmWeight: totalDMWeight,
             nitrogenInKg: nitrogenInKg,
             phosphorusInKg: phosphorusInKg,
             potassiumInKg: potassiumInKg,
             sulphurInKg: sulphurInKg,
-            MEPercentage: MEPercentage,
-            MEInKg: MEInKg
+            mePercentage: mePercentage,
+            meInKg: meInKg
         };
     };
     foragePurchased.types = function() {
@@ -332,19 +341,19 @@ angular.module("farmbuild.nutrientCalculator").constant("references", {
         name: "Bobby calve",
         weight: 40
     } ],
-    forageTypes: [ "Average crop", "Average hay", "Average silage", "Average straw", "Brassica crop", "Canola hay", "Canola silage", "Cereal hay", "Cereal silage", "Cereal straw", "Clover hay", "Forage blend", "Kikuyu pasture", "Kikuyu silage", "Lucerne hay", "Lucerne pasture", "Lucerne silage", "Maize silage", "Millett crop", "Oat Hay", "Oats & peas silage", "Paspalum silage", "Pasture hay", "Pasture silage", "Prairie grass silage", "Ryegrass pasture", "Seteria silage", "Sorghum crop", "Sorghum hay", "Sorghum/millet hay", "Sorghum/millet silage", "Turnip crop" ]
+    forageTypes: [ {
+        name: "Cereal hay",
+        mePercentage: 8.32,
+        wetRatio: 84.74,
+        sulphurPercentage: .17,
+        potassiumPercentage: 1.83,
+        phosphorusPercentage: .22,
+        nitrogenPercentage: 1.54
+    }, "Average crop", "Average hay", "Average silage", "Average straw", "Brassica crop", "Canola hay", "Canola silage", "Cereal hay", "Cereal silage", "Cereal straw", "Clover hay", "Forage blend", "Kikuyu pasture", "Kikuyu silage", "Lucerne hay", "Lucerne pasture", "Lucerne silage", "Maize silage", "Millett crop", "Oat Hay", "Oats & peas silage", "Paspalum silage", "Pasture hay", "Pasture silage", "Prairie grass silage", "Ryegrass pasture", "Seteria silage", "Sorghum crop", "Sorghum hay", "Sorghum/millet hay", "Sorghum/millet silage", "Turnip crop" ]
 });
 
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").run(function(nutrientCalculator) {});
-
-if (typeof window.farmbuild === "undefined") {
-    window.farmbuild = {
-        nutrientcalculator: {}
-    };
-} else {
-    window.farmbuild.nutrientcalculator = {};
-}
 
 angular.injector([ "ng", "farmbuild.nutrientCalculator" ]);
