@@ -9,14 +9,14 @@
 'use strict';
 
 /**
- * nutrientCalculator/foragePurchased singleton
- * @module nutrientCalculator/foragePurchased
+ * nutrientCalculator/foragesPurchased singleton
+ * @module nutrientCalculator/foragesPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('foragePurchased', function (validations, references) {
+	.factory('foragesPurchased', function (validations, references) {
 
-		var foragePurchased = {},
+		var foragesPurchased = {},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
 			_types = angular.copy(references.forageTypes);
@@ -24,12 +24,12 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates total nutrient imported on to the farm in forages
 		 * @method calculate
-		 * @param {!array} forages - Array of purchased forages, each item contains details of the forage {type, amountPerYearInTonne, wet}
+		 * @param {!array} forages - Array of purchased forages, each item contains details of the forage {type, weight, isDry}
 		 * @returns {object} nutrient data of forages purchased
 		 * @public
 		 * @static
 		 */
-		foragePurchased.calculate = function (forages) {
+		foragesPurchased.calculate = function (forages) {
 			var totalWeight = 0,
 				totalDMWeight = 0,
 				nitrogenInKg = 0,
@@ -37,11 +37,11 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumInKg = 0,
 				sulphurInKg = 0,
 				meInKg = 0,
-				nitrogenPercentage = 2.88,
-				phosphorusPercentage = 0.33,
-				potassiumPercentage = 2.29,
-				sulphurPercentage = 0.57,
-				mePercentage = 9.06,
+				nitrogenPercentage = 0,
+				phosphorusPercentage = 0,
+				potassiumPercentage = 0,
+				sulphurPercentage = 0,
+				mePercentage = 0,
 				incomings = [],
 				i = 0;
 
@@ -83,12 +83,63 @@ angular.module('farmbuild.nutrientCalculator')
 				dmWeight: totalDMWeight,
 				nitrogenInKg: nitrogenInKg,
 				phosphorusInKg: phosphorusInKg,
+				phosphorusPercentage: phosphorusPercentage,
 				potassiumInKg: potassiumInKg,
+				potassiumPercentage: potassiumPercentage,
 				sulphurInKg: sulphurInKg,
-				mePercentage: mePercentage,
-				meInKg: meInKg
+				sulphurPercentage: sulphurPercentage,
+				meInKg: meInKg,
+				mePercentage: mePercentage
 			};
 
+		};
+		
+		/**
+		 * Adds a new forage type for nutrient calculation
+		 * @method addType
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} mePercentage - value must be > 0
+		 * @param {!number} dryMatterPercentage - value must be > 0
+		 * @param {!number} sulphurPercentage - value must be > 0
+		 * @param {!number} potassiumPercentage - value must be > 0
+		 * @param {!number} phosphorusPercentage - value must be > 0
+		 * @param {!number} nitrogenPercentage - value must be > 0
+		 * @returns {object} foragesPurchased - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		foragesPurchased.addType = function (name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			if (!_isPositiveNumber(mePercentage) ||
+				!_isPositiveNumber(dryMatterPercentage) ||
+				!_isPositiveNumber(sulphurPercentage) ||
+				!_isPositiveNumber(potassiumPercentage) ||
+				!_isPositiveNumber(phosphorusPercentage) ||
+				!_isPositiveNumber(nitrogenPercentage)) {
+				return undefined;
+			}
+			
+			if (!name || !_isAlphanumeric(name)) {
+				return undefined;
+			}
+			
+			mePercentage = parseFloat(mePercentage);
+			dryMatterPercentage = parseFloat(dryMatterPercentage);
+			sulphurPercentage = parseFloat(sulphurPercentage);
+			potassiumPercentage = parseFloat(potassiumPercentage);
+			phosphorusPercentage = parseFloat(phosphorusPercentage);
+			nitrogenPercentage = parseFloat(nitrogenPercentage);
+
+			_types.push({
+				name: name,
+				mePercentage: parseFloat(mePercentage),
+				dryMatterPercentage: parseFloat(dryMatterPercentage),
+				sulphurPercentage: parseFloat(sulphurPercentage),
+				potassiumPercentage: parseFloat(potassiumPercentage),
+				phosphorusPercentage: parseFloat(phosphorusPercentage),
+				nitrogenPercentage: parseFloat(nitrogenPercentage)
+			});
+			
+			return foragesPurchased;
 		};
 
 
@@ -99,11 +150,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		foragePurchased.types = function () {
+		foragesPurchased.types = function () {
 			return _types;
 		};
 
-		return foragePurchased;
+		return foragesPurchased;
 	});
 
 //function Calculate_Forage_Nutrient_(section) {
