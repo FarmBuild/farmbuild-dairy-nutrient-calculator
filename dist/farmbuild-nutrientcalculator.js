@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragePurchased, FarmData) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, FarmData) {
     var nutrientCalculator = {};
     nutrientCalculator.load = function(farmData) {
         if (!FarmData.isFarmData(farmData)) {
@@ -179,54 +179,6 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
         return _types;
     };
     return cowsPurchased;
-});
-
-"use strict";
-
-angular.module("farmbuild.nutrientCalculator").factory("foragePurchased", function(validations, references) {
-    var foragePurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.forageTypes);
-    foragePurchased.calculate = function(forages) {
-        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, MEInKg = 0, nitrogenPercentage = 2.88, phosphorusPercentage = .33, potassiumPercentage = 2.29, sulphurPercentage = .57, MEPercentage = 9.06, incomings = [], i = 0;
-        if (!forages || forages.length === 0) {
-            return undefined;
-        }
-        for (i; i < forages.length; i++) {
-            var weight, forage = forages[i], isDry;
-            if (!forage.name || !forage.weight) {
-                return undefined;
-            }
-            weight = forage.weight;
-            isDry = forage.isDry;
-            if (!_isPositiveNumber(weight)) {
-                return undefined;
-            }
-            totalWeight += weight;
-            nitrogenInKg += nitrogenPercentage * weight / 100;
-            phosphorusInKg += phosphorusPercentage * weight / 100;
-            potassiumInKg += potassiumPercentage * weight / 100;
-            sulphurInKg += sulphurPercentage * weight / 100;
-            incomings.push({
-                name: forage.name,
-                weight: forage.weight,
-                isDry: forage.isDry
-            });
-        }
-        return {
-            forages: incomings,
-            weight: totalWeight,
-            DMWeight: totalDMWeight,
-            nitrogenInKg: nitrogenInKg,
-            phosphorusInKg: phosphorusInKg,
-            potassiumInKg: potassiumInKg,
-            sulphurInKg: sulphurInKg,
-            MEPercentage: MEPercentage,
-            MEInKg: MEInKg
-        };
-    };
-    foragePurchased.types = function() {
-        return _types;
-    };
-    return foragePurchased;
 });
 
 "use strict";
