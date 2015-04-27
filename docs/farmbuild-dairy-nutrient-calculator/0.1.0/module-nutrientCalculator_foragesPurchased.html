@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/milkSold - Documentation</title>
+    <title>nutrientCalculator/foragesPurchased - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/milkSold</h1>
+    <h1 class="page-title">nutrientCalculator/foragesPurchased</h1>
     
 
     
@@ -50,7 +50,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>nutrientCalculator/milkSold singleton</p></div>
+            <div class="description"><p>nutrientCalculator/foragesPurchased singleton</p></div>
         
 
         
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line11">line 11</a>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -149,14 +149,14 @@
 
     
 
-    <h4 class="name" id=".calculateByKg"><span class="type-signature">(static) </span>calculateByKg<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkFatInKg<span class="signature-attributes">non-null</span>, milkProteinInKg<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".addType"><span class="type-signature">(static) </span>addType<span class="signature">(name<span class="signature-attributes">non-null</span>, mePercentage<span class="signature-attributes">non-null</span>, dryMatterPercentage<span class="signature-attributes">non-null</span>, sulphurPercentage<span class="signature-attributes">non-null</span>, potassiumPercentage<span class="signature-attributes">non-null</span>, phosphorusPercentage<span class="signature-attributes">non-null</span>, nitrogenPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Calculates nutrient from milk sold, input values are in Kg</p>
+    <p>Adds a new forage type for nutrient calculation</p>
 </div>
 
 
@@ -192,13 +192,13 @@
 
         <tr>
             
-                <td class="name"><code>milkSoldPerYearInLitre</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -208,14 +208,14 @@
 
             
 
-            <td class="description last"><p>Quantity of milk sold in a year in litre, value must be &gt; 0</p></td>
+            <td class="description last"><p>name of new type, can only contain alphanumeric values with space or underscore but no other special characters</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>milkFatInKg</code></td>
+                <td class="name"><code>mePercentage</code></td>
             
 
             <td class="type">
@@ -231,14 +231,14 @@
 
             
 
-            <td class="description last"><p>Quantity of milk fat in Kg, value must be &gt; 0</p></td>
+            <td class="description last"><p>value must be &gt; 0</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>milkProteinInKg</code></td>
+                <td class="name"><code>dryMatterPercentage</code></td>
             
 
             <td class="type">
@@ -254,7 +254,99 @@
 
             
 
-            <td class="description last"><p>Quantity of milk protein in Kg, value must be &gt; 0</p></td>
+            <td class="description last"><p>value must be &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sulphurPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value must be &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>potassiumPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value must be &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>phosphorusPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value must be &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nitrogenPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value must be &gt; 0</p></td>
         </tr>
 
     
@@ -295,7 +387,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line49">line 49</a>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -322,7 +414,7 @@
 
         
 <div class="param-desc">
-    <p>milk nutrient data</p>
+    <p>foragesPurchased - useful for chaining multiple add()</p>
 </div>
 
 
@@ -348,14 +440,14 @@
 
     
 
-    <h4 class="name" id=".calculateByPercent"><span class="type-signature">(static) </span>calculateByPercent<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkProteinPercentage<span class="signature-attributes">non-null</span>, milkFatPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(forages<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Calculates nutrient from milk sold, input values are in percentage</p>
+    <p>Calculates total nutrient imported on to the farm in forages</p>
 </div>
 
 
@@ -391,13 +483,13 @@
 
         <tr>
             
-                <td class="name"><code>milkSoldPerYearInLitre</code></td>
+                <td class="name"><code>forages</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">array</span>
 
 
             
@@ -407,53 +499,7 @@
 
             
 
-            <td class="description last"><p>Quantity of milk sold in a year in litre, value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkProteinPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Percentage of milk protein, value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkFatPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Percentage of milk fat, value must be &gt; 0</p></td>
+            <td class="description last"><p>Array of purchased forages, each item contains details of the forage {type, weight, isDry}</p></td>
         </tr>
 
     
@@ -494,7 +540,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line22">line 22</a>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -521,7 +567,111 @@
 
         
 <div class="param-desc">
-    <p>milk nutrient data</p>
+    <p>nutrient data of forages purchased</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns current cow types</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line146">line 146</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Types - cow types array</p>
 </div>
 
 

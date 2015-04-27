@@ -192,10 +192,10 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("foragePurchased", function(validations, references) {
-    var foragePurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.forageTypes);
-    foragePurchased.calculate = function(forages) {
-        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, meInKg = 0, nitrogenPercentage = 2.88, phosphorusPercentage = .33, potassiumPercentage = 2.29, sulphurPercentage = .57, mePercentage = 9.06, incomings = [], i = 0;
+angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", function(validations, references) {
+    var foragesPurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.forageTypes);
+    foragesPurchased.calculate = function(forages) {
+        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, meInKg = 0, nitrogenPercentage = 0, phosphorusPercentage = 0, potassiumPercentage = 0, sulphurPercentage = 0, mePercentage = 0, incomings = [], i = 0;
         if (!forages || forages.length === 0) {
             return undefined;
         }
@@ -226,16 +226,43 @@ angular.module("farmbuild.nutrientCalculator").factory("foragePurchased", functi
             dmWeight: totalDMWeight,
             nitrogenInKg: nitrogenInKg,
             phosphorusInKg: phosphorusInKg,
+            phosphorusPercentage: phosphorusPercentage,
             potassiumInKg: potassiumInKg,
+            potassiumPercentage: potassiumPercentage,
             sulphurInKg: sulphurInKg,
-            mePercentage: mePercentage,
-            meInKg: meInKg
+            sulphurPercentage: sulphurPercentage,
+            meInKg: meInKg,
+            mePercentage: mePercentage
         };
     };
-    foragePurchased.types = function() {
+    foragesPurchased.addType = function(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+        if (!_isPositiveNumber(mePercentage) || !_isPositiveNumber(dryMatterPercentage) || !_isPositiveNumber(sulphurPercentage) || !_isPositiveNumber(potassiumPercentage) || !_isPositiveNumber(phosphorusPercentage) || !_isPositiveNumber(nitrogenPercentage)) {
+            return undefined;
+        }
+        if (!name || !_isAlphanumeric(name)) {
+            return undefined;
+        }
+        mePercentage = parseFloat(mePercentage);
+        dryMatterPercentage = parseFloat(dryMatterPercentage);
+        sulphurPercentage = parseFloat(sulphurPercentage);
+        potassiumPercentage = parseFloat(potassiumPercentage);
+        phosphorusPercentage = parseFloat(phosphorusPercentage);
+        nitrogenPercentage = parseFloat(nitrogenPercentage);
+        _types.push({
+            name: name,
+            mePercentage: parseFloat(mePercentage),
+            dryMatterPercentage: parseFloat(dryMatterPercentage),
+            sulphurPercentage: parseFloat(sulphurPercentage),
+            potassiumPercentage: parseFloat(potassiumPercentage),
+            phosphorusPercentage: parseFloat(phosphorusPercentage),
+            nitrogenPercentage: parseFloat(nitrogenPercentage)
+        });
+        return foragesPurchased;
+    };
+    foragesPurchased.types = function() {
         return _types;
     };
-    return foragePurchased;
+    return foragesPurchased;
 });
 
 "use strict";
@@ -342,14 +369,87 @@ angular.module("farmbuild.nutrientCalculator").constant("references", {
         weight: 40
     } ],
     forageTypes: [ {
+        name: "Average crop",
+        mePercentage: 9.75,
+        dryMatterPercentage: 44.45,
+        sulphurPercentage: .5,
+        potassiumPercentage: 2.68,
+        phosphorusPercentage: .34,
+        nitrogenPercentage: 2.99,
+        unknown: 18.68
+    }, {
+        name: "Average hay",
+        mePercentage: 9.39,
+        dryMatterPercentage: 85,
+        sulphurPercentage: .23,
+        potassiumPercentage: 2.29,
+        phosphorusPercentage: .38,
+        nitrogenPercentage: 2.44,
+        unknown: 15.24
+    }, {
+        name: "Average silage",
+        mePercentage: 8.76,
+        dryMatterPercentage: 49.01,
+        sulphurPercentage: .27,
+        potassiumPercentage: 2.35,
+        phosphorusPercentage: .34,
+        nitrogenPercentage: 2.12,
+        unknown: 13.25
+    }, {
+        name: "Average straw",
+        mePercentage: 9.18,
+        dryMatterPercentage: 45.1,
+        sulphurPercentage: .28,
+        potassiumPercentage: 2.7,
+        phosphorusPercentage: .4,
+        nitrogenPercentage: 2.6,
+        unknown: 16.27
+    }, {
+        name: "Brassica crop",
+        mePercentage: 11.32,
+        dryMatterPercentage: 25.99,
+        sulphurPercentage: .64,
+        potassiumPercentage: 2.85,
+        phosphorusPercentage: .33,
+        nitrogenPercentage: 3.72,
+        unknown: 23.25
+    }, {
         name: "Cereal hay",
         mePercentage: 8.32,
-        wetRatio: 84.74,
+        dryMatterPercentage: 84.74,
         sulphurPercentage: .17,
         potassiumPercentage: 1.83,
         phosphorusPercentage: .22,
-        nitrogenPercentage: 1.54
-    }, "Average crop", "Average hay", "Average silage", "Average straw", "Brassica crop", "Canola hay", "Canola silage", "Cereal hay", "Cereal silage", "Cereal straw", "Clover hay", "Forage blend", "Kikuyu pasture", "Kikuyu silage", "Lucerne hay", "Lucerne pasture", "Lucerne silage", "Maize silage", "Millett crop", "Oat Hay", "Oats & peas silage", "Paspalum silage", "Pasture hay", "Pasture silage", "Prairie grass silage", "Ryegrass pasture", "Seteria silage", "Sorghum crop", "Sorghum hay", "Sorghum/millet hay", "Sorghum/millet silage", "Turnip crop" ]
+        nitrogenPercentage: 1.54,
+        unknown: 18
+    }, {
+        name: "Canola silage",
+        mePercentage: 9.45,
+        dryMatterPercentage: 23.77,
+        sulphurPercentage: .51,
+        potassiumPercentage: 2.88,
+        phosphorusPercentage: .3,
+        nitrogenPercentage: 2.75,
+        unknown: 17.2
+    }, {
+        name: "Cereal hay",
+        mePercentage: 8.32,
+        dryMatterPercentage: 84.74,
+        sulphurPercentage: .17,
+        potassiumPercentage: 1.83,
+        phosphorusPercentage: .22,
+        nitrogenPercentage: 1.54,
+        unknown: 9.6
+    }, {
+        name: "Cereal silage",
+        mePercentage: 9.14,
+        dryMatterPercentage: 36.28,
+        sulphurPercentage: .17,
+        potassiumPercentage: 2.02,
+        phosphorusPercentage: .35,
+        nitrogenPercentage: 2.02,
+        unknown: 12.61
+    }, "Cereal straw", "Clover hay", "Forage blend", "Kikuyu pasture", "Kikuyu silage", "Lucerne hay", "Lucerne pasture", "Lucerne silage", "Maize silage", "Millett crop", "Oat Hay", "Oats & peas silage", "Paspalum silage", "Pasture hay", "Pasture silage", "Prairie grass silage", "Ryegrass pasture", "Seteria silage", "Sorghum crop", "Sorghum hay", "Sorghum/millet hay", "Sorghum/millet silage", "Turnip crop" ]
 });
 
 "use strict";
