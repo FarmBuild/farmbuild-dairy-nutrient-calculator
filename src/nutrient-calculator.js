@@ -14,7 +14,7 @@
  */
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, FarmData) {
+	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragePurchased, FarmData) {
 		var nutrientCalculator = {};
 
 		/**
@@ -44,6 +44,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		nutrientCalculator.milkSold = milkSold;
 		nutrientCalculator.cowsPurchased = cowsPurchased;
 		nutrientCalculator.cowsCulled = cowsCulled;
+		nutrientCalculator.foragePurchased = foragePurchased;
 
 		window.farmbuild.nutrientcalculator = nutrientCalculator;
 

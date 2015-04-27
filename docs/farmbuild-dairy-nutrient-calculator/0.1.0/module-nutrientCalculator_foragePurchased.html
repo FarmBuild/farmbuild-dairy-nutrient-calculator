@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator - Documentation</title>
+    <title>nutrientCalculator/foragePurchased - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator</h1>
+    <h1 class="page-title">nutrientCalculator/foragePurchased</h1>
     
 
     
@@ -50,7 +50,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>nutrientCalculator</p></div>
+            <div class="description"><p>nutrientCalculator/foragePurchased singleton</p></div>
         
 
         
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line11">line 11</a>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -149,14 +149,14 @@
 
     
 
-    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(forages<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Adds nutrientCalculator block to farmData</p>
+    <p>Calculates total nutrient imported on to the farm in forages</p>
 </div>
 
 
@@ -192,13 +192,13 @@
 
         <tr>
             
-                <td class="name"><code>farmData</code></td>
+                <td class="name"><code>forages</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">array</span>
 
 
             
@@ -208,7 +208,7 @@
 
             
 
-            <td class="description last"><p>Saved farm data or default in case of new</p></td>
+            <td class="description last"><p>Array of purchased forages, each item contains details of the forage {type, amountPerYearInTonne, wet}</p></td>
         </tr>
 
     
@@ -249,7 +249,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line20">line 20</a>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -276,7 +276,111 @@
 
         
 <div class="param-desc">
-    <p>updated farmData</p>
+    <p>nutrient data of forages purchased</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns current cow types</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forage-purchased_index.src.js.html">forage-purchased/index.src.js</a>, <a href="forage-purchased_index.src.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Types - cow types array</p>
 </div>
 
 

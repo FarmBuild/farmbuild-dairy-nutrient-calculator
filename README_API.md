@@ -6,7 +6,6 @@ This is the dairy nutrient calculator module of farm build JavaScript library.
 ## Getting Started
 
 To get you started use the navigation on the left side of this page to explore different function of nutrient calculator.
-Functionalities are grouped based on usage
 
 
 ## Units

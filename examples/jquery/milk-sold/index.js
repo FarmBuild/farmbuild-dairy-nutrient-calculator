@@ -4,10 +4,6 @@ $(function(){
 
 	var nc = farmbuild.nutrientcalculator,
 		decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
-<<<<<<< HEAD
-	//nc.googleAnalytic.username = 'SpatialVision';
-=======
->>>>>>> origin/master
 
 	$('#app-version').text(farmbuild.examples.nutrientcalculator.version);
 
