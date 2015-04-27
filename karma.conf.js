@@ -13,6 +13,7 @@ module.exports = function(config){
       'src/cows-culled/index.src.js',
       'src/validations/index.src.js',
       'src/milk-sold/index.src.js',
+      'src/forage-purchased/index.src.js',
       'src/index.js',
       'src/*.js',
       'src/**/*.js'
