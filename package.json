@@ -32,7 +32,7 @@
     "protractor": "protractor protractor.conf.js",
     "clean": "rm -rf dist/* & rm -rf docs/*",
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json",
-    "version": "replace '@version 0.1.0' '@version 0.2.0' *",
+    "version": "node_modules/.bin/replace '@version {version}' '@version 0.1.1' src/*.js src/**/*.js",
     "jshint": " node_modules/.bin/jshint -c .jshintrc --filename src/**/*-src.js src/nutrient-calculator.js --verbose --show-non-errors",
     "concat": "uglifyjs src/nutrient-calculator.js src/**/*.src.js src/*.src.js src/index.js -o dist/farmbuild-nutrientcalculator.js -v -b",
     "uglify": "uglifyjs dist/farmbuild-nutrientcalculator.js --source-map dist/farmbuild-nutrientcalculator.min.js.map --source-map-url farmbuild-nutrientcalculator.min.js.map -o dist/farmbuild-nutrientcalculator.min.js -v -c",
