@@ -18,7 +18,6 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.milkSold = milkSold;
     nutrientCalculator.cowsPurchased = cowsPurchased;
     nutrientCalculator.cowsCulled = cowsCulled;
-    nutrientCalculator.foragePurchased = foragePurchased;
     window.farmbuild.nutrientcalculator = nutrientCalculator;
     return nutrientCalculator;
 });
