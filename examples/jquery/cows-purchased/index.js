@@ -103,7 +103,7 @@ $(function(){
 			//}
 
 			cows.push({
-				type: cowType.name,
+				name: cowType.name,
 				weight: cowType.weight,
 				numberOfCows: numberOfCows
 			});
@@ -137,9 +137,9 @@ $(function(){
 	
 	$("#calculateNutrient").click(function () {
 			//call the nutrient calculator API function
-			result = nc.cowsPurchased.calculate(cows);		
-			
-			noResult = !result;
+			result = nc.cowsPurchased.calculate(cows);
+						
+			//noResult = !result;
 			var resultNumberOfCows = $('#resultNumberOfCows');
 			var resultWeight = $('#resultWeight');
 			var resultPhosphorusInKg= $('#resultPhosphorusInKg');
