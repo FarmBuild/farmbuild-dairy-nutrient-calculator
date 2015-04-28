@@ -31,8 +31,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.5,
 				potassiumPercentage: 2.68,
 				phosphorusPercentage: 0.34,
-				nitrogenPercentage: 2.99,
-				unknown: 18.68
+				nitrogenPercentage: 2.99
 			},
 			{
 				name: 'Average hay',
@@ -41,8 +40,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.23,
 				potassiumPercentage: 2.29,
 				phosphorusPercentage: 0.38,
-				nitrogenPercentage: 2.44,
-				unknown: 15.24
+				nitrogenPercentage: 2.44
 			},
 			{
 				name: 'Average silage',
@@ -51,8 +49,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.27,
 				potassiumPercentage: 2.35,
 				phosphorusPercentage: 0.34,
-				nitrogenPercentage: 2.12,
-				unknown: 13.25
+				nitrogenPercentage: 2.12
 			},
 			{
 				name: 'Average straw',
@@ -61,8 +58,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.28,
 				potassiumPercentage: 2.7,
 				phosphorusPercentage: 0.4,
-				nitrogenPercentage: 2.6,
-				unknown: 16.27
+				nitrogenPercentage: 2.6
 			},
 			{
 				name: 'Brassica crop',
@@ -71,8 +67,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.64,
 				potassiumPercentage: 2.85,
 				phosphorusPercentage: 0.33,
-				nitrogenPercentage: 3.72,
-				unknown: 23.25
+				nitrogenPercentage: 3.72
 			},
 			{
 				name: 'Cereal hay',
@@ -81,8 +76,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.17,
 				potassiumPercentage: 1.83,
 				phosphorusPercentage: 0.22,
-				nitrogenPercentage: 1.54,
-				unknown: 18
+				nitrogenPercentage: 1.54
 			},
 			{
 				name: 'Canola silage',
@@ -91,8 +85,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.51,
 				potassiumPercentage: 2.88,
 				phosphorusPercentage: 0.3,
-				nitrogenPercentage: 2.75,
-				unknown: 17.2
+				nitrogenPercentage: 2.75
 			},
 			{
 				name: 'Cereal hay',
@@ -101,8 +94,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.17,
 				potassiumPercentage: 1.83,
 				phosphorusPercentage: 0.22,
-				nitrogenPercentage: 1.54,
-				unknown: 9.6
+				nitrogenPercentage: 1.54
 			},
 			{
 				name: 'Cereal silage',
@@ -111,8 +103,7 @@ angular.module('farmbuild.nutrientCalculator').
 				sulphurPercentage: 0.17,
 				potassiumPercentage: 2.02,
 				phosphorusPercentage: 0.35,
-				nitrogenPercentage: 2.02,
-				unknown: 12.61
+				nitrogenPercentage: 2.02
 			},
 			'Cereal straw',
 			'Clover hay',
