@@ -123,6 +123,26 @@ angular.module('farmbuild.nutrientCalculator')
 			};
 
 		};
+
+
+		function _validateForageType(forageType) {
+			$log.info('validating forageType  ...', forageType);
+
+			return !(!_isAlphanumeric(forageType.name) || !_isPositiveNumber(forageType.metabolisableEnergyPercentage) || !_isPositiveNumber(forageType.dryMatterPercentage) || !_isPositiveNumber(forageType.potassiumPercentage) || !_isPositiveNumber(forageType.phosphorusPercentage) || !_isPositiveNumber(forageType.nitrogenPercentage) || !_isPositiveNumber(forageType.sulphurPercentage));
+
+		}
+
+		function _createdForageType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			return {
+				name: name,
+				metabolisableEnergyPercentage: metabolisableEnergyPercentage,
+				dryMatterPercentage: dryMatterPercentage,
+				sulphurPercentage: sulphurPercentage,
+				potassiumPercentage: potassiumPercentage,
+				phosphorusPercentage: phosphorusPercentage,
+				nitrogenPercentage: nitrogenPercentage
+			};
+		}
 		
 		/**
 		 * Adds a new forage type for nutrient calculation
@@ -138,47 +158,97 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @private
 		 * @static
 		 */
-		function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+		function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+
 			var forageType = _createdForageType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
 			$log.info('adding forage type ...', forageType);
 
-			if (_validateForageType(forageType)) {
+			if (!_validateForageType(forageType)) {
+				return undefined;
+			}
+
+			//return xxx.add()
+
+			if (_isDefined(index)) {
+				_types.splice(index, 0, forageType)
+			} else {
 				_types.push(forageType);
 			}
 			
 			return foragesPurchased.types;
 		};
-		
+
 		
 		function _getTypeByIndex(index) {
-			var forageType = _types[index];
-			$log.info('getting forage type ...', forageType);
-			
+			var forageType;
+			$log.info('getting forage type at index: ', index);
+			if(!_isDefined(index) || index <0){
+				return undefined;
+			}
+
+			forageType = _types[index];
+
 			return forageType;
+		};
+
+
+		function _getLastType() {
+			$log.info('getting last forage type ...');
+			var length = _countTypes();
+			return _types[length - 1];
+		};
+
+
+		function _getFirstType() {
+			$log.info('getting first forage type ...');
+			return _types[0];
 		};
 		
 		
-		function _count() {
+		function _countTypes() {
 			$log.info('counting forage types ...', _types);
 			return _types.length;
 		};
 
 
-		function _toArray() {
+		function _typesToArray() {
 			$log.info('toArray types ...', _types);
 			return _types;
 		};
 
 
-		function _removeIndex(index) {
+		function _removeTypeByIndex(index) {
 			$log.info('removing forage type at index ' + index);
-			if (!index || index < 0 || index > _types.length-1) {
+			if (!index || index < 0 || index > _types.length - 1) {
 				return undefined;
 			}
 
 			_types.splice(index, 1);
 
 			return _types;
+		};
+
+
+		function _removeType(forageType) {
+			$log.info('removing forage type ', forageType);
+
+			if (!_isDefined(forageType)) {
+				return undefined;
+			}
+
+			angular.forEach(_types, function (item, index) {
+				if (angular.equals(item, forageType)) {
+					_removeTypeByIndex(index);
+				}
+			});
+
+			return _types;
+		};
+
+
+		function _isForageTypesEmpty() {
+			$log.info('Is forage types empty?', foragesPurchased.types.count() === 0);
+			return foragesPurchased.types.count() === 0;
 		};
 
 
@@ -191,11 +261,15 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		foragesPurchased.types = {
 			add: _addType,
-			get: _getTypeByIndex,
-			count: _count,
-			toArray: _toArray,
-			removeIndex: _removeIndex
-			
+			at: _getTypeByIndex,
+			count: _countTypes,
+			toArray: _typesToArray,
+			removeIndex: _removeTypeByIndex,
+			remove: _removeType,
+			first: _getFirstType,
+			last: _getLastType,
+			isEmpty: _isForageTypesEmpty,
+			validate: _validateForageType
 		};
 
 		return foragesPurchased;

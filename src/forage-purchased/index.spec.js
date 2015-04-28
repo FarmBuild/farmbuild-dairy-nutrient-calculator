@@ -9,7 +9,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   beforeEach(inject(function (_foragesPurchased_) {
     foragesPurchased = _foragesPurchased_;
-    averageCrop = foragesPurchased.types.get(0);
+    averageCrop = foragesPurchased.types.at(0);
   }));
 
   describe('foragesPurchased factory', function(){
@@ -82,16 +82,40 @@ describe('farmbuild.nutrientCalculator module', function() {
       result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
       newCount = foragesPurchased.types.count();
       expect(newCount-oldCount).toEqual(1);
+      expect(foragesPurchased.types.last().name).toEqual(name);
+    }));
+
+
+    it('New forage type should be added at index 3', inject(function() {
+      var name = 'New Forage Type 4', dryMatterPercentage = 0.8,
+        nitrogenPercentage = 2, phosphorusPercentage = 0.3,
+        potassiumPercentage = 2.1, sulphurPercentage = 0.4,
+        metabolisableEnergyPercentage = 9,
+        oldCount = foragesPurchased.types.count(),
+        result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, 3),
+        newCount = foragesPurchased.types.count();
+      expect(newCount-oldCount).toEqual(1);
+      expect(foragesPurchased.types.at(3).name).toEqual(name);
     }));
 
     it('Forage type with index 3 should be removed', inject(function() {
-      var index = 3, toBeRemoved = foragesPurchased.types.get(index),
+      var index = 3, toBeRemoved = foragesPurchased.types.at(index),
         oldCount = foragesPurchased.types.count(),
         newCount;
       foragesPurchased.types.removeIndex(index);
       newCount = foragesPurchased.types.count();
       expect(oldCount-newCount).toEqual(1);
-      expect(toBeRemoved.name !== foragesPurchased.types.get(index).name).toBeTruthy();
+      expect(toBeRemoved.name !== foragesPurchased.types.at(index).name).toBeTruthy();
+    }));
+
+    it('Forage type should be removed', inject(function() {
+      var index = 3, toBeRemoved = foragesPurchased.types.at(index),
+        oldCount = foragesPurchased.types.count(),
+        newCount;
+      foragesPurchased.types.remove(toBeRemoved);
+      newCount = foragesPurchased.types.count();
+      expect(oldCount-newCount).toEqual(1);
+      expect(toBeRemoved.name !== foragesPurchased.types.at(index).name).toBeTruthy();
     }));
 
   });
