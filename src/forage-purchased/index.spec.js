@@ -43,6 +43,16 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(result.dryMatterWeight).toEqual(1000);
       expect(result.weight).toEqual(1000);
       expect(result.nitrogenInKg).toEqual(29.9);
+      expect(result.nitrogenPercentage > 2.98 && result.nitrogenPercentage < 2.99).toBeTruthy();
+      expect(result.nitrogenInKg).toEqual(29.9);
+      expect(result.phosphorusPercentage > 0.33 && result.phosphorusPercentage < 0.34).toBeTruthy();
+      expect(result.phosphorusInKg).toEqual(3.4);
+      expect(result.potassiumPercentage > 2.67 && result.potassiumPercentage < 2.69).toBeTruthy();
+      expect(result.potassiumInKg).toEqual(26.8);
+      expect(result.sulphurPercentage > 0.49 && result.sulphurPercentage < 0.51).toBeTruthy();
+      expect(result.sulphurInKg).toEqual(5);
+      expect(result.metabolisableEnergyPercentageInKg).toEqual(97.5);
+      expect(result.metabolisableEnergyPercentage).toEqual(9.75);
     }));
   });
 

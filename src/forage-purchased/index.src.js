@@ -75,7 +75,10 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 
 				weight = forage.weight;
-				dmWeight = weight*forage.type.dryMatterPercentage;
+				dmWeight = weight;
+				if(!forage.isDry) {
+					dmWeight = weight * forage.type.dryMatterPercentage;
+				}
 
 				totalWeight += weight;
 				totalDMWeight += dmWeight;
@@ -83,6 +86,7 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg += (type.phosphorusPercentage * weight) / 100;
 				potassiumInKg += (type.potassiumPercentage * weight) / 100;
 				sulphurInKg += (type.sulphurPercentage * weight) / 100;
+				meInKg += (type.metabolisableEnergyPercentage * weight) / 100;
 				incomings.push({
 					type: forage.type,
 					weight: forage.weight,
