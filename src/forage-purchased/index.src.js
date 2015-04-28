@@ -30,21 +30,21 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		foragesPurchased.calculate = function (forages) {
-      var totalDMWeight = 832.3;
-//      for (i; i < forages.length; i++) {
-//        var weight,
-//          forage = forages[i],
-//          isDry;
-//
-//        incomings.push({
-//          name: forage.name,
-//          weight: forage.weight,
-//          isDry: forage.isDry
-//        });
-//      }
+      var totalDryAmountWeight = 832.3, i = 0;
+
+      for (i; i < forages.length; i++) {
+        var weight,
+          forage = forages[i],
+          isDry;
+        if(!angular.isDefined(forage.weight) ||
+          !_isPositiveNumber(forage.weight)) {
+          return undefined;
+        }
+
+      }
 
 			return {
-        dryAmountPurchased: totalDMWeight
+        dryAmountPurchased: totalDryAmountWeight
 			};
 
 		};

@@ -18,12 +18,12 @@ describe('farmbuild.nutrientCalculator module', function() {
   });
 
   describe('calculate the weighted average for Forage Purchased', function(){
-//    it('Lucerne Hay type with undefined amount should fail', inject(function() {
-//      var lucerneHay = foragesPurchased.types()[0],
-//        weight = 1000;
-//      var result = foragesPurchased.calculate([{type: lucerneHay, isDry:true}])
-//      expect(result).toBeUndefined()
-//    }));
+    it('Lucerne Hay type with undefined amount should fail', inject(function() {
+      var lucerneHay = foragesPurchased.types()[0],
+        weight = 1000;
+      var result = foragesPurchased.calculate([{type: lucerneHay, isDry:true}])
+      expect(result).toBeUndefined()
+    }));
     it('Lucerne Hay type and amount of 1000 should be calculated', inject(function() {
       var lucerneHay = foragesPurchased.types()[0],
         weight = 1000;
