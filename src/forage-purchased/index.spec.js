@@ -78,11 +78,11 @@ describe('farmbuild.nutrientCalculator module', function() {
       var name = 'New Forage Type 1', dryMatterPercentage = 0.8,
       nitrogenPercentage = 2, phosphorusPercentage = 0.3,
       potassiumPercentage = 2.1, sulphurPercentage = 0.4,
-      metabolisableEnergyPercentage = 9;
-  var oldCount = foragesPurchased.types.count(),
+      metabolisableEnergyPercentage = 9,
+      oldCount = foragesPurchased.types.count(),
       result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
       newCount = foragesPurchased.types.count();
-      expect(newCount-oldCount === 1).toBeTruthy();
+      expect(newCount-oldCount).toEqual(1);
     }));
 
   });
