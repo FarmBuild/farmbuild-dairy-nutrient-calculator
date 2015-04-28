@@ -26,7 +26,7 @@ angular.module('farmbuild.nutrientCalculator').
 		forageTypes: [
 			{
 				name: 'Average crop',
-				mePercentage: 9.75,
+				metabolisableEnergyPercentage: 9.75,
 				dryMatterPercentage: 44.45,
 				sulphurPercentage: 0.5,
 				potassiumPercentage: 2.68,
@@ -35,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Average hay',
-				mePercentage: 9.39,
+				metabolisableEnergyPercentage: 9.39,
 				dryMatterPercentage: 85,
 				sulphurPercentage: 0.23,
 				potassiumPercentage: 2.29,
@@ -44,7 +44,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Average silage',
-				mePercentage: 8.76,
+				metabolisableEnergyPercentage: 8.76,
 				dryMatterPercentage: 49.01,
 				sulphurPercentage: 0.27,
 				potassiumPercentage: 2.35,
@@ -53,7 +53,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Average straw',
-				mePercentage: 9.18,
+				metabolisableEnergyPercentage: 9.18,
 				dryMatterPercentage: 45.1,
 				sulphurPercentage: 0.28,
 				potassiumPercentage: 2.7,
@@ -62,7 +62,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Brassica crop',
-				mePercentage: 11.32,
+				metabolisableEnergyPercentage: 11.32,
 				dryMatterPercentage: 25.99,
 				sulphurPercentage: 0.64,
 				potassiumPercentage: 2.85,
@@ -71,7 +71,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Cereal hay',
-				mePercentage: 8.32,
+				metabolisableEnergyPercentage: 8.32,
 				dryMatterPercentage: 84.74,
 				sulphurPercentage: 0.17,
 				potassiumPercentage: 1.83,
@@ -80,7 +80,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Canola silage',
-				mePercentage: 9.45,
+				metabolisableEnergyPercentage: 9.45,
 				dryMatterPercentage: 23.77,
 				sulphurPercentage: 0.51,
 				potassiumPercentage: 2.88,
@@ -89,7 +89,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Cereal hay',
-				mePercentage: 8.32,
+				metabolisableEnergyPercentage: 8.32,
 				dryMatterPercentage: 84.74,
 				sulphurPercentage: 0.17,
 				potassiumPercentage: 1.83,
@@ -98,7 +98,7 @@ angular.module('farmbuild.nutrientCalculator').
 			},
 			{
 				name: 'Cereal silage',
-				mePercentage: 9.14,
+				metabolisableEnergyPercentage: 9.14,
 				dryMatterPercentage: 36.28,
 				sulphurPercentage: 0.17,
 				potassiumPercentage: 2.02,
