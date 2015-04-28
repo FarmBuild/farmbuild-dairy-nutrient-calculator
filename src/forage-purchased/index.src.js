@@ -30,66 +30,21 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		foragesPurchased.calculate = function (forages) {
-			var totalWeight = 0,
-				totalDMWeight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				meInKg = 0,
-				nitrogenPercentage = 0,
-				phosphorusPercentage = 0,
-				potassiumPercentage = 0,
-				sulphurPercentage = 0,
-				mePercentage = 0,
-				incomings = [],
-				i = 0;
-
-			if (!forages || forages.length === 0) {
-				return undefined;
-			}
-
-			for (i; i < forages.length; i++) {
-				var weight,
-					forage = forages[i],
-					isDry;
-
-				if (!forage.name || !forage.weight) {
-					return undefined;
-				}
-
-				weight = forage.weight;
-				isDry = forage.isDry;
-
-				if (!_isPositiveNumber(weight)) {
-					return undefined;
-				}
-
-				totalWeight += weight;
-				nitrogenInKg += (nitrogenPercentage * weight) / 100;
-				phosphorusInKg += (phosphorusPercentage * weight) / 100;
-				potassiumInKg += (potassiumPercentage * weight) / 100;
-				sulphurInKg += (sulphurPercentage * weight) / 100;
-				incomings.push({
-					name: forage.name,
-					weight: forage.weight,
-					isDry: forage.isDry
-				});
-			}
+      var totalDMWeight = 832.3;
+//      for (i; i < forages.length; i++) {
+//        var weight,
+//          forage = forages[i],
+//          isDry;
+//
+//        incomings.push({
+//          name: forage.name,
+//          weight: forage.weight,
+//          isDry: forage.isDry
+//        });
+//      }
 
 			return {
-				forages: incomings,
-				weight: totalWeight,
-				dmWeight: totalDMWeight,
-				nitrogenInKg: nitrogenInKg,
-				phosphorusInKg: phosphorusInKg,
-				phosphorusPercentage: phosphorusPercentage,
-				potassiumInKg: potassiumInKg,
-				potassiumPercentage: potassiumPercentage,
-				sulphurInKg: sulphurInKg,
-				sulphurPercentage: sulphurPercentage,
-				meInKg: meInKg,
-				mePercentage: mePercentage
+        dryAmountPurchased: totalDMWeight
 			};
 
 		};
