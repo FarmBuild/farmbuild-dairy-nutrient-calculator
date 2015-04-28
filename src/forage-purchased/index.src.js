@@ -77,7 +77,7 @@ angular.module('farmbuild.nutrientCalculator')
 				weight = forage.weight;
 				dmWeight = weight;
 				if(!forage.isDry) {
-					dmWeight = weight * forage.type.dryMatterPercentage;
+					dmWeight = (weight * forage.type.dryMatterPercentage)/100;
 				}
 				totalWeight += weight;
 				totalDMWeight += dmWeight;
