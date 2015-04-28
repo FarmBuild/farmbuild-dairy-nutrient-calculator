@@ -173,12 +173,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		foragesPurchased.types = function () {
-			return {
+		foragesPurchased.types = {
 				add: _addType,
 				get: _getTypeByIndex,
 				count: _count
-			}
+			
 		};
 
 		return foragesPurchased;
