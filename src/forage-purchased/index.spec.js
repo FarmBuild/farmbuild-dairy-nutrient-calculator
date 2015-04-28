@@ -69,7 +69,7 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(result.sulphurPercentage > 0.49 && result.sulphurPercentage < 0.52).toBeTruthy();
       expect(result.sulphurInKg > 2.22 && result.sulphurInKg < 2.23).toBeTruthy();
       expect(result.metabolisableEnergyInKg > 43.33 && result.metabolisableEnergyInKg < 43.34).toBeTruthy();
-      expect(result.metabolisableEnergyPercentage).toEqual(9.75);
+      expect(result.metabolisableEnergyPercentage > 9.74 && result.metabolisableEnergyPercentage < 9.75).toBeTruthy();
     }));
 
   });
