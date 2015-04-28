@@ -15,6 +15,7 @@ module.exports = function(config){
       'src/milk-sold/index.src.js',
       'src/forage-purchased/index.src.js',
       'src/index.js',
+      //'src/forage-purchased/index.spec.js',
       'src/*.js',
       'src/**/*.js'
     ],

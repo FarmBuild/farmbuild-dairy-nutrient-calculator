@@ -38,17 +38,17 @@ angular.module('farmbuild.nutrientCalculator')
 			return _validateForageType(forage.type);
 		}
 		
-	   function _createdForageType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+		function _createdForageType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
 			return {
-				name: name, 
-				metabolisableEnergyPercentage:metabolisableEnergyPercentage, 
-				dryMatterPercentage:dryMatterPercentage,
+				name: name,
+				metabolisableEnergyPercentage: metabolisableEnergyPercentage,
+				dryMatterPercentage: dryMatterPercentage,
 				sulphurPercentage: sulphurPercentage,
 				potassiumPercentage: potassiumPercentage,
 				phosphorusPercentage: phosphorusPercentage,
 				nitrogenPercentage: nitrogenPercentage
 			};
-	   }	
+		}
 
 
 		/**
@@ -88,16 +88,16 @@ angular.module('farmbuild.nutrientCalculator')
 
 				weight = forage.weight;
 				dmWeight = weight;
-				if(!forage.isDry) {
-					dmWeight = (weight * forage.type.dryMatterPercentage)/100;
+				if (!forage.isDry) {
+					dmWeight = (weight * forage.type.dryMatterPercentage) / 100;
 				}
 				totalWeight += weight;
 				totalDMWeight += dmWeight;
-				nitrogenInKg += (type.nitrogenPercentage * dmWeight)/100;
-				phosphorusInKg += (type.phosphorusPercentage * dmWeight)/100;
-				potassiumInKg += (type.potassiumPercentage * dmWeight)/100;
-				sulphurInKg += (type.sulphurPercentage * dmWeight)/100;
-				meInKg += (type.metabolisableEnergyPercentage * dmWeight)/100;
+				nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
+				phosphorusInKg += (type.phosphorusPercentage * dmWeight) / 100;
+				potassiumInKg += (type.potassiumPercentage * dmWeight) / 100;
+				sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
+				meInKg += (type.metabolisableEnergyPercentage * dmWeight) / 100;
 				incomings.push({
 					type: forage.type,
 					weight: forage.weight,
@@ -138,11 +138,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @private
 		 * @static
 		 */
-		 function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-			var forageType = _createdForageType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage); 
+		function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			var forageType = _createdForageType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
 			$log.info('adding forage type ...', forageType);
 
-			if(_validateForageType(forageType)){
+			if (_validateForageType(forageType)) {
 				_types.push(forageType);
 			}
 			
@@ -150,7 +150,7 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 		
 		
-		 function _getTypeByIndex(index) {
+		function _getTypeByIndex(index) {
 			var forageType = _types[index];
 			$log.info('getting forage type ...', forageType);
 			
@@ -158,11 +158,27 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 		
 		
-		
-		
-		 function _count() {
+		function _count() {
 			$log.info('counting forage types ...', _types);
 			return _types.length;
+		};
+
+
+		function _toArray() {
+			$log.info('toArray types ...', _types);
+			return _types;
+		};
+
+
+		function _removeIndex(index) {
+			$log.info('removing forage type at index ' + index);
+			if (!index || index < 0 || index > _types.length-1) {
+				return undefined;
+			}
+
+			_types.splice(index, 1);
+
+			return _types;
 		};
 
 
@@ -174,9 +190,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		foragesPurchased.types = {
-				add: _addType,
-				get: _getTypeByIndex,
-				count: _count
+			add: _addType,
+			get: _getTypeByIndex,
+			count: _count,
+			toArray: _toArray,
+			removeIndex: _removeIndex
 			
 		};
 

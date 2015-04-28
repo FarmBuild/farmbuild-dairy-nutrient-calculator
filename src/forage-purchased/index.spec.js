@@ -72,7 +72,6 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(result.metabolisableEnergyPercentage > 9.74 && result.metabolisableEnergyPercentage < 9.75).toBeTruthy();
     }));
     
-    
 
     it('New forage type should be added', inject(function() {
       var name = 'New Forage Type 1', dryMatterPercentage = 0.8,
@@ -83,6 +82,16 @@ describe('farmbuild.nutrientCalculator module', function() {
       result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
       newCount = foragesPurchased.types.count();
       expect(newCount-oldCount).toEqual(1);
+    }));
+
+    it('Forage type with index 3 should be removed', inject(function() {
+      var index = 3, toBeRemoved = foragesPurchased.types.get(index),
+        oldCount = foragesPurchased.types.count(),
+        newCount;
+      foragesPurchased.types.removeIndex(index);
+      newCount = foragesPurchased.types.count();
+      expect(oldCount-newCount).toEqual(1);
+      expect(toBeRemoved.name !== foragesPurchased.types.get(index).name).toBeTruthy();
     }));
 
   });
