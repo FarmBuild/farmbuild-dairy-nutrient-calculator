@@ -37,6 +37,18 @@ angular.module('farmbuild.nutrientCalculator')
 			}
 			return _validateForageType(forage.type);
 		}
+		
+	   function _createdForageType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			return {
+				name: name, 
+				metabolisableEnergyPercentage:metabolisableEnergyPercentage, 
+				dryMatterPercentage:dryMatterPercentage,
+				sulphurPercentage: sulphurPercentage,
+				potassiumPercentage: potassiumPercentage,
+				phosphorusPercentage: phosphorusPercentage,
+				nitrogenPercentage: nitrogenPercentage
+			};
+	   }	
 
 
 		/**
@@ -123,36 +135,34 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @param {!number} phosphorusPercentage - value must be > 0
 		 * @param {!number} nitrogenPercentage - value must be > 0
 		 * @returns {object} foragesPurchased - useful for chaining multiple add()
-		 * @public
+		 * @private
 		 * @static
 		 */
-		foragesPurchased.addType = function (name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-			if (!_isPositiveNumber(mePercentage) || !_isPositiveNumber(dryMatterPercentage) || !_isPositiveNumber(sulphurPercentage) || !_isPositiveNumber(potassiumPercentage) || !_isPositiveNumber(phosphorusPercentage) || !_isPositiveNumber(nitrogenPercentage)) {
-				return undefined;
-			}
-			
-			if (!name || !_isAlphanumeric(name)) {
-				return undefined;
-			}
-			
-			mePercentage = parseFloat(mePercentage);
-			dryMatterPercentage = parseFloat(dryMatterPercentage);
-			sulphurPercentage = parseFloat(sulphurPercentage);
-			potassiumPercentage = parseFloat(potassiumPercentage);
-			phosphorusPercentage = parseFloat(phosphorusPercentage);
-			nitrogenPercentage = parseFloat(nitrogenPercentage);
+		 function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			var forageType = _createdForageType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage); 
+			$log.info('adding forage type ...', forageType);
 
-			_types.push({
-				name: name,
-				mePercentage: parseFloat(mePercentage),
-				dryMatterPercentage: parseFloat(dryMatterPercentage),
-				sulphurPercentage: parseFloat(sulphurPercentage),
-				potassiumPercentage: parseFloat(potassiumPercentage),
-				phosphorusPercentage: parseFloat(phosphorusPercentage),
-				nitrogenPercentage: parseFloat(nitrogenPercentage)
-			});
+			if(_validateForageType(forageType)){
+				_types.push(forageType);
+			}
 			
-			return foragesPurchased;
+			return foragesPurchased.types;
+		};
+		
+		
+		 function _getTypeByIndex(index) {
+			var forageType = _types[index];
+			$log.info('getting forage type ...', forageType);
+			
+			return forageType;
+		};
+		
+		
+		
+		
+		 function _count() {
+			$log.info('counting forage types ...', _types);
+			return _types.length;
 		};
 
 
@@ -164,7 +174,11 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @static
 		 */
 		foragesPurchased.types = function () {
-			return _types;
+			return {
+				add: _addType,
+				get: _getTypeByIndex,
+				count: _count
+			}
 		};
 
 		return foragesPurchased;

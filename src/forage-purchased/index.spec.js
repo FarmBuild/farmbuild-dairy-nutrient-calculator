@@ -9,7 +9,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   beforeEach(inject(function (_foragesPurchased_) {
     foragesPurchased = _foragesPurchased_;
-    averageCrop = foragesPurchased.types()[0];
+    averageCrop = foragesPurchased.types.get(0);
   }));
 
   describe('foragesPurchased factory', function(){
@@ -70,6 +70,19 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(result.sulphurInKg > 2.22 && result.sulphurInKg < 2.23).toBeTruthy();
       expect(result.metabolisableEnergyInKg > 43.33 && result.metabolisableEnergyInKg < 43.34).toBeTruthy();
       expect(result.metabolisableEnergyPercentage > 9.74 && result.metabolisableEnergyPercentage < 9.75).toBeTruthy();
+    }));
+    
+    
+
+    it('New forage type should be added', inject(function() {
+      var name = 'New Forage Type 1', dryMatterPercentage = 0.8,
+      nitrogenPercentage = 2, phosphorusPercentage = 0.3,
+      potassiumPercentage = 2.1, sulphurPercentage = 0.4,
+      metabolisableEnergyPercentage = 9;
+  var oldCount = foragesPurchased.types.count(),
+      result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
+      newCount = foragesPurchased.types.count();
+      expect(newCount-oldCount === 1).toBeTruthy();
     }));
 
   });
