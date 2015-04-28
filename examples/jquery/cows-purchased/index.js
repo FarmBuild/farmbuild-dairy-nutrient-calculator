@@ -8,7 +8,7 @@ $(function(){
 
 	$('#app-version').text(farmbuild.examples.nutrientcalculator.version);
 
-	var errorMsg = $('#errorMsg');
+	var errorMsg = $('.errorMsg');
 	
 	errorMsg.hide();		
 	
@@ -54,10 +54,21 @@ $(function(){
 		}
 		if(noselection==true) $('#avgCowWeight').text('');
 	});
-	
+	function isPositiveInteger(s)
+	{    
+		return /^\d+$/.test(s);	
+	}
 	//Calculate total weight to show in the table
 	$("#numberOfCows").keyup(function() {
-			$("#totalCowWeight").text(parseFloat($('#avgCowWeight').text())*parseInt($('#numberOfCows').val()));			
+			var numofcows = $('#numberOfCows').val();
+			
+		     if(!isPositiveInteger(numofcows)){
+				 noResult = true;
+				 errorMsg.show();				
+			 }else{ 
+				$("#totalCowWeight").text(parseFloat($('#avgCowWeight').text())*parseInt($('#numberOfCows').val()));			
+				errorMsg.hide();
+			 }
 	});
 	
 	
@@ -68,17 +79,20 @@ $(function(){
 		newtype.name=$('#typeName').val();
 		newtype.weight=$('#typeWeight').val();
 		addCowType(newtype);
-		$('#cowTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.weight+'</td><td></td></tr>');
-		//add to select
-		cowtypesel
-         .append($("<option></option>")
-         .attr("value",newtype.name)
-         .text(newtype.name+' ('+newtype.weight+' Kg)')); 	
+		
+		if(noResult==true){
+			errorMsg.show();
+		}else{
+			errorMsg.hide();
+			$('#cowTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.weight+'</td><td></td></tr>');
+				//add to select
+				cowtypesel
+					.append($("<option></option>")
+					.attr("value",newtype.name)
+					.text(newtype.name+' ('+newtype.weight+' Kg)')); 
+						
 		 
-		
-		
-		var errorMsg = $('#errorMsg');
-	
+		}
 		
 		//reset form
 		$('#typeName').val('');
@@ -98,21 +112,24 @@ $(function(){
 			var numberOfCows = parseInt($("#numberOfCows").val());
 			
 			//Validate numberOfCows to be a valid number
-			//if(!cowType || !isPositiveNumber(numberOfCows)){
-			//	noResult = true;			
-			//	return;
-			//}
-
-			cows.push({
-				name: cowType.name,
-				weight: cowType.weight,
-				numberOfCows: numberOfCows
-			});
-			
-			
-			//add to cowsTbl
-			$('#cowsTbl').append('<tr><td>'+cowType.name+'</td><td>'+numberOfCows+'</td><td>'+cowType.weight+'</td><td>'+numberOfCows * cowType.weight+'</td><td><button type="button" class="btn btn-link" id="deleteRow"  > Remove</button></td></tr>');
-        
+			if(!cowType || !isPositiveInteger(numberOfCows)){
+				noResult = true;
+				//errorMsg.show();
+				//return;
+			}            
+				
+			if(noResult==false){
+				cows.push({
+					name: cowType.name,
+					weight: cowType.weight,
+					numberOfCows: numberOfCows
+				});		
+				errorMsg.hide();
+				//add to cowsTbl
+				$('#cowsTbl').append('<tr><td>'+cowType.name+'</td><td>'+numberOfCows+'</td><td>'+cowType.weight+'</td><td>'+numberOfCows * cowType.weight+'</td><td><button type="button" class="btn btn-link" id="deleteRow"  > Remove</button></td></tr>');
+			}else{
+				errorMsg.show();
+			}
 			
 			//reset form 
 			$("#numberOfCows").val('');
@@ -140,21 +157,26 @@ $(function(){
 			//call the nutrient calculator API function
 			result = nc.cowsPurchased.calculate(cows);
 						
-			//noResult = !result;
-			var resultNumberOfCows = $('#resultNumberOfCows');
-			var resultWeight = $('#resultWeight');
-			var resultPhosphorusInKg= $('#resultPhosphorusInKg');
-			var resultPotassiumInKg= $('#resultPotassiumInKg');
-			var resultSulphurInKg= $('#resultSulphurInKg');
-			var resultNitrogenInKg= $('#resultNitrogenInKg');
+			noResult = !result;
+			if(noResult==false){
+				errorMsg.hide();
+				
+				var resultNumberOfCows = $('#resultNumberOfCows');
+				var resultWeight = $('#resultWeight');
+				var resultPhosphorusInKg= $('#resultPhosphorusInKg');
+				var resultPotassiumInKg= $('#resultPotassiumInKg');
+				var resultSulphurInKg= $('#resultSulphurInKg');
+				var resultNitrogenInKg= $('#resultNitrogenInKg');
 			
-			resultNumberOfCows.text(parseInt(result.numberOfCows));
-			resultWeight.text(parseFloat(result.weight));
-			resultPhosphorusInKg.text(parseFloat(result.phosphorusInKg).toFixed(decimalPrecision));
-			resultPotassiumInKg.text(parseFloat(result.potassiumInKg).toFixed(decimalPrecision));
-			resultSulphurInKg.text(parseFloat(result.sulphurInKg).toFixed(decimalPrecision));
-			resultNitrogenInKg.text(parseFloat(result.nitrogenInKg).toFixed(decimalPrecision));
-			
-		});
+				resultNumberOfCows.text(parseInt(result.numberOfCows));
+				resultWeight.text(parseFloat(result.weight));
+				resultPhosphorusInKg.text(parseFloat(result.phosphorusInKg).toFixed(decimalPrecision));
+				resultPotassiumInKg.text(parseFloat(result.potassiumInKg).toFixed(decimalPrecision));
+				resultSulphurInKg.text(parseFloat(result.sulphurInKg).toFixed(decimalPrecision));
+				resultNitrogenInKg.text(parseFloat(result.nitrogenInKg).toFixed(decimalPrecision));
+			}else{
+				errorMsg.show();
+			}
+			});
 	
 });
