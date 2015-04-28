@@ -36,9 +36,11 @@ $(function(){
 				return;
 			}
 
-			noResult = !nc.cowsPurchased.addType(type.name, type.weight);
+			noResult = !nc.cowsPurchased.addType(type.name, type.weight);			
 			cowTypes = nc.cowsPurchased.types();
 			type = '';
+			
+			
 		};	
 	//select onchange function
 	cowtypesel.on('change', function() {
@@ -61,8 +63,7 @@ $(function(){
 	
     //add cow type to the API and also to the cowTypesTbl table
 	$('#addCowType').submit(function(event){
-		try{
-		alert('in add type cow');
+		
 		var newtype={name:'', weight:''};
 		newtype.name=$('#typeName').val();
 		newtype.weight=$('#typeWeight').val();
@@ -74,8 +75,8 @@ $(function(){
          .attr("value",newtype.name)
          .text(newtype.name+' ('+newtype.weight+' Kg)')); 	
 		 
-		alert(nc.cowsPurchased.types());
-		}catch(error){alert(error.message);}
+		
+		
 		var errorMsg = $('#errorMsg');
 	
 		
