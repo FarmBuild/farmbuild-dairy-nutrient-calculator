@@ -26,12 +26,12 @@ angular.module('farmbuild.nutrientCalculator').
 		forageTypes: [
 			{
 				name: 'Average crop',
-				metabolisableEnergyPercentage: 0.0975,
-				dryMatterPercentage: 0.4445,
-				sulphurPercentage: 0.005,
-				potassiumPercentage: 0.0268,
-				phosphorusPercentage: 0.0034,
-				nitrogenPercentage: 0.0299
+				metabolisableEnergyPercentage: 9.75,
+				dryMatterPercentage: 44.45,
+				sulphurPercentage: 0.5,
+				potassiumPercentage: 2.68,
+				phosphorusPercentage: 0.34,
+				nitrogenPercentage: 2.99
 			},
 			{
 				name: 'Average hay',

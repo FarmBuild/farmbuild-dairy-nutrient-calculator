@@ -81,11 +81,11 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 				totalWeight += weight;
 				totalDMWeight += dmWeight;
-				nitrogenInKg += type.nitrogenPercentage * dmWeight;
-				phosphorusInKg += type.phosphorusPercentage * dmWeight;
-				potassiumInKg += type.potassiumPercentage * dmWeight;
-				sulphurInKg += type.sulphurPercentage * dmWeight;
-				meInKg += type.metabolisableEnergyPercentage * dmWeight;
+				nitrogenInKg += (type.nitrogenPercentage * dmWeight)/100;
+				phosphorusInKg += (type.phosphorusPercentage * dmWeight)/100;
+				potassiumInKg += (type.potassiumPercentage * dmWeight)/100;
+				sulphurInKg += (type.sulphurPercentage * dmWeight)/100;
+				meInKg += (type.metabolisableEnergyPercentage * dmWeight)/100;
 				incomings.push({
 					type: forage.type,
 					weight: forage.weight,
@@ -99,15 +99,15 @@ angular.module('farmbuild.nutrientCalculator')
 				weight: totalWeight,
 				dryMatterWeight: totalDMWeight,
 				nitrogenInKg: nitrogenInKg,
-				nitrogenPercentage: nitrogenInKg / totalDMWeight,
+				nitrogenPercentage: (nitrogenInKg / totalDMWeight) * 100,
 				phosphorusInKg: phosphorusInKg,
-				phosphorusPercentage: phosphorusInKg / totalDMWeight,
+				phosphorusPercentage: (phosphorusInKg / totalDMWeight) * 100,
 				potassiumInKg: potassiumInKg,
-				potassiumPercentage: potassiumInKg / totalDMWeight,
+				potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
 				sulphurInKg: sulphurInKg,
-				sulphurPercentage: sulphurInKg / totalDMWeight,
+				sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
 				metabolisableEnergyInKg: meInKg,
-				metabolisableEnergyPercentage: meInKg / totalDMWeight
+				metabolisableEnergyPercentage: (meInKg / totalDMWeight) * 100
 			};
 
 		};
