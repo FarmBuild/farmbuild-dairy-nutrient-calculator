@@ -18,22 +18,29 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
   });
 
-  function createdForages(type, weight, isDry) {
-    return [{type: type, weight:weight, isDry:isDry}];
+  function Forages() {
+
+  }
+  function createdForage(type, weight, isDry) {
+    return {type: type, weight:weight, isDry:isDry};
+  }
+  function addForage(type, weight, isDry) {
+    return [createdForage(type, weight, isDry)];
   }
 
   describe('calculate the weighted average for Forage Purchased', function(){
 
     it('Lucerne Hay type with undefined amount should fail', inject(function() {
-      var result = foragesPurchased.calculate(createdForages(lucerneHay, true))
+      var result = foragesPurchased.calculate(addForage(lucerneHay, true))
       expect(result).toBeUndefined()
     }));
 
     it('Lucerne Hay type and amount of 1000 should be calculated', inject(function() {
       var weight = 1000;
-      var result = foragesPurchased.calculate(createdForages(lucerneHay, weight, true))
+      var result = foragesPurchased.calculate(addForage(lucerneHay, weight, true))
       expect(result.dryAmountPurchased).toEqual(832.3)
     }));
   });
 
 });
+
