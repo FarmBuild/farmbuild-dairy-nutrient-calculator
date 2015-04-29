@@ -14,13 +14,13 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('foragesPurchased', function (validations, references, $log) {
+	.factory('foragesPurchased', function (validations, forageTypeValues, $log) {
 
 		var forages = {},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
 			_isDefined = validations.isDefined,
-			_types = angular.copy(references.forageTypes),
+			_types = angular.copy(forageTypeValues),
 			_forages = [];
 
 		function _validate(forage) {
