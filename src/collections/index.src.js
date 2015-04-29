@@ -18,8 +18,12 @@ angular.module('farmbuild.nutrientCalculator')
       _isDefined = validations.isDefined,
       _collections = [];
 
-    function _add(collection, item) {
-      collection.push(item);
+    function _add(collection, item, index) {
+      if (_isDefined(index)) {
+        collection.splice(index, 0, item)
+      } else {
+        collection.push(item);
+      }
       return collection;
     };
 

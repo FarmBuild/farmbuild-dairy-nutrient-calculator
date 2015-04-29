@@ -27,6 +27,15 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(result.length).toBe(1)
     }))
 
+    it('adding an item with index 1 to an array containing 2 items will insert the item into index 1 ', inject(function() {
+      var items = [create('hello'), create('hello')],
+        name = 'hel',
+        result = collections.add(items,create(name),1)
+      expect(angular.isArray(result)).toBe(true)
+      expect(result.length).toBe(3)
+      expect(collections.at(result, 1).name).toBe(name)
+    }))
+
     it('at with index 0 should return the first', inject(function() {
       var item = create('hi'),
         items = [item],
