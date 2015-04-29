@@ -13,13 +13,13 @@
  * @module nutrientCalculator/fertilizerTypes
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('fertilizerTypes', function (collections, validations, fertilizerValues, $log) {
+  .factory('fertilizerTypes', function (collections, validations, fertilizerDefaults, $log) {
 
     var fertilizerTypes = {},
       _isPositiveNumber = validations.isPositiveNumber,
       _isAlphanumeric = validations.isAlphanumeric,
       _isDefined = validations.isDefined,
-      _types = angular.copy(fertilizerValues.types);
+      _types = angular.copy(fertilizerDefaults.types);
 
     function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
       return {
