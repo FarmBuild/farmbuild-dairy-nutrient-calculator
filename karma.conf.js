@@ -14,9 +14,15 @@ module.exports = function(config){
       'src/validations/index.src.js',
       'src/milk-sold/index.src.js',
       'src/forage-purchased/index.src.js',
+      'src/collections/index.src.js',
+      'src/fertilizer-purchased/fertilizers.conf.src.js',
+      'src/fertilizer-purchased/types.src.js',
+      'src/fertilizer-purchased/index.src.js',
+      'src/collections/index.spec.js',
+      'src/fertilizer-purchased/types.spec.js',
       'src/index.js',
-      'src/*.js',
-      'src/**/*.js'
+      //'src/*.js',
+      //'src/**/*.js'
     ],
 
     autoWatch : true,
