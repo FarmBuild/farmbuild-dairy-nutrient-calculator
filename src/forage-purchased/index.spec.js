@@ -40,7 +40,6 @@ describe('farmbuild.nutrientCalculator module', function() {
     it('Average crop type and amount of 1000 and basis of dry should be calculated', inject(function() {
       var weight = 1000;
       var result = foragesPurchased.calculate(addForage(averageCrop, weight, true));
-      console.log(result);
       expect(result.dryMatterWeight).toEqual(1000);
       expect(result.weight).toEqual(1000);
       expect(result.nitrogenPercentage > 2.98 && result.nitrogenPercentage < 3).toBeTruthy();
@@ -78,9 +77,9 @@ describe('farmbuild.nutrientCalculator module', function() {
       nitrogenPercentage = 2, phosphorusPercentage = 0.3,
       potassiumPercentage = 2.1, sulphurPercentage = 0.4,
       metabolisableEnergyPercentage = 9,
-      oldCount = foragesPurchased.types.count(),
+      oldCount = foragesPurchased.types.size(),
       result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
-      newCount = foragesPurchased.types.count();
+      newCount = foragesPurchased.types.size();
       expect(newCount-oldCount).toEqual(1);
       expect(foragesPurchased.types.last().name).toEqual(name);
     }));
@@ -91,29 +90,29 @@ describe('farmbuild.nutrientCalculator module', function() {
         nitrogenPercentage = 2, phosphorusPercentage = 0.3,
         potassiumPercentage = 2.1, sulphurPercentage = 0.4,
         metabolisableEnergyPercentage = 9,
-        oldCount = foragesPurchased.types.count(),
+        oldCount = foragesPurchased.types.size(),
         result = foragesPurchased.types.add(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, 3),
-        newCount = foragesPurchased.types.count();
+        newCount = foragesPurchased.types.size();
       expect(newCount-oldCount).toEqual(1);
       expect(foragesPurchased.types.at(3).name).toEqual(name);
     }));
 
     it('Forage type with index 3 should be removed', inject(function() {
       var index = 3, toBeRemoved = foragesPurchased.types.at(index),
-        oldCount = foragesPurchased.types.count(),
+        oldCount = foragesPurchased.types.size(),
         newCount;
       foragesPurchased.types.removeIndex(index);
-      newCount = foragesPurchased.types.count();
+      newCount = foragesPurchased.types.size();
       expect(oldCount-newCount).toEqual(1);
       expect(toBeRemoved.name !== foragesPurchased.types.at(index).name).toBeTruthy();
     }));
 
     it('Forage type should be removed', inject(function() {
       var index = 3, toBeRemoved = foragesPurchased.types.at(index),
-        oldCount = foragesPurchased.types.count(),
+        oldCount = foragesPurchased.types.size(),
         newCount;
       foragesPurchased.types.remove(toBeRemoved);
-      newCount = foragesPurchased.types.count();
+      newCount = foragesPurchased.types.size();
       expect(oldCount-newCount).toEqual(1);
       expect(toBeRemoved.name !== foragesPurchased.types.at(index).name).toBeTruthy();
     }));
