@@ -33,6 +33,26 @@ describe('farmbuild.nutrientCalculator module', function() {
         result = collections.at(items, 0)
       expect(angular.equals(item, result)).toBe(true)
     }))
+
+    it('count with no param should return -1', inject(function() {
+      var result = collections.size()
+      expect(result).toBe(-1)
+    }))
+
+    it('count with an array with 2 elements should return 2', inject(function() {
+      var items = [create('hello'), create('hello')],
+        result = collections.size(items)
+      expect(result).toBe(2)
+    }))
+
+    it('removeAt with index -1 should return the same array', inject(function() {
+      var items = [create('hello'), create('hello')],
+        result = collections.removeAt(items, -1),
+        copied = angular.copy(items)
+      expect(items.length).toBe(result.length)
+      expect(angular.equals(copied, result)).toBe(true)
+    }))
+
   });
 
 });

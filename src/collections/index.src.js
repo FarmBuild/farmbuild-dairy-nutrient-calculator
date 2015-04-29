@@ -27,8 +27,11 @@ angular.module('farmbuild.nutrientCalculator')
       return _collections.length === 0;
     };
 
-    function _count(){
-      return _collections.length;
+    function _count(collection) {
+      if(!angular.isArray(collection)) {
+        return -1;
+      }
+      return collection.length;
     };
 
     function _toArray(){
@@ -39,15 +42,17 @@ angular.module('farmbuild.nutrientCalculator')
       return collection[index];
     };
 
-    function _removeIndex(index) {
-      $log.info('removing forage type at index ' + index);
-      if (!index || index < 0 || index > _collections.length - 1) {
-        return undefined;
+    function _removeAt(collection, index) {
+      if (!angular.isArray(collection)) {
+        return collection;
+      }
+      if (!index || index < 0 || index > collection.length - 1) {
+        return collection;
       }
 
-      _collections.splice(index, 1);
+      collection.splice(index, 1);
 
-      return _collections;
+      return collection;
     };
 
 
@@ -74,8 +79,7 @@ angular.module('farmbuild.nutrientCalculator')
       add: _add,
       at: _at,
       size: _count,
-      toArray: _toArray,
-      removeIndex: _removeIndex,
+      removeAt: _removeAt,
       remove: _remove,
       first: _first,
       last: _last,
