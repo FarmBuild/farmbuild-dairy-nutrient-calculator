@@ -315,9 +315,8 @@ angular.module('farmbuild.nutrientCalculator')
 
 
 		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - forage types collection
+		 * Forage types collection api
+		 * @property {object} Types - forage types collection
 		 * @public
 		 * @static
 		 */

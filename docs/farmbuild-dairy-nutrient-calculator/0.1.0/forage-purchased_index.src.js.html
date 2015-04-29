@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_cowsCulled.html">nutrientCalculator/cowsCulled</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_cowsPurchased.html">nutrientCalculator/cowsPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_foragesPurchased.html">nutrientCalculator/foragesPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_milkSold.html">nutrientCalculator/milkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_cowsCulled.html">nutrientCalculator/cowsCulled</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_cowsPurchased.html">nutrientCalculator/cowsPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_foragesPurchased.html">nutrientCalculator/foragesPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.calculate">calculate</a></li></ul></li><li><a href="module-nutrientCalculator_milkSold.html">nutrientCalculator/milkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -225,19 +225,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 		/*---Forage Types---*/
-
 
 		function _validateType(forageType) {
 			$log.info('validating forageType  ...', forageType);
@@ -246,7 +234,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		}
 
-		function _createdForageType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+		function _createType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
 			return {
 				name: name,
 				metabolisableEnergyPercentage: metabolisableEnergyPercentage,
@@ -257,10 +245,10 @@ angular.module('farmbuild.nutrientCalculator')
 				nitrogenPercentage: nitrogenPercentage
 			};
 		}
-		
+
 		/**
 		 * Adds a new forage type for nutrient calculation
-		 * @method addType
+		 * @method types.add
 		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
 		 * @param {!number} mePercentage - value must be > 0
 		 * @param {!number} dryMatterPercentage - value must be > 0
@@ -274,7 +262,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
 
-			var forageType = _createdForageType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+			var forageType = _createType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
 			$log.info('adding forage type ...', forageType);
 
 			if (!_validateType(forageType)) {
@@ -360,16 +348,15 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 
-		function _isForageTypesEmpty() {
+		function _isTypesEmpty() {
 			$log.info('Is forage types empty?', forages.types.size() === 0);
 			return forages.types.size() === 0;
 		};
 
 
 		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - cow types array
+		 * Forage types collection api
+		 * @property {object} Types - forage types collection
 		 * @public
 		 * @static
 		 */
@@ -382,7 +369,7 @@ angular.module('farmbuild.nutrientCalculator')
 			remove: _removeType,
 			first: _getFirstType,
 			last: _getLastType,
-			isEmpty: _isForageTypesEmpty
+			isEmpty: _isTypesEmpty
 		};
 
 		return forages;
@@ -398,7 +385,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Apr 29 2015 10:46:20 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Apr 29 2015 11:04:26 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
