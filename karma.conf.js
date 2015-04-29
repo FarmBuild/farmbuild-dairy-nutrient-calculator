@@ -20,6 +20,7 @@ module.exports = function(config){
       'src/fertilizer-purchased/index.src.js',
       'src/collections/index.spec.js',
       'src/fertilizer-purchased/types.spec.js',
+      'src/fertilizer-purchased/index.spec.js',
       'src/index.js',
       //'src/*.js',
       //'src/**/*.js'

@@ -77,7 +77,7 @@ angular.module('farmbuild.nutrientCalculator')
      */
     fertilizerTypes = {
       add: _add,
-//      at: _getTypeByIndex,
+      at: function(index) { return collections.at(_types, index)},
       size: function() { return collections.size(_types)},
 //      toArray: _typesToArray,
 //      removeIndex: _removeTypeByIndex,
@@ -85,6 +85,7 @@ angular.module('farmbuild.nutrientCalculator')
 //      first: _getFirstType,
       last: function() { return collections.last(_types) },
 //      isEmpty: _isTypesEmpty
+      validate: _validate
     };
 
     return fertilizerTypes;
