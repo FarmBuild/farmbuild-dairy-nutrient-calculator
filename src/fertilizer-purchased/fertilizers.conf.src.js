@@ -1,5 +1,5 @@
 angular.module('farmbuild.nutrientCalculator').
-  constant('fertilizers', {
+  constant('fertilizerValues', {
     "types": [
       {
         "name": "Dairy manure stockpile",

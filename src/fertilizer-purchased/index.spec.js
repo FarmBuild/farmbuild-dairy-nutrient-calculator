@@ -28,13 +28,17 @@ describe('farmbuild.nutrientCalculator module', function() {
 
     it('Average crop type with undefined amount should fail', inject(function() {
       var result = fertilizerPurchased.calculate(addFertilizer(dap, true))
+
       expect(result).toBeUndefined()
     }));
 
     it('Average crop type and amount of 1000 and basis of dry should be calculated', inject(function() {
       var weight = 4,
       result = fertilizerPurchased.calculate(addFertilizer(dap, weight, true))
+
+
       expect(result.weight).toEqual(4)
+
 //      expect(result.dryMatterWeight).toEqual(1000);
 //      expect(result.nitrogenPercentage > 2.98 && result.nitrogenPercentage < 3).toBeTruthy();
 //      expect(result.nitrogenInKg).toEqual(29.9);

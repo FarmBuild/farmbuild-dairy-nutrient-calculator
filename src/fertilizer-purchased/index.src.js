@@ -14,13 +14,13 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-  .factory('fertilizerPurchased', function (validations, fertilizers, fertilizerTypes, $log) {
+  .factory('fertilizerPurchased', function (validations, fertilizerValues, fertilizerTypes, $log) {
 
     var fertilizerPurchased = {types:fertilizerTypes},
       _isPositiveNumber = validations.isPositiveNumber,
       _isAlphanumeric = validations.isAlphanumeric,
       _isDefined = validations.isDefined,
-      _types = angular.copy(fertilizers.types),
+      _types = angular.copy(fertilizerValues.types),
       _fertilizer = [];
 
     function _validate(fertilizer) {
@@ -32,33 +32,73 @@ angular.module('farmbuild.nutrientCalculator')
       return fertilizerTypes.validate(fertilizer.type);
     };
 
-    fertilizerPurchased.calculate = function(fertilizers) {
-      var totalWeight = 0,
-        incomings = [],
-        i = 0
-        ;
-      
+    function createResult() {
+      return {
+        fertilizers: [],
+        weight: 0,
+        dryMatterWeight: 0,
+        nitrogenInKg: 0,
+        nitrogenPercentage: 0,
+        phosphorusInKg: 0,
+        phosphorusPercentage: 0,
+        potassiumInKg: 0,
+        potassiumPercentage: 0,
+        sulphurInKg: 0,
+        sulphurPercentage: 0
+      };
+    }
+
+    function createItemsTotal() {
+      return {
+        weight:0,
+        dryMatterWeight:0,
+        nitrogenInKg:0,
+        phosphorusInKg:0,
+        potassiumInKg:0,
+        sulphurInKg:0,
+        incomings:[]
+      }
+    }
+
+    function calculateFertilizer(fertilizer, itemsTotal) {
+      var weight = fertilizer.weight;
+
+      itemsTotal.weight += weight;
+      itemsTotal.incomings.push({
+        type: fertilizer.type,
+        weight: fertilizer.weight,
+        isDry: fertilizer.isDry
+      });
+
+      return itemsTotal;
+    }
+
+    function calculateItemsTotal(fertilizers) {
+      var i = 0,
+        itemsTotal = createItemsTotal();
+
       for (i; i < fertilizers.length; i++) {
-        var fertilizer = fertilizers[i]
+        var fertilizer = fertilizers[i];
 
         if (!_validate(fertilizer)) {
           return undefined;
         }
 
-        var weight = fertilizer.weight;
-        totalWeight += weight;
-        incomings.push({
-          type: fertilizer.type,
-          weight: fertilizer.weight,
-          isDry: fertilizer.isDry
-        });
+        itemsTotal = calculateFertilizer(fertilizer, itemsTotal);
+      }
 
-      }
-      
-      return {
-        forages: incomings,
-        weight: totalWeight
-      }
+      return itemsTotal;
+    }
+
+    fertilizerPurchased.calculate = function(fertilizers) {
+      var itemsTotal = {},
+        result = createResult();
+
+      itemsTotal = calculateItemsTotal(fertilizers);
+
+      result.weight = itemsTotal.weight;
+      return result;
+
     }
 
     return fertilizerPurchased;
