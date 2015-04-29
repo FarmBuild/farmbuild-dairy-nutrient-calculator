@@ -1,0 +1,86 @@
+/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator/collections singleton
+ * @module nutrientCalculator/collections
+ */
+angular.module('farmbuild.nutrientCalculator')
+  .factory('collections', function (validations, $log) {
+    var collections = {},
+      _isDefined = validations.isDefined,
+      _collections = [];
+
+    function _add(collection, item) {
+      collection.push(item);
+      return collection;
+    };
+
+    function _isEmpty(){
+      return _collections.length === 0;
+    };
+
+    function _count(){
+      return _collections.length;
+    };
+
+    function _toArray(){
+      return _collections;
+    };
+
+    function _at(collection, index){
+      return collection[index];
+    };
+
+    function _removeIndex(index) {
+      $log.info('removing forage type at index ' + index);
+      if (!index || index < 0 || index > _collections.length - 1) {
+        return undefined;
+      }
+
+      _collections.splice(index, 1);
+
+      return _collections;
+    };
+
+
+    function _remove(forage) {
+      $log.info('removing forage type ', forage);
+
+      if (!_isDefined(forage)) {
+        return undefined;
+      }
+
+      return _collections;
+    };
+
+    function _first() {
+      return _collections[0];
+    };
+
+    function _last() {
+      var length = _count();
+      return _collections[length - 1];
+    };
+
+    collections = {
+      add: _add,
+      at: _at,
+      size: _count,
+      toArray: _toArray,
+      removeIndex: _removeIndex,
+      remove: _remove,
+      first: _first,
+      last: _last,
+      isEmpty: _isEmpty
+    };
+
+    return collections;
+  });
