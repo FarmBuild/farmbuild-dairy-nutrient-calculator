@@ -185,19 +185,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 		/*---Forage Types---*/
-
 
 		function _validateType(forageType) {
 			$log.info('validating forageType  ...', forageType);
@@ -206,7 +194,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		}
 
-		function _createdForageType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+		function _createType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
 			return {
 				name: name,
 				metabolisableEnergyPercentage: metabolisableEnergyPercentage,
@@ -217,10 +205,10 @@ angular.module('farmbuild.nutrientCalculator')
 				nitrogenPercentage: nitrogenPercentage
 			};
 		}
-		
+
 		/**
 		 * Adds a new forage type for nutrient calculation
-		 * @method addType
+		 * @method types.add
 		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
 		 * @param {!number} mePercentage - value must be > 0
 		 * @param {!number} dryMatterPercentage - value must be > 0
@@ -234,7 +222,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
 
-			var forageType = _createdForageType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+			var forageType = _createType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
 			$log.info('adding forage type ...', forageType);
 
 			if (!_validateType(forageType)) {
@@ -320,7 +308,7 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 
-		function _isForageTypesEmpty() {
+		function _isTypesEmpty() {
 			$log.info('Is forage types empty?', forages.types.size() === 0);
 			return forages.types.size() === 0;
 		};
@@ -342,7 +330,7 @@ angular.module('farmbuild.nutrientCalculator')
 			remove: _removeType,
 			first: _getFirstType,
 			last: _getLastType,
-			isEmpty: _isForageTypesEmpty
+			isEmpty: _isTypesEmpty
 		};
 
 		return forages;
