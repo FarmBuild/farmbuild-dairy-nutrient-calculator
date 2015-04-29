@@ -70,13 +70,13 @@ angular.module('farmbuild.nutrientCalculator')
       return _collections;
     };
 
-    function _first() {
-      return _collections[0];
+    function _first(collection) {
+      return collection[0];
     };
 
-    function _last() {
-      var length = _count();
-      return _collections[length - 1];
+    function _last(collection) {
+      var length = _count(collection);
+      return collection[length - 1];
     };
 
     collections = {

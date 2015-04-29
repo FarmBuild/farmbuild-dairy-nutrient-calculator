@@ -26,15 +26,18 @@ describe('farmbuild.nutrientCalculator module', function() {
 //    return [createdFertilizer(type, weight, isDry)];
 //  }
 
-  describe('calculate nutrient of forage purchased', function(){
+  describe('types', function(){
 
-//    it('Average crop type with undefined amount should fail', inject(function() {
-//      var result = fertilizerTypes.calculate(addFertilizer(averageCrop, true))
-//      expect(result).toBeUndefined()
-//    }));
-
-//    it('Average crop type and amount of 1000 and basis of dry should be calculated', inject(function() {
-//    }));
+    it('New fertilizer type should be added on top of the existing', inject(function() {
+      var name = 'New Fertilizer Type 1', dryMatterPercentage = 0.8,
+        nitrogenPercentage = 2, phosphorusPercentage = 0.3,
+        potassiumPercentage = 2.1, sulphurPercentage = 0.4,
+        countExisting = fertilizerTypes.size(),
+        result = fertilizerTypes.add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
+        newCount = fertilizerTypes.size();
+      expect(newCount-countExisting).toEqual(1);
+      expect(fertilizerTypes.last().name).toEqual(name);
+    }));
 
   });
 
