@@ -100,7 +100,7 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg = 0,
 				potassiumInKg = 0,
 				sulphurInKg = 0,
-				meInKg = 0,
+				meInMJ = 0,
 				incomings = [],
 				i = 0;
 
@@ -129,7 +129,7 @@ angular.module('farmbuild.nutrientCalculator')
 				phosphorusInKg += (type.phosphorusPercentage * dmWeight) / 100;
 				potassiumInKg += (type.potassiumPercentage * dmWeight) / 100;
 				sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
-				meInKg += (type.metabolisableEnergyPercentage * dmWeight) / 100;
+				meInMJ += (type.metabolisableEnergyInMJPerKg * dmWeight);
 				incomings.push({
 					type: forage.type,
 					weight: forage.weight,
@@ -150,8 +150,8 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
 				sulphurInKg: sulphurInKg,
 				sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
-				metabolisableEnergyInKg: meInKg,
-				metabolisableEnergyPercentage: (meInKg / totalDMWeight) * 100
+				metabolisableEnergyInMJ: meInMJ,
+				metabolisableEnergyInMJPerKg: type.metabolisableEnergyInMJPerKg
 			};
 
 		};
@@ -173,31 +173,30 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		function _removeIndex(index) {
-			$log.info('removing forage type at index ' + index);
-			if (!index || index &lt; 0 || index > _forages.length - 1) {
-				return undefined;
+			$log.info('removing forage at index ' + index);
+			if (!_isDefined(index) || index &lt; 0 || index > _forages.length - 1) {
+				return forages;
 			}
-
 			_forages.splice(index, 1);
 
-			return _forages;
+			return forages;
 		};
 
 
 		function _remove(forage) {
-			$log.info('removing forage type ', forage);
+			$log.info('removing forage ', forage);
 
 			if (!_isDefined(forage)) {
-				return undefined;
+				return forages;
 			}
 
 			angular.forEach(_forages, function (item, index) {
 				if (angular.equals(item, forage)) {
-					_removeTypeByIndex(index);
+					_removeIndex(index);
 				}
 			});
 
-			return _forages;
+			return forages;
 		};
 
 		function _first() {
@@ -215,7 +214,7 @@ angular.module('farmbuild.nutrientCalculator')
 			at: _at,
 			size: _count,
 			toArray: _toArray,
-			removeIndex: _removeIndex,
+			removeAt: _removeIndex,
 			remove: _remove,
 			first: _first,
 			last: _last,
@@ -230,14 +229,14 @@ angular.module('farmbuild.nutrientCalculator')
 		function _validateType(forageType) {
 			$log.info('validating forageType  ...', forageType);
 
-			return !(!_isAlphanumeric(forageType.name) || !_isPositiveNumber(forageType.metabolisableEnergyPercentage) || !_isPositiveNumber(forageType.dryMatterPercentage) || !_isPositiveNumber(forageType.potassiumPercentage) || !_isPositiveNumber(forageType.phosphorusPercentage) || !_isPositiveNumber(forageType.nitrogenPercentage) || !_isPositiveNumber(forageType.sulphurPercentage));
+			return !(!_isAlphanumeric(forageType.name) || !_isPositiveNumber(forageType.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(forageType.dryMatterPercentage) || !_isPositiveNumber(forageType.potassiumPercentage) || !_isPositiveNumber(forageType.phosphorusPercentage) || !_isPositiveNumber(forageType.nitrogenPercentage) || !_isPositiveNumber(forageType.sulphurPercentage));
 
 		}
 
 		function _createType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
 			return {
 				name: name,
-				metabolisableEnergyPercentage: metabolisableEnergyPercentage,
+				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
 				dryMatterPercentage: dryMatterPercentage,
 				sulphurPercentage: sulphurPercentage,
 				potassiumPercentage: potassiumPercentage,
@@ -250,7 +249,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * Adds a new forage type for nutrient calculation
 		 * @method types.add
 		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} mePercentage - value must be > 0
+		 * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
 		 * @param {!number} dryMatterPercentage - value must be > 0
 		 * @param {!number} sulphurPercentage - value must be > 0
 		 * @param {!number} potassiumPercentage - value must be > 0
@@ -260,9 +259,9 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @private
 		 * @static
 		 */
-		function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
 
-			var forageType = _createType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+			var forageType = _createType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
 			$log.info('adding forage type ...', forageType);
 
 			if (!_validateType(forageType)) {
@@ -321,13 +320,13 @@ angular.module('farmbuild.nutrientCalculator')
 
 		function _removeTypeByIndex(index) {
 			$log.info('removing forage type at index ' + index);
-			if (!index || index &lt; 0 || index > _types.length - 1) {
-				return undefined;
+			if (!_isDefined(index) || index &lt; 0 || index > _types.length - 1) {
+				return forages.types;
 			}
 
 			_types.splice(index, 1);
 
-			return _types;
+			return forages.types;
 		};
 
 
@@ -335,7 +334,7 @@ angular.module('farmbuild.nutrientCalculator')
 			$log.info('removing forage type ', forageType);
 
 			if (!_isDefined(forageType)) {
-				return undefined;
+				return forages.types;
 			}
 
 			angular.forEach(_types, function (item, index) {
@@ -344,7 +343,7 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 			});
 
-			return _types;
+			return forages.types;
 		};
 
 
@@ -365,7 +364,7 @@ angular.module('farmbuild.nutrientCalculator')
 			at: _getTypeByIndex,
 			size: _countTypes,
 			toArray: _typesToArray,
-			removeIndex: _removeTypeByIndex,
+			removeAt: _removeTypeByIndex,
 			remove: _removeType,
 			first: _getFirstType,
 			last: _getLastType,
@@ -385,7 +384,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Apr 29 2015 17:52:05 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu Apr 30 2015 12:31:36 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

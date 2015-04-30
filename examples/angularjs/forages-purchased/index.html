@@ -16,7 +16,7 @@
         <small>(angularJS)</small>
     </h3>
     <hr/>
-    <form role="form" name="form" ng-submit="addCowType(type, form)" novalidate>
+    <form role="form" name="form" ng-submit="addForageType(type, form)" novalidate>
         <fieldset>
             <legend>
                 Here is a list of forages available, please add a new type if necessary.
@@ -26,13 +26,13 @@
                     href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
                 more information
             </error>
-            <form-item class="form-group col-lg-9 col-md-12 col-sm-12">
+            <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
-                <table id="cowTypesTbl" class="table table-striped table-hover">
+                <table id="forageTypesTbl" class="table table-striped table-hover">
                     <tr>
                         <th>Name</th>
-                        <th>Metabolisable Energy Ratio</th>
+                        <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
                         <th>Potassium (%)</th>
@@ -47,7 +47,7 @@
                         </td>
                         <td>
                             <input name="metabolisableEnergyRatio" id="metabolisableEnergyRatio"
-                                   ng-model="type.metabolisableEnergyRatio" type="number" class="form-control"/>
+                                   ng-model="type.metabolisableEnergyInMJPerKg" type="number" class="form-control"/>
                         </td>
                         <td>
                             <input name="dryMatterPercentage" id="dryMatterPercentage"
@@ -78,37 +78,43 @@
                     </tr>
                     <tr ng-repeat="type in forageTypes">
                         <td ng-bind="type.name"></td>
-                        <td ng-bind="type.metabolisableEnergyRatio | number : decimalPrecision"></td>
+                        <td ng-bind="type.metabolisableEnergyInMJPerKg | number : decimalPrecision"></td>
                         <td ng-bind="type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="type.sulphurPercentage | number : decimalPrecision"></td>
                         <td ng-bind="type.potassiumPercentage | number : decimalPrecision"></td>
                         <td ng-bind="type.phosphorusPercentage | number : decimalPrecision"></td>
                         <td ng-bind="type.nitrogenPercentage | number : decimalPrecision"></td>
-                        <td></td>
+                        <td>
+                            <button type="button" ng-click="removeForageType($index, form)" class="btn btn-link">
+                                Remove
+                            </button>
+                        </td>
                     </tr>
                 </table>
             </form-item>
         </fieldset>
     </form>
     <hr/>
-    <form role="form" name="form" ng-submit="calculate(cows, form)" novalidate>
+    <form role="form" name="form" ng-submit="calculate(forages, form)" novalidate>
         <fieldset>
             <legend>
-                Please enter the combination of cows available in the farm to calculate the nutrient
+                Please enter the combination of forages available in the farm to calculate the nutrient
             </legend>
             <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
                 There is a problem with input values. Please read <a
                     href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
                 more information
             </error>
-            <form-item class="form-group col-lg-9 col-md-12 col-sm-12">
+            <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
-                <table id="cowsTbl" class="table table-striped table-hover">
+                <table id="foragesTbl" class="table table-striped table-hover">
                     <tr>
                         <th>Type</th>
-                        <th>Weight (kg)</th>
-                        <th>Metabolisable Energy Ratio</th>
+                        <th>Total Weight (kg)</th>
+                        <th>Dry Matter Weight (kg)</th>
+                        <th>Wet/Dry</th>
+                        <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
                         <th>Potassium (%)</th>
@@ -118,37 +124,66 @@
                     </tr>
                     <tr class="form-input">
                         <td>
-                            <select name="cowType" id="cowType" class="form-control"
-                                    ng-options="cow as cow.name + ' (' + cow.weight + ' Kg)' for cow in cowTypes"
-                                    ng-model="cowType">
+                            <select name="forageType" id="forageType" class="form-control"
+                                    ng-options="forageType as forageType.name for forageType in forageTypes"
+                                    ng-model="newForage.Type">
                                 <option value="">Select type</option>
                             </select>
                         </td>
                         <td>
-                            <input name="numberOfCows" id="numberOfCows"
-                                   ng-model="numberOfCows" type="number" class="form-control"/>
+                            <input name="weight" id="weight"
+                                   ng-model="newForage.weight" type="number" class="form-control" placeholder="Enter weight"/>
                         </td>
                         <td>
-                            <span ng-bind='cowType.weight'></span>
+                            -
                         </td>
                         <td>
-                            <span ng-bind='cowType.weight*numberOfCows | number'></span>
+                            <select name="isDry" id="isDry" class="form-control"
+                                    ng-model="newForage.isDry">
+                                <option value="true">Dry</option>
+                                <option value="false">Wet</option>
+                                <option value="">Select wet/dry</option>
+                            </select>
+                        </td>
+                        <td>
+                            <span ng-bind='newForage.Type.metabolisableEnergyRatio'></span>
+                        </td>
+                        <td>
+                            <span ng-bind='newForage.Type.dryMatterPercentage'></span>
+                        </td>
+                        <td>
+                            <span ng-bind='newForage.Type.sulphurPercentage'></span>
+                        </td>
+                        <td>
+                            <span ng-bind='newForage.Type.potassiumPercentage'></span>
+                        </td>
+                        <td>
+                            <span ng-bind='newForage.Type.phosphorusPercentage'></span>
+                        </td>
+                        <td>
+                            <span ng-bind='newForage.Type.nitrogenPercentage'></span>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    ng-click="addCows(cowType, numberOfCows, form)">
+                                    ng-click="addForage(newForage.Type, newForage.weight, newForage.isDry, form)">
                                 <i class="icon fa fa-plus"></i>
-                                Add Cow
+                                Add forage
                             </button>
                         </td>
                     </tr>
-                    <tr ng-repeat="cow in cows">
-                        <td ng-bind="cow.name"></td>
-                        <td ng-bind="cow.numberOfCows"></td>
-                        <td ng-bind="cow.weight | number"></td>
-                        <td>{{(cow.numberOfCows * cow.weight) | number}}</td>
+                    <tr ng-repeat="forage in forages">
+                        <td ng-bind="forage.type.name"></td>
+                        <td ng-bind="forage.weight | number : decimalPrecision"></td>
+                        <td ng-bind="forage.isDry === 'true' ? forage.weight : (forage.weight*forage.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
+                        <td ng-bind="forage.isDry | dryWet"></td>
+                        <td ng-bind="forage.type.metabolisableEnergyRatio | number : decimalPrecision"></td>
+                        <td ng-bind="forage.type.dryMatterPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="forage.type.sulphurPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="forage.type.potassiumPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="forage.type.phosphorusPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="forage.type.nitrogenPercentage | number : decimalPrecision"></td>
                         <td>
-                            <button type="button" class="btn btn-link" ng-click="removeCows($index, form)">
+                            <button type="button" class="btn btn-link" ng-click="removeForage($index, form)">
                                 Remove
                             </button>
                         </td>
@@ -165,32 +200,53 @@
     <summary>
         <fieldset>
             <legend>
-                Summary - Total nutrient imported on to the farm in cows
+                Summary - Total nutrient imported on to the farm in forages
             </legend>
             <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
                 There is a problem with input values. Please read <a
                     href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
                 more information
             </error>
-            <form-item class="form-group col-sm-6">
-                <p>Number of Cows:
-                    <span ng-bind="result.numberOfCows"></span>
-                </p>
-            </form-item>
+            <!--
+            forages: incomings,
+				weight: totalWeight,
+				dryMatterWeight: totalDMWeight,
+				nitrogenInKg: nitrogenInKg,
+				nitrogenPercentage: (nitrogenInKg / totalDMWeight) * 100,
+				phosphorusInKg: phosphorusInKg,
+				phosphorusPercentage: (phosphorusInKg / totalDMWeight) * 100,
+				potassiumInKg: potassiumInKg,
+				potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
+				sulphurInKg: sulphurInKg,
+				sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
+				metabolisableEnergyInKg: meInKg,
+				metabolisableEnergyPercentage: (meInKg / totalDMWeight) * 100
+            -->
             <form-item class="form-group col-sm-6">
                 <p>Total weight (Kg): <span ng-bind="result.weight | number"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
+                <p>Total Dry Matter weight (Kg): <span ng-bind="result.dryMatterWeight | number"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
                 <p>Phosphorus (Kg): <span ng-bind="result.phosphorusInKg | number : decimalPrecision"></span></p>
+                <p>Phosphorus (%): <span ng-bind="result.phosphorusPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Potassium (Kg): <span ng-bind="result.potassiumInKg | number : decimalPrecision"></span></p>
+                <p>Potassium (%): <span ng-bind="result.phosphorusPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Sulphur (Kg): <span ng-bind="result.sulphurInKg | number : decimalPrecision"></span></p>
+                <p>Sulphur (%): <span ng-bind="result.sulphurPercentage | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Nitrogen (Kg): <span ng-bind="result.nitrogenInKg | number : decimalPrecision"></span></p>
+                <p>Nitrogen (%): <span ng-bind="result.nitrogenPercentage | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Metabolisable Energy (MJ/Kg): <span ng-bind="result.metabolisableEnergyInMJPerKg | number : decimalPrecision"></span></p>
+                <p>Total Metabolisable Energy (MJ): <span ng-bind="result.metabolisableEnergyInMJ | number : decimalPrecision"></span></p>
             </form-item>
         </fieldset>
     </summary>
