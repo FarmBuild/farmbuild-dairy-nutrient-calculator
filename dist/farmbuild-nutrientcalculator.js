@@ -512,7 +512,7 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
             sulphurInKg: sulphurInKg,
             sulphurPercentage: sulphurInKg / totalDMWeight * 100,
             metabolisableEnergyInMJ: meInMJ,
-            metabolisableEnergyInMJPerKg: type.metabolisableEnergyInMJPerKg
+            metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
         };
     }
     function _isEmpty() {
@@ -607,8 +607,7 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
         if (!_isDefined(index) || index < 0) {
             return undefined;
         }
-        type = _types[index];
-        return forageTypes;
+        return _types[index];
     }
     function _last() {
         $log.info("getting last forage type ...");
