@@ -59,9 +59,11 @@ angular.module('farmbuild.nutrientCalculator')
       result.dryMatterWeight = itemsTotal.dryMatterWeight;
       result.nitrogenInKg = itemsTotal.nitrogenInKg;
       result.phosphorusInKg = itemsTotal.phosphorusInKg;
+      result.potassiumInKg = itemsTotal.potassiumInKg;
 
       result.nitrogenPercentage = calculatePercentage(itemsTotal.nitrogenInKg, itemsTotal.dryMatterWeight);
       result.phosphorusPercentage = calculatePercentage(itemsTotal.phosphorusInKg, itemsTotal.dryMatterWeight);
+      result.potassiumPercentage = calculatePercentage(itemsTotal.potassiumInKg, itemsTotal.dryMatterWeight);
 
       return result;
     }
@@ -83,7 +85,7 @@ angular.module('farmbuild.nutrientCalculator')
       return (weight * percentage) / 100;
     }
 
-    function calculateFertilizer(fertilizer, itemsTotal) {
+    function calculateNutrientInFertilizer(fertilizer, itemsTotal) {
       var type = fertilizer.type,
         weight = fertilizer.weight,
         dryMatterWeight = (fertilizer.isDry?weight:calculateNutrientInKg(weight, type.dryMatterPercentage))
@@ -93,6 +95,7 @@ angular.module('farmbuild.nutrientCalculator')
       itemsTotal.dryMatterWeight += dryMatterWeight;
       itemsTotal.nitrogenInKg += calculateNutrientInKg(dryMatterWeight, type.nitrogenPercentage);
       itemsTotal.phosphorusInKg += calculateNutrientInKg(dryMatterWeight, type.phosphorusPercentage);
+      itemsTotal.potassiumInKg += calculateNutrientInKg(dryMatterWeight, type.potassiumPercentage);
 
       itemsTotal.incomings.push({
         type: fertilizer.type,
@@ -103,8 +106,8 @@ angular.module('farmbuild.nutrientCalculator')
       return itemsTotal;
     }
 
-    function calculateItemsTotal(fertilizers) {
-      $log.info('calculateItemsTotal...');
+    function calculateNutrientInFertilizers(fertilizers) {
+      $log.info('calculateNutrientInFertilizers...');
       var i = 0,
         itemsTotal = createItemsTotal();
 
@@ -112,11 +115,11 @@ angular.module('farmbuild.nutrientCalculator')
         var fertilizer = fertilizers[i];
 
         if (!_validate(fertilizer)) {
-          $log.error('calculateItemsTotal invalid fertilizer at %s: %j', i, fertilizer);
+          $log.error('calculateNutrientInFertilizers invalid fertilizer at %s: %j', i, fertilizer);
           return undefined;
         }
 
-        itemsTotal = calculateFertilizer(fertilizer, itemsTotal);
+        itemsTotal = calculateNutrientInFertilizer(fertilizer, itemsTotal);
       }
 
       return itemsTotal;
@@ -125,7 +128,7 @@ angular.module('farmbuild.nutrientCalculator')
     fertilizerPurchased.calculate = function(fertilizers) {
       $log.info('fertilizerPurchased.calculate...');
 
-      var itemsTotal = calculateItemsTotal(fertilizers);
+      var itemsTotal = calculateNutrientInFertilizers(fertilizers);
 
       if(!_isDefined(itemsTotal)) {
         $log.error('fertilizerPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
