@@ -18,6 +18,7 @@ angular.module('farmbuild.nutrientCalculator')
       return regex.test(value);
     };
 
+    validations.isDefined =  angular.isDefined;
 
     return validations;
 
