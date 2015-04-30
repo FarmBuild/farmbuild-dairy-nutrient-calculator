@@ -18,6 +18,10 @@ angular.module('farmbuild.nutrientCalculator')
       _isDefined = validations.isDefined,
       _collections = [];
 
+    function _byProperty(_types, property, value) {
+
+    }
+
     function _add(collection, item, index) {
       if (_isDefined(index)) {
         collection.splice(index, 0, item)
@@ -83,6 +87,7 @@ angular.module('farmbuild.nutrientCalculator')
       add: _add,
       at: _at,
       size: _count,
+      byProperty:_byProperty,
       removeAt: _removeAt,
       remove: _remove,
       first: _first,

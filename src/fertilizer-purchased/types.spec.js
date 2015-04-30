@@ -4,7 +4,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
   var fertilizerTypes, dairyManureStockpileName = 'Dairy manure stockpile',
-    dapName = 'DAP';
+    dapName = 'DAP', superphosphate = 'Superphosphate (Super)';
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
@@ -54,6 +54,10 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(fertilizerTypes.last().name).toEqual(name);
     }));
 
+//    it('byName should find ' + superphosphate, inject(function() {
+//      var found = fertilizerTypes.byName(superphosphate);
+//      expect(found.name).toEqual(superphosphate);
+//    }));
   });
 
 });

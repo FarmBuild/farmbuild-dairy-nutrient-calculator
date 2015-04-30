@@ -15,11 +15,10 @@
 angular.module('farmbuild.nutrientCalculator')
   .factory('fertilizerTypes', function (collections, validations, fertilizerDefaults, $log) {
 
-    var fertilizerTypes = {},
+    var fertilizerTypes,
       _isPositiveNumber = validations.isPositiveNumber,
       _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
       _isAlphanumeric = validations.isAlphanumeric,
-      _isDefined = validations.isDefined,
       _types = angular.copy(fertilizerDefaults.types);
 
     function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
@@ -50,7 +49,7 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     /**
-     * Adds a new forage type for nutrient calculation
+     * Adds a new fertilizer type for nutrient calculation
      * @method types.add
      * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} dryMatterPercentage - value must be > 0
@@ -58,14 +57,13 @@ angular.module('farmbuild.nutrientCalculator')
      * @param {!number} potassiumPercentage - value must be > 0
      * @param {!number} phosphorusPercentage - value must be > 0
      * @param {!number} nitrogenPercentage - value must be > 0
-     * @returns {object} forages - useful for chaining multiple add()
+     * @returns {object} fertilizers - useful for chaining multiple add()
      * @private
      * @static
      */
     function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-
       var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-      $log.info('adding forage type ...', type);
+      $log.info('adding fertilizer type ...', type);
 
       if (!_validate(type)) {
         return undefined;
@@ -76,7 +74,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     /**
      * Fertilizer types collection api
-     * @property {object} Types - forage types collection
+     * @property {object} Types - fertilizer types collection
      * @public
      * @static
      */
@@ -84,6 +82,7 @@ angular.module('farmbuild.nutrientCalculator')
       add: _add,
       at: function(index) { return collections.at(_types, index)},
       size: function() { return collections.size(_types)},
+      byName: function(name) { return collections.byProperty(_types, 'name', name)},
 //      toArray: _typesToArray,
 //      removeIndex: _removeTypeByIndex,
 //      remove: _removeType,

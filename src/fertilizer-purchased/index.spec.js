@@ -4,7 +4,8 @@ describe('fertilizerPurchased module', function() {
   var $log;
   var fertilizerPurchased,
     dap, dapName = 'DAP',
-    dairyManureStockpile, dairyManureStockpileName = 'Dairy manure stockpile';
+    dairyManureStockpile, dairyManureStockpileName = 'Dairy manure stockpile',
+    superphosphate, superphosphateName = 'Superphosphate (Super)';
 
   beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
     $provide.value('$log', console);
@@ -19,6 +20,7 @@ describe('fertilizerPurchased module', function() {
     $log.info(dap + ' loaded: %j', dap)
     expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName)
     expect(dap.name).toEqual(dapName)
+
   }));
 
   describe('Given fertilizerPurchased factory', function(){
@@ -77,22 +79,27 @@ describe('fertilizerPurchased module', function() {
       expect(between(result.dryMatterWeight, 3073.2, 3073.3)).toBeTruthy()
       expect(result.nitrogenPercentage).toEqual(1.44)
       expect(between(result.nitrogenInKg, 44.254, 44.255)).toBeTruthy()
-//      expect(result.phosphorusInKg).toEqual(800)
-//      expect(result.phosphorusPercentage).toBe(20)
-//      expect(result.potassiumInKg).toEqual(0)
-//      expect(result.potassiumPercentage).toEqual(0)
-//      expect(result.sulphurInKg).toEqual(64)
-//      expect(result.sulphurPercentage).toEqual(1.6)
+      expect(between(result.phosphorusInKg,16.9026,17.0)).toBeTruthy()
+      expect(result.phosphorusPercentage).toBe(0.55)
+      expect(result.potassiumInKg).toEqual(42.41016)
+      expect(result.potassiumPercentage).toEqual(1.38)
+      expect(result.sulphurInKg).toEqual(9.2196)
+      expect(result.sulphurPercentage).toEqual(0.3)
     }));
 
-//    it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
-//      var weightDap = 4000,
-//        fertilizer = addFertilizer(dap, weightDap, true);
-//      $log.info('fertilizer: %j', fertilizer);
-//      var result = fertilizerPurchased.calculate(fertilizer)
-//
-//      $log.info('result generated: %j', result);
-//
+    it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
+      var weightDap = 4000,
+        fertilizers = fertilizerPurchased
+          .add(dap, weightDap, true)
+          .add(dap, weightDap, true)
+          .add(dap, weightDap, true).fertilizers()
+      $log.info('fertilizers created: %j', fertilizers)
+      expect(angular.isArray(fertilizers)).toBeTruthy()
+
+      var result = fertilizerPurchased.calculate(fertilizers)
+
+      $log.info('result generated: %j', result);
+
 //      expect(result.weight).toEqual(4000)
 //      expect(result.dryMatterWeight).toEqual(4000)
 //      expect(result.nitrogenPercentage).toEqual(18)
@@ -103,7 +110,7 @@ describe('fertilizerPurchased module', function() {
 //      expect(result.potassiumPercentage).toEqual(0)
 //      expect(result.sulphurInKg).toEqual(64)
 //      expect(result.sulphurPercentage).toEqual(1.6)
-//    }));
+    }));
 
   });
 
