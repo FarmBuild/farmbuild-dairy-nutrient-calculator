@@ -12,7 +12,7 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 		}
 	})
 
-	.controller('ForagesPurchasedCtrl', function ($scope, $rootScope, foragesPurchased, validations) {
+	.controller('ForagesPurchasedCtrl', function ($scope, $rootScope, foragesPurchased) {
 
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.forages = [];
