@@ -18,7 +18,7 @@ angular.module('farmbuild.nutrientCalculator')
     var fertilizerTypes,
       _isPositiveNumber = validations.isPositiveNumber,
       _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
-      _isAlphanumeric = validations.isAlphanumeric,
+      _isEmpty = validations.isEmpty,
       _types = angular.copy(fertilizerDefaults.types);
 
     function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
@@ -35,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator')
     function _validate(type) {
       $log.info('validating type  ...', type);
 
-      var valid =  !(!_isAlphanumeric(type.name) ||
+      var valid =  !(_isEmpty(type.name) ||
         !_isPositiveNumber(type.dryMatterPercentage) ||
         !_isPositiveNumberOrZero(type.potassiumPercentage) ||
         !_isPositiveNumberOrZero(type.phosphorusPercentage) ||

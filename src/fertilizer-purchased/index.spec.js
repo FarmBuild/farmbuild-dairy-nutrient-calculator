@@ -5,7 +5,8 @@ describe('fertilizerPurchased module', function() {
   var fertilizerPurchased,
     dap, dapName = 'DAP',
     dairyManureStockpile, dairyManureStockpileName = 'Dairy manure stockpile',
-    superphosphate, superphosphateName = 'Superphosphate (Super)';
+    superphosphate, superphosphateName = 'Superphosphate (Super)',
+    urea, ureaName = 'Urea';
 
   beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
     $provide.value('$log', console);
@@ -20,6 +21,10 @@ describe('fertilizerPurchased module', function() {
     $log.info(dap + ' loaded: %j', dap)
     expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName)
     expect(dap.name).toEqual(dapName)
+    superphosphate =  fertilizerPurchased.types.byName(superphosphateName);
+    expect(superphosphate.name).toEqual(superphosphateName)
+    urea =  fertilizerPurchased.types.byName(ureaName);
+    expect(urea.name).toEqual(ureaName)
 
   }));
 
@@ -88,12 +93,15 @@ describe('fertilizerPurchased module', function() {
     }));
 
     it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
-      var weightDap = 4000,
+      var weightDap = 4000, weightSuperphosphate = 13000,
+        weightUrea = 11000,
         fertilizers = fertilizerPurchased
           .add(dap, weightDap, true)
-          .add(dap, weightDap, true)
-          .add(dap, weightDap, true).fertilizers()
+          .add(superphosphate, weightSuperphosphate, true)
+          .add(urea, weightUrea, true).fertilizers()
+
       $log.info('fertilizers created: %j', fertilizers)
+
       expect(angular.isArray(fertilizers)).toBeTruthy()
 
       var result = fertilizerPurchased.calculate(fertilizers)

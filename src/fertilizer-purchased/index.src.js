@@ -53,6 +53,11 @@ angular.module('farmbuild.nutrientCalculator')
     fertilizerPurchased.create = _create;
     fertilizerPurchased.add = _add;
 
+    /**
+     *
+     * @param fertilizers
+     * @returns {*}
+     */
     fertilizerPurchased.calculate = function(fertilizers) {
       $log.info('fertilizerPurchased.calculate...');
       if(!validator.validateAll(fertilizers)) {
