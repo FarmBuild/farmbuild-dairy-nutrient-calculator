@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>fertilizer-purchased/calculator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">fertilizer-purchased/calculator.src.js</h1>
     
 
     
@@ -49,56 +49,111 @@
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/fertilizerCalculator singleton
+ * @module nutrientCalculator/fertilizerCalculator
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator')
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
-		var nutrientCalculator = {};
+  .factory('fertilizerCalculator', function (fertilizerValidator, fertilizerDefaults, fertilizerTypes, $log) {
+    var fertilizerCalculator = {},
+      validator = fertilizerValidator;
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+    function createResult(total) {
+      return {
+        fertilizers: total.incomings,
+        weight: total.weight,
+        dryMatterWeight: total.dryMatterWeight,
+        nitrogenInKg: total.nitrogenInKg,
+        nitrogenPercentage: 0,
+        phosphorusInKg: total.phosphorusInKg,
+        phosphorusPercentage: 0,
+        potassiumInKg: total.potassiumInKg,
+        potassiumPercentage: 0,
+        sulphurInKg: total.sulphurInKg,
+        sulphurPercentage: 0
+      };
+    }
 
-		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
-				return undefined;
-			}
+    function _calculatePercentage(nutrientWeight, totalWeight) {
+      return (nutrientWeight / totalWeight) * 100
+    }
 
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {}
-				};
-			}
-			return farmData;
-		};
+    function _calculatePercentages(total) {
+      var result = createResult(total);
 
-		// Provide a shortcut for modules
-		nutrientCalculator.milkSold = milkSold;
-		nutrientCalculator.cowsPurchased = cowsPurchased;
-		nutrientCalculator.cowsCulled = cowsCulled;
-		nutrientCalculator.foragesPurchased = foragesPurchased;
-		nutrientCalculator.version = '0.1.0';
+      result.nitrogenPercentage = _calculatePercentage(total.nitrogenInKg, total.dryMatterWeight);
+      result.phosphorusPercentage = _calculatePercentage(total.phosphorusInKg, total.dryMatterWeight);
+      result.potassiumPercentage = _calculatePercentage(total.potassiumInKg, total.dryMatterWeight);
+      result.sulphurPercentage = _calculatePercentage(total.sulphurInKg, total.dryMatterWeight);
 
-		if(typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
+      return result;
+    }
 
-		return nutrientCalculator;
-	});</code></pre>
+    function _createTotal() {
+      return {
+        weight:0,
+        dryMatterWeight:0,
+        nitrogenInKg:0,
+        phosphorusInKg:0,
+        potassiumInKg:0,
+        sulphurInKg:0,
+        incomings:[]
+      }
+    }
+
+    function _calculateNutrientWeight(weight, percentage) {
+      return (weight * percentage) / 100;
+    }
+
+    function updateTotal(fertilizer, total) {
+      var type = fertilizer.type,
+        weight = fertilizer.weight,
+        dryMatterWeight = (fertilizer.isDry?weight:_calculateNutrientWeight(weight, type.dryMatterPercentage))
+        ;
+
+      total.weight += weight;
+      total.dryMatterWeight += dryMatterWeight;
+      total.nitrogenInKg += _calculateNutrientWeight(dryMatterWeight, type.nitrogenPercentage);
+      total.phosphorusInKg += _calculateNutrientWeight(dryMatterWeight, type.phosphorusPercentage);
+      total.potassiumInKg += _calculateNutrientWeight(dryMatterWeight, type.potassiumPercentage);
+      total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
+
+      total.incomings.push({
+        type: fertilizer.type,
+        weight: fertilizer.weight,
+        isDry: fertilizer.isDry
+      });
+
+      return total;
+    }
+
+    function calculateAll(fertilizers) {
+      $log.info('fertilizerCalculator.calculateAll...');
+      var i = 0,
+        total = _createTotal();
+
+      for (i; i &lt; fertilizers.length; i++) {
+        var fertilizer = fertilizers[i];
+
+        if (!validator.validate(fertilizer)) {
+          $log.error('fertilizerCalculator.calculateAll invalid fertilizer at %s: %j', i, fertilizer);
+          return undefined;
+        }
+
+        total = updateTotal(fertilizer, total);
+      }
+
+      return total;
+    }
+
+    fertilizerCalculator.calculate = function(fertilizers) {
+      var itemsTotal = calculateAll(fertilizers);
+
+      return _calculatePercentages(itemsTotal);
+    }
+
+    return fertilizerCalculator;
+  });</code></pre>
         </article>
     </section>
 

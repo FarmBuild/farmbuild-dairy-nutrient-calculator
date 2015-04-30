@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>fertilizer-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">fertilizer-purchased/index.src.js</h1>
     
 
     
@@ -49,56 +49,62 @@
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/fertilizerPurchased singleton
+ * @module nutrientCalculator/fertilizerPurchased
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator')
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
-		var nutrientCalculator = {};
+  .factory('fertilizerPurchased',
+  function (validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator,
+            collections,
+            $log) {
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+    var fertilizerPurchased = {types:fertilizerTypes},
+      _fertilizers = [],
+      calculator = fertilizerCalculator,
+      validator = fertilizerValidator;
 
-		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
-				return undefined;
-			}
+    fertilizerPurchased.fertilizers = function() { return _fertilizers};
 
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {}
-				};
-			}
-			return farmData;
-		};
+    function _create(type, weight, isDry) {
+      return {type: type, weight:weight, isDry:isDry};
+    }
 
-		// Provide a shortcut for modules
-		nutrientCalculator.milkSold = milkSold;
-		nutrientCalculator.cowsPurchased = cowsPurchased;
-		nutrientCalculator.cowsCulled = cowsCulled;
-		nutrientCalculator.foragesPurchased = foragesPurchased;
-		nutrientCalculator.version = '0.1.0';
+    /**
+     * Adds a new fertilizer type for nutrient calculation
+     * @method types.add
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizerPurchased - useful for chaining multiple add()
+     * @private
+     * @static
+     */
+    function _add(type, weight, isDry) {
+      var fertilizer = _create(type, weight, isDry);
+      $log.info('adding fertilizer ...', fertilizer);
+      if (!validator.validate(fertilizer)) {
+        return undefined;
+      }
+      collections.add(_fertilizers, fertilizer);
+      return fertilizerPurchased;
+    };
 
-		if(typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
+    fertilizerPurchased.create = _create;
+    fertilizerPurchased.add = _add;
 
-		return nutrientCalculator;
-	});</code></pre>
+    fertilizerPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizerPurchased.calculate...');
+      if(!validator.validateAll(fertilizers)) {
+        $log.error('fertilizerPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
+        return undefined;
+      }
+
+      return calculator.calculate(fertilizers);
+    }
+
+    return fertilizerPurchased;
+  });</code></pre>
         </article>
     </section>
 
