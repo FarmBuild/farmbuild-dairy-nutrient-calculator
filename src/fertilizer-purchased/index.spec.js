@@ -39,18 +39,18 @@ describe('fertilizerPurchased module', function() {
       expect(result).toBeUndefined()
     }));
 
-    it('DAP type and the weight of 4 should calculate', inject(function() {
-      var weight = 4,
+    it('DAP type and the weight of 4000kg should calculate', inject(function() {
+      var weight = 4000,
         fertilizer = addFertilizer(dap, weight, true);
       $log.info('fertilizer: %j', fertilizer);
       var result = fertilizerPurchased.calculate(fertilizer)
 
       $log.info('result generated: %j', result);
 
-      expect(result.weight).toEqual(4)
-      //expect(result.dryMatterWeight).toEqual(4)
-      //expect(result.nitrogenPercentage).toEqual(18)
-      //expect(result.nitrogenInKg).toEqual(720)
+      expect(result.weight).toEqual(4000)
+      expect(result.dryMatterWeight).toEqual(4000)
+      expect(result.nitrogenPercentage).toEqual(18)
+      expect(result.nitrogenInKg).toEqual(720)
 //      expect(result.phosphorusPercentage > 0.33 && result.phosphorusPercentage < 0.35).toBeTruthy();
 //      expect(result.phosphorusInKg).toEqual(3.4);
 //      expect(result.potassiumPercentage > 2.67 && result.potassiumPercentage < 2.7).toBeTruthy();
