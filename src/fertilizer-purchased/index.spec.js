@@ -1,11 +1,15 @@
 describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
+  var $log;
   var fertilizerPurchased, dap;
 
-  beforeEach(module('farmbuild.nutrientCalculator'));
+  beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
+    $provide.value('$log', console);
+  }));
 
-  beforeEach(inject(function (_fertilizerPurchased_) {
+  beforeEach(inject(function (_$log_, _fertilizerPurchased_) {
+    $log = _$log_;
     fertilizerPurchased = _fertilizerPurchased_;
     dap = fertilizerPurchased.types.at(0);
   }));
@@ -24,22 +28,21 @@ describe('farmbuild.nutrientCalculator module', function() {
     return [createdFertilizer(type, weight, isDry)];
   }
 
-  describe('calculate nutrient of forage purchased', function(){
+  describe('calculate nutrient of fertilizer purchased', function(){
 
     it('Average crop type with undefined amount should fail', inject(function() {
       var result = fertilizerPurchased.calculate(addFertilizer(dap, true))
-
       expect(result).toBeUndefined()
     }));
 
     it('Average crop type and amount of 1000 and basis of dry should be calculated', inject(function() {
       var weight = 4,
-      result = fertilizerPurchased.calculate(addFertilizer(dap, weight, true))
-
+        fertilizer = addFertilizer(dap, weight, true);
+      $log.info('fertilizer: $j', fertilizer);
+      var result = fertilizerPurchased.calculate(fertilizer)
 
       expect(result.weight).toEqual(4)
-
-//      expect(result.dryMatterWeight).toEqual(1000);
+      expect(result.dryMatterWeight).toEqual(1000)
 //      expect(result.nitrogenPercentage > 2.98 && result.nitrogenPercentage < 3).toBeTruthy();
 //      expect(result.nitrogenInKg).toEqual(29.9);
 //      expect(result.phosphorusPercentage > 0.33 && result.phosphorusPercentage < 0.35).toBeTruthy();

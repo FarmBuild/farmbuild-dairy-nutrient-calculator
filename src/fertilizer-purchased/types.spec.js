@@ -3,13 +3,12 @@
 describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
-  var fertilizerTypes, averageCrop;
+  var fertilizerTypes, dairyManureStockpileName = 'Dairy manure stockpile';
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
   beforeEach(inject(function (_fertilizerTypes_) {
     fertilizerTypes = _fertilizerTypes_;
-    //averageCrop = fertilizerTypes.at(0);
   }));
 
   describe('fertilizerTypes factory', function(){
@@ -27,6 +26,11 @@ describe('farmbuild.nutrientCalculator module', function() {
 //  }
 
   describe('types', function(){
+
+    it('given default types, at(0) should return ' + dairyManureStockpileName, inject(function() {
+      var dairyManureStockpile = fertilizerTypes.at(0);
+      expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName);
+    }));
 
     it('New fertilizer type should be added on top of the existing', inject(function() {
       var name = 'New Fertilizer Type 1', dryMatterPercentage = 0.8,

@@ -20,7 +20,6 @@ angular.module('farmbuild.nutrientCalculator')
       _isPositiveNumber = validations.isPositiveNumber,
       _isAlphanumeric = validations.isAlphanumeric,
       _isDefined = validations.isDefined,
-      _types = angular.copy(fertilizerDefaults.types),
       _fertilizer = [];
 
     function _validate(fertilizer) {
@@ -64,6 +63,7 @@ angular.module('farmbuild.nutrientCalculator')
       var weight = fertilizer.weight;
 
       itemsTotal.weight += weight;
+
       itemsTotal.incomings.push({
         type: fertilizer.type,
         weight: fertilizer.weight,
@@ -95,6 +95,10 @@ angular.module('farmbuild.nutrientCalculator')
         result = createResult();
 
       itemsTotal = calculateItemsTotal(fertilizers);
+
+      if(!_isDefined(itemsTotal)) {
+        return undefined;
+      }
 
       result.weight = itemsTotal.weight;
       return result;

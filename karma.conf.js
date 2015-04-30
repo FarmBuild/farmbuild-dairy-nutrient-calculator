@@ -29,7 +29,7 @@ module.exports = function(config){
     autoWatch : true,
     frameworks: ['jasmine'],
     browsers : ['Chrome'],
-    logLevels: 'DEBUG',
+    //logLevel: 'LOG_INFO', //this it NOT application log level, it's karma's log level.
     plugins : [
             'karma-chrome-launcher',
             'karma-firefox-launcher',
