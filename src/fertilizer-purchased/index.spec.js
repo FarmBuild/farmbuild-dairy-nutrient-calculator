@@ -57,10 +57,6 @@ describe('fertilizerPurchased module', function() {
       expect(result.potassiumPercentage).toEqual(0)
       expect(result.sulphurInKg).toEqual(64)
       expect(result.sulphurPercentage).toEqual(1.6)
-
-
-//      expect(result.metabolisableEnergyInKg).toEqual(97.5);
-//      expect(result.metabolisableEnergyPercentage).toEqual(9.75);
     }));
 
   });
