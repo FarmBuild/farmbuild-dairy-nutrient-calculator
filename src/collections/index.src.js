@@ -16,10 +16,34 @@ angular.module('farmbuild.nutrientCalculator')
   .factory('collections', function (validations, $log) {
     var collections = {},
       _isDefined = validations.isDefined,
-      _collections = [];
+      _isArray = validations.isArray,
+      _equals = validations.equals;
 
-    function _byProperty(_types, property, value) {
+    function _byProperty(collection, property, value) {
+      if(!_isArray(collection)) {
+        return undefined;
+      }
+      if(!_isDefined(property)) {
+        return undefined;
+      }
+      if(!_isDefined(value)) {
+        return undefined;
+      }
 
+      var i = 0;
+      for(i; i < collection.length; i++) {
+        var item = collection[i];
+
+        if(!item.hasOwnProperty(property)) {
+          continue;
+        }
+
+        if(_equals(item[property], value)) {
+          return item;
+        }
+
+      }
+      return undefined;
     }
 
     function _add(collection, item, index) {

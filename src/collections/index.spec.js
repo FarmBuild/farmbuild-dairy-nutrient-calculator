@@ -62,6 +62,15 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(angular.equals(copied, result)).toBe(true)
     }))
 
+    it('_byProperty with index -1 should return the same array', inject(function() {
+      var hi = 'hi',
+        items = [create(hi), create('hello'),create('hey')],
+        result = collections.byProperty(items, 'name', hi)
+
+      expect(result).toBeDefined()
+      expect(result.name).toBe(hi)
+    }))
+
   });
 
 });
