@@ -23,6 +23,8 @@ angular.module('farmbuild.nutrientCalculator')
     };
 
     validations.isDefined =  angular.isDefined;
+    validations.isArray =  angular.isArray;
+    validations.equals = angular.equals;
 
     return validations;
 
