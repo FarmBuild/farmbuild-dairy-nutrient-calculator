@@ -17,6 +17,8 @@ module.exports = function(config){
       'src/collections/index.src.js',
       'src/fertilizer-purchased/fertilizers.conf.src.js',
       'src/fertilizer-purchased/types.src.js',
+      'src/fertilizer-purchased/validator.src.js',
+      'src/fertilizer-purchased/calculator.src.js',
       'src/fertilizer-purchased/index.src.js',
       'src/collections/index.spec.js',
       'src/fertilizer-purchased/types.spec.js',
