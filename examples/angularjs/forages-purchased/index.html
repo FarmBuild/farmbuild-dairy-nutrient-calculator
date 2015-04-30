@@ -174,7 +174,7 @@
                     <tr ng-repeat="forage in forages">
                         <td ng-bind="forage.type.name"></td>
                         <td ng-bind="forage.weight | number : decimalPrecision"></td>
-                        <td ng-bind="forage.isDry === 'true' ? forage.weight : (forage.weight*forage.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
+                        <td ng-bind="forage.isDry ? forage.weight : (forage.weight*forage.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="forage.isDry | dryWet"></td>
                         <td ng-bind="forage.type.metabolisableEnergyRatio | number : decimalPrecision"></td>
                         <td ng-bind="forage.type.dryMatterPercentage | number : decimalPrecision"></td>
