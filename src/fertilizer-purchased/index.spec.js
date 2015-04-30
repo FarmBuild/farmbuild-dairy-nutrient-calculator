@@ -53,11 +53,12 @@ describe('fertilizerPurchased module', function() {
       expect(result.nitrogenInKg).toEqual(720)
       expect(result.phosphorusInKg).toEqual(800)
       expect(result.phosphorusPercentage).toBe(20)
-      expect(result.potassiumInKg).toEqual(0);
-      expect(result.potassiumPercentage).toEqual(0);
+      expect(result.potassiumInKg).toEqual(0)
+      expect(result.potassiumPercentage).toEqual(0)
+      expect(result.sulphurInKg).toEqual(64)
+      expect(result.sulphurPercentage).toEqual(1.6)
 
-//      expect(result.sulphurPercentage > 0.49 && result.sulphurPercentage < 0.52).toBeTruthy();
-//      expect(result.sulphurInKg).toEqual(5);
+
 //      expect(result.metabolisableEnergyInKg).toEqual(97.5);
 //      expect(result.metabolisableEnergyPercentage).toEqual(9.75);
     }));

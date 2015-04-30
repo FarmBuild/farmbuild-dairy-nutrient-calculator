@@ -33,18 +33,18 @@ angular.module('farmbuild.nutrientCalculator')
       return fertilizerTypes.validate(fertilizer.type);
     };
 
-    function createResult() {
+    function createResult(total) {
       return {
         fertilizers: [],
-        weight: 0,
-        dryMatterWeight: 0,
-        nitrogenInKg: 0,
+        weight: total.weight,
+        dryMatterWeight: total.dryMatterWeight,
+        nitrogenInKg: total.nitrogenInKg,
         nitrogenPercentage: 0,
-        phosphorusInKg: 0,
+        phosphorusInKg: total.phosphorusInKg,
         phosphorusPercentage: 0,
-        potassiumInKg: 0,
+        potassiumInKg: total.potassiumInKg,
         potassiumPercentage: 0,
-        sulphurInKg: 0,
+        sulphurInKg: total.sulphurInKg,
         sulphurPercentage: 0
       };
     }
@@ -54,16 +54,12 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     function calculateResult(itemsTotal) {
-      var result = createResult();
-      result.weight = itemsTotal.weight;
-      result.dryMatterWeight = itemsTotal.dryMatterWeight;
-      result.nitrogenInKg = itemsTotal.nitrogenInKg;
-      result.phosphorusInKg = itemsTotal.phosphorusInKg;
-      result.potassiumInKg = itemsTotal.potassiumInKg;
+      var result = createResult(itemsTotal);
 
       result.nitrogenPercentage = calculatePercentage(itemsTotal.nitrogenInKg, itemsTotal.dryMatterWeight);
       result.phosphorusPercentage = calculatePercentage(itemsTotal.phosphorusInKg, itemsTotal.dryMatterWeight);
       result.potassiumPercentage = calculatePercentage(itemsTotal.potassiumInKg, itemsTotal.dryMatterWeight);
+      result.sulphurPercentage = calculatePercentage(itemsTotal.sulphurInKg, itemsTotal.dryMatterWeight);
 
       return result;
     }
@@ -96,6 +92,7 @@ angular.module('farmbuild.nutrientCalculator')
       itemsTotal.nitrogenInKg += calculateNutrientInKg(dryMatterWeight, type.nitrogenPercentage);
       itemsTotal.phosphorusInKg += calculateNutrientInKg(dryMatterWeight, type.phosphorusPercentage);
       itemsTotal.potassiumInKg += calculateNutrientInKg(dryMatterWeight, type.potassiumPercentage);
+      itemsTotal.sulphurInKg += calculateNutrientInKg(dryMatterWeight, type.sulphurPercentage);
 
       itemsTotal.incomings.push({
         type: fertilizer.type,
