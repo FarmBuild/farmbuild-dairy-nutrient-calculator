@@ -47,6 +47,13 @@ angular.module('farmbuild.nutrientCalculator')
       };
     }
 
+    function calculateResult(itemsTotal) {
+      var result = createResult();
+      result.weight = itemsTotal.weight;
+      result.dryMatterWeight = itemsTotal.dryMatterWeight;
+      return result;
+    }
+
     function createItemsTotal() {
       return {
         weight:0,
@@ -61,8 +68,8 @@ angular.module('farmbuild.nutrientCalculator')
 
     function calculateFertilizer(fertilizer, itemsTotal) {
       var weight = fertilizer.weight;
-
       itemsTotal.weight += weight;
+      itemsTotal.dryMatterWeight += (fertilizer.isDry?weight:(weight * fertilizer.type.dryMatterPercentage) / 100);
 
       itemsTotal.incomings.push({
         type: fertilizer.type,
@@ -74,6 +81,7 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     function calculateItemsTotal(fertilizers) {
+      $log.info('calculateItemsTotal...');
       var i = 0,
         itemsTotal = createItemsTotal();
 
@@ -81,6 +89,7 @@ angular.module('farmbuild.nutrientCalculator')
         var fertilizer = fertilizers[i];
 
         if (!_validate(fertilizer)) {
+          $log.info('calculateItemsTotal invalid fertilizer at %s: %j', i, fertilizer);
           return undefined;
         }
 
@@ -91,18 +100,16 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     fertilizerPurchased.calculate = function(fertilizers) {
-      var itemsTotal = {},
-        result = createResult();
+      $log.info('fertilizerPurchased.calculate...');
 
-      itemsTotal = calculateItemsTotal(fertilizers);
+      var itemsTotal = calculateItemsTotal(fertilizers);
 
       if(!_isDefined(itemsTotal)) {
+        $log.error('fertilizerPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
         return undefined;
       }
 
-      result.weight = itemsTotal.weight;
-      return result;
-
+      return calculateResult(itemsTotal);
     }
 
     return fertilizerPurchased;

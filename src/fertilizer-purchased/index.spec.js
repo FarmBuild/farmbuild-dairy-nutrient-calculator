@@ -38,11 +38,13 @@ describe('farmbuild.nutrientCalculator module', function() {
     it('Average crop type and amount of 1000 and basis of dry should be calculated', inject(function() {
       var weight = 4,
         fertilizer = addFertilizer(dap, weight, true);
-      $log.info('fertilizer: $j', fertilizer);
+      $log.info('fertilizer: %j', fertilizer);
       var result = fertilizerPurchased.calculate(fertilizer)
 
+      $log.info('result generated: %j', result);
+
       expect(result.weight).toEqual(4)
-      expect(result.dryMatterWeight).toEqual(1000)
+      expect(result.dryMatterWeight).toEqual(4)
 //      expect(result.nitrogenPercentage > 2.98 && result.nitrogenPercentage < 3).toBeTruthy();
 //      expect(result.nitrogenInKg).toEqual(29.9);
 //      expect(result.phosphorusPercentage > 0.33 && result.phosphorusPercentage < 0.35).toBeTruthy();
