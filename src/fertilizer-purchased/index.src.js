@@ -49,16 +49,19 @@ angular.module('farmbuild.nutrientCalculator')
       };
     }
 
+    function calculatePercentage(nutrientWeight, totalWeight) {
+      return (nutrientWeight / totalWeight) * 100
+    }
+
     function calculateResult(itemsTotal) {
       var result = createResult();
       result.weight = itemsTotal.weight;
       result.dryMatterWeight = itemsTotal.dryMatterWeight;
-
       result.nitrogenInKg = itemsTotal.nitrogenInKg;
-      result.nitrogenPercentage = (itemsTotal.nitrogenInKg / itemsTotal.dryMatterWeight) * 100;
-
       result.phosphorusInKg = itemsTotal.phosphorusInKg;
-      result.phosphorusPercentage = (itemsTotal.phosphorusInKg / itemsTotal.dryMatterWeight) * 100;
+
+      result.nitrogenPercentage = calculatePercentage(itemsTotal.nitrogenInKg, itemsTotal.dryMatterWeight);
+      result.phosphorusPercentage = calculatePercentage(itemsTotal.phosphorusInKg, itemsTotal.dryMatterWeight);
 
       return result;
     }
@@ -75,18 +78,21 @@ angular.module('farmbuild.nutrientCalculator')
       }
     }
 
-    function calculateNutrient(weight, percentage) {
-      return
+
+    function calculateNutrientInKg(weight, percentage) {
+      return (weight * percentage) / 100;
     }
+
     function calculateFertilizer(fertilizer, itemsTotal) {
-      var weight = fertilizer.weight,
-        dryMatterWeight = (fertilizer.isDry?weight:(weight * fertilizer.type.dryMatterPercentage) / 100),
-        type = fertilizer.type;
+      var type = fertilizer.type,
+        weight = fertilizer.weight,
+        dryMatterWeight = (fertilizer.isDry?weight:calculateNutrientInKg(weight, type.dryMatterPercentage))
+        ;
 
       itemsTotal.weight += weight;
       itemsTotal.dryMatterWeight += dryMatterWeight;
-      itemsTotal.nitrogenInKg += (type.nitrogenPercentage * dryMatterWeight) / 100;
-      itemsTotal.phosphorusInKg += (type.phosphorusPercentage * dryMatterWeight) / 100;
+      itemsTotal.nitrogenInKg += calculateNutrientInKg(dryMatterWeight, type.nitrogenPercentage);
+      itemsTotal.phosphorusInKg += calculateNutrientInKg(dryMatterWeight, type.phosphorusPercentage);
 
       itemsTotal.incomings.push({
         type: fertilizer.type,
