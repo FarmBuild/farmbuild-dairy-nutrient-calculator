@@ -53,8 +53,12 @@ angular.module('farmbuild.nutrientCalculator')
       var result = createResult();
       result.weight = itemsTotal.weight;
       result.dryMatterWeight = itemsTotal.dryMatterWeight;
+
       result.nitrogenInKg = itemsTotal.nitrogenInKg;
       result.nitrogenPercentage = (itemsTotal.nitrogenInKg / itemsTotal.dryMatterWeight) * 100;
+
+      result.phosphorusInKg = itemsTotal.phosphorusInKg;
+      result.phosphorusPercentage = (itemsTotal.phosphorusInKg / itemsTotal.dryMatterWeight) * 100;
 
       return result;
     }
@@ -71,6 +75,9 @@ angular.module('farmbuild.nutrientCalculator')
       }
     }
 
+    function calculateNutrient(weight, percentage) {
+      return
+    }
     function calculateFertilizer(fertilizer, itemsTotal) {
       var weight = fertilizer.weight,
         dryMatterWeight = (fertilizer.isDry?weight:(weight * fertilizer.type.dryMatterPercentage) / 100),
@@ -79,7 +86,7 @@ angular.module('farmbuild.nutrientCalculator')
       itemsTotal.weight += weight;
       itemsTotal.dryMatterWeight += dryMatterWeight;
       itemsTotal.nitrogenInKg += (type.nitrogenPercentage * dryMatterWeight) / 100;
-      //nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
+      itemsTotal.phosphorusInKg += (type.phosphorusPercentage * dryMatterWeight) / 100;
 
       itemsTotal.incomings.push({
         type: fertilizer.type,
