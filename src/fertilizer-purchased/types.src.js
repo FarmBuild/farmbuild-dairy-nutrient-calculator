@@ -17,6 +17,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     var fertilizerTypes = {},
       _isPositiveNumber = validations.isPositiveNumber,
+      _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
       _isAlphanumeric = validations.isAlphanumeric,
       _isDefined = validations.isDefined,
       _types = angular.copy(fertilizerDefaults.types);
@@ -35,13 +36,17 @@ angular.module('farmbuild.nutrientCalculator')
     function _validate(type) {
       $log.info('validating type  ...', type);
 
-      return !(!_isAlphanumeric(type.name) ||
+      var valid =  !(!_isAlphanumeric(type.name) ||
         !_isPositiveNumber(type.dryMatterPercentage) ||
-        !_isPositiveNumber(type.potassiumPercentage) ||
-        !_isPositiveNumber(type.phosphorusPercentage) ||
-        !_isPositiveNumber(type.nitrogenPercentage) ||
-        !_isPositiveNumber(type.sulphurPercentage));
+        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
+        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
+        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
+        !_isPositiveNumberOrZero(type.sulphurPercentage));
 
+      if(!valid) {
+        $log.error('invalid type: %j', type);
+      }
+      return valid;
     }
 
     /**

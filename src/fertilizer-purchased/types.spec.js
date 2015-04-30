@@ -3,7 +3,8 @@
 describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
-  var fertilizerTypes, dairyManureStockpileName = 'Dairy manure stockpile';
+  var fertilizerTypes, dairyManureStockpileName = 'Dairy manure stockpile',
+    dapName = 'DAP';
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
@@ -30,6 +31,16 @@ describe('farmbuild.nutrientCalculator module', function() {
     it('given default types, at(0) should return ' + dairyManureStockpileName, inject(function() {
       var dairyManureStockpile = fertilizerTypes.at(0);
       expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName);
+    }));
+
+    it('given default types, at(1) should return ' + dapName, inject(function() {
+      var dap = fertilizerTypes.at(1);
+      expect(dap.name).toEqual(dapName);
+      expect(dap.nitrogenPercentage).toEqual(18);
+      expect(dap.phosphorusPercentage).toEqual(20);
+      expect(dap.potassiumPercentage).toEqual(0);
+      expect(dap.sulphurPercentage).toEqual(1.6);
+      expect(dap.dryMatterPercentage).toEqual(100);
     }));
 
     it('New fertilizer type should be added on top of the existing', inject(function() {

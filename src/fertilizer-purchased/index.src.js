@@ -26,8 +26,10 @@ angular.module('farmbuild.nutrientCalculator')
       $log.info('validating fertilizer...', fertilizer);
 
       if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
+        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
         return false;
       }
+
       return fertilizerTypes.validate(fertilizer.type);
     };
 
@@ -51,6 +53,9 @@ angular.module('farmbuild.nutrientCalculator')
       var result = createResult();
       result.weight = itemsTotal.weight;
       result.dryMatterWeight = itemsTotal.dryMatterWeight;
+      result.nitrogenInKg = itemsTotal.nitrogenInKg;
+      result.nitrogenPercentage = (itemsTotal.nitrogenInKg / itemsTotal.dryMatterWeight) * 100;
+
       return result;
     }
 
@@ -67,9 +72,14 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     function calculateFertilizer(fertilizer, itemsTotal) {
-      var weight = fertilizer.weight;
+      var weight = fertilizer.weight,
+        dryMatterWeight = (fertilizer.isDry?weight:(weight * fertilizer.type.dryMatterPercentage) / 100),
+        type = fertilizer.type;
+
       itemsTotal.weight += weight;
-      itemsTotal.dryMatterWeight += (fertilizer.isDry?weight:(weight * fertilizer.type.dryMatterPercentage) / 100);
+      itemsTotal.dryMatterWeight += dryMatterWeight;
+      itemsTotal.nitrogenInKg += (type.nitrogenPercentage * dryMatterWeight) / 100;
+      //nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
 
       itemsTotal.incomings.push({
         type: fertilizer.type,
@@ -89,7 +99,7 @@ angular.module('farmbuild.nutrientCalculator')
         var fertilizer = fertilizers[i];
 
         if (!_validate(fertilizer)) {
-          $log.info('calculateItemsTotal invalid fertilizer at %s: %j', i, fertilizer);
+          $log.error('calculateItemsTotal invalid fertilizer at %s: %j', i, fertilizer);
           return undefined;
         }
 
