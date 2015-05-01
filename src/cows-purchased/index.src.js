@@ -19,6 +19,7 @@ angular.module('farmbuild.nutrientCalculator')
 		var cowsPurchased = {},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
+			_isDefined = validations.isDefined,
 			_types = angular.copy(references.cowTypes);
 
 		/**
@@ -149,7 +150,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 */
 		cowsPurchased.removeTypeByIndex = function (index) {
 
-			if (!index || index < 0 || index > _types.length-1) {
+			if (!_isDefined(index) || index < 0 || index > _types.length-1) {
 				return undefined;
 			}
 

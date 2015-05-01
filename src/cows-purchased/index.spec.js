@@ -80,12 +80,16 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
     
     it('cowsPurchased.calculate should return nutrient data', inject(function() {
-      expect(cowsPurchased.calculate([{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}])).toBeDefined();
-      expect(cowsPurchased.calculate([{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}]).cows).toBeDefined();
-      expect(cowsPurchased.calculate([{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}]).weight).toEqual(1800);
-      expect(cowsPurchased.calculate([{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}]).numberOfCows).toEqual(3);
-      expect(cowsPurchased.calculate([{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}]).sulphurInKg).toEqual(14.4);
-      expect(cowsPurchased.calculate([{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}]).nitrogenInKg).toEqual(50.4);
+      var cows = [{name:'Heavy adult cattle', weight: 650, numberOfCows:2}, {name:'Average adult cattle', weight: 500, numberOfCows:1}],
+        result = cowsPurchased.calculate(cows);
+      expect(result).toBeDefined();
+      expect(result.cows).toBeDefined();
+      expect(result.weight).toEqual(1800);
+      expect(result.numberOfCows).toEqual(3);
+      expect(result.sulphurInKg).toEqual(14.4);
+      expect(result.nitrogenInKg).toEqual(50.4);
+      expect(result.phosphorusInKg > 12.95 && result.phosphorusInKg < 12.96).toBeTruthy();
+      expect(result.potassiumInKg).toEqual(3.60);
     }));
     
     it('cowsPurchased.addType should return undefined if cows parameter passed is not correct (alphabetical name, number for weight)', inject(function() {
