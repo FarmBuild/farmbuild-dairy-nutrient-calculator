@@ -9,7 +9,7 @@
 'use strict';
 
 /**
- * Singleton - This is a shortcut for "nutrientCalculator.foragesPurchased.types"
+ * Singleton - forageTypes Collection, This is a shortcut for "nutrientCalculator.foragesPurchased.types"
  * @module nutrientCalculator/foragesTypes
  */
 
