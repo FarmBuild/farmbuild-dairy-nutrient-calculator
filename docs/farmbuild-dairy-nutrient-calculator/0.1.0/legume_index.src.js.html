@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>legume/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">legume/index.src.js</h1>
     
 
     
@@ -49,55 +49,184 @@
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/legume singleton
+ * @module nutrientCalculator/legume
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator')
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
-		var nutrientCalculator = {};
+	.factory('legume', function (validations, $log) {
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+		var legume = {},
+			_isDefined = validations.isDefined,
+			_totalMilk,
+			_totalFat,
+			_totalPr;
+		//Whole farm average legume percentage (%)
+		//Utilsed pasture in relation to grown pasture
+		//PastureUtilisationPc
+		//LegumePc
+
+		function _validate(forage) {
+			$log.info('validating forage ...', forage);
+
+			if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
+				return false;
+			}
+			return forageTypes.validate(forage.type);
+		};
+
+		function _create(type, weight, isDry) {
+			return {type: type, weight:weight, isDry:isDry};
+		};
+
+		function _add(type, weight, isDry) {
+			var forage = _create(type, weight, isDry);
+			_forages.push(forage);
+			return forages;
+		};
+
 
 		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
+		 * Calculates total nutrient imported on to the farm in forages
+		 * @method calculate
+		 * @param {!array} forages - Array of purchased forages, each item contains details of the forage {type, weight, isDry}
+		 * @returns {object} nutrient data of forages purchased
 		 * @public
 		 * @static
 		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
+		 function _calculate(forages) {
+			$log.info('calculating forages nutrient ...', forages);
+
+			var totalWeight = 0,
+				totalDMWeight = 0,
+				nitrogenInKg = 0,
+				phosphorusInKg = 0,
+				potassiumInKg = 0,
+				sulphurInKg = 0,
+				meInMJ = 0,
+				incomings = [],
+				i = 0;
+
+			if (!forages || forages.length === 0) {
 				return undefined;
 			}
 
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {}
-				};
+			for (i; i &lt; forages.length; i++) {
+				var weight = 0,
+					dmWeight = 0,
+					forage = forages[i],
+					type = forage.type;
+
+				if (!_validate(forage)) {
+					return undefined;
+				}
+
+				weight = forage.weight;
+				dmWeight = weight;
+				if (!forage.isDry) {
+					dmWeight = (weight * forage.type.dryMatterPercentage) / 100;
+				}
+				totalWeight += weight;
+				totalDMWeight += dmWeight;
+				nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
+				phosphorusInKg += (type.phosphorusPercentage * dmWeight) / 100;
+				potassiumInKg += (type.potassiumPercentage * dmWeight) / 100;
+				sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
+				meInMJ += (type.metabolisableEnergyInMJPerKg * dmWeight);
+				incomings.push({
+					type: forage.type,
+					weight: forage.weight,
+					isDry: forage.isDry
+				});
+
 			}
-			return farmData;
+
+			return {
+				forages: incomings,
+				weight: totalWeight,
+				dryMatterWeight: totalDMWeight,
+				nitrogenInKg: nitrogenInKg,
+				nitrogenPercentage: (nitrogenInKg / totalDMWeight) * 100,
+				phosphorusInKg: phosphorusInKg,
+				phosphorusPercentage: (phosphorusInKg / totalDMWeight) * 100,
+				potassiumInKg: potassiumInKg,
+				potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
+				sulphurInKg: sulphurInKg,
+				sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
+				metabolisableEnergyInMJ: meInMJ,
+				metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
+			};
+
 		};
 
-		// Provide a shortcut for modules
-		nutrientCalculator.milkSold = milkSold;
-		nutrientCalculator.cowsPurchased = cowsPurchased;
-		nutrientCalculator.cowsCulled = cowsCulled;
-		nutrientCalculator.foragesPurchased = foragesPurchased;
-		nutrientCalculator.version = '0.1.0';
+		function _isEmpty(){
+			return _forages.length === 0;
+		};
 
-		if(typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
+		function _count(){
+			return _forages.length;
+		};
 
-		return nutrientCalculator;
+		function _toArray(){
+			return _forages;
+		};
+
+		function _at(index){
+			return _forages[index];
+		};
+
+		function _removeIndex(index) {
+			$log.info('removing forage at index ' + index);
+			if (!_isDefined(index) || index &lt; 0 || index > _forages.length - 1) {
+				return forages;
+			}
+			_forages.splice(index, 1);
+
+			return forages;
+		};
+
+
+		function _remove(forage) {
+			$log.info('removing forage ', forage);
+
+			if (!_isDefined(forage)) {
+				return forages;
+			}
+
+			angular.forEach(_forages, function (item, index) {
+				if (angular.equals(item, forage)) {
+					_removeIndex(index);
+				}
+			});
+
+			return forages;
+		};
+
+		function _first() {
+			return _forages[0];
+		};
+
+		function _last() {
+			$log.info('getting last forage ...');
+			var length = _count();
+			return _forages[length - 1];
+		};
+
+		forages = {
+			add: _add,
+			at: _at,
+			size: _count,
+			toArray: _toArray,
+			removeAt: _removeIndex,
+			remove: _remove,
+			first: _first,
+			last: _last,
+			isEmpty: _isEmpty,
+			calculate: _calculate,
+			types: forageTypes
+		};
+
+		return forages;
 	});</code></pre>
         </article>
     </section>
