@@ -95,14 +95,14 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(va
                 _types.splice(i, 1);
             }
         });
-        return _types;
+        return cowsCulled;
     };
     cowsCulled.removeTypeByIndex = function(index) {
         if (!index || index < 0 || index > _types.length - 1) {
             return undefined;
         }
         _types.splice(index, 1);
-        return _types;
+        return cowsCulled;
     };
     cowsCulled.types = function() {
         return _types;
@@ -570,6 +570,8 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
     };
     return forages;
 });
+
+"use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(validations, forageTypeValues, $log) {
     var _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(forageTypeValues), forageTypes = {};

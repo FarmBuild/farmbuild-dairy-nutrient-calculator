@@ -136,13 +136,13 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 			});
 			
-			return _types;
+			return cowsCulled;
 		};
 		
 		/**
 		 * Remove this cow from cow types
 		 * @method removeTypeByIndex
-		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
+		 * @param {!Number} index - index (starts from 0) of the type you want to remove in types Array
 		 * @returns {Object} cowsCulled - useful for chaining functions
 		 * @public
 		 * @static
@@ -155,7 +155,7 @@ angular.module('farmbuild.nutrientCalculator')
 			
 			_types.splice(index, 1);
 			
-			return _types;
+			return cowsCulled;
 		};
 		
 		

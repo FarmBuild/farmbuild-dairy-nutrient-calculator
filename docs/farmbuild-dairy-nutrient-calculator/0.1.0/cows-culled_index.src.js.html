@@ -23,7 +23,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_cowsCulled.html">nutrientCalculator/cowsCulled</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_cowsPurchased.html">nutrientCalculator/cowsPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_foragesPurchased.html">nutrientCalculator/foragesPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.calculate">calculate</a></li></ul></li><li><a href="module-nutrientCalculator_milkSold.html">nutrientCalculator/milkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-nutrientCalculator.html">nutrientCalculator</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator.html#.load">load</a></li></ul></li><li><a href="module-nutrientCalculator_cowsCulled.html">nutrientCalculator/cowsCulled</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsCulled.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_cowsPurchased.html">nutrientCalculator/cowsPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.addType">addType</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByIndex">removeTypeByIndex</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.removeTypeByName">removeTypeByName</a></li><li data-type='method'><a href="module-nutrientCalculator_cowsPurchased.html#.types">types</a></li></ul></li><li><a href="module-nutrientCalculator_foragesPurchased.html">nutrientCalculator/foragesPurchased</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.add">add</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.at">at</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.calculate">calculate</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.removeAt">removeAt</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesPurchased.html#.toArray">toArray</a></li></ul></li><li><a href="module-nutrientCalculator_foragesTypes.html">nutrientCalculator/foragesTypes</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_foragesTypes.html#.add">add</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesTypes.html#.at">at</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesTypes.html#.removeAt">removeAt</a></li><li data-type='method'><a href="module-nutrientCalculator_foragesTypes.html#.toArray">toArray</a></li></ul></li><li><a href="module-nutrientCalculator_milkSold.html">nutrientCalculator/milkSold</a><ul class='methods'><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByKg">calculateByKg</a></li><li data-type='method'><a href="module-nutrientCalculator_milkSold.html#.calculateByPercent">calculateByPercent</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -176,13 +176,13 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 			});
 			
-			return _types;
+			return cowsCulled;
 		};
 		
 		/**
 		 * Remove this cow from cow types
 		 * @method removeTypeByIndex
-		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
+		 * @param {!Number} index - index (starts from 0) of the type you want to remove in types Array
 		 * @returns {Object} cowsCulled - useful for chaining functions
 		 * @public
 		 * @static
@@ -195,7 +195,7 @@ angular.module('farmbuild.nutrientCalculator')
 			
 			_types.splice(index, 1);
 			
-			return _types;
+			return cowsCulled;
 		};
 		
 		
@@ -225,7 +225,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Fri May 01 2015 08:39:11 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Fri May 01 2015 14:31:18 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

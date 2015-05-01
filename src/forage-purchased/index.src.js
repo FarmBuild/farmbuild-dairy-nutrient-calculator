@@ -33,6 +33,17 @@ angular.module('farmbuild.nutrientCalculator')
 			return {type: type, weight:weight, isDry:isDry};
 		};
 
+
+		/**
+		 * Adds a forage to forages collection
+		 * @method add
+		 * @param {!object} type - Type of this forage.
+		 * @param {!number} weight
+		 * @param {!boolean} isDry - Whether it is dry (true/false)
+		 * @returns {object} nutrient data of forages purchased
+		 * @public
+		 * @static
+		 */
 		function _add(type, weight, isDry) {
 			var forage = _create(type, weight, isDry);
 			_forages.push(forage);
@@ -121,14 +132,37 @@ angular.module('farmbuild.nutrientCalculator')
 			return _forages.length;
 		};
 
+		/**
+		 * Returns forages collection as an array
+		 * @method toArray
+		 * @returns {Array} forages
+		 * @public
+		 * @static
+		 */
 		function _toArray(){
 			return _forages;
 		};
 
+
+		/**
+		 * Returns the forage at specified index
+		 * @method at
+		 * @returns {object} forage
+		 * @public
+		 * @static
+		 */
 		function _at(index){
 			return _forages[index];
 		};
 
+
+		/**
+		 * Removes the forage at specified index
+		 * @method removeAt
+		 * @returns {object} forages collection
+		 * @public
+		 * @static
+		 */
 		function _removeIndex(index) {
 			$log.info('removing forage at index ' + index);
 			if (!_isDefined(index) || index < 0 || index > _forages.length - 1) {
