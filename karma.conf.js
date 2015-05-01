@@ -16,9 +16,11 @@ module.exports = function(config){
       'src/forage-purchased/forages.conf.src.js',
       'src/forage-purchased/types.src.js',
       'src/forage-purchased/index.src.js',
-      'src/index.js',
-      'src/*.js',
-      'src/**/*.js'
+      'src/legume/index.src.js',
+      'src/legume/index.spec.js',
+      'src/index.js'
+      //'src/*.js',
+      //'src/**/*.js'
     ],
 
     autoWatch : true,
