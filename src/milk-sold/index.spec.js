@@ -1,3 +1,5 @@
+// Automated test cases as described by TC03 and TC04
+
 'use strict';
 
 describe('farmbuild.nutrientCalculator module', function() {
