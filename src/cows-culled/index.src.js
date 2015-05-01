@@ -136,7 +136,7 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 			});
 			
-			return cowsCulled;
+			return _types;
 		};
 		
 		/**
@@ -155,7 +155,7 @@ angular.module('farmbuild.nutrientCalculator')
 			
 			_types.splice(index, 1);
 			
-			return cowsCulled;
+			return _types;
 		};
 		
 		
