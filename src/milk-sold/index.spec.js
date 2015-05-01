@@ -1,38 +1,40 @@
+// Automated test cases as described by TC03 and TC04
+
 'use strict';
 
 describe('farmbuild.nutrientCalculator module', function() {
 
  // instantiate service
-  var MilkSold;
+  var milkSold;
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
-  beforeEach(inject(function (_MilkSold_) {
-    MilkSold = _MilkSold_;
+  beforeEach(inject(function (_milkSold_) {
+    milkSold = _milkSold_;
   }));
 
-  describe('MilkSold factory', function(){
-    it('MilkSold should be defined', inject(function() {
-      expect(MilkSold).toBeDefined();
+  describe('milkSold factory', function(){
+    it('milkSold should be defined', inject(function() {
+      expect(milkSold).toBeDefined();
     }));
 
-    it('Calculate MilkSold nutrient by Kg', inject(function() {
-      var nutrientByKg = MilkSold.calculateByKg(100, 10, 90);
+    it('Calculate milkSold nutrient by Kg', inject(function() {
+      var nutrientByKg = milkSold.calculateByKg(100, 10, 90);
       expect(nutrientByKg).toBeDefined();
     }));
 
-    it('Calculate MilkSold nutrient by %', inject(function() {
-      var nutrientByPercentage = MilkSold.calculateByPercent(10000);
+    it('Calculate milkSold nutrient by %', inject(function() {
+      var nutrientByPercentage = milkSold.calculateByPercent(10000);
       expect(nutrientByPercentage).toBeUndefined();
     }));
 
-    it('Calculate MilkSold nutrient by %', inject(function() {
-      var nutrientByPercentage = MilkSold.calculateByPercent(10000, 4);
+    it('Calculate milkSold nutrient by %', inject(function() {
+      var nutrientByPercentage = milkSold.calculateByPercent(10000, 4);
       expect(nutrientByPercentage).toBeUndefined();
     }));
 
-    it('Calculate MilkSold nutrient by %', inject(function() {
-      var nutrientByPercentage = MilkSold.calculateByPercent(10000, 4, 3.5);
+    it('Calculate milkSold nutrient by %', inject(function() {
+      var nutrientByPercentage = milkSold.calculateByPercent(10000, 4, 3.5);
       expect(nutrientByPercentage).toBeDefined();
       expect(nutrientByPercentage.totalPerYearInLitre).toEqual(10000);
       expect(nutrientByPercentage.proteinInKg).toEqual(400);
@@ -49,8 +51,8 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(nutrientByPercentage.sulphurPercentage).toEqual(0.06);
     }));
 
-    it('Calculate MilkSold nutrient by Kg', inject(function() {
-      var nutrientByKg = MilkSold.calculateByKg(1000, 10, 20);
+    it('Calculate milkSold nutrient by Kg', inject(function() {
+      var nutrientByKg = milkSold.calculateByKg(1000, 10, 20);
       expect(nutrientByKg).toBeDefined();
       expect(nutrientByKg.totalPerYearInLitre).toEqual(1000);
       expect(nutrientByKg.proteinInKg).toEqual(10);
@@ -67,15 +69,15 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(nutrientByKg.sulphurPercentage).toEqual(0.06);
     }));
 
-    it('Calculate MilkSold nutrient by Kg should return undefined for negative number', inject(function() {
-      var nutrientByPercentage = MilkSold.calculateByPercent(-10000, 4, 3.5);
+    it('Calculate milkSold nutrient by Kg should return undefined for negative number', inject(function() {
+      var nutrientByPercentage = milkSold.calculateByPercent(-10000, 4, 3.5);
       expect(nutrientByPercentage).toBeUndefined();
     }));
 
 
-    it('Calculate MilkSold nutrient by % and kg should have same result', inject(function() {
-      var nutrientByPercentage = MilkSold.calculateByPercent(1000, 10, 90);
-      var nutrientByKg = MilkSold.calculateByKg(1000, 100, 900);
+    it('Calculate milkSold nutrient by % and kg should have same result', inject(function() {
+      var nutrientByPercentage = milkSold.calculateByPercent(1000, 10, 90);
+      var nutrientByKg = milkSold.calculateByKg(1000, 100, 900);
       expect(nutrientByPercentage.fatInKg).toEqual(nutrientByKg.fatInKg);
       expect(nutrientByPercentage.fatPercentage).toEqual(nutrientByKg.fatPercentage);
       expect(nutrientByPercentage.sulphurPercentage).toEqual(nutrientByKg.sulphurPercentage);

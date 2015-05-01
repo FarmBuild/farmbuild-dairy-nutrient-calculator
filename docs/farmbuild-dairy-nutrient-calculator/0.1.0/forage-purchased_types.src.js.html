@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows-culled/index.src.js - Documentation</title>
+    <title>forage-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows-culled/index.src.js</h1>
+    <h1 class="page-title">forage-purchased/types.src.js</h1>
     
 
     
@@ -49,171 +49,176 @@
 'use strict';
 
 /**
- * nutrientCalculator/cowsCulled singleton
- * @module nutrientCalculator/cowsCulled
+ * Singleton - forageTypes Collection, This is a shortcut for "nutrientCalculator.foragesPurchased.types"
+ * @module nutrientCalculator/foragesTypes
  */
+
 angular.module('farmbuild.nutrientCalculator')
-	
-	.factory('cowsCulled', function (validations, references) {
-		
-		var cowsCulled = {},
-			_isPositiveNumber = validations.isPositiveNumber,
+
+	.factory('forageTypes', function (validations, forageTypeValues, $log) {
+		var _isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
-			_types = angular.copy(references.cowTypes);
-		
-		/**
-		 * Calculates total nutrient exported from the farm in cows culled
-		 * @method calculate
-		 * @param {!array} cows - Array of culled cows, each item contains details of the cow {type{name, weight}, numberOfCows}
-		 * @returns {object} nutrient data of cows culled
-		 * @public
-		 * @static
-		 */
-		cowsCulled.calculate = function (cows) {
-			var numberOfCows = 0,
-				weight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				nitrogenPercentage = 2.8,
-				phosphorusPercentage = 0.72,
-				potassiumPercentage = 0.2,
-				sulphurPercentage = 0.8,
-				incomings = [],
-				i = 0;
-			
-			if (!cows || cows.length === 0) {
-				return undefined;
-			}
-			
-			for (i; i &lt; cows.length; i++) {
-				var cowWeight,
-					cowCount,
-					cow = cows[i];
-				
-				if (!cow.name || !cow.weight) {
-					return undefined;
-				}
-				
-				cowWeight = cow.weight;
-				cowCount = cow.numberOfCows;
-				
-				if (!_isPositiveNumber(cowCount)) {
-					return undefined;
-				}
-				
-				weight += cowWeight * cowCount;
-				numberOfCows += cowCount;
-				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
-				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
-				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
-				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
-				incomings.push({
-					name: cow.name,
-					numberOfCows: cowCount,
-					weight: cow.weight
-				});
-			}
-			
+			_isDefined = validations.isDefined,
+			_types = angular.copy(forageTypeValues),
+			forageTypes = {};
+
+		function _validate(type) {
+			$log.info('validating type  ...', type);
+
+			return !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
+
+		}
+
+		function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
 			return {
-				cows: incomings,
-				numberOfCows: numberOfCows,
-				weight: weight,
-				nitrogenInKg: nitrogenInKg,
-				phosphorusInKg: phosphorusInKg,
-				potassiumInKg: potassiumInKg,
-				sulphurInKg: sulphurInKg
-			};
-			
-		};
-		
-		/**
-		 * Adds a new cow type for nutrient calculation
-		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} cowsCulled - useful for chaining multiple add()
-		 * @public
-		 * @static
-		 */
-		cowsCulled.addType = function (name, weight) {
-			if (!_isPositiveNumber(weight)) {
-				return undefined;
-			}
-			
-			if (!name || !_isAlphanumeric(name)) {
-				return undefined;
-			}
-			
-			weight = parseFloat(weight);
-			
-			_types.push({
 				name: name,
-				weight: weight
-			});
-			
-			return cowsCulled;
-		};
-		
+				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
+				dryMatterPercentage: dryMatterPercentage,
+				sulphurPercentage: sulphurPercentage,
+				potassiumPercentage: potassiumPercentage,
+				phosphorusPercentage: phosphorusPercentage,
+				nitrogenPercentage: nitrogenPercentage
+			};
+		}
+
 		/**
-		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
-		 * @method removeTypeByName
-		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} cowsCulled - useful for chaining functions
+		 * Adds a new forage type for nutrient calculation
+		 * @method add
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
+		 * @param {!number} dryMatterPercentage - value must be > 0
+		 * @param {!number} sulphurPercentage - value must be > 0
+		 * @param {!number} potassiumPercentage - value must be > 0
+		 * @param {!number} phosphorusPercentage - value must be > 0
+		 * @param {!number} nitrogenPercentage - value must be > 0
+		 * @returns {object} types - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		cowsCulled.removeTypeByName = function (name) {
-			
-			if (!name) {
+		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+
+			var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+			$log.info('adding forage type ...', type);
+
+			if (!_validate(type)) {
 				return undefined;
 			}
-			
-			angular.forEach(_types, function(type, i){
-				if(type.name === name){
-					_types.splice(i, 1);
+
+			if (_isDefined(index)) {
+				_types.splice(index, 0, type)
+			} else {
+				_types.push(type);
+			}
+
+			return forageTypes;
+		};
+
+
+		/**
+		 * Returns the forageType at specified index
+		 * @method at
+		 * @returns {object} forageType
+		 * @public
+		 * @static
+		 */
+		function _at(index) {
+			var type;
+			$log.info('getting forage type at index: ', index);
+			if (!_isDefined(index) || index &lt; 0) {
+				return undefined;
+			}
+
+			return _types[index];
+		};
+
+
+		function _last() {
+			$log.info('getting last forage type ...');
+			var length = _count();
+			return _types[length - 1];
+		};
+
+
+		function _first() {
+			$log.info('getting first forage type ...');
+			return _types[0];
+		};
+
+
+		function _count() {
+			$log.info('counting forage types ...', _types);
+			return _types.length;
+		};
+
+
+		/**
+		 * Returns forageTypes collection as an array
+		 * @method toArray
+		 * @returns {Array} forageTypes
+		 * @public
+		 * @static
+		 */
+		function _toArray() {
+			$log.info('toArray types ...', _types);
+			return _types;
+		};
+
+		/**
+		 * Removes the forage type at specified index
+		 * @method removeAt
+		 * @returns {object} forageTypes collection
+		 * @public
+		 * @static
+		 */
+		function _removeAt(index) {
+			$log.info('removing forage type at index ' + index);
+			if (!_isDefined(index) || index &lt; 0 || index > _types.length - 1) {
+				return forageTypes;
+			}
+
+			_types.splice(index, 1);
+
+			return forageTypes;
+		};
+
+
+		function _remove(type) {
+			$log.info('removing forage type ', type);
+
+			if (!_isDefined(type)) {
+				return forageTypes;
+			}
+
+			angular.forEach(_types, function (item, index) {
+				if (angular.equals(item, type)) {
+					_removeAt(index);
 				}
 			});
-			
-			return _types;
+
+			return forageTypes;
 		};
-		
-		/**
-		 * Remove this cow from cow types
-		 * @method removeTypeByIndex
-		 * @param {!Number} index - index (starts from 0) of the type you want to remove in types Array
-		 * @returns {Object} cowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsCulled.removeTypeByIndex = function (index) {
-			
-			if (!index || index &lt; 0 || index > _types.length-1) {
-				return undefined;
-			}
-			
-			_types.splice(index, 1);
-			
-			return _types;
+
+
+		function _isEmpty() {
+			$log.info('Is forage types empty?', types.types.size() === 0);
+			return forageTypes.size() === 0;
 		};
-		
-		
-		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - cow types array
-		 * @public
-		 * @static
-		 */
-		cowsCulled.types = function () {
-			return _types;
+
+		forageTypes = {
+			add: _addType,
+			at: _at,
+			size: _count,
+			toArray: _toArray,
+			removeAt: _removeAt,
+			remove: _remove,
+			first: _first,
+			last: _last,
+			isEmpty: _isEmpty,
+			validate: _validate
 		};
-		
-		return cowsCulled;
-		
-	});
-</code></pre>
+
+		return forageTypes;
+	});</code></pre>
         </article>
     </section>
 

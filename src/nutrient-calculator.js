@@ -14,8 +14,10 @@
  */
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 
-	.factory('NutrientCalculator', function (MilkSold, GoogleAnalytic, CowsPurchased, CowsCulled, FarmData) {
-		var NutrientCalculator = {};
+	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
+		var nutrientCalculator = {};
+
+		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
 
 		/**
 		 * Adds nutrientCalculator block to farmData
@@ -25,7 +27,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		 * @public
 		 * @static
 		 */
-		NutrientCalculator.load = function (farmData) {
+		nutrientCalculator.load = function (farmData) {
 			if (!FarmData.isFarmData(farmData)) {
 				return undefined;
 			}
@@ -41,12 +43,19 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		};
 
 		// Provide a shortcut for modules
-		NutrientCalculator.milkSold = MilkSold;
-		NutrientCalculator.googleAnalytic = GoogleAnalytic;
-		NutrientCalculator.cowsPurchased = CowsPurchased;
-		NutrientCalculator.cowsCulled = CowsCulled;
+		nutrientCalculator.milkSold = milkSold;
+		nutrientCalculator.cowsPurchased = cowsPurchased;
+		nutrientCalculator.cowsCulled = cowsCulled;
+		nutrientCalculator.foragesPurchased = foragesPurchased;
+		nutrientCalculator.version = '0.1.0';
 
-		window.farmbuild.nutrientcalculator = NutrientCalculator;
+		if(typeof window.farmbuild === 'undefined') {
+			window.farmbuild = {
+				nutrientcalculator: nutrientCalculator
+			};
+		} else {
+			window.farmbuild.nutrientcalculator = nutrientCalculator;
+		}
 
-		return NutrientCalculator;
+		return nutrientCalculator;
 	});

@@ -2,44 +2,48 @@
 
 describe('farmbuild.nutrientCalculator module', function() {
 
- // define NutrientCalculator service
-  var NutrientCalculator;
+ // define nutrientCalculator service
+  var nutrientCalculator;
 
   // inject farmbuild.nutrientCalculator module
   beforeEach(module('farmbuild.nutrientCalculator'));
 
-  // inject NutrientCalculator service
-  beforeEach(inject(function (_NutrientCalculator_) {
-    NutrientCalculator = _NutrientCalculator_;
+  // inject nutrientCalculator service
+  beforeEach(inject(function (_nutrientCalculator_) {
+    nutrientCalculator = _nutrientCalculator_;
   }));
 
-  describe('NutrientCalculator factory', function(){
+  describe('nutrientCalculator factory', function(){
 
-    it('NutrientCalculator factory should be defined', inject(function() {
-      expect(NutrientCalculator).toBeDefined();
+    it('nutrientCalculator factory should be defined', inject(function() {
+      expect(nutrientCalculator).toBeDefined();
     }));
 
     it('window.farmbuild name space should be defined', inject(function() {
       expect(window.farmbuild).toBeDefined();
     }));
 
-    it('NutrientCalculator.milkSold should be defined', inject(function() {
-      expect(NutrientCalculator.milkSold).toBeDefined();
+    it('nutrientCalculator.milkSold should be defined', inject(function() {
+      expect(nutrientCalculator.milkSold).toBeDefined();
     }));
 
-    it('NutrientCalculator.animalsPurchased should be defined', inject(function() {
-      expect(NutrientCalculator.cowsPurchased).toBeDefined();
+    it('nutrientCalculator.animalsPurchased should be defined', inject(function() {
+      expect(nutrientCalculator.cowsPurchased).toBeDefined();
     }));
 
-    it('NutrientCalculator.load should add nutrientCalculator block', inject(function() {
+    it('nutrientCalculator.animalsPurchased should be defined', inject(function() {
+      expect(nutrientCalculator.cowsCulled).toBeDefined();
+    }));
+
+    it('nutrientCalculator.load should add nutrientCalculator block', inject(function() {
       var farmData = {name: 'Susan\'s farm'};
-      farmData = NutrientCalculator.load(farmData);
+      farmData = nutrientCalculator.load(farmData);
       expect(farmData.nutrientCalculator).toBeDefined();
     }));
 
-    it('NutrientCalculator.load return value should have the correct name', inject(function() {
+    it('nutrientCalculator.load return value should have the correct name', inject(function() {
       var name = 'Susan\'s farm', farmData = {name: name};
-      farmData = NutrientCalculator.load(farmData);
+      farmData = nutrientCalculator.load(farmData);
       expect(farmData.name).toMatch(name);
     }));
 

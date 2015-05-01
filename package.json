@@ -16,7 +16,8 @@
     "jsdoc": "3.3.0-beta3",
     "uglify-js": "2.4.19",
     "jshint": "2.6.3",
-    "ncp": "2.0.0"
+    "ncp": "2.0.0",
+    "replace": "0.3.0"
   },
   "scripts": {
     "postinstall": "bower install",
@@ -31,6 +32,7 @@
     "protractor": "protractor protractor.conf.js",
     "clean": "rm -rf dist/* & rm -rf docs/*",
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json",
+    "version": "node_modules/.bin/replace '@version {version}' '@version 0.1.1' src/*.js src/**/*.js",
     "jshint": " node_modules/.bin/jshint -c .jshintrc --filename src/**/*-src.js src/nutrient-calculator.js --verbose --show-non-errors",
     "concat": "uglifyjs src/nutrient-calculator.js src/**/*.src.js src/*.src.js src/index.js -o dist/farmbuild-nutrientcalculator.js -v -b",
     "uglify": "uglifyjs dist/farmbuild-nutrientcalculator.js --source-map dist/farmbuild-nutrientcalculator.min.js.map --source-map-url farmbuild-nutrientcalculator.min.js.map -o dist/farmbuild-nutrientcalculator.min.js -v -c",
