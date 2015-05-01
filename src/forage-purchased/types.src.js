@@ -164,13 +164,6 @@ angular.module('farmbuild.nutrientCalculator')
 			return forageTypes.size() === 0;
 		};
 
-
-		/**
-		 * Forage types collection api
-		 * @property {object} Types - forage types collection
-		 * @public
-		 * @static
-		 */
 		forageTypes = {
 			add: _addType,
 			at: _at,

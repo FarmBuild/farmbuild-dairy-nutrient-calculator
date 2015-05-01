@@ -211,6 +211,14 @@ angular.module('farmbuild.nutrientCalculator')
 			last: _last,
 			isEmpty: _isEmpty,
 			calculate: _calculate,
+
+			/**
+			 * types Forage types collection api
+			 * @property {object} Types - forage types collection
+			 * @public
+			 * @static
+			 */
+
 			types: forageTypes
 		};
 
