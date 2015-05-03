@@ -15,9 +15,9 @@ exports.config = {
     , {
         'browserName': 'firefox'
     }
-    , {
+    /*, {
         'browserName': 'internet explorer'
-    }
+    }*/
   ],
 
   baseUrl: 'https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/',
