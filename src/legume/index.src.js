@@ -18,9 +18,15 @@ angular.module('farmbuild.nutrientCalculator')
 
 		var legume = {},
 			_isDefined = validations.isDefined,
-			milk_sold_total,
-			milk_fat_kg,
-			milk_prot_kg,
+			milk_sold_total, //Total milk (litres/year)
+			milk_fat_kg, //Total Fat
+			milk_prot_kg,//Total Protein,
+			//Fat % (Fat_pc)
+			//Protein% (Prot_pc)
+			//Total milking days
+			//Total milking cows
+			//Animal/live weight
+
 		forage_ME_total,
 		conc_ME_total,
 		pasture_utilisation,
