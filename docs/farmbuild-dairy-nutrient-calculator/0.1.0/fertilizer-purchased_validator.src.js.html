@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>fertilizer-purchased/validator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">fertilizer-purchased/validator.src.js</h1>
     
 
     
@@ -49,56 +49,46 @@
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/fertilizerValidator singleton
+ * @module nutrientCalculator/fertilizerValidator
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator')
+.factory('fertilizerValidator',
+  function (validations, fertilizerTypes,
+            $log) {
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
-		var nutrientCalculator = {};
+    var fertilizerValidator = {},
+      _isDefined = validations.isDefined;
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+     function _validate(fertilizer) {
+      $log.info('validating fertilizer...', fertilizer);
 
-		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
-				return undefined;
-			}
+      if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
+        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
+        return false;
+      }
 
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {}
-				};
-			}
-			return farmData;
-		};
+      return fertilizerTypes.validate(fertilizer.type);
+    };
 
-		// Provide a shortcut for modules
-		nutrientCalculator.milkSold = milkSold;
-		nutrientCalculator.cowsPurchased = cowsPurchased;
-		nutrientCalculator.cowsCulled = cowsCulled;
-		nutrientCalculator.foragesPurchased = foragesPurchased;
-		nutrientCalculator.version = '0.1.0';
+    fertilizerValidator.validate = _validate;
 
-		if(typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
+    fertilizerValidator.validateAll = function(fertilizers) {
+      var i = 0;
+      for (i; i &lt; fertilizers.length; i++) {
+        var fertilizer = fertilizers[i];
 
-		return nutrientCalculator;
-	});</code></pre>
+        if (!_validate(fertilizer)) {
+          $log.error('validator invalid at %s: %j', i, fertilizer);
+          return false;
+        }
+      }
+      return true;
+    }
+
+
+    return fertilizerValidator;
+  });</code></pre>
         </article>
     </section>
 

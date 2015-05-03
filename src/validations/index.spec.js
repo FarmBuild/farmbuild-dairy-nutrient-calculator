@@ -75,4 +75,29 @@ describe('Service: validations', function () {
 
   });
 
+  describe('isEmpty', function() {
+    it('isEmpty should return true for an empty string', function () {
+      expect(validations.isEmpty('')).toBe(true);
+    });
+
+    it('isEmpty should return true for undefined', function () {
+      expect(validations.isEmpty(undefined)).toBe(true);
+    });
+
+    it('isEmpty should return true for null', function () {
+      expect(validations.isEmpty(null)).toBe(true);
+    });
+
+    it('isEmpty should return false for a space', function () {
+      expect(validations.isEmpty(' ')).toBe(false);
+    });
+
+    it('isEmpty should return false for a space', function () {
+      expect(validations.isEmpty(' ')).toBe(false);
+    });
+
+    it('isEmpty should return true for empty array', function () {
+      expect(validations.isEmpty([])).toBe(true);
+    });    
+  })
 });

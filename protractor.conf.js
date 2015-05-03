@@ -3,6 +3,7 @@ exports.config = {
 
   specs: [
     'examples/**/*.e2e.js'
+    //'examples/angularjs/milk-sold/index.e2e.js'
   ],
 
   capabilities: {

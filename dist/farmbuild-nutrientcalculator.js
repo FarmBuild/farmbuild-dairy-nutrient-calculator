@@ -33,6 +33,72 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
 
 "use strict";
 
+angular.module("farmbuild.nutrientCalculator").factory("collections", function(validations, $log) {
+    var collections = {}, _isDefined = validations.isDefined, _collections = [];
+    function _byProperty(_types, property, value) {}
+    function _add(collection, item, index) {
+        if (_isDefined(index)) {
+            collection.splice(index, 0, item);
+        } else {
+            collection.push(item);
+        }
+        return collection;
+    }
+    function _isEmpty() {
+        return _collections.length === 0;
+    }
+    function _count(collection) {
+        if (!angular.isArray(collection)) {
+            return -1;
+        }
+        return collection.length;
+    }
+    function _toArray() {
+        return _collections;
+    }
+    function _at(collection, index) {
+        return collection[index];
+    }
+    function _removeAt(collection, index) {
+        if (!angular.isArray(collection)) {
+            return collection;
+        }
+        if (!index || index < 0 || index > collection.length - 1) {
+            return collection;
+        }
+        collection.splice(index, 1);
+        return collection;
+    }
+    function _remove(forage) {
+        $log.info("removing forage type ", forage);
+        if (!_isDefined(forage)) {
+            return undefined;
+        }
+        return _collections;
+    }
+    function _first(collection) {
+        return collection[0];
+    }
+    function _last(collection) {
+        var length = _count(collection);
+        return collection[length - 1];
+    }
+    collections = {
+        add: _add,
+        at: _at,
+        size: _count,
+        byProperty: _byProperty,
+        removeAt: _removeAt,
+        remove: _remove,
+        first: _first,
+        last: _last,
+        isEmpty: _isEmpty
+    };
+    return collections;
+});
+
+"use strict";
+
 angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, references) {
     var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
     cowsCulled.calculate = function(cows) {
@@ -189,274 +255,423 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
     return cowsPurchased;
 });
 
-angular.module("farmbuild.nutrientCalculator").constant("forageTypeValues", [ {
-    name: "Average crop",
-    nitrogenPercentage: "2.99",
-    phosphorusPercentage: "0.34",
-    potassiumPercentage: "2.68",
-    sulphurPercentage: "0.5",
-    dryMatterPercentage: "44.45",
-    metabolisableEnergyInMJPerKg: "9.75"
-}, {
-    name: "Average hay",
-    nitrogenPercentage: "2.44",
-    phosphorusPercentage: "0.38",
-    potassiumPercentage: "2.29",
-    sulphurPercentage: "0.23",
-    dryMatterPercentage: "85",
-    metabolisableEnergyInMJPerKg: "9.39"
-}, {
-    name: "Average silage",
-    nitrogenPercentage: "2.12",
-    phosphorusPercentage: "0.34",
-    potassiumPercentage: "2.35",
-    sulphurPercentage: "0.27",
-    dryMatterPercentage: "49.01",
-    metabolisableEnergyInMJPerKg: "8.76"
-}, {
-    name: "Average straw",
-    nitrogenPercentage: "2.6",
-    phosphorusPercentage: "0.4",
-    potassiumPercentage: "2.7",
-    sulphurPercentage: "0.28",
-    dryMatterPercentage: "45.1",
-    metabolisableEnergyInMJPerKg: "9.18"
-}, {
-    name: "Brassica crop",
-    nitrogenPercentage: "3.72",
-    phosphorusPercentage: "0.33",
-    potassiumPercentage: "2.85",
-    sulphurPercentage: "0.64",
-    dryMatterPercentage: "25.99",
-    metabolisableEnergyInMJPerKg: "11.32"
-}, {
-    name: "Canola hay",
-    nitrogenPercentage: "2.88",
-    phosphorusPercentage: "0.33",
-    potassiumPercentage: "2.29",
-    sulphurPercentage: "0.57",
-    dryMatterPercentage: "82.93",
-    metabolisableEnergyInMJPerKg: "9.06"
-}, {
-    name: "Canola silage",
-    nitrogenPercentage: "2.75",
-    phosphorusPercentage: "0.3",
-    potassiumPercentage: "2.88",
-    sulphurPercentage: "0.51",
-    dryMatterPercentage: "23.77",
-    metabolisableEnergyInMJPerKg: "9.45"
-}, {
-    name: "Cereal hay",
-    nitrogenPercentage: "1.54",
-    phosphorusPercentage: "0.22",
-    potassiumPercentage: "1.83",
-    sulphurPercentage: "0.17",
-    dryMatterPercentage: "84.74",
-    metabolisableEnergyInMJPerKg: "8.32"
-}, {
-    name: "Cereal silage",
-    nitrogenPercentage: "2.02",
-    phosphorusPercentage: "0.35",
-    potassiumPercentage: "2.02",
-    sulphurPercentage: "0.17",
-    dryMatterPercentage: "36.28",
-    metabolisableEnergyInMJPerKg: "9.14"
-}, {
-    name: "Cereal straw",
-    nitrogenPercentage: "0.62",
-    phosphorusPercentage: "0.1",
-    potassiumPercentage: "1.05",
-    sulphurPercentage: "0.1",
-    dryMatterPercentage: "87.22",
-    metabolisableEnergyInMJPerKg: "5.99"
-}, {
-    name: "Clover hay",
-    nitrogenPercentage: "2.99",
-    phosphorusPercentage: "0.28",
-    potassiumPercentage: "2.51",
-    sulphurPercentage: "0.25",
-    dryMatterPercentage: "88.26",
-    metabolisableEnergyInMJPerKg: "9.31"
-}, {
-    name: "Forage blend",
-    nitrogenPercentage: "1.94",
-    phosphorusPercentage: "0.38",
-    potassiumPercentage: "2.29",
-    sulphurPercentage: "0.2",
-    dryMatterPercentage: "84.18",
-    metabolisableEnergyInMJPerKg: "8.47"
-}, {
-    name: "Kikuyu pasture",
-    nitrogenPercentage: "3.07",
-    phosphorusPercentage: "0.46",
-    potassiumPercentage: "2.82",
-    sulphurPercentage: "0.23",
-    dryMatterPercentage: "20.67",
-    metabolisableEnergyInMJPerKg: "9.57"
-}, {
-    name: "Kikuyu silage",
-    nitrogenPercentage: "1.7",
-    phosphorusPercentage: "0.39",
-    potassiumPercentage: "1.85",
-    sulphurPercentage: "0.13",
-    dryMatterPercentage: "57.95",
-    metabolisableEnergyInMJPerKg: "10.16"
-}, {
-    name: "Lucerne hay",
-    nitrogenPercentage: "3.34",
-    phosphorusPercentage: "0.38",
-    potassiumPercentage: "2.03",
-    sulphurPercentage: "0.29",
-    dryMatterPercentage: "83.23",
-    metabolisableEnergyInMJPerKg: "9.54"
-}, {
-    name: "Lucerne pasture",
-    nitrogenPercentage: "3.53",
-    phosphorusPercentage: "0.41",
-    potassiumPercentage: "2.89",
-    sulphurPercentage: "0.35",
-    dryMatterPercentage: "23.34",
-    metabolisableEnergyInMJPerKg: "10.22"
-}, {
-    name: "Lucerne silage",
-    nitrogenPercentage: "2.64",
-    phosphorusPercentage: "0.45",
-    potassiumPercentage: "2.29",
-    sulphurPercentage: "0.23",
-    dryMatterPercentage: "53.54",
-    metabolisableEnergyInMJPerKg: "8.75"
-}, {
-    name: "Maize silage",
-    nitrogenPercentage: "1.2",
-    phosphorusPercentage: "0.26",
-    potassiumPercentage: "1.12",
-    sulphurPercentage: "0.1",
-    dryMatterPercentage: "41.27",
-    metabolisableEnergyInMJPerKg: "9.12"
-}, {
-    name: "Millett crop",
-    nitrogenPercentage: "2.82",
-    phosphorusPercentage: "0.41",
-    potassiumPercentage: "3.56",
-    sulphurPercentage: "0.41",
-    dryMatterPercentage: "52.68",
-    metabolisableEnergyInMJPerKg: "9.54"
-}, {
-    name: "Oat Hay",
-    nitrogenPercentage: "1.4",
-    phosphorusPercentage: "0.24",
-    potassiumPercentage: "1.64",
-    sulphurPercentage: "0.15",
-    dryMatterPercentage: "87.32",
-    metabolisableEnergyInMJPerKg: "8.42"
-}, {
-    name: "Oats & peas silage",
-    nitrogenPercentage: "2.26",
-    phosphorusPercentage: "0.39",
-    potassiumPercentage: "2.43",
-    sulphurPercentage: "0.2",
-    dryMatterPercentage: "47.5",
-    metabolisableEnergyInMJPerKg: "9.16"
-}, {
-    name: "Paspalum silage",
-    nitrogenPercentage: "1.91",
-    phosphorusPercentage: "0.32",
-    potassiumPercentage: "2.06",
-    sulphurPercentage: "0.18",
-    dryMatterPercentage: "52.39",
-    metabolisableEnergyInMJPerKg: "8.21"
-}, {
-    name: "Pasture hay",
-    nitrogenPercentage: "1.87",
-    phosphorusPercentage: "0.28",
-    potassiumPercentage: "1.87",
-    sulphurPercentage: "0.24",
-    dryMatterPercentage: "85.53",
-    metabolisableEnergyInMJPerKg: "8.17"
-}, {
-    name: "Pasture silage",
-    nitrogenPercentage: "2.6",
-    phosphorusPercentage: "0.4",
-    potassiumPercentage: "2.7",
-    sulphurPercentage: "0.28",
-    dryMatterPercentage: "45.1",
-    metabolisableEnergyInMJPerKg: "9.18"
-}, {
-    name: "Prairie grass silage",
-    nitrogenPercentage: "1.9",
-    phosphorusPercentage: "0.19",
-    potassiumPercentage: "1.3",
-    sulphurPercentage: "0.14",
-    dryMatterPercentage: "64.37",
-    metabolisableEnergyInMJPerKg: "8.51"
-}, {
-    name: "Ryegrass pasture",
-    nitrogenPercentage: "3.61",
-    phosphorusPercentage: "0.45",
-    potassiumPercentage: "2.78",
-    sulphurPercentage: "0.34",
-    dryMatterPercentage: "20.82",
-    metabolisableEnergyInMJPerKg: "10.46"
-}, {
-    name: "Seteria silage",
-    nitrogenPercentage: "1.91",
-    phosphorusPercentage: "0.27",
-    potassiumPercentage: "2.08",
-    sulphurPercentage: "0.12",
-    dryMatterPercentage: "31.98",
-    metabolisableEnergyInMJPerKg: "8.04"
-}, {
-    name: "Sorghum crop",
-    nitrogenPercentage: "2.2",
-    phosphorusPercentage: "0.39",
-    potassiumPercentage: "2.5",
-    sulphurPercentage: "0.14",
-    dryMatterPercentage: "30.16",
-    metabolisableEnergyInMJPerKg: "8.59"
-}, {
-    name: "Sorghum hay",
-    nitrogenPercentage: "1.87",
-    phosphorusPercentage: "0.34",
-    potassiumPercentage: "2",
-    sulphurPercentage: "0.13",
-    dryMatterPercentage: "88.05",
-    metabolisableEnergyInMJPerKg: "7.6"
-}, {
-    name: "Sorghum/millet hay",
-    nitrogenPercentage: "1.86",
-    phosphorusPercentage: "0.41",
-    potassiumPercentage: "1.72",
-    sulphurPercentage: "0.38",
-    dryMatterPercentage: "79.1",
-    metabolisableEnergyInMJPerKg: "8.46"
-}, {
-    name: "Sorghum/millet silage",
-    nitrogenPercentage: "1.3",
-    phosphorusPercentage: "0.35",
-    potassiumPercentage: "3.36",
-    sulphurPercentage: "0.4",
-    dryMatterPercentage: "33.91",
-    metabolisableEnergyInMJPerKg: "7.53"
-}, {
-    name: "Turnip crop",
-    nitrogenPercentage: "2.03",
-    phosphorusPercentage: "0.28",
-    potassiumPercentage: "3.18",
-    sulphurPercentage: "0.52",
-    dryMatterPercentage: "11.06",
-    metabolisableEnergyInMJPerKg: "11.1"
-} ]);
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", function(fertilizerValidator, fertilizerDefaults, fertilizerTypes, $log) {
+    var fertilizerCalculator = {}, validator = fertilizerValidator;
+    function createResult(total) {
+        return {
+            fertilizers: total.incomings,
+            weight: total.weight,
+            dryMatterWeight: total.dryMatterWeight,
+            nitrogenInKg: total.nitrogenInKg,
+            nitrogenPercentage: 0,
+            phosphorusInKg: total.phosphorusInKg,
+            phosphorusPercentage: 0,
+            potassiumInKg: total.potassiumInKg,
+            potassiumPercentage: 0,
+            sulphurInKg: total.sulphurInKg,
+            sulphurPercentage: 0
+        };
+    }
+    function _calculatePercentage(nutrientWeight, totalWeight) {
+        return nutrientWeight / totalWeight * 100;
+    }
+    function _calculatePercentages(total) {
+        var result = createResult(total);
+        result.nitrogenPercentage = _calculatePercentage(total.nitrogenInKg, total.dryMatterWeight);
+        result.phosphorusPercentage = _calculatePercentage(total.phosphorusInKg, total.dryMatterWeight);
+        result.potassiumPercentage = _calculatePercentage(total.potassiumInKg, total.dryMatterWeight);
+        result.sulphurPercentage = _calculatePercentage(total.sulphurInKg, total.dryMatterWeight);
+        return result;
+    }
+    function _createTotal() {
+        return {
+            weight: 0,
+            dryMatterWeight: 0,
+            nitrogenInKg: 0,
+            phosphorusInKg: 0,
+            potassiumInKg: 0,
+            sulphurInKg: 0,
+            incomings: []
+        };
+    }
+    function _calculateNutrientWeight(weight, percentage) {
+        return weight * percentage / 100;
+    }
+    function updateTotal(fertilizer, total) {
+        var type = fertilizer.type, weight = fertilizer.weight, dryMatterWeight = fertilizer.isDry ? weight : _calculateNutrientWeight(weight, type.dryMatterPercentage);
+        total.weight += weight;
+        total.dryMatterWeight += dryMatterWeight;
+        total.nitrogenInKg += _calculateNutrientWeight(dryMatterWeight, type.nitrogenPercentage);
+        total.phosphorusInKg += _calculateNutrientWeight(dryMatterWeight, type.phosphorusPercentage);
+        total.potassiumInKg += _calculateNutrientWeight(dryMatterWeight, type.potassiumPercentage);
+        total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
+        total.incomings.push({
+            type: fertilizer.type,
+            weight: fertilizer.weight,
+            isDry: fertilizer.isDry
+        });
+        return total;
+    }
+    function calculateAll(fertilizers) {
+        $log.info("fertilizerCalculator.calculateAll...");
+        var i = 0, total = _createTotal();
+        for (i; i < fertilizers.length; i++) {
+            var fertilizer = fertilizers[i];
+            if (!validator.validate(fertilizer)) {
+                $log.error("fertilizerCalculator.calculateAll invalid fertilizer at %s: %j", i, fertilizer);
+                return undefined;
+            }
+            total = updateTotal(fertilizer, total);
+        }
+        return total;
+    }
+    fertilizerCalculator.calculate = function(fertilizers) {
+        var itemsTotal = calculateAll(fertilizers);
+        return _calculatePercentages(itemsTotal);
+    };
+    return fertilizerCalculator;
+});
+
+angular.module("farmbuild.nutrientCalculator").constant("fertilizerDefaults", {
+    types: [ {
+        name: "Dairy manure stockpile",
+        nitrogenPercentage: 1.44,
+        phosphorusPercentage: .55,
+        potassiumPercentage: 1.38,
+        sulphurPercentage: .3,
+        dryMatterPercentage: 76.83
+    }, {
+        name: "DAP",
+        nitrogenPercentage: 18,
+        phosphorusPercentage: 20,
+        potassiumPercentage: 0,
+        sulphurPercentage: 1.6,
+        dryMatterPercentage: 100
+    }, {
+        name: "Double Super",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 16.8,
+        potassiumPercentage: 0,
+        sulphurPercentage: 4,
+        dryMatterPercentage: 100
+    }, {
+        name: "Effluent solids",
+        nitrogenPercentage: 1.65,
+        phosphorusPercentage: .3,
+        potassiumPercentage: .4,
+        sulphurPercentage: .25,
+        dryMatterPercentage: 11.3
+    }, {
+        name: "Fodder Blend",
+        nitrogenPercentage: 11.5,
+        phosphorusPercentage: 8.1,
+        potassiumPercentage: 19.8,
+        sulphurPercentage: 5.5,
+        dryMatterPercentage: 100
+    }, {
+        name: "Fodderbooster",
+        nitrogenPercentage: 11.6,
+        phosphorusPercentage: 7.6,
+        potassiumPercentage: 19.6,
+        sulphurPercentage: 6,
+        dryMatterPercentage: 100
+    }, {
+        name: "General Compost",
+        nitrogenPercentage: 1.2,
+        phosphorusPercentage: .8,
+        potassiumPercentage: .8,
+        sulphurPercentage: .7,
+        dryMatterPercentage: 77
+    }, {
+        name: "Grass Blend",
+        nitrogenPercentage: 29.5,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 0,
+        sulphurPercentage: 15.8,
+        dryMatterPercentage: 100
+    }, {
+        name: "Grassbooster",
+        nitrogenPercentage: 29.7,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 0,
+        sulphurPercentage: 14.6,
+        dryMatterPercentage: 100
+    }, {
+        name: "Hay Blend",
+        nitrogenPercentage: 13.4,
+        phosphorusPercentage: 4.5,
+        potassiumPercentage: 23.8,
+        sulphurPercentage: 4.7,
+        dryMatterPercentage: 100
+    }, {
+        name: "Hayboosta",
+        nitrogenPercentage: 11.8,
+        phosphorusPercentage: 4.7,
+        potassiumPercentage: 23.6,
+        sulphurPercentage: 4.6,
+        dryMatterPercentage: 100
+    }, {
+        name: "Legume Gold",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 15,
+        potassiumPercentage: 0,
+        sulphurPercentage: 10,
+        dryMatterPercentage: 100
+    }, {
+        name: "MAP",
+        nitrogenPercentage: 10,
+        phosphorusPercentage: 21.8,
+        potassiumPercentage: 0,
+        sulphurPercentage: 1.5,
+        dryMatterPercentage: 100
+    }, {
+        name: "Muriate of Potash",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 50,
+        sulphurPercentage: 0,
+        dryMatterPercentage: 100
+    }, {
+        name: "Pasture Blend",
+        nitrogenPercentage: 23.8,
+        phosphorusPercentage: 3.6,
+        potassiumPercentage: 13,
+        sulphurPercentage: 5.3,
+        dryMatterPercentage: 100
+    }, {
+        name: "Pasture Gold",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 14,
+        potassiumPercentage: 0,
+        sulphurPercentage: 17,
+        dryMatterPercentage: 100
+    }, {
+        name: "Potassium Nitate",
+        nitrogenPercentage: 13,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 36.5,
+        sulphurPercentage: 0,
+        dryMatterPercentage: 100
+    }, {
+        name: "Poultry Manure (fresh)",
+        nitrogenPercentage: 3.9,
+        phosphorusPercentage: 1.8,
+        potassiumPercentage: 1.9,
+        sulphurPercentage: .5,
+        dryMatterPercentage: 90
+    }, {
+        name: "Shed bedding",
+        nitrogenPercentage: .21,
+        phosphorusPercentage: .06,
+        potassiumPercentage: .24,
+        sulphurPercentage: .04,
+        dryMatterPercentage: 69.05
+    }, {
+        name: "Sulphate of Ammonia",
+        nitrogenPercentage: 20.5,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 0,
+        sulphurPercentage: 23.5,
+        dryMatterPercentage: 100
+    }, {
+        name: "Sulphate of Potash",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 40.5,
+        sulphurPercentage: 17,
+        dryMatterPercentage: 100
+    }, {
+        name: "Superphosphate (Super)",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 8.8,
+        potassiumPercentage: 0,
+        sulphurPercentage: 11,
+        dryMatterPercentage: 100
+    }, {
+        name: "Triple Super",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 20.2,
+        potassiumPercentage: 0,
+        sulphurPercentage: 1,
+        dryMatterPercentage: 100
+    }, {
+        name: "Urea",
+        nitrogenPercentage: 46,
+        phosphorusPercentage: 0,
+        potassiumPercentage: 0,
+        sulphurPercentage: 0,
+        dryMatterPercentage: 100
+    }, {
+        name: "Super and Potash 1:1",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 4.4,
+        potassiumPercentage: 25,
+        sulphurPercentage: 5.5,
+        dryMatterPercentage: 100
+    }, {
+        name: "Super and Potash 2:1",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 5.9,
+        potassiumPercentage: 16.8,
+        sulphurPercentage: 7.3,
+        dryMatterPercentage: 100
+    }, {
+        name: "Super and Potash 3:1",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 6.6,
+        potassiumPercentage: 12.7,
+        sulphurPercentage: 8.2,
+        dryMatterPercentage: 100
+    }, {
+        name: "Super and Potash 4:1",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 7,
+        potassiumPercentage: 10,
+        sulphurPercentage: 8.8,
+        dryMatterPercentage: 100
+    }, {
+        name: "Super and Potash 5:1",
+        nitrogenPercentage: 0,
+        phosphorusPercentage: 7.4,
+        potassiumPercentage: 8,
+        sulphurPercentage: 9.2,
+        dryMatterPercentage: 100
+    }, {
+        name: "Pasturebooster",
+        nitrogenPercentage: 23.8,
+        phosphorusPercentage: 3.7,
+        potassiumPercentage: 12.8,
+        sulphurPercentage: 4,
+        dryMatterPercentage: 100
+    } ]
+});
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", function(validations, forageTypes, $log) {
-    var forages = {}, _isDefined = validations.isDefined, _forages = [];
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerPurchased", function(validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator, collections, $log) {
+    var fertilizerPurchased = {
+        types: fertilizerTypes
+    }, _fertilizers = [], calculator = fertilizerCalculator, validator = fertilizerValidator;
+    fertilizerPurchased.fertilizers = function() {
+        return _fertilizers;
+    };
+    function _create(type, weight, isDry) {
+        return {
+            type: type,
+            weight: weight,
+            isDry: isDry
+        };
+    }
+    function _add(type, weight, isDry) {
+        var fertilizer = _create(type, weight, isDry);
+        $log.info("adding fertilizer ...", fertilizer);
+        if (!validator.validate(fertilizer)) {
+            return undefined;
+        }
+        collections.add(_fertilizers, fertilizer);
+        return fertilizerPurchased;
+    }
+    fertilizerPurchased.create = _create;
+    fertilizerPurchased.add = _add;
+    fertilizerPurchased.calculate = function(fertilizers) {
+        $log.info("fertilizerPurchased.calculate...");
+        if (!validator.validateAll(fertilizers)) {
+            $log.error("fertilizerPurchased.calculate invalid fertilizers, see the error above and fix based on API...");
+            return undefined;
+        }
+        return calculator.calculate(fertilizers);
+    };
+    return fertilizerPurchased;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", function(collections, validations, fertilizerDefaults, $log) {
+    var fertilizerTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(fertilizerDefaults.types);
+    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+        return {
+            name: name,
+            dryMatterPercentage: dryMatterPercentage,
+            sulphurPercentage: sulphurPercentage,
+            potassiumPercentage: potassiumPercentage,
+            phosphorusPercentage: phosphorusPercentage,
+            nitrogenPercentage: nitrogenPercentage
+        };
+    }
+    function _validate(type) {
+        $log.info("validating type  ...", type);
+        var valid = !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumberOrZero(type.potassiumPercentage) || !_isPositiveNumberOrZero(type.phosphorusPercentage) || !_isPositiveNumberOrZero(type.nitrogenPercentage) || !_isPositiveNumberOrZero(type.sulphurPercentage));
+        if (!valid) {
+            $log.error("invalid type: %j", type);
+        }
+        return valid;
+    }
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+        var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+        $log.info("adding fertilizer type ...", type);
+        if (!_validate(type)) {
+            return undefined;
+        }
+        return collections.add(_types, type, index);
+    }
+    fertilizerTypes = {
+        add: _add,
+        at: function(index) {
+            return collections.at(_types, index);
+        },
+        size: function() {
+            return collections.size(_types);
+        },
+        byName: function(name) {
+            return collections.byProperty(_types, "name", name);
+        },
+        last: function() {
+            return collections.last(_types);
+        },
+        validate: _validate
+    };
+    return fertilizerTypes;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerValidator", function(validations, fertilizerTypes, $log) {
+    var fertilizerValidator = {}, _isDefined = validations.isDefined;
+    function _validate(fertilizer) {
+        $log.info("validating fertilizer...", fertilizer);
+        if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
+            $log.error("invalid fertilizer, must have type, weight and isDry: %j", fertilizer);
+            return false;
+        }
+        return fertilizerTypes.validate(fertilizer.type);
+    }
+    fertilizerValidator.validate = _validate;
+    fertilizerValidator.validateAll = function(fertilizers) {
+        var i = 0;
+        for (i; i < fertilizers.length; i++) {
+            var fertilizer = fertilizers[i];
+            if (!_validate(fertilizer)) {
+                $log.error("validator invalid at %s: %j", i, fertilizer);
+                return false;
+            }
+        }
+        return true;
+    };
+    return fertilizerValidator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", function(validations, references, $log) {
+    var forages = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(references.forageTypes), _forages = [];
     function _validate(forage) {
         $log.info("validating forage ...", forage);
         if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
             return false;
         }
-        return forageTypes.validate(forage.type);
+        return _validateType(forage.type);
     }
     function _create(type, weight, isDry) {
         return {
@@ -472,7 +687,7 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
     }
     function _calculate(forages) {
         $log.info("calculating forages nutrient ...", forages);
-        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, meInMJ = 0, incomings = [], i = 0;
+        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, meInKg = 0, incomings = [], i = 0;
         if (!forages || forages.length === 0) {
             return undefined;
         }
@@ -492,7 +707,7 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
             phosphorusInKg += type.phosphorusPercentage * dmWeight / 100;
             potassiumInKg += type.potassiumPercentage * dmWeight / 100;
             sulphurInKg += type.sulphurPercentage * dmWeight / 100;
-            meInMJ += type.metabolisableEnergyInMJPerKg * dmWeight;
+            meInKg += type.metabolisableEnergyPercentage * dmWeight / 100;
             incomings.push({
                 type: forage.type,
                 weight: forage.weight,
@@ -511,8 +726,8 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
             potassiumPercentage: potassiumInKg / totalDMWeight * 100,
             sulphurInKg: sulphurInKg,
             sulphurPercentage: sulphurInKg / totalDMWeight * 100,
-            metabolisableEnergyInMJ: meInMJ,
-            metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
+            metabolisableEnergyInKg: meInKg,
+            metabolisableEnergyPercentage: meInKg / totalDMWeight * 100
         };
     }
     function _isEmpty() {
@@ -528,24 +743,24 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
         return _forages[index];
     }
     function _removeIndex(index) {
-        $log.info("removing forage at index " + index);
-        if (!_isDefined(index) || index < 0 || index > _forages.length - 1) {
-            return forages;
+        $log.info("removing forage type at index " + index);
+        if (!index || index < 0 || index > _forages.length - 1) {
+            return undefined;
         }
         _forages.splice(index, 1);
-        return forages;
+        return _forages;
     }
     function _remove(forage) {
-        $log.info("removing forage ", forage);
+        $log.info("removing forage type ", forage);
         if (!_isDefined(forage)) {
-            return forages;
+            return undefined;
         }
         angular.forEach(_forages, function(item, index) {
             if (angular.equals(item, forage)) {
-                _removeIndex(index);
+                _removeTypeByIndex(index);
             }
         });
-        return forages;
+        return _forages;
     }
     function _first() {
         return _forages[0];
@@ -560,29 +775,21 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
         at: _at,
         size: _count,
         toArray: _toArray,
-        removeAt: _removeIndex,
+        removeIndex: _removeIndex,
         remove: _remove,
         first: _first,
         last: _last,
         isEmpty: _isEmpty,
-        calculate: _calculate,
-        types: forageTypes
+        calculate: _calculate
     };
-    return forages;
-});
-
-"use strict";
-
-angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(validations, forageTypeValues, $log) {
-    var _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(forageTypeValues), forageTypes = {};
-    function _validate(type) {
-        $log.info("validating type  ...", type);
-        return !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
+    function _validateType(forageType) {
+        $log.info("validating forageType  ...", forageType);
+        return !(!_isAlphanumeric(forageType.name) || !_isPositiveNumber(forageType.metabolisableEnergyPercentage) || !_isPositiveNumber(forageType.dryMatterPercentage) || !_isPositiveNumber(forageType.potassiumPercentage) || !_isPositiveNumber(forageType.phosphorusPercentage) || !_isPositiveNumber(forageType.nitrogenPercentage) || !_isPositiveNumber(forageType.sulphurPercentage));
     }
-    function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+    function _createType(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
         return {
             name: name,
-            metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
+            metabolisableEnergyPercentage: metabolisableEnergyPercentage,
             dryMatterPercentage: dryMatterPercentage,
             sulphurPercentage: sulphurPercentage,
             potassiumPercentage: potassiumPercentage,
@@ -590,81 +797,88 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
             nitrogenPercentage: nitrogenPercentage
         };
     }
-    function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-        var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-        $log.info("adding forage type ...", type);
-        if (!_validate(type)) {
+    function _addType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+        var forageType = _createType(name, mePercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+        $log.info("adding forage type ...", forageType);
+        if (!_validateType(forageType)) {
             return undefined;
         }
         if (_isDefined(index)) {
-            _types.splice(index, 0, type);
+            _types.splice(index, 0, forageType);
         } else {
-            _types.push(type);
+            _types.push(forageType);
         }
-        return forageTypes;
+        return forages.types;
     }
-    function _at(index) {
-        var type;
+    function _getTypeByIndex(index) {
+        var forageType;
         $log.info("getting forage type at index: ", index);
         if (!_isDefined(index) || index < 0) {
             return undefined;
         }
-        return _types[index];
+        forageType = _types[index];
+        return forageType;
     }
-    function _last() {
+    function _getLastType() {
         $log.info("getting last forage type ...");
-        var length = _count();
+        var length = _countTypes();
         return _types[length - 1];
     }
-    function _first() {
+    function _getFirstType() {
         $log.info("getting first forage type ...");
         return _types[0];
     }
-    function _count() {
+    function _countTypes() {
         $log.info("counting forage types ...", _types);
         return _types.length;
     }
-    function _toArray() {
+    function _typesToArray() {
         $log.info("toArray types ...", _types);
         return _types;
     }
-    function _removeAt(index) {
+    function _removeTypeByIndex(index) {
         $log.info("removing forage type at index " + index);
-        if (!_isDefined(index) || index < 0 || index > _types.length - 1) {
-            return forageTypes;
+        if (!index || index < 0 || index > _types.length - 1) {
+            return undefined;
         }
         _types.splice(index, 1);
-        return forageTypes;
+        return _types;
     }
-    function _remove(type) {
-        $log.info("removing forage type ", type);
-        if (!_isDefined(type)) {
-            return forageTypes;
+    function _removeType(forageType) {
+        $log.info("removing forage type ", forageType);
+        if (!_isDefined(forageType)) {
+            return undefined;
         }
         angular.forEach(_types, function(item, index) {
-            if (angular.equals(item, type)) {
-                _removeAt(index);
+            if (angular.equals(item, forageType)) {
+                _removeTypeByIndex(index);
             }
         });
-        return forageTypes;
+        return _types;
     }
-    function _isEmpty() {
-        $log.info("Is forage types empty?", types.types.size() === 0);
-        return forageTypes.size() === 0;
+    function _isTypesEmpty() {
+        $log.info("Is forage types empty?", forages.types.size() === 0);
+        return forages.types.size() === 0;
     }
-    forageTypes = {
+    forages.types = {
         add: _addType,
-        at: _at,
-        size: _count,
-        toArray: _toArray,
-        removeAt: _removeAt,
-        remove: _remove,
-        first: _first,
-        last: _last,
-        isEmpty: _isEmpty,
-        validate: _validate
+        at: _getTypeByIndex,
+        size: _countTypes,
+        toArray: _typesToArray,
+        removeIndex: _removeTypeByIndex,
+        remove: _removeType,
+        first: _getFirstType,
+        last: _getLastType,
+        isEmpty: _isTypesEmpty
     };
-    return forageTypes;
+    return forages;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("incomings", function(validations, $log) {
+    var incomings = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _fertilizer = [];
+    return incomings;
 });
 
 "use strict";
@@ -739,8 +953,11 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
 
 angular.module("farmbuild.nutrientCalculator").factory("validations", function($log) {
     var validations = {};
+    validations.isPositiveNumberOrZero = function(value) {
+        return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) >= 0;
+    };
     validations.isPositiveNumber = function(value) {
-        return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) > 0;
+        return validations.isPositiveNumberOrZero(value) && parseFloat(value) > 0;
     };
     validations.isAlphabet = function(value) {
         var regex = /^[A-Za-z]+$/gi;
@@ -770,7 +987,80 @@ angular.module("farmbuild.nutrientCalculator").constant("references", {
     }, {
         name: "Bobby calve",
         weight: 40
-    } ]
+    } ],
+    forageTypes: [ {
+        name: "Average crop",
+        metabolisableEnergyPercentage: 9.75,
+        dryMatterPercentage: 44.45,
+        sulphurPercentage: .5,
+        potassiumPercentage: 2.68,
+        phosphorusPercentage: .34,
+        nitrogenPercentage: 2.99
+    }, {
+        name: "Average hay",
+        metabolisableEnergyPercentage: 9.39,
+        dryMatterPercentage: 85,
+        sulphurPercentage: .23,
+        potassiumPercentage: 2.29,
+        phosphorusPercentage: .38,
+        nitrogenPercentage: 2.44
+    }, {
+        name: "Average silage",
+        metabolisableEnergyPercentage: 8.76,
+        dryMatterPercentage: 49.01,
+        sulphurPercentage: .27,
+        potassiumPercentage: 2.35,
+        phosphorusPercentage: .34,
+        nitrogenPercentage: 2.12
+    }, {
+        name: "Average straw",
+        metabolisableEnergyPercentage: 9.18,
+        dryMatterPercentage: 45.1,
+        sulphurPercentage: .28,
+        potassiumPercentage: 2.7,
+        phosphorusPercentage: .4,
+        nitrogenPercentage: 2.6
+    }, {
+        name: "Brassica crop",
+        metabolisableEnergyPercentage: 11.32,
+        dryMatterPercentage: 25.99,
+        sulphurPercentage: .64,
+        potassiumPercentage: 2.85,
+        phosphorusPercentage: .33,
+        nitrogenPercentage: 3.72
+    }, {
+        name: "Cereal hay",
+        metabolisableEnergyPercentage: 8.32,
+        dryMatterPercentage: 84.74,
+        sulphurPercentage: .17,
+        potassiumPercentage: 1.83,
+        phosphorusPercentage: .22,
+        nitrogenPercentage: 1.54
+    }, {
+        name: "Canola silage",
+        metabolisableEnergyPercentage: 9.45,
+        dryMatterPercentage: 23.77,
+        sulphurPercentage: .51,
+        potassiumPercentage: 2.88,
+        phosphorusPercentage: .3,
+        nitrogenPercentage: 2.75
+    }, {
+        name: "Cereal hay",
+        metabolisableEnergyPercentage: 8.32,
+        dryMatterPercentage: 84.74,
+        sulphurPercentage: .17,
+        potassiumPercentage: 1.83,
+        phosphorusPercentage: .22,
+        nitrogenPercentage: 1.54
+    }, {
+        name: "Cereal silage",
+        metabolisableEnergyPercentage: 9.14,
+        dryMatterPercentage: 36.28,
+        sulphurPercentage: .17,
+        potassiumPercentage: 2.02,
+        phosphorusPercentage: .35,
+        nitrogenPercentage: 2.02
+    }, "Cereal straw", "Clover hay", "Forage blend", "Kikuyu pasture", "Kikuyu silage", "Lucerne hay", "Lucerne pasture", "Lucerne silage", "Maize silage", "Millett crop", "Oat Hay", "Oats & peas silage", "Paspalum silage", "Pasture hay", "Pasture silage", "Prairie grass silage", "Ryegrass pasture", "Seteria silage", "Sorghum crop", "Sorghum hay", "Sorghum/millet hay", "Sorghum/millet silage", "Turnip crop" ]
 });
 
 "use strict";

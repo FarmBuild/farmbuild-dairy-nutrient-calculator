@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>incomings/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">incomings/index.src.js</h1>
     
 
     
@@ -49,56 +49,21 @@
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/  incomings  singleton
+ * @module nutrientCalculator/  incomings 
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator')
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
-		var nutrientCalculator = {};
+  .factory('incomings', function (validations, $log) {
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+    var   incomings  = {},
+      _isPositiveNumber = validations.isPositiveNumber,
+      _isAlphanumeric = validations.isAlphanumeric,
+      _isDefined = validations.isDefined,
+      _fertilizer = [];
 
-		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
-				return undefined;
-			}
-
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {}
-				};
-			}
-			return farmData;
-		};
-
-		// Provide a shortcut for modules
-		nutrientCalculator.milkSold = milkSold;
-		nutrientCalculator.cowsPurchased = cowsPurchased;
-		nutrientCalculator.cowsCulled = cowsCulled;
-		nutrientCalculator.foragesPurchased = foragesPurchased;
-		nutrientCalculator.version = '0.1.0';
-
-		if(typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
-
-		return nutrientCalculator;
-	});</code></pre>
+    return   incomings;
+  });</code></pre>
         </article>
     </section>
 
