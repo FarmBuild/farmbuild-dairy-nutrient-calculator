@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>fertilizer-purchased/validator.src.js - Documentation</title>
+    <title>fertilizer-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">fertilizer-purchased/validator.src.js</h1>
+    <h1 class="page-title">fertilizer-purchased/types.src.js</h1>
     
 
     
@@ -49,45 +49,90 @@
 'use strict';
 
 /**
- * nutrientCalculator/fertilizerValidator singleton
- * @module nutrientCalculator/fertilizerValidator
+ * nutrientCalculator/fertilizerTypes singleton
+ * @module nutrientCalculator/fertilizerTypes
  */
 angular.module('farmbuild.nutrientCalculator')
-.factory('fertilizerValidator',
-  function (validations, fertilizerTypes,
-            $log) {
+  .factory('fertilizerTypes', function (collections, validations, fertilizerDefaults, $log) {
 
-    var fertilizerValidator = {},
-      _isDefined = validations.isDefined;
+    var fertilizerTypes,
+      _isPositiveNumber = validations.isPositiveNumber,
+      _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
+      _isEmpty = validations.isEmpty,
+      _types = angular.copy(fertilizerDefaults.types);
 
-     function _validate(fertilizer) {
-      $log.info('validating fertilizer...', fertilizer);
-
-      if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
-        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
-        return false;
-      }
-
-      return fertilizerTypes.validate(fertilizer.type);
-    };
-
-    fertilizerValidator.validate = _validate;
-
-    fertilizerValidator.validateAll = function(fertilizers) {
-      var i = 0;
-      for (i; i &lt; fertilizers.length; i++) {
-        var fertilizer = fertilizers[i];
-
-        if (!_validate(fertilizer)) {
-          $log.error('validator invalid at %s: %j', i, fertilizer);
-          return false;
-        }
-      }
-      return true;
+    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+      return {
+        name: name,
+        dryMatterPercentage: dryMatterPercentage,
+        sulphurPercentage: sulphurPercentage,
+        potassiumPercentage: potassiumPercentage,
+        phosphorusPercentage: phosphorusPercentage,
+        nitrogenPercentage: nitrogenPercentage
+      };
     }
 
+    function _validate(type) {
+      $log.info('validating type  ...', type);
 
-    return fertilizerValidator;
+      var valid =  !(_isEmpty(type.name) ||
+        !_isPositiveNumber(type.dryMatterPercentage) ||
+        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
+        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
+        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
+        !_isPositiveNumberOrZero(type.sulphurPercentage));
+
+      if(!valid) {
+        $log.error('invalid type: %j', type);
+      }
+      return valid;
+    }
+
+    /**
+     * Adds a new fertilizer type for nutrient calculation
+     * @method types.add
+     * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} dryMatterPercentage - value must be > 0
+     * @param {!number} sulphurPercentage - value must be > 0
+     * @param {!number} potassiumPercentage - value must be > 0
+     * @param {!number} phosphorusPercentage - value must be > 0
+     * @param {!number} nitrogenPercentage - value must be > 0
+     * @returns {object} fertilizers - useful for chaining multiple add()
+     * @private
+     * @static
+     */
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+      var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+      $log.info('adding fertilizer type ...', type);
+
+      if (!_validate(type)) {
+        return undefined;
+      }
+
+      return collections.add(_types, type, index);
+    };
+
+    /**
+     * Fertilizer types collection api
+     * @property {object} Types - fertilizer types collection
+     * @public
+     * @static
+     */
+    fertilizerTypes = {
+      add: _add,
+      at: function(index) { return collections.at(_types, index)},
+      size: function() { return collections.size(_types)},
+      byName: function(name) { return collections.byProperty(_types, 'name', name)},
+//      toArray: _typesToArray,
+//      removeIndex: _removeTypeByIndex,
+//      remove: _removeType,
+//      first: _getFirstType,
+      last: function() { return collections.last(_types) },
+//      isEmpty: _isTypesEmpty
+      validate: _validate
+    };
+
+    return fertilizerTypes;
   });</code></pre>
         </article>
     </section>
@@ -100,7 +145,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 08:42:08 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 08:54:24 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

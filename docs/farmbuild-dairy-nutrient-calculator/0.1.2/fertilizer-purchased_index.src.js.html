@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/fertilizerTypes - Documentation</title>
+    <title>fertilizer-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,245 +28,90 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/fertilizerTypes</h1>
+    <h1 class="page-title">fertilizer-purchased/index.src.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>nutrientCalculator/fertilizerTypes singleton</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizer-purchased_types.src.js.html">fertilizer-purchased/types.src.js</a>, <a href="fertilizer-purchased_types.src.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".fertilizerTypes"><span class="type-signature">(static) </span>fertilizerTypes<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Fertilizer types collection api</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>Types</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>fertilizer types collection</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizer-purchased_types.src.js.html">fertilizer-purchased/types.src.js</a>, <a href="fertilizer-purchased_types.src.js.html#line81">line 81</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator/fertilizerPurchased singleton
+ * @module nutrientCalculator/fertilizerPurchased
+ */
+angular.module('farmbuild.nutrientCalculator')
+
+  .factory('fertilizerPurchased',
+  function (validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator,
+            collections,
+            $log) {
+
+    var fertilizerPurchased = {types:fertilizerTypes},
+      _fertilizers = [],
+      calculator = fertilizerCalculator,
+      validator = fertilizerValidator;
+
+    fertilizerPurchased.fertilizers = function() { return _fertilizers};
+
+    function _create(type, weight, isDry) {
+      return {type: type, weight:weight, isDry:isDry};
+    }
+
+    /**
+     * Adds a new fertilizer type for nutrient calculation
+     * @method types.add
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizerPurchased - useful for chaining multiple add()
+     * @private
+     * @static
+     */
+    function _add(type, weight, isDry) {
+      var fertilizer = _create(type, weight, isDry);
+      $log.info('adding fertilizer ...', fertilizer);
+      if (!validator.validate(fertilizer)) {
+        return undefined;
+      }
+      collections.add(_fertilizers, fertilizer);
+      return fertilizerPurchased;
+    };
+
+    fertilizerPurchased.create = _create;
+    fertilizerPurchased.add = _add;
+
+    /**
+     *
+     * @param fertilizers
+     * @returns {*}
+     */
+    fertilizerPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizerPurchased.calculate...');
+      if(!validator.validateAll(fertilizers)) {
+        $log.error('fertilizerPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
+        return undefined;
+      }
+
+      return calculator.calculate(fertilizers);
+    }
+
+    return fertilizerPurchased;
+  });</code></pre>
+        </article>
+    </section>
 
 
 
@@ -276,7 +121,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 08:42:08 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 08:54:24 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>forage-purchased/types.src.js - Documentation</title>
+    <title>collections/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">forage-purchased/types.src.js</h1>
+    <h1 class="page-title">collections/index.src.js</h1>
     
 
     
@@ -49,176 +49,118 @@
 'use strict';
 
 /**
- * Singleton - forageTypes Collection, This is a shortcut for "nutrientCalculator.foragesPurchased.types"
- * @module nutrientCalculator/foragesTypes
+ * nutrientCalculator/collections singleton
+ * @module nutrientCalculator/collections
  */
-
 angular.module('farmbuild.nutrientCalculator')
+  .factory('collections', function (validations, $log) {
+    var collections = {},
+      _isDefined = validations.isDefined,
+      _isArray = validations.isArray,
+      _equals = validations.equals;
 
-	.factory('forageTypes', function (validations, forageTypeValues, $log) {
-		var _isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
-			_isDefined = validations.isDefined,
-			_types = angular.copy(forageTypeValues),
-			forageTypes = {};
+    function _byProperty(collection, property, value) {
+      if(!_isArray(collection)) {
+        return undefined;
+      }
+      if(!_isDefined(property)) {
+        return undefined;
+      }
+      if(!_isDefined(value)) {
+        return undefined;
+      }
 
-		function _validate(type) {
-			$log.info('validating type  ...', type);
+      var i = 0;
+      for(i; i &lt; collection.length; i++) {
+        var item = collection[i];
 
-			return !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
+        if(!item.hasOwnProperty(property)) {
+          continue;
+        }
 
-		}
+        if(_equals(item[property], value)) {
+          return item;
+        }
 
-		function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-			return {
-				name: name,
-				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
-				dryMatterPercentage: dryMatterPercentage,
-				sulphurPercentage: sulphurPercentage,
-				potassiumPercentage: potassiumPercentage,
-				phosphorusPercentage: phosphorusPercentage,
-				nitrogenPercentage: nitrogenPercentage
-			};
-		}
+      }
+      return undefined;
+    }
 
-		/**
-		 * Adds a new forage type for nutrient calculation
-		 * @method add
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
-		 * @param {!number} dryMatterPercentage - value must be > 0
-		 * @param {!number} sulphurPercentage - value must be > 0
-		 * @param {!number} potassiumPercentage - value must be > 0
-		 * @param {!number} phosphorusPercentage - value must be > 0
-		 * @param {!number} nitrogenPercentage - value must be > 0
-		 * @returns {object} types - useful for chaining multiple add()
-		 * @public
-		 * @static
-		 */
-		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+    function _add(collection, item, index) {
+      if (_isDefined(index)) {
+        collection.splice(index, 0, item)
+      } else {
+        collection.push(item);
+      }
+      return collection;
+    };
 
-			var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-			$log.info('adding forage type ...', type);
+    function _isEmpty(){
+      return _collections.length === 0;
+    };
 
-			if (!_validate(type)) {
-				return undefined;
-			}
+    function _count(collection) {
+      if(!angular.isArray(collection)) {
+        return -1;
+      }
+      return collection.length;
+    };
 
-			if (_isDefined(index)) {
-				_types.splice(index, 0, type)
-			} else {
-				_types.push(type);
-			}
+    function _toArray(){
+      return _collections;
+    };
 
-			return forageTypes;
-		};
+    function _at(collection, index){
+      return collection[index];
+    };
 
+    function _removeAt(collection, index) {
+      if (!angular.isArray(collection)) {
+        return collection;
+      }
+      if (!index || index &lt; 0 || index > collection.length - 1) {
+        return collection;
+      }
 
-		/**
-		 * Returns the forageType at specified index
-		 * @method at
-		 * @returns {object} forageType
-		 * @public
-		 * @static
-		 */
-		function _at(index) {
-			var type;
-			$log.info('getting forage type at index: ', index);
-			if (!_isDefined(index) || index &lt; 0) {
-				return undefined;
-			}
+      collection.splice(index, 1);
 
-			return _types[index];
-		};
+      return collection;
+    };
 
 
-		function _last() {
-			$log.info('getting last forage type ...');
-			var length = _count();
-			return _types[length - 1];
-		};
+    function _remove(forage) {
+      $log.info('removing forage type ', forage);
 
+      if (!_isDefined(forage)) {
+        return undefined;
+      }
 
-		function _first() {
-			$log.info('getting first forage type ...');
-			return _types[0];
-		};
+      return _collections;
+    };
 
+    function _first(collection) {
+      return collection[0];
+    };
 
-		function _count() {
-			$log.info('counting forage types ...', _types);
-			return _types.length;
-		};
+    function _last(collection) {
+      var length = _count(collection);
+      return collection[length - 1];
+    };
 
+    collections = {
+      add: _add,
+      at: _at,
+      size: _count,
+      byProperty:_byProperty,
+      removeAt: _removeAt,
+      remove: _remove,
+      first: _first,
+      last: _last,
+      isEmpty: _isEmpty
+    };
 
-		/**
-		 * Returns forageTypes collection as an array
-		 * @method toArray
-		 * @returns {Array} forageTypes
-		 * @public
-		 * @static
-		 */
-		function _toArray() {
-			$log.info('toArray types ...', _types);
-			return _types;
-		};
-
-		/**
-		 * Removes the forage type at specified index
-		 * @method removeAt
-		 * @returns {object} forageTypes collection
-		 * @public
-		 * @static
-		 */
-		function _removeAt(index) {
-			$log.info('removing forage type at index ' + index);
-			if (!_isDefined(index) || index &lt; 0 || index > _types.length - 1) {
-				return forageTypes;
-			}
-
-			_types.splice(index, 1);
-
-			return forageTypes;
-		};
-
-
-		function _remove(type) {
-			$log.info('removing forage type ', type);
-
-			if (!_isDefined(type)) {
-				return forageTypes;
-			}
-
-			angular.forEach(_types, function (item, index) {
-				if (angular.equals(item, type)) {
-					_removeAt(index);
-				}
-			});
-
-			return forageTypes;
-		};
-
-
-		function _isEmpty() {
-			$log.info('Is forage types empty?', types.types.size() === 0);
-			return forageTypes.size() === 0;
-		};
-
-		forageTypes = {
-			add: _addType,
-			at: _at,
-			size: _count,
-			toArray: _toArray,
-			removeAt: _removeAt,
-			remove: _remove,
-			first: _first,
-			last: _last,
-			isEmpty: _isEmpty,
-			validate: _validate
-		};
-
-		return forageTypes;
-	});</code></pre>
+    return collections;
+  });</code></pre>
         </article>
     </section>
 
@@ -230,7 +172,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 08:42:08 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 08:54:24 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
