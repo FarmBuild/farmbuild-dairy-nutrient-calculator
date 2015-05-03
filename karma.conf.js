@@ -8,7 +8,7 @@ module.exports = function(config){
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/farmbuild-farmdata/dist/farmbuild-farmdata.js',
       'src/nutrient-calculator.js',
-      'src/references.conf.src.js',
+      'src/cows-culled/cows.conf.src.js',
       'src/cows-purchased/index.src.js',
       'src/cows-culled/index.src.js',
       'src/validations/index.src.js',
@@ -16,6 +16,8 @@ module.exports = function(config){
       'src/forage-purchased/forages.conf.src.js',
       'src/forage-purchased/types.src.js',
       'src/forage-purchased/index.src.js',
+      'src/legume/index.src.js',
+      'src/legume/index.spec.js',
       'src/index.js',
       'src/*.js',
       'src/**/*.js'
