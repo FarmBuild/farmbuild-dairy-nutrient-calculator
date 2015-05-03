@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="farmbuild.nutrientCalculator.examples.fertilizer Purchased">
+<html ng-app="farmbuild.nutrientCalculator.examples.fertilizersPurchased">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
-<body ng-controller="Fertilizer PurchasedCtrl">
+<body ng-controller="FertilizersPurchasedCtrl">
 <content>
     <h3>
         Farmbuild Diary Nutrient Calculator - Fertilizer Purchased
@@ -107,7 +107,6 @@
                     <tr>
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
-                        <th>Dry Matter Weight (kg)</th>
                         <th>Wet/Dry</th>
                         <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
@@ -160,7 +159,7 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    ng-click="addForage(newFertilizer.Type, newFertilizer.weight, newFertilizer.isDry, form)">
+                                    ng-click="add(newFertilizer.Type, newFertilizer.weight, newFertilizer.isDry, form)">
                                 <i class="icon fa fa-plus"></i>
                                 Add fertilizer
                             </button>
@@ -178,7 +177,7 @@
                         <td ng-bind="fertilizer.type.phosphorusPercentage | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.nitrogenPercentage | number : decimalPrecision"></td>
                         <td>
-                            <button type="button" class="btn btn-link" ng-click="removeForage($index, form)">
+                            <button type="button" class="btn btn-link" ng-click="remove($index, form)">
                                 Remove
                             </button>
                         </td>
