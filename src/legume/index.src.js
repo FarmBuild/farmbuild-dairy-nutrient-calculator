@@ -39,10 +39,10 @@ angular.module('farmbuild.nutrientCalculator')
 		//Average_N_per_ha
 		//DM_Consumed_kg_per_ha
 
-		function _validate(forage) {
-			$log.info('validating forage ...', forage);
+		function _validate(legume) {
+			$log.info('validating legume ...', legume);
 
-			if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
+			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
 				return false;
 			}
 			return true;
@@ -53,15 +53,15 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Calculates total nutrient imported on to the farm in forages
+		 * Calculates total nutrient imported on to the farm in legumes
 		 * @method calculate
-		 * @param {!array} forages - Array of purchased forages, each item contains details of the forage {type, weight, isDry}
-		 * @returns {object} nutrient data of forages purchased
+		 * @param {!array} legumes - Array of purchased legumes, each item contains details of the legume {type, weight, isDry}
+		 * @returns {object} nutrient data of legumes purchased
 		 * @public
 		 * @static
 		 */
-		 function _calculate(forages) {
-			$log.info('calculating forages nutrient ...', forages);
+		 function _calculate(legumes) {
+			$log.info('calculating legumes nutrient ...', legumes);
 
 			var totalWeight = 0,
 				totalDMWeight = 0,
@@ -73,24 +73,24 @@ angular.module('farmbuild.nutrientCalculator')
 				incomings = [],
 				i = 0;
 
-			if (!forages || forages.length === 0) {
+			if (!legumes || legumes.length === 0) {
 				return undefined;
 			}
 
-			for (i; i < forages.length; i++) {
+			for (i; i < legumes.length; i++) {
 				var weight = 0,
 					dmWeight = 0,
-					forage = forages[i],
-					type = forage.type;
+					legume = legumes[i],
+					type = legume.type;
 
-				if (!_validate(forage)) {
+				if (!_validate(legume)) {
 					return undefined;
 				}
 
-				weight = forage.weight;
+				weight = legume.weight;
 				dmWeight = weight;
-				if (!forage.isDry) {
-					dmWeight = (weight * forage.type.dryMatterPercentage) / 100;
+				if (!legume.isDry) {
+					dmWeight = (weight * legume.type.dryMatterPercentage) / 100;
 				}
 				totalWeight += weight;
 				totalDMWeight += dmWeight;
@@ -100,15 +100,15 @@ angular.module('farmbuild.nutrientCalculator')
 				sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
 				meInMJ += (type.metabolisableEnergyInMJPerKg * dmWeight);
 				incomings.push({
-					type: forage.type,
-					weight: forage.weight,
-					isDry: forage.isDry
+					type: legume.type,
+					weight: legume.weight,
+					isDry: legume.isDry
 				});
 
 			}
 
 			return {
-				forages: incomings,
+				legumes: incomings,
 				weight: totalWeight,
 				dryMatterWeight: totalDMWeight,
 				nitrogenInKg: nitrogenInKg,
