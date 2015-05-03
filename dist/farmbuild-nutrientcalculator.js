@@ -31,10 +31,27 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     return nutrientCalculator;
 });
 
+angular.module("farmbuild.nutrientCalculator").constant("cowTypes", [ {
+    name: "Heavy adult cattle",
+    weight: 650
+}, {
+    name: "Average adult cattle",
+    weight: 500
+}, {
+    name: "Yearling",
+    weight: 300
+}, {
+    name: "Weaned young stock",
+    weight: 120
+}, {
+    name: "Bobby calve",
+    weight: 40
+} ]);
+
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, references) {
-    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
+angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, cowTypes) {
+    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(cowTypes);
     cowsCulled.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -112,8 +129,8 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(va
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function(validations, references) {
-    var cowsPurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(references.cowTypes);
+angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function(validations, cowTypes) {
+    var cowsPurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(cowTypes);
     cowsPurchased.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -667,6 +684,75 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
 
 "use strict";
 
+angular.module("farmbuild.nutrientCalculator").factory("legume", function(validations, $log) {
+    var legume = {}, _isDefined = validations.isDefined, milk_sold_total, milk_fat_kg, milk_prot_kg, forage_ME_total, conc_ME_total, pasture_utilisation, Legume_pc;
+    function _validate(forage) {
+        $log.info("validating forage ...", forage);
+        if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
+            return false;
+        }
+        return true;
+    }
+    function _create(type, weight, isDry) {
+        return {
+            type: type,
+            weight: weight,
+            isDry: isDry
+        };
+    }
+    function _calculate(forages) {
+        $log.info("calculating forages nutrient ...", forages);
+        var totalWeight = 0, totalDMWeight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, meInMJ = 0, incomings = [], i = 0;
+        if (!forages || forages.length === 0) {
+            return undefined;
+        }
+        for (i; i < forages.length; i++) {
+            var weight = 0, dmWeight = 0, forage = forages[i], type = forage.type;
+            if (!_validate(forage)) {
+                return undefined;
+            }
+            weight = forage.weight;
+            dmWeight = weight;
+            if (!forage.isDry) {
+                dmWeight = weight * forage.type.dryMatterPercentage / 100;
+            }
+            totalWeight += weight;
+            totalDMWeight += dmWeight;
+            nitrogenInKg += type.nitrogenPercentage * dmWeight / 100;
+            phosphorusInKg += type.phosphorusPercentage * dmWeight / 100;
+            potassiumInKg += type.potassiumPercentage * dmWeight / 100;
+            sulphurInKg += type.sulphurPercentage * dmWeight / 100;
+            meInMJ += type.metabolisableEnergyInMJPerKg * dmWeight;
+            incomings.push({
+                type: forage.type,
+                weight: forage.weight,
+                isDry: forage.isDry
+            });
+        }
+        return {
+            forages: incomings,
+            weight: totalWeight,
+            dryMatterWeight: totalDMWeight,
+            nitrogenInKg: nitrogenInKg,
+            nitrogenPercentage: nitrogenInKg / totalDMWeight * 100,
+            phosphorusInKg: phosphorusInKg,
+            phosphorusPercentage: phosphorusInKg / totalDMWeight * 100,
+            potassiumInKg: potassiumInKg,
+            potassiumPercentage: potassiumInKg / totalDMWeight * 100,
+            sulphurInKg: sulphurInKg,
+            sulphurPercentage: sulphurInKg / totalDMWeight * 100,
+            metabolisableEnergyInMJ: meInMJ,
+            metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
+        };
+    }
+    legume = {
+        calculate: _calculate
+    };
+    return legume;
+});
+
+"use strict";
+
 angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(validations) {
     var milkSold = {}, _isPositiveNumber = validations.isPositiveNumber;
     milkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
@@ -750,25 +836,6 @@ angular.module("farmbuild.nutrientCalculator").factory("validations", function($
     };
     validations.isDefined = angular.isDefined;
     return validations;
-});
-
-angular.module("farmbuild.nutrientCalculator").constant("references", {
-    cowTypes: [ {
-        name: "Heavy adult cattle",
-        weight: 650
-    }, {
-        name: "Average adult cattle",
-        weight: 500
-    }, {
-        name: "Yearling",
-        weight: 300
-    }, {
-        name: "Weaned young stock",
-        weight: 120
-    }, {
-        name: "Bobby calve",
-        weight: 40
-    } ]
 });
 
 "use strict";
