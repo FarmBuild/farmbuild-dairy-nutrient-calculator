@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator - Documentation</title>
+    <title>fertilizer-purchased/validator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,284 +28,69 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator</h1>
+    <h1 class="page-title">fertilizer-purchased/validator.src.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>nutrientCalculator</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Adds nutrientCalculator block to farmData</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>farmData</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Saved farm data or default in case of new</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>updated farmData</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator/fertilizerValidator singleton
+ * @module nutrientCalculator/fertilizerValidator
+ */
+angular.module('farmbuild.nutrientCalculator')
+.factory('fertilizerValidator',
+  function (validations, fertilizerTypes,
+            $log) {
+
+    var fertilizerValidator = {},
+      _isDefined = validations.isDefined;
+
+     function _validate(fertilizer) {
+      $log.info('validating fertilizer...', fertilizer);
+
+      if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
+        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
+        return false;
+      }
+
+      return fertilizerTypes.validate(fertilizer.type);
+    };
+
+    fertilizerValidator.validate = _validate;
+
+    fertilizerValidator.validateAll = function(fertilizers) {
+      var i = 0;
+      for (i; i &lt; fertilizers.length; i++) {
+        var fertilizer = fertilizers[i];
+
+        if (!_validate(fertilizer)) {
+          $log.error('validator invalid at %s: %j', i, fertilizer);
+          return false;
+        }
+      }
+      return true;
+    }
+
+
+    return fertilizerValidator;
+  });</code></pre>
+        </article>
+    </section>
 
 
 

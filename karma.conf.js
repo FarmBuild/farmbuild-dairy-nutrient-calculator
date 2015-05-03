@@ -18,17 +18,24 @@ module.exports = function(config){
       'src/forage-purchased/index.src.js',
       'src/legume/index.src.js',
       'src/legume/index.spec.js',
+      'src/collections/index.src.js',
+      'src/fertilizer-purchased/fertilizers.conf.src.js',
+      'src/fertilizer-purchased/types.src.js',
+      'src/fertilizer-purchased/validator.src.js',
+      'src/fertilizer-purchased/calculator.src.js',
+      'src/fertilizer-purchased/index.src.js',
+      'src/collections/index.spec.js',
+      'src/fertilizer-purchased/types.spec.js',
+      'src/fertilizer-purchased/index.spec.js',
       'src/index.js',
       'src/*.js',
       'src/**/*.js'
     ],
 
     autoWatch : true,
-
     frameworks: ['jasmine'],
-
     browsers : ['Chrome'],
-
+    //logLevel: 'LOG_INFO', //this it NOT application log level, it's karma's log level.
     plugins : [
             'karma-chrome-launcher',
             'karma-firefox-launcher',

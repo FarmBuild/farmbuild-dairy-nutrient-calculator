@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator - Documentation</title>
+    <title>collections/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,284 +28,141 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator</h1>
+    <h1 class="page-title">collections/index.src.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>nutrientCalculator</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Adds nutrientCalculator block to farmData</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>farmData</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Saved farm data or default in case of new</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>updated farmData</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator/collections singleton
+ * @module nutrientCalculator/collections
+ */
+angular.module('farmbuild.nutrientCalculator')
+  .factory('collections', function (validations, $log) {
+    var collections = {},
+      _isDefined = validations.isDefined,
+      _isArray = validations.isArray,
+      _equals = validations.equals;
+
+    function _byProperty(collection, property, value) {
+      if(!_isArray(collection)) {
+        return undefined;
+      }
+      if(!_isDefined(property)) {
+        return undefined;
+      }
+      if(!_isDefined(value)) {
+        return undefined;
+      }
+
+      var i = 0;
+      for(i; i &lt; collection.length; i++) {
+        var item = collection[i];
+
+        if(!item.hasOwnProperty(property)) {
+          continue;
+        }
+
+        if(_equals(item[property], value)) {
+          return item;
+        }
+
+      }
+      return undefined;
+    }
+
+    function _add(collection, item, index) {
+      if (_isDefined(index)) {
+        collection.splice(index, 0, item)
+      } else {
+        collection.push(item);
+      }
+      return collection;
+    };
+
+    function _isEmpty(){
+      return _collections.length === 0;
+    };
+
+    function _count(collection) {
+      if(!angular.isArray(collection)) {
+        return -1;
+      }
+      return collection.length;
+    };
+
+    function _toArray(){
+      return _collections;
+    };
+
+    function _at(collection, index){
+      return collection[index];
+    };
+
+    function _removeAt(collection, index) {
+      if (!angular.isArray(collection)) {
+        return collection;
+      }
+      if (!index || index &lt; 0 || index > collection.length - 1) {
+        return collection;
+      }
+
+      collection.splice(index, 1);
+
+      return collection;
+    };
+
+
+    function _remove(forage) {
+      $log.info('removing forage type ', forage);
+
+      if (!_isDefined(forage)) {
+        return undefined;
+      }
+
+      return _collections;
+    };
+
+    function _first(collection) {
+      return collection[0];
+    };
+
+    function _last(collection) {
+      var length = _count(collection);
+      return collection[length - 1];
+    };
+
+    collections = {
+      add: _add,
+      at: _at,
+      size: _count,
+      byProperty:_byProperty,
+      removeAt: _removeAt,
+      remove: _remove,
+      first: _first,
+      last: _last,
+      isEmpty: _isEmpty
+    };
+
+    return collections;
+  });</code></pre>
+        </article>
+    </section>
 
 
 

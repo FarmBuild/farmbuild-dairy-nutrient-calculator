@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator - Documentation</title>
+    <title>fertilizer-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,284 +28,114 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator</h1>
+    <h1 class="page-title">fertilizer-purchased/types.src.js</h1>
     
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>nutrientCalculator</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Adds nutrientCalculator block to farmData</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>farmData</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Saved farm data or default in case of new</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line22">line 22</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>updated farmData</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator/fertilizerTypes singleton
+ * @module nutrientCalculator/fertilizerTypes
+ */
+angular.module('farmbuild.nutrientCalculator')
+  .factory('fertilizerTypes', function (collections, validations, fertilizerDefaults, $log) {
+
+    var fertilizerTypes,
+      _isPositiveNumber = validations.isPositiveNumber,
+      _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
+      _isEmpty = validations.isEmpty,
+      _types = angular.copy(fertilizerDefaults.types);
+
+    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+      return {
+        name: name,
+        dryMatterPercentage: dryMatterPercentage,
+        sulphurPercentage: sulphurPercentage,
+        potassiumPercentage: potassiumPercentage,
+        phosphorusPercentage: phosphorusPercentage,
+        nitrogenPercentage: nitrogenPercentage
+      };
+    }
+
+    function _validate(type) {
+      $log.info('validating type  ...', type);
+
+      var valid =  !(_isEmpty(type.name) ||
+        !_isPositiveNumber(type.dryMatterPercentage) ||
+        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
+        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
+        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
+        !_isPositiveNumberOrZero(type.sulphurPercentage));
+
+      if(!valid) {
+        $log.error('invalid type: %j', type);
+      }
+      return valid;
+    }
+
+    /**
+     * Adds a new fertilizer type for nutrient calculation
+     * @method types.add
+     * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} dryMatterPercentage - value must be > 0
+     * @param {!number} sulphurPercentage - value must be > 0
+     * @param {!number} potassiumPercentage - value must be > 0
+     * @param {!number} phosphorusPercentage - value must be > 0
+     * @param {!number} nitrogenPercentage - value must be > 0
+     * @returns {object} fertilizers - useful for chaining multiple add()
+     * @private
+     * @static
+     */
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+      var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+      $log.info('adding fertilizer type ...', type);
+
+      if (!_validate(type)) {
+        return undefined;
+      }
+
+      return collections.add(_types, type, index);
+    };
+
+    /**
+     * Fertilizer types collection api
+     * @property {object} Types - fertilizer types collection
+     * @public
+     * @static
+     */
+    fertilizerTypes = {
+      add: _add,
+      at: function(index) { return collections.at(_types, index)},
+      size: function() { return collections.size(_types)},
+      byName: function(name) { return collections.byProperty(_types, 'name', name)},
+//      toArray: _typesToArray,
+//      removeIndex: _removeTypeByIndex,
+//      remove: _removeType,
+//      first: _getFirstType,
+      last: function() { return collections.last(_types) },
+//      isEmpty: _isTypesEmpty
+      validate: _validate
+    };
+
+    return fertilizerTypes;
+  });</code></pre>
+        </article>
+    </section>
 
 
 

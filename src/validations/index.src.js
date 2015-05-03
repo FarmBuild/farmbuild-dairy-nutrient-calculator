@@ -4,8 +4,12 @@ angular.module('farmbuild.nutrientCalculator')
 
     var validations = {};
 
+    validations.isPositiveNumberOrZero = function(value) {
+      return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) >= 0;
+    };
+
     validations.isPositiveNumber = function(value) {
-      return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) > 0;
+      return validations.isPositiveNumberOrZero(value) && parseFloat(value) > 0;
     };
 
     validations.isAlphabet =  function(value){
@@ -18,7 +22,24 @@ angular.module('farmbuild.nutrientCalculator')
       return regex.test(value);
     };
 
+    var isEmpty = function (data) {
+      if (typeof(data) == 'number' || typeof(data) == 'boolean') {
+        return false;
+      }
+      if (typeof(data) == 'undefined' || data === null) {
+        return true;
+      }
+      if (typeof(data.length) != 'undefined') {
+        return data.length == 0;
+      }
+      return false;
+    };
+
+    validations.isEmpty = isEmpty;
+
     validations.isDefined =  angular.isDefined;
+    validations.isArray =  angular.isArray;
+    validations.equals = angular.equals;
 
     return validations;
 
