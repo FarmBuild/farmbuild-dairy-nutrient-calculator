@@ -41,7 +41,7 @@ describe('Calculate nutrient of fertilizer purchased (new farm data)', function(
 //      });
     });
 
-//    it('should calculate nutrient of fertilizer', function() {
+//    it('Enter 1000 kg/year as Amount Purchased', function() {
 //      var weight = 1000, type = 'Lucerne Hay';
 //      expect(element(by.model('newFertilizer.type')).sendKeys(type));
 //      expect(element(by.model('newFertilizer.weight')).sendKeys(weight).getAttribute('value')).

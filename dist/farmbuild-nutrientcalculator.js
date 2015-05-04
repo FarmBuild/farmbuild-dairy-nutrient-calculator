@@ -600,6 +600,12 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
         types: fertilizerTypes,
         calculator: fertilizerCalculator
     }, _fertilizers = [], calculator = fertilizerCalculator, validator = fertilizerValidator;
+    function _removeAt(index) {
+        $log.info("removing fertilizer at index " + index);
+        collections.removeAt(_fertilizers, index);
+        return fertilizersPurchased;
+    }
+    fertilizersPurchased.removeAt = _removeAt;
     fertilizersPurchased.fertilizers = function() {
         return _fertilizers;
     };
@@ -610,6 +616,7 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
             isDry: isDry
         };
     }
+    fertilizersPurchased.create = _create;
     function _add(type, weight, isDry) {
         var fertilizer = _create(type, weight, isDry);
         $log.info("fertilizersPurchased.add fertilizer ...", fertilizer);
@@ -620,7 +627,6 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
         collections.add(_fertilizers, fertilizer);
         return fertilizersPurchased;
     }
-    fertilizersPurchased.create = _create;
     fertilizersPurchased.add = _add;
     fertilizersPurchased.asArray = function() {
         return _fertilizers;
