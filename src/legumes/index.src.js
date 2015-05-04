@@ -30,47 +30,47 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Calculates total nutrient imported on to the farm in legumes
+		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
 		 * @method calculate
 		 * @param {!Number} milkSoldPerYearInLitre 
 		 * @param {!Number} milkFatInKg
 		 * @param {!Number} milkProteinInKg
 		 * @param {!Number} numberOfMilkingCows 
 		 * @param {!Number} numberOfMilkingDays 
-		 * @param {!Number} liveWeight 
-		 * @param {!Number} totalForageME 
-		 * @param {!Number} totalConcentrateME 
-		 * @param {!Number} milkingArea 
+		 * @param {!Number} averageCowWeightInKg
+		 * @param {!Number} forageMetabolisableEnergyInMJ
+		 * @param {!Number} concentrateMetabolisableEnergyInMJ
+		 * @param {!Number} milkingAreaInHa
 		 * @param {!Number} utilisationFactor 
-		 * @param {!Number} totalNitrogenFromFertiliser 
+		 * @param {!Number} nitrogenFromFertiliserInKg
 		 * @param {!Number} legumePercentage 
-		 * @returns {object} nutrient data of legumes purchased
+		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
 		 * @public
 		 * @static
 		 */
 		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
 		                    milkProteinInKg, numberOfMilkingCows,
-		                    numberOfMilkingDays, liveWeight,
-		                    totalForageME, totalConcentrateME,
-		                    milkingArea, utilisationFactor,
-		                    totalNitrogenFromFertiliser, legumePercentage) {
+		                    numberOfMilkingDays, averageCowWeightInKg,
+		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
+		                    milkingAreaInHa, utilisationFactor,
+		                    nitrogenFromFertiliserInKg, legumePercentage) {
 			$log.info('calculating legumes nutrient ...');
 
 			if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) ||
 				!_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) ||
-				!_isDefined(numberOfMilkingDays) || !_isDefined(liveWeight) ||
-				!_isDefined(totalForageME) || !_isDefined(totalConcentrateME) ||
-				!_isDefined(milkingArea) || !_isDefined(utilisationFactor) ||
-				!_isDefined(totalNitrogenFromFertiliser) || !_isDefined(legumePercentage)) {
+				!_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) ||
+				!_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) ||
+				!_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) ||
+				!_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
 				return undefined;
 			}
 
 			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
-				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
-				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
-				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
 				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
-				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(totalNitrogenFromFertiliser, milkingArea),
+				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
 				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
 				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
 				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
@@ -95,6 +95,13 @@ angular.module('farmbuild.nutrientCalculator')
 
 		};
 
+		/**
+		 * Utilisation factors reference values
+		 * @method utilisationFactors
+		 * @returns {Array} utilisationFactors
+		 * @public
+		 * @static
+		 */
 		function utilisationFactors(){
 			return _utilisationFactors;
 		}

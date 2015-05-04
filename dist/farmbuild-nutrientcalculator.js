@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, FarmData, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, FarmData, $log) {
     var nutrientCalculator = {};
     $log.info("Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?");
     nutrientCalculator.load = function(farmData) {
@@ -21,6 +21,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.cowsCulled = cowsCulled;
     nutrientCalculator.foragesPurchased = foragesPurchased;
     nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.legumes = legumes;
     nutrientCalculator.version = "0.1.0";
     if (typeof window.farmbuild === "undefined") {
         window.farmbuild = {
@@ -1276,12 +1277,12 @@ angular.module("farmbuild.nutrientCalculator").factory("legumes", function(valid
         }
         return true;
     }
-    function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, numberOfMilkingCows, numberOfMilkingDays, liveWeight, totalForageME, totalConcentrateME, milkingArea, utilisationFactor, totalNitrogenFromFertiliser, legumePercentage) {
+    function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg, forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ, milkingAreaInHa, utilisationFactor, nitrogenFromFertiliserInKg, legumePercentage) {
         $log.info("calculating legumes nutrient ...");
-        if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) || !_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) || !_isDefined(numberOfMilkingDays) || !_isDefined(liveWeight) || !_isDefined(totalForageME) || !_isDefined(totalConcentrateME) || !_isDefined(milkingArea) || !_isDefined(utilisationFactor) || !_isDefined(totalNitrogenFromFertiliser) || !_isDefined(legumePercentage)) {
+        if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) || !_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) || !_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) || !_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) || !_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) || !_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
             return undefined;
         }
-        var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg), cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight), importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME), dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea), dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor), averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(totalNitrogenFromFertiliser, milkingArea), totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor), availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied), availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
+        var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg), cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg), importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ), dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa), dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor), averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa), totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor), availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied), availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
         return {
             importedEnergyConsumedInMJ: importedEnergyConsumed,
             utilisationFactor: utilisationFactor,

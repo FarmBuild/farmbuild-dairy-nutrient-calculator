@@ -14,7 +14,7 @@
  */
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, FarmData, $log) {
+	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, FarmData, $log) {
 		var nutrientCalculator = {};
 
 		$log.info('Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?');
@@ -48,6 +48,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		nutrientCalculator.cowsCulled = cowsCulled;
 		nutrientCalculator.foragesPurchased = foragesPurchased;
     nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.legumes = legumes;
 		nutrientCalculator.version = '0.1.0';
 
 		if(typeof window.farmbuild === 'undefined') {
