@@ -44,7 +44,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 																									type.sulphurPercentage, type.potassiumPercentage,
 																									type.phosphorusPercentage, type.nitrogenPercentage);
 			$scope.result = '';
-			$scope.newFertilizer = {};
+      $scope.type = {};
 			$scope.noResult = !$scope.fertilizers;
 		};
 
