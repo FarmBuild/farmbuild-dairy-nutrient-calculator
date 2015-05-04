@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>nutrientCalculator/legumeCalculator - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,79 +28,127 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">nutrientCalculator/legumeCalculator</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
- */
+        
+            
+        
+    
+</header>
 
-'use strict';
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>nutrientCalculator/legumeCalculator singleton</p></div>
+        
 
-/**
- * nutrientCalculator
- * @module nutrientCalculator
- */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+        
+            
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, FarmData, $log) {
-		var nutrientCalculator = {};
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
 
-		/**
-		 * Adds nutrientCalculator block to farmData
-		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
-				return undefined;
-			}
 
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {}
-				};
-			}
-			return farmData;
-		};
 
-		// Provide a shortcut for modules
-		nutrientCalculator.milkSold = milkSold;
-		nutrientCalculator.cowsPurchased = cowsPurchased;
-		nutrientCalculator.cowsCulled = cowsCulled;
-		nutrientCalculator.foragesPurchased = foragesPurchased;
-		nutrientCalculator.version = '0.1.0';
 
-		if(typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
 
-		return nutrientCalculator;
-	});</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="legume_calculator.src.js.html">legume/calculator.src.js</a>, <a href="legume_calculator.src.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
