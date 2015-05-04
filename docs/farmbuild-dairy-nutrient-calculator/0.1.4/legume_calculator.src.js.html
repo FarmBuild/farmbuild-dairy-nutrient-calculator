@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows-purchased/index.src.js - Documentation</title>
+    <title>legume/calculator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows-purchased/index.src.js</h1>
+    <h1 class="page-title">legume/calculator.src.js</h1>
     
 
     
@@ -38,183 +38,80 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
- */
-
-'use strict';
+            <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
- * nutrientCalculator/cowsPurchased singleton
- * @module nutrientCalculator/cowsPurchased
+ * nutrientCalculator/legumeCalculator singleton
+ * @module nutrientCalculator/legumeCalculator
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('cowsPurchased', function (validations, cowTypes) {
+	.factory('legumeCalculator', function (utilisationFactors, $log) {
+		var legumeCalculator;
 
-		var cowsPurchased = {},
-			_isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
-			_isDefined = validations.isDefined,
-			_types = angular.copy(cowTypes);
-
-		/**
-		 * Calculates total nutrient imported on to the farm in cows
-		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type{name, weight}, numberOfCows}
-		 * @returns {object} nutrient data of cows purchased
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.calculate = function (cows) {
-			var numberOfCows = 0,
-				weight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				nitrogenPercentage = 2.8,
-				phosphorusPercentage = 0.72,
-				potassiumPercentage = 0.2,
-				sulphurPercentage = 0.8,
-				incomings = [],
-				i = 0;
-
-			if (!cows || cows.length === 0) {
-				return undefined;
-			}
-
-			for (i; i &lt; cows.length; i++) {
-				var cowWeight,
-					cowCount,
-					cow = cows[i];
-
-				if (!cow.name || !cow.weight) {
-					return undefined;
-				}
-
-				cowWeight = cow.weight;
-				cowCount = cow.numberOfCows;
-
-				if (!_isPositiveNumber(cowCount)) {
-					return undefined;
-				}
-
-				weight += cowWeight * cowCount;
-				numberOfCows += cowCount;
-				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
-				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
-				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
-				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
-				incomings.push({
-					name: cow.name,
-					numberOfCows: cowCount,
-					weight: cow.weight
-				});
-			}
-
+		function _milkEnergyInMJ(milkSoldPerYearInLitre, fatPercentage, proteinPercentage) {
+			var milkEnergyPerLitreInMJ = 1.694 * (0.386 * fatPercentage * 100 + 0.205 * (5.8 + proteinPercentage * 100) - 0.236),
+				totalMilkEnergyInMJ = milkEnergyPerLitreInMJ * milkSoldPerYearInLitre,
+				milkEnergyNotSoldInMJ = totalMilkEnergyInMJ * 0.04;
 			return {
-				cows: incomings,
-				numberOfCows: numberOfCows,
-				weight: weight,
-				nitrogenInKg: nitrogenInKg,
-				phosphorusInKg: phosphorusInKg,
-				potassiumInKg: potassiumInKg,
-				sulphurInKg: sulphurInKg
-			};
-
-		};
-
-		/**
-		 * Adds a new cow type for nutrient calculation
-		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} cowsPurchased - useful for chaining multiple add()
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.addType = function (name, weight) {
-			if (!_isPositiveNumber(weight)) {
-				return undefined;
+				perLitre: milkEnergyPerLitreInMJ,
+				total: totalMilkEnergyInMJ,
+				notSold: milkEnergyNotSoldInMJ
 			}
+		}
 
-			if (!name || !_isAlphanumeric(name)) {
-				return undefined;
-			}
+		function _importedEnergyConsumedInMJ(totalForageMetabolisableEnergyInMJ, totalConcentrateMetabolisableEnergyInMJ) {
+			return (totalForageMetabolisableEnergyInMJ * (100 - 12.7)) / 100 + (totalConcentrateMetabolisableEnergyInMJ * (100 - 5)) / 100;
+		}
 
-			weight = parseFloat(weight);
+		function _cattleEnergyUsedInMJ(totalMilkEnergyInMJ, milkEnergyNotSoldInMJ, numberOfMilkingCows, numberOfMilkingDays, liveWeightInKg) {
+			return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + (numberOfMilkingCows * numberOfMilkingDays * liveWeightInKg);
+		}
 
-			_types.push({
-				name: name,
-				weight: weight
-			});
+		function _dryMatterConsumedInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {
+			return (cattleEnergyUsedInMJ - importedEnergyConsumedInMJ) / (milkingAreaInHa * 10.5);
 
-			return cowsPurchased;
-		};
-		
-				/**
-		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
-		 * @method removeTypeByName
-		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByName = function (name) {
+		}
 
-			if (!name) {
-				return undefined;
-			}
+		function _dryMatterGrownInKg(dryMatterConsumedInKg, utilisationFactor) {
+			return (dryMatterConsumedInKg * 100) / utilisationFactor;
 
-			angular.forEach(_types, function(type, i){
-				if(type.name === name){
-					_types.splice(i, 1);
-				}
-			});
+		}
 
-			return _types;
-		};
+		function _averageNitrogenAppliedInKg(totalNitrogenFromFertiliserInKg, milkingAreaInHa) {
+			return totalNitrogenFromFertiliserInKg / milkingAreaInHa;
 
-		/**
-		 * Remove this cow from cow types
-		 * @method removeTypeByIndex
-		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByIndex = function (index) {
+		}
 
-			if (!_isDefined(index) || index &lt; 0 || index > _types.length-1) {
-				return undefined;
-			}
+		function _totalLegumeInKg(dryMatterConsumedInKg, legumePercentage, utilisationFactor) {
+			return (dryMatterConsumedInKg / legumePercentage) / utilisationFactor;
 
-			_types.splice(index, 1);
+		}
 
-			return _types;
-		};
+		function _availableNitrogenFromLegumesInKg(totalLegumeInKg, averageNitrogenAppliedInKg) {
+			return totalLegumeInKg * (0.0358 - 3.59e-5 * averageNitrogenAppliedInKg);
 
+		}
 
-		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - cow types array
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.types = function () {
-			return _types;
-		};
+		function _availableNitrogenToPastureInKg(totalLegumeInKg, averageNitrogenAppliedInKg) {
+			return averageNitrogenAppliedInKg + totalLegumeInKg * (0.0358 - 3.59e-5 * averageNitrogenAppliedInKg);
 
-		return cowsPurchased;
+		}
 
-	});
-</code></pre>
+		legumeCalculator = {
+			milkEnergy: _milkEnergyInMJ,
+			importedEnergyConsumed: _importedEnergyConsumedInMJ,
+			cattleEnergyUsed: _cattleEnergyUsedInMJ,
+			dryMatterConsumed: _dryMatterConsumedInKg,
+			dryMatterGrown: _dryMatterGrownInKg,
+			averageNitrogenApplied: _averageNitrogenAppliedInKg,
+			totalLegume: _totalLegumeInKg,
+			availableNitrogenFromLegumes: _availableNitrogenFromLegumesInKg,
+			availableNitrogenToPasture: _availableNitrogenToPastureInKg
+		}
+
+		return legumeCalculator;
+	});</code></pre>
         </article>
     </section>
 
