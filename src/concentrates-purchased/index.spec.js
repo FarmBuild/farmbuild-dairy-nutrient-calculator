@@ -15,16 +15,16 @@ describe('concentratesPurchased  module', function() {
   beforeEach(inject(function (_$log_, _concentratesPurchased_) {
     $log = _$log_;
     concentratesPurchased  = _concentratesPurchased_;
-    dairyManureStockpile = concentratesPurchased.types.at(0);
-    dap = concentratesPurchased.types.at(1);
-    $log.info(dairyManureStockpileName + ' loaded: %j', dap)
-    $log.info(dap + ' loaded: %j', dap)
-    expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName)
-    expect(dap.name).toEqual(dapName)
-    superphosphate =  concentratesPurchased.types.byName(superphosphateName);
-    expect(superphosphate.name).toEqual(superphosphateName)
-    urea =  concentratesPurchased.types.byName(ureaName);
-    expect(urea.name).toEqual(ureaName)
+//    dairyManureStockpile = concentratesPurchased.types.at(0);
+//    dap = concentratesPurchased.types.at(1);
+//    $log.info(dairyManureStockpileName + ' loaded: %j', dap)
+//    $log.info(dap + ' loaded: %j', dap)
+//    expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName)
+//    expect(dap.name).toEqual(dapName)
+//    superphosphate =  concentratesPurchased.types.byName(superphosphateName);
+//    expect(superphosphate.name).toEqual(superphosphateName)
+//    urea =  concentratesPurchased.types.byName(ureaName);
+//    expect(urea.name).toEqual(ureaName)
   }));
 
   describe('Given concentratesPurchased  factory', function(){

@@ -14,11 +14,11 @@ describe('farmbuild.nutrientCalculator module', function() {
     concentrateTypes = _concentrateTypes_;
   }));
 
-  describe('concentrateTypes factory', function(){
-    it('concentrateTypes should be defined', inject(function() {
-      expect(concentrateTypes).toBeDefined();
-    }));
-  });
+//  describe('concentrateTypes factory', function(){
+//    it('concentrateTypes should be defined', inject(function() {
+//      expect(concentrateTypes).toBeDefined();
+//    }));
+//  });
 
 //  describe('types.at', function(){
 //
