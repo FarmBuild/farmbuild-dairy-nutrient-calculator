@@ -3,12 +3,14 @@
 describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
+  var $log;
   var fertilizerTypes, dairyManureStockpileName = 'Dairy manure stockpile',
     dapName = 'DAP', superphosphate = 'Superphosphate (Super)';
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
-  beforeEach(inject(function (_fertilizerTypes_) {
+  beforeEach(inject(function (_$log_, _fertilizerTypes_) {
+    $log = _$log_;
     fertilizerTypes = _fertilizerTypes_;
   }));
 
@@ -18,15 +20,7 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
   });
 
-//  function createdFertilizer(type, weight, isDry) {
-//    return {type: type, weight:weight, isDry:isDry};
-//  }
-//
-//  function addFertilizer(type, weight, isDry) {
-//    return [createdFertilizer(type, weight, isDry)];
-//  }
-
-  describe('types', function(){
+  describe('types.at', function(){
 
     it('given default types, at(0) should return ' + dairyManureStockpileName, inject(function() {
       var dairyManureStockpile = fertilizerTypes.at(0);
@@ -43,20 +37,33 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(dap.dryMatterPercentage).toEqual(100);
     }));
 
+  });
+
+  describe('types.add', function(){
     it('New fertilizer type should be added on top of the existing', inject(function() {
       var name = 'New Fertilizer Type 1', dryMatterPercentage = 0.8,
         nitrogenPercentage = 2, phosphorusPercentage = 0.3,
         potassiumPercentage = 2.1, sulphurPercentage = 0.4,
         countExisting = fertilizerTypes.size(),
-        result = fertilizerTypes.add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage ),
+        result = fertilizerTypes.add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage),
         newCount = fertilizerTypes.size();
       expect(newCount-countExisting).toEqual(1);
       expect(fertilizerTypes.last().name).toEqual(name);
     }));
+  });
 
+  describe('types.byName', function(){
     it('byName should find ' + superphosphate, inject(function() {
       var found = fertilizerTypes.byName(superphosphate);
       expect(found.name).toEqual(superphosphate);
+    }));
+  });
+
+  describe('types.removeAt', function(){
+    it('removeAt should remove by index ', inject(function() {
+      var types = fertilizerTypes.defaultTypes(),
+        removed = fertilizerTypes.removeAt(0);
+      expect(removed.length).toEqual(types.length -1);
     }));
   });
 

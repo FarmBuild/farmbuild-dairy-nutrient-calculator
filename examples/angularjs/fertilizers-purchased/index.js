@@ -13,7 +13,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		}
 	})
 
-	.controller('FertilizersPurchasedCtrl', function ($scope, $rootScope, fertilizersPurchased) {
+	.controller('FertilizersPurchasedCtrl', function ($scope, $rootScope, $log, fertilizersPurchased) {
 
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.fertilizers = [];
@@ -40,17 +40,18 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		};
 
 		$scope.addType = function (type) {
-			$scope.fertilizerTypes = fertilizersPurchased.types.add(type.name,
+			$scope.fertilizerTypes = fertilizersPurchased.types.add(type.name, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
-																									type.phosphorusPercentage, type.nitrogenPercentage).toArray();
+																									type.phosphorusPercentage, type.nitrogenPercentage);
 			$scope.result = '';
 			$scope.newFertilizer = {};
 			$scope.noResult = !$scope.fertilizers;
 		};
 
 		$scope.removeType = function (index) {
+      $log.info('removeType at %s',  index)
 			$scope.result = '';
-			$scope.fertilizerTypes = fertilizersPurchased.types.removeAt(index).toArray();
+			$scope.fertilizerTypes = fertilizersPurchased.types.removeAt(index);
 		};
 
 	});

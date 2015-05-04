@@ -76,9 +76,12 @@ angular.module('farmbuild.nutrientCalculator')
 
     function _removeAt(collection, index) {
       if (!angular.isArray(collection)) {
+        $log.warn('collection is not an array, returning as it is: %j', collection);
         return collection;
       }
-      if (!index || index < 0 || index > collection.length - 1) {
+
+      if (!_isDefined(index) || index < 0 || index > collection.length - 1) {
+        $log.warn('index is out of range for the array, index: %s, collection.length: %s', index, collection.length);
         return collection;
       }
 

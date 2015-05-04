@@ -83,9 +83,11 @@ angular.module("farmbuild.nutrientCalculator").factory("collections", function(v
     }
     function _removeAt(collection, index) {
         if (!angular.isArray(collection)) {
+            $log.warn("collection is not an array, returning as it is: %j", collection);
             return collection;
         }
-        if (!index || index < 0 || index > collection.length - 1) {
+        if (!_isDefined(index) || index < 0 || index > collection.length - 1) {
+            $log.warn("index is out of range for the array, index: %s, collection.length: %s", index, collection.length);
             return collection;
         }
         collection.splice(index, 1);
@@ -667,7 +669,13 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", functi
             return collections.byProperty(_types, "name", name);
         },
         defaultTypes: function() {
+            return angular.copy(fertilizerDefaults.types);
+        },
+        toArray: function() {
             return angular.copy(_types);
+        },
+        removeAt: function(index) {
+            return collections.removeAt(_types, index);
         },
         last: function() {
             return collections.last(_types);
