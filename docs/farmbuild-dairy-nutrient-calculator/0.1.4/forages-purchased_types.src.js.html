@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>forage-purchased/index.src.js - Documentation</title>
+    <title>forages-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">forage-purchased/index.src.js</h1>
+    <h1 class="page-title">forages-purchased/types.src.js</h1>
     
 
     
@@ -49,220 +49,175 @@
 'use strict';
 
 /**
- * nutrientCalculator/foragesPurchased singleton
- * @module nutrientCalculator/foragesPurchased
+ * Singleton - forageTypes Collection, This is a shortcut for "nutrientCalculator.foragesPurchased.types"
+ * @module nutrientCalculator/foragesTypes
  */
+
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('foragesPurchased', function (validations, forageTypes, $log) {
-
-		var forages = {},
+	.factory('forageTypes', function (validations, forageTypeValues, $log) {
+		var _isPositiveNumber = validations.isPositiveNumber,
+			_isAlphanumeric = validations.isAlphanumeric,
 			_isDefined = validations.isDefined,
-			_forages = [];
+			_types = angular.copy(forageTypeValues),
+			forageTypes = {};
 
-		function _validate(forage) {
-			$log.info('validating forage ...', forage);
+		function _validate(type) {
+			$log.info('validating type  ...', type);
 
-			if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
-				return false;
-			}
-			return forageTypes.validate(forage.type);
-		};
+			return !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
 
-		function _create(type, weight, isDry) {
-			return {type: type, weight:weight, isDry:isDry};
-		};
+		}
 
+		function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			return {
+				name: name,
+				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
+				dryMatterPercentage: dryMatterPercentage,
+				sulphurPercentage: sulphurPercentage,
+				potassiumPercentage: potassiumPercentage,
+				phosphorusPercentage: phosphorusPercentage,
+				nitrogenPercentage: nitrogenPercentage
+			};
+		}
 
 		/**
-		 * Adds a forage to forages collection
+		 * Adds a new forage type for nutrient calculation
 		 * @method add
-		 * @param {!object} type - Type of this forage.
-		 * @param {!number} weight
-		 * @param {!boolean} isDry - Whether it is dry (true/false)
-		 * @returns {object} nutrient data of forages purchased
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
+		 * @param {!number} dryMatterPercentage - value must be > 0
+		 * @param {!number} sulphurPercentage - value must be > 0
+		 * @param {!number} potassiumPercentage - value must be > 0
+		 * @param {!number} phosphorusPercentage - value must be > 0
+		 * @param {!number} nitrogenPercentage - value must be > 0
+		 * @returns {object} types - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		function _add(type, weight, isDry) {
-			var forage = _create(type, weight, isDry);
-			_forages.push(forage);
-			return forages;
-		};
+		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
 
+			var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+			$log.info('adding forage type ...', type);
 
-		/**
-		 * Calculates total nutrient imported on to the farm in forages
-		 * @method calculate
-		 * @param {!array} forages - Array of purchased forages, each item contains details of the forage {type, weight, isDry}
-		 * @returns {object} nutrient data of forages purchased
-		 * @public
-		 * @static
-		 */
-		 function _calculate(forages) {
-			$log.info('calculating forages nutrient ...', forages);
-
-			var totalWeight = 0,
-				totalDMWeight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				meInMJ = 0,
-				incomings = [],
-				i = 0;
-
-			if (!forages || forages.length === 0) {
+			if (!_validate(type)) {
 				return undefined;
 			}
 
-			for (i; i &lt; forages.length; i++) {
-				var weight = 0,
-					dmWeight = 0,
-					forage = forages[i],
-					type = forage.type;
-
-				if (!_validate(forage)) {
-					return undefined;
-				}
-
-				weight = forage.weight;
-				dmWeight = weight;
-				if (!forage.isDry) {
-					dmWeight = (weight * forage.type.dryMatterPercentage) / 100;
-				}
-				totalWeight += weight;
-				totalDMWeight += dmWeight;
-				nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
-				phosphorusInKg += (type.phosphorusPercentage * dmWeight) / 100;
-				potassiumInKg += (type.potassiumPercentage * dmWeight) / 100;
-				sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
-				meInMJ += (type.metabolisableEnergyInMJPerKg * dmWeight);
-				incomings.push({
-					type: forage.type,
-					weight: forage.weight,
-					isDry: forage.isDry
-				});
-
+			if (_isDefined(index)) {
+				_types.splice(index, 0, type)
+			} else {
+				_types.push(type);
 			}
 
-			return {
-				forages: incomings,
-				weight: totalWeight,
-				dryMatterWeight: totalDMWeight,
-				nitrogenInKg: nitrogenInKg,
-				nitrogenPercentage: (nitrogenInKg / totalDMWeight) * 100,
-				phosphorusInKg: phosphorusInKg,
-				phosphorusPercentage: (phosphorusInKg / totalDMWeight) * 100,
-				potassiumInKg: potassiumInKg,
-				potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
-				sulphurInKg: sulphurInKg,
-				sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
-				metabolisableEnergyInMJ: meInMJ,
-				metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
-			};
-
-		};
-
-		function _isEmpty(){
-			return _forages.length === 0;
-		};
-
-		function _count(){
-			return _forages.length;
-		};
-
-		/**
-		 * Returns forages collection as an array
-		 * @method toArray
-		 * @returns {Array} forages
-		 * @public
-		 * @static
-		 */
-		function _toArray(){
-			return _forages;
+			return forageTypes;
 		};
 
 
 		/**
-		 * Returns the forage at specified index
+		 * Returns the forageType at specified index
 		 * @method at
-		 * @returns {object} forage
+		 * @returns {object} forageType
 		 * @public
 		 * @static
 		 */
-		function _at(index){
-			return _forages[index];
+		function _at(index) {
+			var type;
+			$log.info('getting forage type at index: ', index);
+			if (!_isDefined(index) || index &lt; 0) {
+				return undefined;
+			}
+
+			return _types[index];
+		};
+
+
+		function _last() {
+			$log.info('getting last forage type ...');
+			var length = _count();
+			return _types[length - 1];
+		};
+
+
+		function _first() {
+			$log.info('getting first forage type ...');
+			return _types[0];
+		};
+
+
+		function _count() {
+			$log.info('counting forage types ...', _types);
+			return _types.length;
 		};
 
 
 		/**
-		 * Removes the forage at specified index
-		 * @method removeAt
-		 * @returns {object} forages collection
+		 * Returns forageTypes collection as an array
+		 * @method toArray
+		 * @returns {Array} forageTypes
 		 * @public
 		 * @static
 		 */
-		function _removeIndex(index) {
-			$log.info('removing forage at index ' + index);
-			if (!_isDefined(index) || index &lt; 0 || index > _forages.length - 1) {
-				return forages;
-			}
-			_forages.splice(index, 1);
+		function _toArray() {
+			$log.info('toArray types ...', _types);
+			return _types;
+		};
 
-			return forages;
+		/**
+		 * Removes the forage type at specified index
+		 * @method removeAt
+		 * @returns {object} forageTypes collection
+		 * @public
+		 * @static
+		 */
+		function _removeAt(index) {
+			$log.info('removing forage type at index ' + index);
+			if (!_isDefined(index) || index &lt; 0 || index > _types.length - 1) {
+				return forageTypes;
+			}
+
+			_types.splice(index, 1);
+
+			return forageTypes;
 		};
 
 
-		function _remove(forage) {
-			$log.info('removing forage ', forage);
+		function _remove(type) {
+			$log.info('removing forage type ', type);
 
-			if (!_isDefined(forage)) {
-				return forages;
+			if (!_isDefined(type)) {
+				return forageTypes;
 			}
 
-			angular.forEach(_forages, function (item, index) {
-				if (angular.equals(item, forage)) {
-					_removeIndex(index);
+			angular.forEach(_types, function (item, index) {
+				if (angular.equals(item, type)) {
+					_removeAt(index);
 				}
 			});
 
-			return forages;
+			return forageTypes;
 		};
 
-		function _first() {
-			return _forages[0];
+
+		function _isEmpty() {
+			$log.info('Is forage types empty?', types.types.size() === 0);
+			return forageTypes.size() === 0;
 		};
 
-		function _last() {
-			$log.info('getting last forage ...');
-			var length = _count();
-			return _forages[length - 1];
-		};
-
-		forages = {
-			add: _add,
+		forageTypes = {
+			add: _addType,
 			at: _at,
 			size: _count,
 			toArray: _toArray,
-			removeAt: _removeIndex,
+			removeAt: _removeAt,
 			remove: _remove,
 			first: _first,
 			last: _last,
 			isEmpty: _isEmpty,
-			calculate: _calculate,
-
-			/**
-			 * types Forage types collection api
-			 * @property {object} Types - forage types collection
-			 * @public
-			 * @static
-			 */
-
-			types: forageTypes
+			validate: _validate
 		};
 
-		return forages;
+		return forageTypes;
 	});</code></pre>
         </article>
     </section>
@@ -275,7 +230,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 16:49:31 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 17:37:41 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

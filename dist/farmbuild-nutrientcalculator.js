@@ -1217,7 +1217,7 @@ angular.module("farmbuild.nutrientCalculator").factory("incomings", function(val
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", function(utilisationFactors, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", function($log) {
     var legumeCalculator;
     function _milkEnergyInMJ(milkSoldPerYearInLitre, fatPercentage, proteinPercentage) {
         var milkEnergyPerLitreInMJ = 1.694 * (.386 * fatPercentage * 100 + .205 * (5.8 + proteinPercentage * 100) - .236), totalMilkEnergyInMJ = milkEnergyPerLitreInMJ * milkSoldPerYearInLitre, milkEnergyNotSoldInMJ = totalMilkEnergyInMJ * .04;
@@ -1267,8 +1267,8 @@ angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", funct
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("legume", function(validations, utilisationFactors, legumeCalculator, $log) {
-    var legume, _isDefined = validations.isDefined, _utilisationFactors = utilisationFactors;
+angular.module("farmbuild.nutrientCalculator").factory("legumes", function(validations, utilisationFactorsValues, legumeCalculator, $log) {
+    var legumes, _isDefined = validations.isDefined, _utilisationFactors = angular.copy(utilisationFactorsValues);
     function _validate(legume) {
         $log.info("validating legume ...", legume);
         if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
@@ -1300,13 +1300,17 @@ angular.module("farmbuild.nutrientCalculator").factory("legume", function(valida
             legumePercentage: legumePercentage
         };
     }
-    legume = {
-        calculate: _calculate
+    function utilisationFactors() {
+        return _utilisationFactors;
+    }
+    legumes = {
+        calculate: _calculate,
+        utilisationFactors: utilisationFactors
     };
-    return legume;
+    return legumes;
 });
 
-angular.module("farmbuild.nutrientCalculator").constant("utilisationFactors", [ {
+angular.module("farmbuild.nutrientCalculator").constant("utilisationFactorsValues", [ {
     name: "Low",
     weight: 60
 }, {
