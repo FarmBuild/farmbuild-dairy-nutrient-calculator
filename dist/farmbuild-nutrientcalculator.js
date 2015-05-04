@@ -345,7 +345,7 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", f
     }
     calculator.calculateDryMatterWeight = calculateDryMatterWeight;
     function updateTotal(fertilizer, total) {
-        var type = fertilizer.type, weight = fertilizer.weight, dryMatterWeight = fertilizer.isDry ? weight : _calculateNutrientWeight(weight, type.dryMatterPercentage);
+        var type = fertilizer.type, weight = fertilizer.weight, dryMatterWeight = calculateDryMatterWeight(weight, type.dryMatterPercentage, fertilizer.isDry);
         total.weight += weight;
         total.dryMatterWeight += dryMatterWeight;
         total.nitrogenInKg += _calculateNutrientWeight(dryMatterWeight, type.nitrogenPercentage);
