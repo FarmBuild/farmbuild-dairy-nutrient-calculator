@@ -33,8 +33,8 @@ angular.module('farmbuild.nutrientCalculator')
 		 * Calculates total nutrient imported on to the farm in legumes
 		 * @method calculate
 		 * @param {!Number} milkSoldPerYearInLitre 
-		 * @param {!Number} milkFatPercentage 
-		 * @param {!Number} milkProteinPercentage 
+		 * @param {!Number} milkFatInKg
+		 * @param {!Number} milkProteinInKg
 		 * @param {!Number} numberOfMilkingCows 
 		 * @param {!Number} numberOfMilkingDays 
 		 * @param {!Number} liveWeight 
