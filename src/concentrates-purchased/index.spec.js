@@ -62,6 +62,8 @@ describe('concentratesPurchased  module', function() {
       expect(result.potassiumPercentage).toEqual(0.84)
       expect(result.sulphurInKg).toEqual(5.18)
       expect(result.sulphurPercentage).toEqual(0.27999999999999997)
+      expect(result.metabolisableEnergyInMJ).toEqual(2353)
+      expect(result.metabolisableEnergyInMJPerKg).toEqual(12.72)
     }));
 
 //    it('Dairy manure stockpile type and the weight of 4000kg with wet weight', inject(function() {

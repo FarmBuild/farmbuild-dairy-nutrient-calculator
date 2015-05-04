@@ -90,7 +90,7 @@ angular.module('farmbuild.nutrientCalculator')
       total.potassiumInKg += _calculateNutrientWeight(dryMatterWeight, type.potassiumPercentage);
       total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
       total.metabolisableEnergyInMJ += (dryMatterWeight * type.metabolisableEnergyInMJPerKg);
-
+      total.metabolisableEnergyInMJPerKg = type.metabolisableEnergyInMJPerKg;
       total.incomings.push({
         type: concentrate.type,
         weight: concentrate.weight,
