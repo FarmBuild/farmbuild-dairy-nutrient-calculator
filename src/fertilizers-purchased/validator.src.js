@@ -18,7 +18,8 @@ angular.module('farmbuild.nutrientCalculator')
             $log) {
 
     var fertilizerValidator = {},
-      _isDefined = validations.isDefined;
+      _isDefined = validations.isDefined,
+      _isArray = validations.isArray;
 
      function _validate(fertilizer) {
       $log.info('validating fertilizer...', fertilizer);
@@ -34,6 +35,10 @@ angular.module('farmbuild.nutrientCalculator')
     fertilizerValidator.validate = _validate;
 
     fertilizerValidator.validateAll = function(fertilizers) {
+      if(!_isArray(fertilizers)) {
+        return false;
+      }
+
       var i = 0;
       for (i; i < fertilizers.length; i++) {
         var fertilizer = fertilizers[i];

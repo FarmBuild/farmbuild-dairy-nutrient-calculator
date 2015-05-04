@@ -697,7 +697,7 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", functi
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("fertilizerValidator", function(validations, fertilizerTypes, $log) {
-    var fertilizerValidator = {}, _isDefined = validations.isDefined;
+    var fertilizerValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray;
     function _validate(fertilizer) {
         $log.info("validating fertilizer...", fertilizer);
         if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
@@ -708,6 +708,9 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerValidator", fu
     }
     fertilizerValidator.validate = _validate;
     fertilizerValidator.validateAll = function(fertilizers) {
+        if (!_isArray(fertilizers)) {
+            return false;
+        }
         var i = 0;
         for (i; i < fertilizers.length; i++) {
             var fertilizer = fertilizers[i];
