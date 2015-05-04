@@ -32,7 +32,18 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Calculates total nutrient imported on to the farm in legumes
 		 * @method calculate
-		 * @param {!array} legumes - Array of purchased legumes, each item contains details of the legume {type, weight, isDry}
+		 * @param {!Number} milkSoldPerYearInLitre 
+		 * @param {!Number} milkFatPercentage 
+		 * @param {!Number} milkProteinPercentage 
+		 * @param {!Number} numberOfMilkingCows 
+		 * @param {!Number} numberOfMilkingDays 
+		 * @param {!Number} liveWeight 
+		 * @param {!Number} totalForageME 
+		 * @param {!Number} totalConcentrateME 
+		 * @param {!Number} milkingArea 
+		 * @param {!Number} utilisationFactor 
+		 * @param {!Number} totalNitrogenFromFertiliser 
+		 * @param {!Number} legumePercentage 
 		 * @returns {object} nutrient data of legumes purchased
 		 * @public
 		 * @static
