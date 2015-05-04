@@ -2,7 +2,7 @@
 
 /* https://github.com/angular/protractor/blob/master/docs/toc.md */
 
-describe('Farm web nutrient calculator', function() {
+describe('Calculate nutrient exported from the farm in purchased cows', function() {
 
   describe('cows-purchased', function() {
 

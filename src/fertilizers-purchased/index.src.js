@@ -23,21 +23,48 @@ angular.module('farmbuild.nutrientCalculator')
       _fertilizers = [],
       calculator = fertilizerCalculator,
       validator = fertilizerValidator;
+    
+    /**
+     * Removes the fertilizer at specified index
+     * @method removeAt
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _removeAt(index) {
+      $log.info('removing fertilizer at index ' + index);
 
+      collections.removeAt(_fertilizers, index);
+
+      return fertilizersPurchased;
+    };
+    fertilizersPurchased.removeAt = _removeAt;
+
+    /**
+     * Returns the current instance of fertilizers purchased
+     * @method add
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
     fertilizersPurchased.fertilizers = function() { return _fertilizers};
 
     function _create(type, weight, isDry) {
       return {type: type, weight:weight, isDry:isDry};
     }
+    fertilizersPurchased.create = _create;
 
     /**
-     * Adds a new fertilizer type for nutrient calculation
-     * @method types.add
+     * Adds a new fertilizer for nutrient calculation
+     * @method add
      * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} weight - value must be > 0
      * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
-     * @returns {object} fertilizersPurchased - useful for chaining multiple add()
-     * @private
+     * @returns {object} fertilizersPurchased
+     * @public
      * @static
      */
     function _add(type, weight, isDry) {
@@ -50,15 +77,17 @@ angular.module('farmbuild.nutrientCalculator')
       collections.add(_fertilizers, fertilizer);
       return fertilizersPurchased;
     };
-
-    fertilizersPurchased.create = _create;
     fertilizersPurchased.add = _add;
-    fertilizersPurchased.asArray = function() { return _fertilizers};;
+
+    fertilizersPurchased.asArray = function() { return _fertilizers};
 
     /**
-     *
+     * Calculates the nutrient of the fertilizers purchased
+     * @method calculate
      * @param fertilizers
-     * @returns {*}
+     * @returns {object} the result of the fertilizers purchased
+     * @public
+     * @static
      */
     fertilizersPurchased.calculate = function(fertilizers) {
       $log.info('fertilizersPurchased.calculate...');
