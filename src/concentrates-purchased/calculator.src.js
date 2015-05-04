@@ -30,7 +30,9 @@ angular.module('farmbuild.nutrientCalculator')
         potassiumInKg: total.potassiumInKg,
         potassiumPercentage: 0,
         sulphurInKg: total.sulphurInKg,
-        sulphurPercentage: 0
+        sulphurPercentage: 0,
+        metabolisableEnergyInMJ: 0,
+        metabolisableEnergyInMJPerKg: 0
       };
     }
 
@@ -45,6 +47,8 @@ angular.module('farmbuild.nutrientCalculator')
       result.phosphorusPercentage = _calculatePercentage(total.phosphorusInKg, total.dryMatterWeight);
       result.potassiumPercentage = _calculatePercentage(total.potassiumInKg, total.dryMatterWeight);
       result.sulphurPercentage = _calculatePercentage(total.sulphurInKg, total.dryMatterWeight);
+      result.metabolisableEnergyInMJ = total.metabolisableEnergyInMJ;
+      result.metabolisableEnergyInMJPerKg = total.metabolisableEnergyInMJPerKg;
 
       return result;
     }
@@ -57,6 +61,8 @@ angular.module('farmbuild.nutrientCalculator')
         phosphorusInKg:0,
         potassiumInKg:0,
         sulphurInKg:0,
+        metabolisableEnergyInMJ: 0,
+        metabolisableEnergyInMJPerKg: 0,
         incomings:[]
       }
     }
@@ -83,6 +89,7 @@ angular.module('farmbuild.nutrientCalculator')
       total.phosphorusInKg += _calculateNutrientWeight(dryMatterWeight, type.phosphorusPercentage);
       total.potassiumInKg += _calculateNutrientWeight(dryMatterWeight, type.potassiumPercentage);
       total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
+      total.metabolisableEnergyInMJ += (dryMatterWeight * type.metabolisableEnergyInMJPerKg);
 
       total.incomings.push({
         type: concentrate.type,

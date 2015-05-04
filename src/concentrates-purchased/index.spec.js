@@ -44,25 +44,25 @@ describe('concentratesPurchased  module', function() {
       expect(result).toBeUndefined()
     }));
 
-//    it('DAP type and the weight of 4000kg should calculate', inject(function() {
-//      var weight = 1850,
-//        concentrate = addConcentrate(dap, weight, true);
-//      $log.info('concentrate: %j', concentrate);
-//      var result = concentratesPurchased.calculate(concentrate)
-//
-//      $log.info('result generated: %j', result);
-//
-//      expect(result.weight).toEqual(1850)
-//      expect(result.dryMatterWeight).toEqual(4000)
-//      expect(result.nitrogenPercentage).toEqual(18)
-//      expect(result.nitrogenInKg).toEqual(720)
-//      expect(result.phosphorusInKg).toEqual(800)
-//      expect(result.phosphorusPercentage).toBe(20)
+    it('DAP type and the weight of 4000kg should calculate', inject(function() {
+      var weight = 1850,
+        concentrate = addConcentrate(pelletsCalf, weight, true);
+      $log.info('concentrate: %j', concentrate);
+      var result = concentratesPurchased.calculate(concentrate)
+
+      $log.info('result generated: %j', result);
+
+      expect(result.weight).toEqual(1850)
+      expect(result.dryMatterWeight).toEqual(1850)
+      expect(result.nitrogenPercentage).toEqual(3.1400000000000006)
+      expect(result.nitrogenInKg).toEqual(58.09)
+      expect(result.phosphorusInKg).toEqual(12.395)
+      expect(between(result.phosphorusPercentage, 0.669, 0.67)).toBeTruthy()
 //      expect(result.potassiumInKg).toEqual(0)
 //      expect(result.potassiumPercentage).toEqual(0)
 //      expect(result.sulphurInKg).toEqual(64)
 //      expect(result.sulphurPercentage).toEqual(1.6)
-//    }));
+    }));
 
 //    it('Dairy manure stockpile type and the weight of 4000kg with wet weight', inject(function() {
 //      var weight = 4000,
