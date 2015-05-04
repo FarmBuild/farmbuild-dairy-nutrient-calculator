@@ -14,9 +14,9 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('legume', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
+	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
 
-		var legume,
+		var legumes,
 			_isDefined = validations.isDefined,
 			_utilisationFactors = angular.copy(utilisationFactorsValues);
 
@@ -99,10 +99,10 @@ angular.module('farmbuild.nutrientCalculator')
 			return _utilisationFactors;
 		}
 
-		legume = {
+		legumes = {
 			calculate: _calculate,
 			utilisationFactors: utilisationFactors
 		};
 
-		return legume;
+		return legumes;
 	});

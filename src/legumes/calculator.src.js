@@ -6,7 +6,7 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('legumeCalculator', function (utilisationFactors, $log) {
+	.factory('legumeCalculator', function ($log) {
 		var legumeCalculator;
 
 		function _milkEnergyInMJ(milkSoldPerYearInLitre, fatPercentage, proteinPercentage) {

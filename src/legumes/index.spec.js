@@ -3,7 +3,7 @@
 describe('farmbuild.nutrientCalculator module', function () {
 
 	// instantiate service
-	var legume,
+	var legumes,
 		legumePercentage = 3.5,
 		milkFatPercentage = 1,
 		milkProteinPercentage = 1,
@@ -19,19 +19,19 @@ describe('farmbuild.nutrientCalculator module', function () {
 
 	beforeEach(module('farmbuild.nutrientCalculator'));
 
-	beforeEach(inject(function (_legume_) {
-		legume = _legume_;
+	beforeEach(inject(function (_legumes_) {
+		legumes = _legumes_;
 	}));
 
 	describe('legume factory', function () {
 		it('legume should be defined', inject(function () {
-			expect(legume).toBeDefined();
+			expect(legumes).toBeDefined();
 		}));
 	});
 
 	describe('calculate legume nutrient', function () {
 		it('legume should be defined', inject(function () {
-			var result = legume.calculate(milkSoldPerYearInLitre, milkFatPercentage,
+			var result = legumes.calculate(milkSoldPerYearInLitre, milkFatPercentage,
 				milkProteinPercentage, numberOfMilkingCows,
 				numberOfMilkingDays, liveWeight,
 				totalForageME, totalConcentrateME,
