@@ -17,24 +17,14 @@ describe('Calculate nutrient of fertilizer purchased (new farm data)', function(
       expect(element.all(by.css('body h3')).first().getText()).toContain(title);
     });
 
-    var selectDropdownbyNum = function ( element, optionNum ) {
-      if (!optionNum){
-        return undefined;
-      };
-      var options = element.findElements(by.tagName('option'))
-        .then(function(options){
-          options[optionNum].click();
-        });
-    };
     it('Select a Fertilizer Purchased Type to be "DAP"', function() {
-//      var select =element(by.id('fertilizerType'));
+      expect(element(by.model('newFertilizer.type')).sendKeys('DAP'));
+      expect(element(by.model('newFertilizer.weight')).sendKeys('1000').getAttribute('value')).
+        toBe('1000');
+      expect(element(by.model('newFertilizer.isDry')).sendKeys('Dry'));
+      //expect(element(by.model('newFertilizer.type.dryMatterPercentage'))).toBe(100);
 
-//      expect(select).toBe();
 
-//      expect(selectDropdownbyNum(select, 1));
-
-//      expect(element(by.model('newFertilizer.weight')).sendKeys('1000').getAttribute('value')).
-//        toBe('1000');
 //      element(by.buttonText('Add fertilizer')).click().then(function(){
 //        expect(element.all(by.css('table#fertilizersTbl tr')).count()).
 //          toMatch(3);
