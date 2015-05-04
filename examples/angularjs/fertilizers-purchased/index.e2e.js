@@ -16,7 +16,7 @@ describe('Farm web nutrient calculator', function() {
     });
 
     it('should add new fertilizer', function() {
-      expect(element(by.model('newFertilizer.Type')).sendKeys('Lucerne Hay'));
+      expect(element(by.model('newFertilizer.type')).sendKeys('Lucerne Hay'));
       expect(element(by.model('newFertilizer.weight')).sendKeys('1000').getAttribute('value')).
         toBe('1000');
       element(by.buttonText('Add fertilizer')).click().then(function(){
@@ -27,7 +27,7 @@ describe('Farm web nutrient calculator', function() {
 
     it('should calculate nutrient of fertilizer', function() {
       var weight = 1000, type = 'Lucerne Hay';
-      expect(element(by.model('newFertilizer.Type')).sendKeys(type));
+      expect(element(by.model('newFertilizer.type')).sendKeys(type));
       expect(element(by.model('newFertilizer.weight')).sendKeys(weight).getAttribute('value')).
         toBe('1000');
       element(by.buttonText('Add fertilizer')).click().then(function(){

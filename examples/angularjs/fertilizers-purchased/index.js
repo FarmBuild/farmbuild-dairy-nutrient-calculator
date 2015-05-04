@@ -16,10 +16,10 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 	.controller('FertilizersPurchasedCtrl', function ($scope, $rootScope, $log, fertilizersPurchased) {
 
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
-		$scope.fertilizers = [];
-		$scope.noResult = false;
-		$scope.fertilizerTypes = fertilizersPurchased.types.defaultTypes();
-
+		$scope.fertilizers = [],
+		$scope.noResult = false,
+		$scope.fertilizerTypes = fertilizersPurchased.types.defaultTypes(),
+    $scope.calculateDryMatterWeight = fertilizersPurchased.calculator.calculateDryMatterWeight;
 
 		$scope.calculate = function (fertilizers) {
 			$scope.result = fertilizersPurchased.calculate(fertilizers);
@@ -27,8 +27,10 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		};
 
 		$scope.add = function (type, weight, isDry) {
+      $log.info('add type: %s, weight: %s, isDry', type, weight, isDry);
+
 			isDry = (isDry === 'true');
-			$scope.fertilizers = fertilizersPurchased.add(type, weight, isDry).toArray();
+			$scope.fertilizers = fertilizersPurchased.add(type, weight, isDry).fertilizers();
 			$scope.result = '';
 			$scope.newFertilizer = {};
 			$scope.noResult = !$scope.fertilizers;
@@ -36,7 +38,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 
 		$scope.remove = function (index) {
 			$scope.result = '';
-			$scope.fertilizers = fertilizersPurchased.removeAt(index).toArray();
+			$scope.fertilizers = fertilizersPurchased.removeAt(index).fertilizers();
 		};
 
 		$scope.addType = function (type) {

@@ -55,8 +55,8 @@ angular.module('farmbuild.nutrientCalculator')
       return collection;
     };
 
-    function _isEmpty(){
-      return _collections.length === 0;
+    function _isEmpty(collections){
+      return collections.length === 0;
     };
 
     function _count(collection) {

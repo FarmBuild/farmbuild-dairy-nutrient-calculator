@@ -19,7 +19,7 @@ angular.module('farmbuild.nutrientCalculator')
             collections,
             $log) {
 
-    var fertilizersPurchased = {types:fertilizerTypes},
+    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
       _fertilizers = [],
       calculator = fertilizerCalculator,
       validator = fertilizerValidator;
@@ -42,8 +42,9 @@ angular.module('farmbuild.nutrientCalculator')
      */
     function _add(type, weight, isDry) {
       var fertilizer = _create(type, weight, isDry);
-      $log.info('adding fertilizer ...', fertilizer);
+      $log.info('fertilizersPurchased.add fertilizer ...', fertilizer);
       if (!validator.validate(fertilizer)) {
+        $log.error('fertilizersPurchased.add unable to add as the validation has been failed');
         return undefined;
       }
       collections.add(_fertilizers, fertilizer);
@@ -52,6 +53,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     fertilizersPurchased.create = _create;
     fertilizersPurchased.add = _add;
+    fertilizersPurchased.asArray = function() { return _fertilizers};;
 
     /**
      *

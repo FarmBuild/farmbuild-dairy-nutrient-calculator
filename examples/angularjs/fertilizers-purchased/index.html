@@ -107,7 +107,6 @@
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
                         <th>Wet/Dry</th>
-                        <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
                         <th>Potassium (%)</th>
@@ -119,16 +118,13 @@
                         <td>
                             <select name="fertilizerType" id="fertilizerType" class="form-control"
                                     ng-options="fertilizerType as fertilizerType.name for fertilizerType in fertilizerTypes"
-                                    ng-model="newFertilizer.Type">
+                                    ng-model="newFertilizer.type">
                                 <option value="">Select type</option>
                             </select>
                         </td>
                         <td>
                             <input name="weight" id="weight"
                                    ng-model="newFertilizer.weight" type="number" class="form-control" placeholder="Enter weight"/>
-                        </td>
-                        <td>
-                            -
                         </td>
                         <td>
                             <select name="isDry" id="isDry" class="form-control"
@@ -139,37 +135,33 @@
                             </select>
                         </td>
                         <td>
-                            <span ng-bind='newFertilizer.Type.metabolisableEnergyRatio'></span>
+                            <span ng-bind='newFertilizer.type.dryMatterPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newFertilizer.Type.dryMatterPercentage'></span>
+                            <span ng-bind='newFertilizer.type.sulphurPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newFertilizer.Type.sulphurPercentage'></span>
+                            <span ng-bind='newFertilizer.type.potassiumPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newFertilizer.Type.potassiumPercentage'></span>
+                            <span ng-bind='newFertilizer.type.phosphorusPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newFertilizer.Type.phosphorusPercentage'></span>
-                        </td>
-                        <td>
-                            <span ng-bind='newFertilizer.Type.nitrogenPercentage'></span>
+                            <span ng-bind='newFertilizer.type.nitrogenPercentage'></span>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    ng-click="add(newFertilizer.Type, newFertilizer.weight, newFertilizer.isDry, form)">
+                                    ng-click="add(newFertilizer.type, newFertilizer.weight, newFertilizer.isDry, form)">
                                 <i class="icon fa fa-plus"></i>
                                 Add fertilizer
                             </button>
                         </td>
                     </tr>
-                    <tr ng-repeat="fertilizer in fertilizer ">
+                    <tr ng-repeat="fertilizer in fertilizers ">
                         <td ng-bind="fertilizer.type.name"></td>
                         <td ng-bind="fertilizer.weight | number : decimalPrecision"></td>
-                        <td ng-bind="fertilizer.isDry ? fertilizer.weight : (fertilizer.weight*fertilizer.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
+                        <td ng-bind="calculateDryMatterWeight(fertilizer.weight, fertilizer.isDry, fertilizer.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.isDry | dryWet"></td>
-                        <td ng-bind="fertilizer.type.metabolisableEnergyRatio | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.sulphurPercentage | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.potassiumPercentage | number : decimalPrecision"></td>
@@ -235,7 +227,7 @@
 
 <script src="../../../dist/farmbuild-core.js"></script>
 <script src="../../../dist/farmbuild-farmdata.js"></script>
-<script src="../../../dist/farmbuild-nutrientcalculator.min.js"></script>
+<script src="../../../dist/farmbuild-nutrientcalculator.js"></script>
 <script src="../../config.js"></script>
 <script src="index.js"></script>
 

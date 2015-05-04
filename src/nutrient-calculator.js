@@ -17,7 +17,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, FarmData, $log) {
 		var nutrientCalculator = {};
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator ...');
+		$log.info('Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?');
 
 		/**
 		 * Adds nutrientCalculator block to farmData

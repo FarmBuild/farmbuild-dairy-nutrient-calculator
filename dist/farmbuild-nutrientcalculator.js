@@ -2,7 +2,7 @@
 
 angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, FarmData, $log) {
     var nutrientCalculator = {};
-    $log.info("Welcome to Farm Dairy Nutrient Calculator ...");
+    $log.info("Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?");
     nutrientCalculator.load = function(farmData) {
         if (!FarmData.isFarmData(farmData)) {
             return undefined;
@@ -66,8 +66,8 @@ angular.module("farmbuild.nutrientCalculator").factory("collections", function(v
         }
         return collection;
     }
-    function _isEmpty() {
-        return _collections.length === 0;
+    function _isEmpty(collections) {
+        return collections.length === 0;
     }
     function _count(collection) {
         if (!angular.isArray(collection)) {
@@ -299,7 +299,7 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", function(fertilizerValidator, fertilizerDefaults, fertilizerTypes, $log) {
-    var fertilizerCalculator = {}, validator = fertilizerValidator;
+    var calculator = {}, validator = fertilizerValidator;
     function createResult(total) {
         return {
             fertilizers: total.incomings,
@@ -340,6 +340,10 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", f
     function _calculateNutrientWeight(weight, percentage) {
         return weight * percentage / 100;
     }
+    function calculateDryMatterWeight(weight, dryMatterPercentage, isDry) {
+        return isDry ? weight : _calculateNutrientWeight(weight, dryMatterPercentage);
+    }
+    calculator.calculateDryMatterWeight = calculateDryMatterWeight;
     function updateTotal(fertilizer, total) {
         var type = fertilizer.type, weight = fertilizer.weight, dryMatterWeight = fertilizer.isDry ? weight : _calculateNutrientWeight(weight, type.dryMatterPercentage);
         total.weight += weight;
@@ -356,23 +360,23 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", f
         return total;
     }
     function calculateAll(fertilizers) {
-        $log.info("fertilizerCalculator.calculateAll...");
+        $log.info("calculator.calculateAll...");
         var i = 0, total = _createTotal();
         for (i; i < fertilizers.length; i++) {
             var fertilizer = fertilizers[i];
             if (!validator.validate(fertilizer)) {
-                $log.error("fertilizerCalculator.calculateAll invalid fertilizer at %s: %j", i, fertilizer);
+                $log.error("calculator.calculateAll invalid fertilizer at %s: %j", i, fertilizer);
                 return undefined;
             }
             total = updateTotal(fertilizer, total);
         }
         return total;
     }
-    fertilizerCalculator.calculate = function(fertilizers) {
+    calculator.calculate = function(fertilizers) {
         var itemsTotal = calculateAll(fertilizers);
         return _calculatePercentages(itemsTotal);
     };
-    return fertilizerCalculator;
+    return calculator;
 });
 
 angular.module("farmbuild.nutrientCalculator").constant("fertilizerDefaults", {
@@ -593,7 +597,8 @@ angular.module("farmbuild.nutrientCalculator").constant("fertilizerDefaults", {
 
 angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", function(validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator, collections, $log) {
     var fertilizersPurchased = {
-        types: fertilizerTypes
+        types: fertilizerTypes,
+        calculator: fertilizerCalculator
     }, _fertilizers = [], calculator = fertilizerCalculator, validator = fertilizerValidator;
     fertilizersPurchased.fertilizers = function() {
         return _fertilizers;
@@ -607,8 +612,9 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
     }
     function _add(type, weight, isDry) {
         var fertilizer = _create(type, weight, isDry);
-        $log.info("adding fertilizer ...", fertilizer);
+        $log.info("fertilizersPurchased.add fertilizer ...", fertilizer);
         if (!validator.validate(fertilizer)) {
+            $log.error("fertilizersPurchased.add unable to add as the validation has been failed");
             return undefined;
         }
         collections.add(_fertilizers, fertilizer);
@@ -616,6 +622,9 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
     }
     fertilizersPurchased.create = _create;
     fertilizersPurchased.add = _add;
+    fertilizersPurchased.asArray = function() {
+        return _fertilizers;
+    };
     fertilizersPurchased.calculate = function(fertilizers) {
         $log.info("fertilizersPurchased.calculate...");
         if (!validator.validateAll(fertilizers)) {

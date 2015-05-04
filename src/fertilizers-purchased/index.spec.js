@@ -25,7 +25,6 @@ describe('fertilizersPurchased module', function() {
     expect(superphosphate.name).toEqual(superphosphateName)
     urea =  fertilizersPurchased.types.byName(ureaName);
     expect(urea.name).toEqual(ureaName)
-
   }));
 
   describe('Given fertilizersPurchased factory', function(){
