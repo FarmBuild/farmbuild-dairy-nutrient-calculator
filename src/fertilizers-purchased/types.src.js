@@ -83,6 +83,7 @@ angular.module('farmbuild.nutrientCalculator')
       at: function(index) { return collections.at(_types, index)},
       size: function() { return collections.size(_types)},
       byName: function(name) { return collections.byProperty(_types, 'name', name)},
+      defaultTypes: function() { return angular.copy(_types)},
 //      toArray: _typesToArray,
 //      removeIndex: _removeTypeByIndex,
 //      remove: _removeType,

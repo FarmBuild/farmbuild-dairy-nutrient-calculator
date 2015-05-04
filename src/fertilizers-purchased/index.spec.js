@@ -1,8 +1,8 @@
-describe('fertilizerPurchased module', function() {
+describe('fertilizersPurchased module', function() {
 
   // instantiate service
   var $log;
-  var fertilizerPurchased,
+  var fertilizersPurchased,
     dap, dapName = 'DAP',
     dairyManureStockpile, dairyManureStockpileName = 'Dairy manure stockpile',
     superphosphate, superphosphateName = 'Superphosphate (Super)',
@@ -12,25 +12,25 @@ describe('fertilizerPurchased module', function() {
     $provide.value('$log', console);
   }));
 
-  beforeEach(inject(function (_$log_, _fertilizerPurchased_) {
+  beforeEach(inject(function (_$log_, _fertilizersPurchased_) {
     $log = _$log_;
-    fertilizerPurchased = _fertilizerPurchased_;
-    dairyManureStockpile = fertilizerPurchased.types.at(0);
-    dap = fertilizerPurchased.types.at(1);
+    fertilizersPurchased = _fertilizersPurchased_;
+    dairyManureStockpile = fertilizersPurchased.types.at(0);
+    dap = fertilizersPurchased.types.at(1);
     $log.info(dairyManureStockpileName + ' loaded: %j', dap)
     $log.info(dap + ' loaded: %j', dap)
     expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName)
     expect(dap.name).toEqual(dapName)
-    superphosphate =  fertilizerPurchased.types.byName(superphosphateName);
+    superphosphate =  fertilizersPurchased.types.byName(superphosphateName);
     expect(superphosphate.name).toEqual(superphosphateName)
-    urea =  fertilizerPurchased.types.byName(ureaName);
+    urea =  fertilizersPurchased.types.byName(ureaName);
     expect(urea.name).toEqual(ureaName)
 
   }));
 
-  describe('Given fertilizerPurchased factory', function(){
-    it('fertilizerPurchased should be defined', inject(function() {
-      expect(fertilizerPurchased).toBeDefined();
+  describe('Given fertilizersPurchased factory', function(){
+    it('fertilizersPurchased should be defined', inject(function() {
+      expect(fertilizersPurchased).toBeDefined();
     }));
   });
 
@@ -48,7 +48,7 @@ describe('fertilizerPurchased module', function() {
 
   describe('Given the default value, calculate nutrient of fertilizer purchased', function(){
     it('DAP type with undefined amount should fail', inject(function() {
-      var result = fertilizerPurchased.calculate(addFertilizer(dap, true))
+      var result = fertilizersPurchased.calculate(addFertilizer(dap, true))
       expect(result).toBeUndefined()
     }));
 
@@ -56,7 +56,7 @@ describe('fertilizerPurchased module', function() {
       var weight = 4000,
         fertilizer = addFertilizer(dap, weight, true);
       $log.info('fertilizer: %j', fertilizer);
-      var result = fertilizerPurchased.calculate(fertilizer)
+      var result = fertilizersPurchased.calculate(fertilizer)
 
       $log.info('result generated: %j', result);
 
@@ -76,7 +76,7 @@ describe('fertilizerPurchased module', function() {
       var weight = 4000,
         fertilizer = addFertilizer(dairyManureStockpile, weight, false);
       $log.info('fertilizer: %j', fertilizer);
-      var result = fertilizerPurchased.calculate(fertilizer)
+      var result = fertilizersPurchased.calculate(fertilizer)
 
       $log.info('result generated: %j', result);
 
@@ -96,7 +96,7 @@ describe('fertilizerPurchased module', function() {
       var weight = 13000,
         fertilizer = addFertilizer(superphosphate, weight, false);
       $log.info('fertilizer: %j', fertilizer);
-      var result = fertilizerPurchased.calculate(fertilizer)
+      var result = fertilizersPurchased.calculate(fertilizer)
 
       $log.info('result generated: %j', result);
 
@@ -116,7 +116,7 @@ describe('fertilizerPurchased module', function() {
     it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
       var weightDairyManureStockpile = 4000, weightSuperphosphate = 13000,
         weightUrea = 11000,
-        fertilizers = fertilizerPurchased
+        fertilizers = fertilizersPurchased
           .add(dairyManureStockpile, weightDairyManureStockpile, true)
           .add(superphosphate, weightSuperphosphate, true)
           .add(urea, weightUrea, true)
@@ -126,7 +126,7 @@ describe('fertilizerPurchased module', function() {
 
       expect(angular.isArray(fertilizers)).toBeTruthy()
 
-      var result = fertilizerPurchased.calculate(fertilizers)
+      var result = fertilizersPurchased.calculate(fertilizers)
 
       $log.info('result generated: %j', result);
 

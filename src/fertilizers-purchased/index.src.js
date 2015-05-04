@@ -9,22 +9,22 @@
 'use strict';
 
 /**
- * nutrientCalculator/fertilizerPurchased singleton
- * @module nutrientCalculator/fertilizerPurchased
+ * nutrientCalculator/fertilizersPurchased singleton
+ * @module nutrientCalculator/fertilizersPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-  .factory('fertilizerPurchased',
+  .factory('fertilizersPurchased',
   function (validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator,
             collections,
             $log) {
 
-    var fertilizerPurchased = {types:fertilizerTypes},
+    var fertilizersPurchased = {types:fertilizerTypes},
       _fertilizers = [],
       calculator = fertilizerCalculator,
       validator = fertilizerValidator;
 
-    fertilizerPurchased.fertilizers = function() { return _fertilizers};
+    fertilizersPurchased.fertilizers = function() { return _fertilizers};
 
     function _create(type, weight, isDry) {
       return {type: type, weight:weight, isDry:isDry};
@@ -36,7 +36,7 @@ angular.module('farmbuild.nutrientCalculator')
      * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} weight - value must be > 0
      * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
-     * @returns {object} fertilizerPurchased - useful for chaining multiple add()
+     * @returns {object} fertilizersPurchased - useful for chaining multiple add()
      * @private
      * @static
      */
@@ -47,26 +47,26 @@ angular.module('farmbuild.nutrientCalculator')
         return undefined;
       }
       collections.add(_fertilizers, fertilizer);
-      return fertilizerPurchased;
+      return fertilizersPurchased;
     };
 
-    fertilizerPurchased.create = _create;
-    fertilizerPurchased.add = _add;
+    fertilizersPurchased.create = _create;
+    fertilizersPurchased.add = _add;
 
     /**
      *
      * @param fertilizers
      * @returns {*}
      */
-    fertilizerPurchased.calculate = function(fertilizers) {
-      $log.info('fertilizerPurchased.calculate...');
+    fertilizersPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizersPurchased.calculate...');
       if(!validator.validateAll(fertilizers)) {
-        $log.error('fertilizerPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
+        $log.error('fertilizersPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
         return undefined;
       }
 
       return calculator.calculate(fertilizers);
     }
 
-    return fertilizerPurchased;
+    return fertilizersPurchased;
   });
