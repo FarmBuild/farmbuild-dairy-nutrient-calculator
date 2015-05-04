@@ -5,17 +5,18 @@ describe('farmbuild.nutrientCalculator module', function () {
 	// instantiate service
 	var legumeCalculator,
 		legumePercentage = 3.5,
-		milkFatPercentage = 1,
-		milkProteinPercentage = 1,
-		milkSoldPerYearInLitre = 1,
-		totalForageME = 1,
-		totalConcentrateME = 1,
-		numberOfMilkingDays = 1,
-		numberOfMilkingCows = 1,
-		milkingArea = 1,
-		lowUtilisationFactor = 60,
-		totalNitrogenFromFertiliser = 1,
-		liveWeight = 1;
+		milkFatInKg = 74080.71,
+		milkProteinInKg = 59895.04,
+		milkSoldPerYearInLitre = 1751317,
+		totalForageME = 6298085,
+		totalConcentrateME = 4954078,
+		numberOfMilkingDays = 365,
+		numberOfMilkingCows = 228,
+		milkingArea = 70.39,
+		averageUtilisationFactor = 75,
+		totalNitrogenFromFertiliser = 5780,
+		animalWeight = 550,
+		liveWeight = parseFloat(animalWeight)/7;
 
 	beforeEach(module('farmbuild.nutrientCalculator'));
 
@@ -32,64 +33,85 @@ describe('farmbuild.nutrientCalculator module', function () {
 	describe('calculate legume nutrient', function () {
 
 		it('Calculating milk energy', inject(function () {
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatPercentage, milkProteinPercentage);
-			expect(milkEnergy.notSold).toEqual(4.06919128);
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg);
+			expect(milkEnergy.total).toEqual(9751288.792938001);
+			expect(milkEnergy.notSold).toEqual(390051.55171752005);
 		}));
 
 		it('Calculating imported energy consumed', inject(function () {
 			var importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME);
-			expect(importedEnergyConsumed).toEqual(1.823);
+			expect(importedEnergyConsumed).toEqual(10204602.305);
 		}));
 
 		it('Calculating cattle energy used', inject(function () {
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatPercentage, milkProteinPercentage),
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
 				totalMilkEnergy = milkEnergy.total,
 				milkEnergyNotSold = milkEnergy.notSold,
 				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(totalMilkEnergy, milkEnergyNotSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight);
-			expect(cattleEnergyUsed).toEqual(106.79897328);
+			expect(cattleEnergyUsed).toEqual(16680054.630369807);
 		}));
 
 		it('Calculating dry matter consumed', inject(function () {
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatPercentage, milkProteinPercentage),
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
 				totalMilkEnergy = milkEnergy.total,
 				milkEnergyNotSold = milkEnergy.notSold,
 				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
 				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(totalMilkEnergy, milkEnergyNotSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
 				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea);
-			expect(dryMatterConsumed).toEqual(9.997711740952381);
+			expect(dryMatterConsumed).toEqual(8761.326115546455);
 		}));
 
 		it('Calculating dry matter grown', inject(function () {
-			var dryMatterConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
-				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, lowUtilisationFactor);
-			expect(dryMatterGrown).toEqual(3.038333333333333);
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
+				totalMilkEnergy = milkEnergy.total,
+				milkEnergyNotSold = milkEnergy.notSold,
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(totalMilkEnergy, milkEnergyNotSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea),
+				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, averageUtilisationFactor);
+			expect(dryMatterGrown).toEqual(11681.76815406194);
 		}));
 
 		it('Calculating average Nitrogen applied', inject(function () {
 			var averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(totalNitrogenFromFertiliser, milkingArea);
-			expect(averageNitrogenApplied).toEqual(1);
+			expect(averageNitrogenApplied).toEqual(82.1139366387271);
 		}));
 
 		it('Calculating total legume', inject(function () {
-			var dryMatterConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, lowUtilisationFactor);
-			expect(totalLegume).toEqual(0.00868095238095238);
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
+				totalMilkEnergy = milkEnergy.total,
+				milkEnergyNotSold = milkEnergy.notSold,
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(totalMilkEnergy, milkEnergyNotSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea),
+				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, averageUtilisationFactor);
+			expect(totalLegume).toEqual(408.8618853921679);
 		}));
 
 		it('Calculating available Nitrogen from legumes', inject(function () {
-			var dryMatterConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, lowUtilisationFactor),
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
+				totalMilkEnergy = milkEnergy.total,
+				milkEnergyNotSold = milkEnergy.notSold,
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(totalMilkEnergy, milkEnergyNotSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea),
+				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, averageUtilisationFactor),
 				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(totalNitrogenFromFertiliser, milkingArea),
 				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied);
-			expect(availableNitrogenFromLegumes).toEqual(0.000310466449047619);
+			expect(availableNitrogenFromLegumes).toEqual(13.431975500695733);
 		}));
 
 		it('Calculating available Nitrogen to pasture', inject(function () {
-			var dryMatterConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, lowUtilisationFactor),
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
+				totalMilkEnergy = milkEnergy.total,
+				milkEnergyNotSold = milkEnergy.notSold,
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(totalMilkEnergy, milkEnergyNotSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea),
+				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, averageUtilisationFactor),
 				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(totalNitrogenFromFertiliser, milkingArea),
 				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
-			expect(availableNitrogenToPasture).toEqual(1.0003104664490476);
+			expect(availableNitrogenToPasture).toEqual(95.54591213942282);
 		}));
 
 	});

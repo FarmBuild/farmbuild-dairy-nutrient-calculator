@@ -9,8 +9,10 @@ angular.module('farmbuild.nutrientCalculator')
 	.factory('legumeCalculator', function ($log) {
 		var legumeCalculator;
 
-		function _milkEnergyInMJ(milkSoldPerYearInLitre, fatPercentage, proteinPercentage) {
-			var milkEnergyPerLitreInMJ = 1.694 * (0.386 * fatPercentage * 100 + 0.205 * (5.8 + proteinPercentage * 100) - 0.236),
+		function _milkEnergyInMJ(milkSoldPerYearInLitre, fatInKg, proteinInKg) {
+			var fatPercentage = fatInKg/milkSoldPerYearInLitre,
+				proteinPercentage = proteinInKg/milkSoldPerYearInLitre,
+				milkEnergyPerLitreInMJ = 1.694 * (0.386 * fatPercentage * 100 + 0.205 * (5.8 + proteinPercentage * 100) - 0.236),
 				totalMilkEnergyInMJ = milkEnergyPerLitreInMJ * milkSoldPerYearInLitre,
 				milkEnergyNotSoldInMJ = totalMilkEnergyInMJ * 0.04;
 			return {
@@ -28,13 +30,13 @@ angular.module('farmbuild.nutrientCalculator')
 			return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + (numberOfMilkingCows * numberOfMilkingDays * liveWeightInKg);
 		}
 
-		function _dryMatterConsumedInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {
+		function _dryMatterConsumedPerHaInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {
 			return (cattleEnergyUsedInMJ - importedEnergyConsumedInMJ) / (milkingAreaInHa * 10.5);
 
 		}
 
-		function _dryMatterGrownInKg(dryMatterConsumedInKg, utilisationFactor) {
-			return (dryMatterConsumedInKg * 100) / utilisationFactor;
+		function _dryMatterGrownInKg(dryMatterConsumedPerHaInKg, utilisationFactor) {
+			return (dryMatterConsumedPerHaInKg * 100) / utilisationFactor;
 
 		}
 
@@ -43,8 +45,8 @@ angular.module('farmbuild.nutrientCalculator')
 
 		}
 
-		function _totalLegumeInKg(dryMatterConsumedInKg, legumePercentage, utilisationFactor) {
-			return (dryMatterConsumedInKg / legumePercentage) / utilisationFactor;
+		function _totalLegumeInKg(dryMatterConsumedPerHaInKg, legumePercentage, utilisationFactor) {
+			return (dryMatterConsumedPerHaInKg * legumePercentage) / utilisationFactor;
 
 		}
 
@@ -62,7 +64,7 @@ angular.module('farmbuild.nutrientCalculator')
 			milkEnergy: _milkEnergyInMJ,
 			importedEnergyConsumed: _importedEnergyConsumedInMJ,
 			cattleEnergyUsed: _cattleEnergyUsedInMJ,
-			dryMatterConsumed: _dryMatterConsumedInKg,
+			dryMatterConsumed: _dryMatterConsumedPerHaInKg,
 			dryMatterGrown: _dryMatterGrownInKg,
 			averageNitrogenApplied: _averageNitrogenAppliedInKg,
 			totalLegume: _totalLegumeInKg,
