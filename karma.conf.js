@@ -26,10 +26,10 @@ module.exports = function(config){
       'src/fertilizers-purchased/index.src.js',
       'src/collections/index.spec.js',
       'src/fertilizers-purchased/types.spec.js',
-      //'src/fertilizers-purchased/index.spec.js',
+      'src/fertilizers-purchased/index.spec.js',
       'src/index.js',
       'src/*.js',
-      //'src/**/*.js'
+      'src/**/*.js'
     ],
 
     autoWatch : true,
