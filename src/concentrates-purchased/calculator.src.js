@@ -20,7 +20,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     function createResult(total) {
       return {
-        concentrates : total.incomings,
+        concentrates: total.incomings,
         weight: total.weight,
         dryMatterWeight: total.dryMatterWeight,
         nitrogenInKg: total.nitrogenInKg,
@@ -71,10 +71,10 @@ angular.module('farmbuild.nutrientCalculator')
 
     calculator.calculateDryMatterWeight = calculateDryMatterWeight;
 
-    function updateTotal(concentrate , total) {
-      var type = concentrate .type,
-        weight = concentrate .weight,
-        dryMatterWeight = calculateDryMatterWeight(weight, type.dryMatterPercentage, concentrate .isDry)
+    function updateTotal(concentrate, total) {
+      var type = concentrate.type,
+        weight = concentrate.weight,
+        dryMatterWeight = calculateDryMatterWeight(weight, type.dryMatterPercentage, concentrate.isDry)
         ;
 
       total.weight += weight;
@@ -85,35 +85,35 @@ angular.module('farmbuild.nutrientCalculator')
       total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
 
       total.incomings.push({
-        type: concentrate .type,
-        weight: concentrate .weight,
-        isDry: concentrate .isDry
+        type: concentrate.type,
+        weight: concentrate.weight,
+        isDry: concentrate.isDry
       });
 
       return total;
     }
 
-    function calculateAll(concentrates ) {
+    function calculateAll(concentrates) {
       $log.info('calculator.calculateAll...');
       var i = 0,
         total = _createTotal();
 
-      for (i; i < concentrates .length; i++) {
-        var concentrate  = concentrates [i];
+      for (i; i < concentrates.length; i++) {
+        var concentrate = concentrates[i];
 
-        if (!validator.validate(concentrate )) {
-          $log.error('calculator.calculateAll invalid concentrate  at %s: %j', i, concentrate );
+        if (!validator.validate(concentrate)) {
+          $log.error('calculator.calculateAll invalid concentrate at %s: %j', i, concentrate);
           return undefined;
         }
 
-        total = updateTotal(concentrate , total);
+        total = updateTotal(concentrate, total);
       }
 
       return total;
     }
 
-    calculator.calculate = function(concentrates ) {
-      var itemsTotal = calculateAll(concentrates );
+    calculator.calculate = function(concentrates) {
+      var itemsTotal = calculateAll(concentrates);
 
       return _calculatePercentages(itemsTotal);
     }

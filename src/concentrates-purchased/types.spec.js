@@ -40,8 +40,8 @@ describe('farmbuild.nutrientCalculator module', function() {
 //  });
 //
 //  describe('types.add', function(){
-//    it('New concentrate  type should be added on top of the existing', inject(function() {
-//      var name = 'New Fertilizer Type 1', dryMatterPercentage = 0.8,
+//    it('New concentrate type should be added on top of the existing', inject(function() {
+//      var name = 'New Concentrate Type 1', dryMatterPercentage = 0.8,
 //        nitrogenPercentage = 2, phosphorusPercentage = 0.3,
 //        potassiumPercentage = 2.1, sulphurPercentage = 0.4,
 //        countExisting = concentrateTypes.size(),

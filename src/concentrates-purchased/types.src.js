@@ -49,7 +49,7 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     /**
-     * Adds a new concentrate  type for nutrient calculation
+     * Adds a new concentrate type for nutrient calculation
      * @method types.add
      * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} dryMatterPercentage - value must be > 0
@@ -57,13 +57,13 @@ angular.module('farmbuild.nutrientCalculator')
      * @param {!number} potassiumPercentage - value must be > 0
      * @param {!number} phosphorusPercentage - value must be > 0
      * @param {!number} nitrogenPercentage - value must be > 0
-     * @returns {object} concentrates  - useful for chaining multiple add()
+     * @returns {object} concentrates - useful for chaining multiple add()
      * @private
      * @static
      */
     function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
       var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-      $log.info('adding concentrate  type ...', type);
+      $log.info('adding concentrate type ...', type);
 
       if (!_validate(type)) {
         return undefined;
@@ -73,8 +73,8 @@ angular.module('farmbuild.nutrientCalculator')
     };
 
     /**
-     * Fertilizer types collection api
-     * @property {object} Types - concentrate  types collection
+     * Concentrate types collection api
+     * @property {object} Types - concentrate types collection
      * @public
      * @static
      */

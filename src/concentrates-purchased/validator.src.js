@@ -21,30 +21,30 @@ angular.module('farmbuild.nutrientCalculator')
       _isDefined = validations.isDefined,
       _isArray = validations.isArray;
 
-     function _validate(concentrate ) {
-      $log.info('validating concentrate ...', concentrate );
+     function _validate(concentrate) {
+      $log.info('validating concentrate...', concentrate);
 
-      if (!_isDefined(concentrate .type) || !_isDefined(concentrate .weight) || !_isDefined(concentrate .isDry)) {
-        $log.error('invalid concentrate , must have type, weight and isDry: %j', concentrate );
+      if (!_isDefined(concentrate.type) || !_isDefined(concentrate.weight) || !_isDefined(concentrate.isDry)) {
+        $log.error('invalid concentrate, must have type, weight and isDry: %j', concentrate);
         return false;
       }
 
-      return concentrateTypes.validate(concentrate .type);
+      return concentrateTypes.validate(concentrate.type);
     };
 
     concentrateValidator.validate = _validate;
 
-    concentrateValidator.validateAll = function(concentrates ) {
-      if(!_isArray(concentrates )) {
+    concentrateValidator.validateAll = function(concentrates) {
+      if(!_isArray(concentrates)) {
         return false;
       }
 
       var i = 0;
-      for (i; i < concentrates .length; i++) {
-        var concentrate  = concentrates [i];
+      for (i; i < concentrates.length; i++) {
+        var concentrate = concentrates[i];
 
-        if (!_validate(concentrate )) {
-          $log.error('validator invalid at %s: %j', i, concentrate );
+        if (!_validate(concentrate)) {
+          $log.error('validator invalid at %s: %j', i, concentrate);
           return false;
         }
       }

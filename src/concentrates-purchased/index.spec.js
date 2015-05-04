@@ -2,8 +2,7 @@ describe('concentratesPurchased  module', function() {
 
   // instantiate service
   var $log;
-  var concentratesPurchased,
-    dap, dapName = 'DAP',
+  var concentratesPurchased, pelletsCalf, pelletsCalfName = 'Pellets Calf',
     dairyManureStockpile, dairyManureStockpileName = 'Dairy manure stockpile',
     superphosphate, superphosphateName = 'Superphosphate (Super)',
     urea, ureaName = 'Urea';
@@ -15,13 +14,7 @@ describe('concentratesPurchased  module', function() {
   beforeEach(inject(function (_$log_, _concentratesPurchased_) {
     $log = _$log_;
     concentratesPurchased  = _concentratesPurchased_;
-//    dairyManureStockpile = concentratesPurchased.types.at(0);
-//    dap = concentratesPurchased.types.at(1);
-//    $log.info(dairyManureStockpileName + ' loaded: %j', dap)
-//    $log.info(dap + ' loaded: %j', dap)
-//    expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName)
-//    expect(dap.name).toEqual(dapName)
-//    superphosphate =  concentratesPurchased.types.byName(superphosphateName);
+    pelletsCalf =  concentratesPurchased.types.byName(pelletsCalfName);
 //    expect(superphosphate.name).toEqual(superphosphateName)
 //    urea =  concentratesPurchased.types.byName(ureaName);
 //    expect(urea.name).toEqual(ureaName)
@@ -33,33 +26,33 @@ describe('concentratesPurchased  module', function() {
     }));
   });
 
-  function createdFertilizer(type, weight, isDry) {
+  function createdConcentrate(type, weight, isDry) {
     return {type: type, weight:weight, isDry:isDry};
   }
 
-  function addFertilizer(type, weight, isDry) {
-    return [createdFertilizer(type, weight, isDry)];
+  function addConcentrate(type, weight, isDry) {
+    return [createdConcentrate(type, weight, isDry)];
   }
 
   function between(val, min, max) {
     return val >= min && val <= max;
   }
-//
-//  describe('Given the default value, calculate nutrient of concentrate  purchased', function(){
-//    it('DAP type with undefined amount should fail', inject(function() {
-//      var result = concentratesPurchased.calculate(addFertilizer(dap, true))
-//      expect(result).toBeUndefined()
-//    }));
-//
+
+  describe('Given the default value, calculate nutrient of concentrate purchased', function(){
+    it('DAP type with undefined amount should fail', inject(function() {
+      var result = concentratesPurchased.calculate(addConcentrate(pelletsCalf, true))
+      expect(result).toBeUndefined()
+    }));
+
 //    it('DAP type and the weight of 4000kg should calculate', inject(function() {
-//      var weight = 4000,
-//        concentrate  = addFertilizer(dap, weight, true);
-//      $log.info('concentrate : %j', concentrate );
-//      var result = concentratesPurchased.calculate(concentrate )
+//      var weight = 1850,
+//        concentrate = addConcentrate(dap, weight, true);
+//      $log.info('concentrate: %j', concentrate);
+//      var result = concentratesPurchased.calculate(concentrate)
 //
 //      $log.info('result generated: %j', result);
 //
-//      expect(result.weight).toEqual(4000)
+//      expect(result.weight).toEqual(1850)
 //      expect(result.dryMatterWeight).toEqual(4000)
 //      expect(result.nitrogenPercentage).toEqual(18)
 //      expect(result.nitrogenInKg).toEqual(720)
@@ -70,12 +63,12 @@ describe('concentratesPurchased  module', function() {
 //      expect(result.sulphurInKg).toEqual(64)
 //      expect(result.sulphurPercentage).toEqual(1.6)
 //    }));
-//
+
 //    it('Dairy manure stockpile type and the weight of 4000kg with wet weight', inject(function() {
 //      var weight = 4000,
-//        concentrate  = addFertilizer(dairyManureStockpile, weight, false);
-//      $log.info('concentrate : %j', concentrate );
-//      var result = concentratesPurchased.calculate(concentrate )
+//        concentrate = addConcentrate(dairyManureStockpile, weight, false);
+//      $log.info('concentrate: %j', concentrate);
+//      var result = concentratesPurchased.calculate(concentrate)
 //
 //      $log.info('result generated: %j', result);
 //
@@ -93,9 +86,9 @@ describe('concentratesPurchased  module', function() {
 //
 //    it('Dairy manure stockpile type and the weight of 4000kg with wet weight', inject(function() {
 //      var weight = 13000,
-//        concentrate  = addFertilizer(superphosphate, weight, false);
-//      $log.info('concentrate : %j', concentrate );
-//      var result = concentratesPurchased.calculate(concentrate )
+//        concentrate = addConcentrate(superphosphate, weight, false);
+//      $log.info('concentrate: %j', concentrate);
+//      var result = concentratesPurchased.calculate(concentrate)
 //
 //      $log.info('result generated: %j', result);
 //
@@ -115,17 +108,17 @@ describe('concentratesPurchased  module', function() {
 //    it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
 //      var weightDairyManureStockpile = 4000, weightSuperphosphate = 13000,
 //        weightUrea = 11000,
-//        concentrates  = concentratesPurchased
+//        concentrates = concentratesPurchased
 //          .add(dairyManureStockpile, weightDairyManureStockpile, true)
 //          .add(superphosphate, weightSuperphosphate, true)
 //          .add(urea, weightUrea, true)
-//          .concentrates ()
+//          .concentrates()
 //
-//      $log.info('concentrates  created: %j', concentrates )
+//      $log.info('concentrates created: %j', concentrates)
 //
-//      expect(angular.isArray(concentrates )).toBeTruthy()
+//      expect(angular.isArray(concentrates)).toBeTruthy()
 //
-//      var result = concentratesPurchased.calculate(concentrates )
+//      var result = concentratesPurchased.calculate(concentrates)
 //
 //      $log.info('result generated: %j', result);
 //
@@ -140,8 +133,8 @@ describe('concentratesPurchased  module', function() {
 //      expect(result.sulphurInKg).toEqual(1442)
 //      expect(result.sulphurPercentage).toEqual(5.1499999999999995)
 //    }));
-//
-//  });
+
+  });
 
 });
 
