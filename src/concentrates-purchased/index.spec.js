@@ -58,10 +58,10 @@ describe('concentratesPurchased  module', function() {
       expect(result.nitrogenInKg).toEqual(58.09)
       expect(result.phosphorusInKg).toEqual(12.395)
       expect(between(result.phosphorusPercentage, 0.669, 0.67)).toBeTruthy()
-//      expect(result.potassiumInKg).toEqual(0)
-//      expect(result.potassiumPercentage).toEqual(0)
-//      expect(result.sulphurInKg).toEqual(64)
-//      expect(result.sulphurPercentage).toEqual(1.6)
+      expect(result.potassiumInKg).toEqual(15.54)
+      expect(result.potassiumPercentage).toEqual(0.84)
+      expect(result.sulphurInKg).toEqual(5.18)
+      expect(result.sulphurPercentage).toEqual(0.27999999999999997)
     }));
 
 //    it('Dairy manure stockpile type and the weight of 4000kg with wet weight', inject(function() {
