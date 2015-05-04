@@ -4,8 +4,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
   var $log;
-  var concentrateTypes, dairyManureStockpileName = 'Dairy manure stockpile',
-    dapName = 'DAP', superphosphate = 'Superphosphate (Super)';
+  var concentrateTypes, pelletsCalfName = 'Pellets Calf';
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
@@ -14,58 +13,33 @@ describe('farmbuild.nutrientCalculator module', function() {
     concentrateTypes = _concentrateTypes_;
   }));
 
-//  describe('concentrateTypes factory', function(){
-//    it('concentrateTypes should be defined', inject(function() {
-//      expect(concentrateTypes).toBeDefined();
-//    }));
-//  });
+  describe('concentrateTypes factory', function(){
+    it('concentrateTypes should be defined', inject(function() {
+      expect(concentrateTypes).toBeDefined();
+    }));
+  });
 
-//  describe('types.at', function(){
-//
-//    it('given default types, at(0) should return ' + dairyManureStockpileName, inject(function() {
-//      var dairyManureStockpile = concentrateTypes.at(0);
-//      expect(dairyManureStockpile.name).toEqual(dairyManureStockpileName);
-//    }));
-//
-//    it('given default types, at(1) should return ' + dapName, inject(function() {
-//      var dap = concentrateTypes.at(1);
-//      expect(dap.name).toEqual(dapName);
-//      expect(dap.nitrogenPercentage).toEqual(18);
-//      expect(dap.phosphorusPercentage).toEqual(20);
-//      expect(dap.potassiumPercentage).toEqual(0);
-//      expect(dap.sulphurPercentage).toEqual(1.6);
-//      expect(dap.dryMatterPercentage).toEqual(100);
-//    }));
-//
-//  });
-//
-//  describe('types.add', function(){
-//    it('New concentrate type should be added on top of the existing', inject(function() {
-//      var name = 'New Concentrate Type 1', dryMatterPercentage = 0.8,
-//        nitrogenPercentage = 2, phosphorusPercentage = 0.3,
-//        potassiumPercentage = 2.1, sulphurPercentage = 0.4,
-//        countExisting = concentrateTypes.size(),
-//        result = concentrateTypes.add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage),
-//        newCount = concentrateTypes.size();
-//      expect(newCount-countExisting).toEqual(1);
-//      expect(concentrateTypes.last().name).toEqual(name);
-//    }));
-//  });
-//
-//  describe('types.byName', function(){
-//    it('byName should find ' + superphosphate, inject(function() {
-//      var found = concentrateTypes.byName(superphosphate);
-//      expect(found.name).toEqual(superphosphate);
-//    }));
-//  });
-//
-//  describe('types.removeAt', function(){
-//    it('removeAt should remove by index ', inject(function() {
-//      var types = concentrateTypes.defaultTypes(),
-//        removed = concentrateTypes.removeAt(0);
-//      expect(removed.length).toEqual(types.length -1);
-//    }));
-//  });
+
+  describe('types.byName', function(){
+    it('byName should find ' + pelletsCalfName, inject(function() {
+      var found = concentrateTypes.byName(pelletsCalfName),
+          nitrogenPercentage = 3.14,
+            phosphorusPercentage = 0.67,
+            potassiumPercentage = 0.84,
+            sulphurPercentage = 0.28,
+            dryMatterPercentage = 88.78,
+            metabolisableEnergyInMJPerKg = 12.72;
+
+      expect(found.name).toEqual(pelletsCalfName);
+      expect(found.nitrogenPercentage).toEqual(nitrogenPercentage);
+      expect(found.phosphorusPercentage).toEqual(phosphorusPercentage);
+      expect(found.potassiumPercentage).toEqual(potassiumPercentage);
+      expect(found.sulphurPercentage).toEqual(sulphurPercentage);
+      expect(found.dryMatterPercentage).toEqual(dryMatterPercentage);
+      expect(found.dryMatterPercentage).toEqual(dryMatterPercentage);
+      expect(found.metabolisableEnergyInMJPerKg).toEqual(metabolisableEnergyInMJPerKg);
+    }));
+  });
 
 });
 
