@@ -1,5 +1,5 @@
 angular.module('farmbuild.nutrientCalculator').
-	constant('utilisationFactors', [
+	constant('utilisationFactorsValues', [
 		{
 			name: 'Low',
 			weight: 60
