@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>legume/index.src.js - Documentation</title>
+    <title>nutrientCalculator - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,152 +28,284 @@
 
 <div id="main">
     
-    <h1 class="page-title">legume/index.src.js</h1>
+    <h1 class="page-title">nutrientCalculator</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
- */
+        
+            
+        
+    
+</header>
 
-'use strict';
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>nutrientCalculator</p></div>
+        
 
-/**
- * nutrientCalculator/legume singleton
- * @module nutrientCalculator/legume
- */
-angular.module('farmbuild.nutrientCalculator')
+        
+            
 
-	.factory('legume', function (validations, $log) {
 
-		var legume = {},
-			_isDefined = validations.isDefined,
-			milk_sold_total, //Total milk (litres/year)
-			milk_fat_kg, //Total Fat
-			milk_prot_kg,//Total Protein,
-			//Fat % (Fat_pc)
-			//Protein% (Prot_pc)
-			//Total milking days
-			//Total milking cows
-			//Animal/live weight
 
-		forage_ME_total,
-		conc_ME_total,
-		pasture_utilisation,
-		Legume_pc;
 
-		//Output
-		//Home_Grown_kg_per_ha
-		//Total_N_kg_per_ha
-		//Legume_N_kg
-		//Average_N_per_ha
-		//DM_Consumed_kg_per_ha
 
-		function _validate(legume) {
-			$log.info('validating legume ...', legume);
 
-			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
-				return false;
-			}
-			return true;
-		};
 
-		function _create(type, weight, isDry) {
-			return {type: type, weight:weight, isDry:isDry};
-		};
 
-		/**
-		 * Calculates total nutrient imported on to the farm in legumes
-		 * @method calculate
-		 * @param {!array} legumes - Array of purchased legumes, each item contains details of the legume {type, weight, isDry}
-		 * @returns {object} nutrient data of legumes purchased
-		 * @public
-		 * @static
-		 */
-		 function _calculate(legumes) {
-			$log.info('calculating legumes nutrient ...', legumes);
 
-			var totalWeight = 0,
-				totalDMWeight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				meInMJ = 0,
-				incomings = [],
-				i = 0;
 
-			if (!legumes || legumes.length === 0) {
-				return undefined;
-			}
 
-			for (i; i &lt; legumes.length; i++) {
-				var weight = 0,
-					dmWeight = 0,
-					legume = legumes[i],
-					type = legume.type;
 
-				if (!_validate(legume)) {
-					return undefined;
-				}
 
-				weight = legume.weight;
-				dmWeight = weight;
-				if (!legume.isDry) {
-					dmWeight = (weight * legume.type.dryMatterPercentage) / 100;
-				}
-				totalWeight += weight;
-				totalDMWeight += dmWeight;
-				nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
-				phosphorusInKg += (type.phosphorusPercentage * dmWeight) / 100;
-				potassiumInKg += (type.potassiumPercentage * dmWeight) / 100;
-				sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
-				meInMJ += (type.metabolisableEnergyInMJPerKg * dmWeight);
-				incomings.push({
-					type: legume.type,
-					weight: legume.weight,
-					isDry: legume.isDry
-				});
 
-			}
 
-			return {
-				legumes: incomings,
-				weight: totalWeight,
-				dryMatterWeight: totalDMWeight,
-				nitrogenInKg: nitrogenInKg,
-				nitrogenPercentage: (nitrogenInKg / totalDMWeight) * 100,
-				phosphorusInKg: phosphorusInKg,
-				phosphorusPercentage: (phosphorusInKg / totalDMWeight) * 100,
-				potassiumInKg: potassiumInKg,
-				potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
-				sulphurInKg: sulphurInKg,
-				sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
-				metabolisableEnergyInMJ: meInMJ,
-				metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
-			};
+<dl class="details">
 
-		};
+    
 
-		legume = {
-			calculate: _calculate
-		};
+    
 
-		return legume;
-	});
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Adds nutrientCalculator block to farmData</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>farmData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Saved farm data or default in case of new</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>updated farmData</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -183,7 +315,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 16:33:31 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 04 2015 16:34:42 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
