@@ -10,7 +10,7 @@
 
 /**
  * nutrientCalculator/nutrientCalculatorSession singleton
- * @module nutrientCalculator/nutrientCalculatorSession
+ * @private-module nutrientCalculator/nutrientCalculatorSession
  */
 angular.module('farmbuild.nutrientCalculator')
   .factory('nutrientCalculatorSession',

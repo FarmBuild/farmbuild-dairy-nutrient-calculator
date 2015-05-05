@@ -2,7 +2,7 @@
 
 /**
  * nutrientCalculator/legumeCalculator singleton
- * @module nutrientCalculator/legumeCalculator
+ * @private-module nutrientCalculator/legumeCalculator
  */
 angular.module('farmbuild.nutrientCalculator')
 

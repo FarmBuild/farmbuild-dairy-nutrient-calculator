@@ -146,6 +146,14 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 			}
 		}
 
+	  /**
+	   * Calculates efficiency
+	   * @method efficiency
+	   * @param {!Object} farmData
+	   * @returns {Object} efficiency of the farm
+	   * @public
+	   * @static
+	   */
 		nutrientCalculator.efficiency = function (farmData) {
 			var nutrientValues = _nutrientValues(farmData);
 			return {
@@ -156,6 +164,14 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 			}
 		};
 
+	  /**
+	   * Calculates balance
+	   * @method balance
+	   * @param {!Object} farmData
+	   * @returns {Object} balance of the farm
+	   * @public
+	   * @static
+	   */
 		nutrientCalculator.balance = function (farmData) {
 			var nutrientValues = _nutrientValues(farmData), milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
 			return {

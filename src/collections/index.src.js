@@ -10,7 +10,7 @@
 
 /**
  * nutrientCalculator/collections singleton
- * @module nutrientCalculator/collections
+ * @private-module nutrientCalculator/collections
  */
 angular.module('farmbuild.nutrientCalculator')
   .factory('collections', function (validations, $log) {

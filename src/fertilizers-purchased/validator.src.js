@@ -10,7 +10,7 @@
 
 /**
  * nutrientCalculator/fertilizerValidator singleton
- * @module nutrientCalculator/fertilizerValidator
+ * @private-module nutrientCalculator/fertilizerValidator
  */
 angular.module('farmbuild.nutrientCalculator')
 .factory('fertilizerValidator',
