@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html ng-app="farmbuild.nutrientCalculator.examples.legumes">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Farm Build Nutrient Calculator - Legumes Purchased (angularJS)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body ng-controller="LegumesCtrl">
+<content>
+    <h3>
+        Farmbuild Diary Nutrient Calculator - Legumes Purchased
+        <small>(angularJS)</small>
+    </h3>
+    <hr/>
+    <form ng-submit="calculate(milkSoldPerYearInLitre, milkFatInKg,
+		                             milkProteinInKg, numberOfMilkingCows,
+		                             numberOfMilkingDays, averageCowWeightInKg,
+		                             forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
+		                             milkingAreaInHa, utilisationFactor,
+		                             nitrogenFromFertiliserInKg, legumePercentage)" role="form"
+          novalidate>
+        <fieldset>
+            <legend>
+                Calculates Nitrogen nutrients imported from legumes
+            </legend>
+
+            <form-item class="form-group col-md-6">
+                <label>Milk Sold Per Year (Litre)</label>
+                <input name="milkSoldPerYearInLitre" ng-model="milkSoldPerYearInLitre" type="number"
+                       class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Milk Protein (Kg)</label>
+                <input name="milkProteinInKg" ng-model="milkProteinInKg" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Milk Fat (Kg)</label>
+                <input name="milkFatInKg" ng-model="milkFatInKg" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Number Of Milking Cows</label>
+                <input name="numberOfMilkingCows" ng-model="numberOfMilkingCows" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Number Of Milking Days</label>
+                <input name="numberOfMilkingDays" ng-model="numberOfMilkingDays" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Average Cow Weight (Kg)</label>
+                <input name="averageCowWeightInKg" ng-model="averageCowWeightInKg" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Forage Metabolisable Energy (MJ)</label>
+                <input name="forageMetabolisableEnergyInMJ" ng-model="forageMetabolisableEnergyInMJ" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Concentrate Metabolisable Energy (MJ)</label>
+                <input name="concentrateMetabolisableEnergyInMJ" ng-model="concentrateMetabolisableEnergyInMJ" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Milking Area (ha)</label>
+                <input name="milkingAreaInHa" ng-model="milkingAreaInHa" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Nitrogen From Fertiliser (Kg)</label>
+                <input name="nitrogenFromFertiliserInKg" ng-model="nitrogenFromFertiliserInKg" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Legume (%)</label>
+                <input name="legumePercentage" ng-model="legumePercentage" type="number" class="form-control">
+            </form-item>
+
+            <form-item class="form-group col-md-6">
+                <label>Utilisation Factor</label>
+                <input name="utilisationFactor" ng-model="utilisationFactor" type="number" class="form-control">
+            </form-item>
+
+            <buttons class="col-md-12">
+                <button type="submit" class="btn btn-primary">Calculate</button>
+            </buttons>
+        </fieldset>
+    </form>
+    <summary>
+        <fieldset>
+            <legend>
+                Summary
+            </legend>
+            <error ng-cloak class="col-sm-12 bg-danger" ng-show="noResult">
+                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
+            </error>
+            <form-item class="form-group col-sm-6">
+                <p>Milk Sold Per Year (Litre):
+                    <span ng-bind="result.milkSoldPerYearInLitre | number : decimalPrecision"></span>
+                </p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Milk Fat (Kg): <span ng-bind="result.milkFatInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Milk Protein (Kg): <span ng-bind="result.proteinInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Milk Energy (MJ): <span ng-bind="result.milkEnergyInMJ | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Milk Energy Not Sold (MJ): <span ng-bind="result.milkEnergyNotSoldInMJ | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Imported Energy Consumed (MJ): <span ng-bind="result.importedEnergyConsumedInMJ | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Cattle Energy Used (MJ): <span ng-bind="result.cattleEnergyUsedInMJ | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Dry Matter Consumed (Kg/ha): <span ng-bind="result.dryMatterConsumedPerHaInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Dry Matter Grown (Kg/ha): <span ng-bind="result.dryMatterGrownPerHaInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Utilisation Factor: <span ng-bind="result.utilisationFactor | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Average Nitrogen Applied (Kg/ha): <span ng-bind="result.averageNitrogenAppliedPerHaInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Available Nitrogen From Legumes (Kg/ha): <span ng-bind="result.availableNitrogenFromLegumesPerHaInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Available Nitrogen To Pasture (Kg/ha): <span ng-bind="result.availableNitrogenToPasturePerHaInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Legume (Kg/ha): <span ng-bind="result.legumePerHaInKg | number : decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Legume (%): <span ng-bind="result.legumePercentage | number : decimalPrecision"></span></p>
+            </form-item>
+        </fieldset>
+    </summary>
+    <version class="col-md-12">
+        Version: <span ng-bind="appVersion"></span>
+    </version>
+</content>
+
+<script src="../../../dist/farmbuild-core.js"></script>
+<script src="../../../dist/farmbuild-farmdata.js"></script>
+<script src="../../../dist/farmbuild-nutrientcalculator.min.js"></script>
+<script src="../../config.js"></script>
+<script src="index.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    var GA_TRACKING_CODE = 'UA-53478356-1';
+
+    ga('create', GA_TRACKING_CODE, 'auto');
+</script>
+
+</body>
+</html>

@@ -5,8 +5,8 @@ exports.config = {
 
   specs: [
     //'examples/**/*.e2e.js'
-    //'examples/angularjs/milk-sold/index.e2e.js'
-    'examples/angularjs/fertilizers-purchased/*.e2e.js'
+    'examples/angularjs/legumes/index.e2e.js'
+    //'examples/angularjs/fertilizers-purchased/*.e2e.js'
   ],
 
   capabilities: {
