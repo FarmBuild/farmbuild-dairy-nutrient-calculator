@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html ng-app="farmbuild.nutrientCalculator.examples.foragesPurchased">
+<html ng-app="farmbuild.nutrientCalculator.examples.concentratesPurchased">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Farm Build Nutrient Calculator - Forages Purchased (angularJS)</title>
+    <title>Farm Build Nutrient Calculator - Concentrates Purchased (angularJS)</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
-<body ng-controller="ForagesPurchasedCtrl">
+<body ng-controller="ConcentratesPurchasedCtrl">
 <content>
     <h3>
-        Farmbuild Diary Nutrient Calculator - Forages Purchased
+        Farmbuild Diary Nutrient Calculator - Concentrates Purchased
         <small>(angularJS)</small>
     </h3>
     <hr/>
-    <form role="form" name="form" ng-submit="addForageType(type, form)" novalidate>
+    <form role="form" name="form" ng-submit="addConcentrateType(type, form)" novalidate>
         <fieldset>
             <legend>
-                Here is a list of forages available, please add a new type if necessary.
+                Here is a list of concentrates available, please add a new type if necessary.
             </legend>
             <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
                 There is a problem with input values. Please read <a
@@ -29,7 +29,7 @@
             <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
-                <table id="forageTypesTbl" class="table table-striped table-hover">
+                <table id="concentrateTypesTbl" class="table table-striped table-hover">
                     <tr>
                         <th>Name</th>
                         <th>Metabolisable Energy (MJ/Kg)</th>
@@ -76,7 +76,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr ng-repeat="type in forageTypes">
+                    <tr ng-repeat="type in concentrateTypes">
                         <td ng-bind="type.name"></td>
                         <td ng-bind="type.metabolisableEnergyInMJPerKg | number : decimalPrecision"></td>
                         <td ng-bind="type.dryMatterPercentage | number : decimalPrecision"></td>
@@ -85,7 +85,7 @@
                         <td ng-bind="type.phosphorusPercentage | number : decimalPrecision"></td>
                         <td ng-bind="type.nitrogenPercentage | number : decimalPrecision"></td>
                         <td>
-                            <button type="button" ng-click="removeForageType($index, form)" class="btn btn-link">
+                            <button type="button" ng-click="removeConcentrateType($index, form)" class="btn btn-link">
                                 Remove
                             </button>
                         </td>
@@ -95,10 +95,10 @@
         </fieldset>
     </form>
     <hr/>
-    <form role="form" name="form" ng-submit="calculate(forages, form)" novalidate>
+    <form role="form" name="form" ng-submit="calculate(concentrates, form)" novalidate>
         <fieldset>
             <legend>
-                Please enter the combination of forages available in the farm to calculate the nutrient
+                Please enter the combination of concentrates available in the farm to calculate the nutrient
             </legend>
             <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
                 There is a problem with input values. Please read <a
@@ -108,7 +108,7 @@
             <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
-                <table id="foragesTbl" class="table table-striped table-hover">
+                <table id="concentratesTbl" class="table table-striped table-hover">
                     <tr>
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
@@ -124,66 +124,66 @@
                     </tr>
                     <tr class="form-input">
                         <td>
-                            <select name="forageType" id="forageType" class="form-control"
-                                    ng-options="forageType as forageType.name for forageType in forageTypes"
-                                    ng-model="newForage.Type">
+                            <select name="concentrateType" id="concentrateType" class="form-control"
+                                    ng-options="concentrateType as concentrateType.name for concentrateType in concentrateTypes"
+                                    ng-model="newConcentrate.type">
                                 <option value="">Select type</option>
                             </select>
                         </td>
                         <td>
                             <input name="weight" id="weight"
-                                   ng-model="newForage.weight" type="number" class="form-control" placeholder="Enter weight"/>
+                                   ng-model="newConcentrate.weight" type="number" class="form-control" placeholder="Enter weight"/>
                         </td>
                         <td>
                             N/A
                         </td>
                         <td>
                             <select name="isDry" id="isDry" class="form-control"
-                                    ng-model="newForage.isDry">
+                                    ng-model="newConcentrate.isDry">
                                 <option value="true">Dry</option>
                                 <option value="false">Wet</option>
                                 <option value="">Select wet/dry</option>
                             </select>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.metabolisableEnergyRatio'></span>
+                            <span ng-bind='newConcentrate.type.metabolisableEnergyInMJPerKg'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.dryMatterPercentage'></span>
+                            <span ng-bind='newConcentrate.type.dryMatterPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.sulphurPercentage'></span>
+                            <span ng-bind='newConcentrate.type.sulphurPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.potassiumPercentage'></span>
+                            <span ng-bind='newConcentrate.type.potassiumPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.phosphorusPercentage'></span>
+                            <span ng-bind='newConcentrate.type.phosphorusPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.nitrogenPercentage'></span>
+                            <span ng-bind='newConcentrate.type.nitrogenPercentage'></span>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    ng-click="addForage(newForage.Type, newForage.weight, newForage.isDry, form)">
+                                    ng-click="addConcentrate(newConcentrate.type, newConcentrate.weight, newConcentrate.isDry, form)">
                                 <i class="icon fa fa-plus"></i>
-                                Add forage
+                                Add concentrate
                             </button>
                         </td>
                     </tr>
-                    <tr ng-repeat="forage in forages">
-                        <td ng-bind="forage.type.name"></td>
-                        <td ng-bind="forage.weight | number : decimalPrecision"></td>
-                        <td ng-bind="forage.isDry ? forage.weight : (forage.weight*forage.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
-                        <td ng-bind="forage.isDry | dryWet"></td>
-                        <td ng-bind="forage.type.metabolisableEnergyRatio | number : decimalPrecision"></td>
-                        <td ng-bind="forage.type.dryMatterPercentage | number : decimalPrecision"></td>
-                        <td ng-bind="forage.type.sulphurPercentage | number : decimalPrecision"></td>
-                        <td ng-bind="forage.type.potassiumPercentage | number : decimalPrecision"></td>
-                        <td ng-bind="forage.type.phosphorusPercentage | number : decimalPrecision"></td>
-                        <td ng-bind="forage.type.nitrogenPercentage | number : decimalPrecision"></td>
+                    <tr ng-repeat="concentrate in concentrates">
+                        <td ng-bind="concentrate.type.name"></td>
+                        <td ng-bind="concentrate.weight | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.isDry ? concentrate.weight : (concentrate.weight*concentrate.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.isDry | dryWet"></td>
+                        <td ng-bind="concentrate.type.metabolisableEnergyRatio | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.type.dryMatterPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.type.sulphurPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.type.potassiumPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.type.phosphorusPercentage | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.type.nitrogenPercentage | number : decimalPrecision"></td>
                         <td>
-                            <button type="button" class="btn btn-link" ng-click="removeForage($index, form)">
+                            <button type="button" class="btn btn-link" ng-click="removeConcentrate($index, form)">
                                 Remove
                             </button>
                         </td>
@@ -200,7 +200,7 @@
     <summary>
         <fieldset>
             <legend>
-                Summary - Total nutrient imported on to the farm in forages
+                Summary - Total nutrient imported on to the farm in concentrates
             </legend>
             <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
                 There is a problem with input values. Please read <a
