@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>concentrates-purchased/index.src.js - Documentation</title>
+    <title>session/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">concentrates-purchased/index.src.js</h1>
+    <h1 class="page-title">session/index.src.js</h1>
     
 
     
@@ -49,98 +49,119 @@
 'use strict';
 
 /**
- * nutrientCalculator/concentratesPurchased singleton
- * @module nutrientCalculator/concentratesPurchased
+ * nutrientCalculator/nutrientCalculatorSession singleton
+ * @module nutrientCalculator/nutrientCalculatorSession
  */
 angular.module('farmbuild.nutrientCalculator')
+  .factory('nutrientCalculatorSession',
+  function ($log, farmdata, validations) {
 
-  .factory('concentratesPurchased',
-  function (validations, concentrateDefaults, concentrateTypes, concentrateValidator, concentrateCalculator,
-            collections,
-            $log) {
+    var nutrientCalculatorSession = {},
+      _isDefined = validations.isDefined;
 
-    var concentratesPurchased = {types:concentrateTypes, calculator:concentrateCalculator},
-      _concentrates = [],
-      calculator = concentrateCalculator,
-      validator = concentrateValidator;
-    
-    /**
-     * Removes the concentrate at specified index
-     * @method removeAt
-     * @returns {object} concentratesPurchased
-     * @public
-     * @static
-     */
-    function _removeAt(index) {
-      $log.info('removing concentrate at index ' + index);
 
-      collections.removeAt(_concentrates, index);
-
-      return concentratesPurchased;
+    function findInSessionStorage() {
+      var root = farmdata.session.find();
+      return root.nutrientCalculator.milkSold;
     };
-    concentratesPurchased.removeAt = _removeAt;
 
-    /**
-     * Returns the current instance of concentrates purchased
-     * @method add
-     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-     * @param {!number} weight - value must be > 0
-     * @param {!boolean} isDry -true if the concentrate is dry, false if it's wet
-     * @returns {object} concentratesPurchased
-     * @public
-     * @static
-     */
-    concentratesPurchased.concentrates = function() { return _concentrates};
-
-    function _create(type, weight, isDry) {
-      return {type: type, weight:weight, isDry:isDry};
-    }
-    concentratesPurchased.create = _create;
-
-    /**
-     * Adds a new concentrate for nutrient calculation
-     * @method add
-     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-     * @param {!number} weight - value must be > 0
-     * @param {!boolean} isDry -true if the concentrate is dry, false if it's wet
-     * @returns {object} concentratesPurchased
-     * @public
-     * @static
-     */
-    function _add(type, weight, isDry) {
-      var concentrate = _create(type, weight, isDry);
-      $log.info('concentratesPurchased.add concentrate ...', concentrate);
-      if (!validator.validate(concentrate)) {
-        $log.error('concentratesPurchased.add unable to add as the validation has been failed');
-        return undefined;
-      }
-      collections.add(_concentrates, concentrate);
-      return concentratesPurchased;
+    function saveInSessionStorage(result) {
+      var farmData = farmdata.session.find();
+      farmData.dateLastUpdated = new Date();
+      farmData.nutrientCalculator.milkSold = result;
+      farmdata.session.save(farmData);
     };
-    concentratesPurchased.add = _add;
 
-    concentratesPurchased.asArray = function() { return _concentrates};
+    function load() {
+      var root = farmdata.session.find();
 
-    /**
-     * Calculates the nutrient of the concentrates purchased
-     * @method calculate
-     * @param concentrates
-     * @returns {object} the result of the concentrates purchased
-     * @public
-     * @static
-     */
-    concentratesPurchased.calculate = function(concentrates) {
-      $log.info('concentratesPurchased.calculate...');
-      if(!validator.validateAll(concentrates)) {
-        $log.error('concentratesPurchased.calculate invalid concentrates, see the error above and fix based on API...');
+      if(!_isDefined(root)) {
         return undefined;
       }
 
-      return calculator.calculate(concentrates);
+      return root.nutrientCalculator;
     }
 
-    return concentratesPurchased;
-  });</code></pre>
+    /**
+     * Saves the farmData.nutrientCalculator into the sessionStorage
+     * @method save
+     * @param {!object} farmData.nutrientCalculator
+     * @returns {Object} farmData.nutrientCalculator
+     * @public
+     * @static
+     */
+    nutrientCalculatorSession.saveSection = function(section, value) {
+      var loaded = load();
+
+      if(!_isDefined(loaded)) {
+        $log.error('Unable to find an existing farmData! please create then save.');
+        return nutrientCalculatorSession
+      }
+
+      loaded[section] = value;
+
+      return save(loaded);
+    }
+
+    /**
+     * Saves the farmData.nutrientCalculator into the sessionStorage
+     * @method save
+     * @param {!object} farmData.nutrientCalculator
+     * @returns {Object} farmData.nutrientCalculator
+     * @public
+     * @static
+     */
+    function save(toSave) {
+      var farmData = farmdata.session.find();
+
+      if(!_isDefined(farmData)) {
+        $log.error('Unable to find the farmData in the session!');
+        return undefined;
+      }
+
+      farmData.dateLastUpdated = new Date();
+
+      farmData.nutrientCalculator = toSave;
+      farmdata.session.save(farmData);
+      return toSave;
+    }
+    nutrientCalculatorSession.save = save;
+
+    /**
+     * Returns a section of the farmData as an object from the sessionStorage
+     * @method loadSection
+     * @returns {Object} the farmdata, null, if not found.
+     * @public
+     * @static
+     */
+    nutrientCalculatorSession.loadSection = function(section) {
+      var loaded = load();
+      return loaded?loaded[section]:null;
+    }
+
+    /**
+     * Returns true if the location.search has ?load=true, false otherwise
+     * @method isLoadFlagSet
+     * @param {object} location instance
+     * @returns {boolean} Returns true if the location.search has ?load=true, false otherwise
+     * @public
+     * @static
+     */
+    nutrientCalculatorSession.isLoadFlagSet = function(location) {
+      var load = false;
+
+      if(location.href.split('?').length > 1 &amp;&amp;
+        location.href.split('?')[1].indexOf('load') === 0){
+        load = (location.href.split('?')[1].split('=')[1] === 'true');
+      }
+
+      return load;
+    }
+
+    return nutrientCalculatorSession;
+
+  });
+</code></pre>
         </article>
     </section>
 

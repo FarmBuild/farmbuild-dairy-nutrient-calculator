@@ -1905,8 +1905,50 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("nutrientCalculatorSession", function(farmdata, validations) {
-    var nutrientCalculatorSession = {}, _isPositiveNumber = validations.isPositiveNumber;
+angular.module("farmbuild.nutrientCalculator").factory("nutrientCalculatorSession", function($log, farmdata, validations) {
+    var nutrientCalculatorSession = {}, _isDefined = validations.isDefined;
+    function findInSessionStorage() {
+        var root = farmdata.session.find();
+        return root.nutrientCalculator.milkSold;
+    }
+    function saveInSessionStorage(result) {
+        var farmData = farmdata.session.find();
+        farmData.dateLastUpdated = new Date();
+        farmData.nutrientCalculator.milkSold = result;
+        farmdata.session.save(farmData);
+    }
+    function load() {
+        var root = farmdata.session.find();
+        if (!_isDefined(root)) {
+            return undefined;
+        }
+        return root.nutrientCalculator;
+    }
+    nutrientCalculatorSession.saveSection = function(section, value) {
+        var loaded = load();
+        if (!_isDefined(loaded)) {
+            $log.error("Unable to find an existing farmData! please create then save.");
+            return nutrientCalculatorSession;
+        }
+        loaded[section] = value;
+        return save(loaded);
+    };
+    function save(toSave) {
+        var farmData = farmdata.session.find();
+        if (!_isDefined(farmData)) {
+            $log.error("Unable to find the farmData in the session!");
+            return undefined;
+        }
+        farmData.dateLastUpdated = new Date();
+        farmData.nutrientCalculator = toSave;
+        farmdata.session.save(farmData);
+        return toSave;
+    }
+    nutrientCalculatorSession.save = save;
+    nutrientCalculatorSession.loadSection = function(section) {
+        var loaded = load();
+        return loaded ? loaded[section] : null;
+    };
     nutrientCalculatorSession.isLoadFlagSet = function(location) {
         var load = false;
         if (location.href.split("?").length > 1 && location.href.split("?")[1].indexOf("load") === 0) {

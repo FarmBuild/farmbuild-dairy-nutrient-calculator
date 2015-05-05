@@ -14,10 +14,90 @@
  */
 angular.module('farmbuild.nutrientCalculator')
   .factory('nutrientCalculatorSession',
-  function (farmdata, validations) {
+  function ($log, farmdata, validations) {
 
     var nutrientCalculatorSession = {},
-      _isPositiveNumber = validations.isPositiveNumber;
+      _isDefined = validations.isDefined;
+
+
+    function findInSessionStorage() {
+      var root = farmdata.session.find();
+      return root.nutrientCalculator.milkSold;
+    };
+
+    function saveInSessionStorage(result) {
+      var farmData = farmdata.session.find();
+      farmData.dateLastUpdated = new Date();
+      farmData.nutrientCalculator.milkSold = result;
+      farmdata.session.save(farmData);
+    };
+
+    function load() {
+      var root = farmdata.session.find();
+
+      if(!_isDefined(root)) {
+        return undefined;
+      }
+
+      return root.nutrientCalculator;
+    }
+
+    /**
+     * Saves the farmData.nutrientCalculator into the sessionStorage
+     * @method save
+     * @param {!object} farmData.nutrientCalculator
+     * @returns {Object} farmData.nutrientCalculator
+     * @public
+     * @static
+     */
+    nutrientCalculatorSession.saveSection = function(section, value) {
+      var loaded = load();
+
+      if(!_isDefined(loaded)) {
+        $log.error('Unable to find an existing farmData! please create then save.');
+        return nutrientCalculatorSession
+      }
+
+      loaded[section] = value;
+
+      return save(loaded);
+    }
+
+    /**
+     * Saves the farmData.nutrientCalculator into the sessionStorage
+     * @method save
+     * @param {!object} farmData.nutrientCalculator
+     * @returns {Object} farmData.nutrientCalculator
+     * @public
+     * @static
+     */
+    function save(toSave) {
+      var farmData = farmdata.session.find();
+
+      if(!_isDefined(farmData)) {
+        $log.error('Unable to find the farmData in the session!');
+        return undefined;
+      }
+
+      farmData.dateLastUpdated = new Date();
+
+      farmData.nutrientCalculator = toSave;
+      farmdata.session.save(farmData);
+      return toSave;
+    }
+    nutrientCalculatorSession.save = save;
+
+    /**
+     * Returns a section of the farmData as an object from the sessionStorage
+     * @method loadSection
+     * @returns {Object} the farmdata, null, if not found.
+     * @public
+     * @static
+     */
+    nutrientCalculatorSession.loadSection = function(section) {
+      var loaded = load();
+      return loaded?loaded[section]:null;
+    }
 
     /**
      * Returns true if the location.search has ?load=true, false otherwise
