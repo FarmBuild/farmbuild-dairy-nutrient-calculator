@@ -44,10 +44,10 @@ angular.module('farmbuild.nutrientCalculator')
 
     /**
      * Saves the farmData.nutrientCalculator into the sessionStorage
-     * @method save
+     * @method saveSection
      * @param {!object} farmData.nutrientCalculator
      * @returns {Object} farmData.nutrientCalculator
-     * @public
+     * @private
      * @static
      */
     nutrientCalculatorSession.saveSection = function(section, value) {

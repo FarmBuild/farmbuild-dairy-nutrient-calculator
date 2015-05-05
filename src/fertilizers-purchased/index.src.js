@@ -43,7 +43,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     /**
      * Returns the current instance of fertilizers purchased
-     * @method add
+     * @method fertilizers
      * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} weight - value must be > 0
      * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
@@ -102,7 +102,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     /**
      * Loads the fertilizers
-     * @method calculate
+     * @method load
      * @param fertilizers
      * @returns {object} fertilizersPurchased
      * @public
