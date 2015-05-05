@@ -1,60 +1,105 @@
 <!DOCTYPE html>
 <html ng-app="farmbuild.nutrientCalculator.examples">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Farmbuild Diary Nutrient Calculator (angularJS)</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../main.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Farmbuild Diary Nutrient Calculator (angularJS)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body ng-controller="FarmCtrl">
 <content>
-  <form role="form" name="form" novalidate>
-    <h3>
-      Farmbuild Diary Nutrient Calculator
-      <small>(angularJS)</small>
-    </h3>
-    <a ng-href="cows-culled/index.html?load=true">cows-culled</a> |
-    <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |
-    <a ng-href="fertilizers-purchased/index.html?load=true">fertilizers-purchased</a> |
-    <a ng-href="forages-purchased/index.html?load=true">forages-purchased</a> |
-    <a ng-href="milk-sold/index.html?load=true">milk-sold</a> |
-    <hr/>
-    <form-item class="form-group col-md-6">
-      <label>Please select your farm data</label>
-      <input name="farmData" type="file" on-read-file="load($fileContent)" class="form-control">
-    </form-item>
-    <buttons class="col-md-12">
-      <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
-      <a type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export
-        farm data</a>
-    </buttons>
-    <div class="clearfix"></div>
-  </form>
-  <summary>
-    <fieldset>
-      <legend>
-        Summary
-      </legend>
-      <form-item class="form-group col-sm-6">
-        <p>Farm Name: <span ng-bind="farmData.name"></span></p>
-      </form-item>
-      <form-item class="form-group col-sm-6">
-        <p>Area: <span ng-bind="farmData.area | number: decimalPrecision"></span></p>
-      </form-item>
-      <form-item class="form-group col-sm-6">
-        <p>Date Created: <span ng-bind="farmData.dateCreated | date: 'medium'"></span></p>
-      </form-item>
-      <form-item class="form-group col-sm-6">
-        <p>Date Last Updated: <span ng-bind="farmData.dateLastUpdated | date: 'medium'"></span></p>
-      </form-item>
-    </fieldset>
-  </summary>
-  <version>
-    Version: <span ng-bind="appVersion"></span>
-  </version>
+    <form role="form" name="form" novalidate>
+        <h3>
+            Farmbuild Diary Nutrient Calculator
+            <small>(angularJS)</small>
+        </h3>
+        <a ng-href="cows-culled/index.html?load=true">cows-culled</a> |
+        <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |
+        <a ng-href="fertilizers-purchased/index.html?load=true">fertilizers-purchased</a> |
+        <a ng-href="forages-purchased/index.html?load=true">forages-purchased</a> |
+        <a ng-href="milk-sold/index.html?load=true">milk-sold</a> |
+        <hr/>
+        <form-item class="form-group col-md-6">
+            <label>Please select your farm data</label>
+            <input name="farmData" type="file" on-read-file="load($fileContent)" class="form-control">
+        </form-item>
+        <buttons class="col-md-12">
+            <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
+            <a type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export
+                farm data</a>
+        </buttons>
+        <div class="clearfix"></div>
+    </form>
+    <summary>
+        <fieldset>
+            <legend>
+                Farm details
+            </legend>
+            <form-item class="form-group col-sm-6">
+                <p>Farm Name: <span ng-bind="farmData.name"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Area: <span ng-bind="farmData.area | number: decimalPrecision"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Date Created: <span ng-bind="farmData.dateCreated | date: 'medium'"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Date Last Updated: <span ng-bind="farmData.dateLastUpdated | date: 'medium'"></span></p>
+            </form-item>
+        </fieldset>
+        <fieldset>
+            <legend>
+                Farm area breakdown (ha)
+            </legend>
+            <form-item class="form-group col-sm-6">
+                <p>Milking area: <span
+                        ng-bind="farmData.nutrientCalculator.summary.milkingAreaInHa | number: decimalPrecision"></span>
+                </p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Non milking area: <span
+                        ng-bind="(farmData.area - farmData.nutrientCalculator.summary.milkingAreaInHa) | number: decimalPrecision"></span>
+                </p>
+            </form-item>
+        </fieldset>
+        <fieldset>
+            <legend>
+                Balance and Efficiency
+            </legend>
+            <form-item class="form-group col-sm-6">
+                <table id="foragesTbl" class="table table-striped table-hover">
+                    <tr>
+                        <th></th>
+                        <th>Nitrogen</th>
+                        <th>Phosphorus</th>
+                        <th>Potassium</th>
+                        <th>Sulphur</th>
+                    </tr>
+                    <tr>
+                        <td>Balance (kg/ha)</td>
+                        <td ng-bind="balance.nitrogenInKg"></td>
+                        <td ng-bind="balance.phosphorusInKg"></td>
+                        <td ng-bind="balance.potassiumInKg"></td>
+                        <td ng-bind="balance.sulphurInKg"></td>
+                    </tr>
+                    <tr>
+                        <td>Efficiency (%)</td>
+                        <td ng-bind="efficiency.nitrogenInKg"></td>
+                        <td ng-bind="efficiency.phosphorusInKg"></td>
+                        <td ng-bind="efficiency.potassiumInKg"></td>
+                        <td ng-bind="efficiency.sulphurInKg"></td>
+                    </tr>
+                </table>
+            </form-item>
+        </fieldset>
+    </summary>
+    <version>
+        Version: <span ng-bind="appVersion"></span>
+    </version>
 </content>
 
 <script src="../../dist/farmbuild-core.js"></script>
@@ -65,21 +110,21 @@
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
-  (function (i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;
-    i[r] = i[r] || function () {
-      (i[r].q = i[r].q || []).push(arguments)
-    }, i[r].l = 1 * new Date();
-    a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-    a.async = 1;
-    a.src = g;
-    m.parentNode.insertBefore(a, m)
-  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-  var GA_TRACKING_CODE = 'UA-53478356-1';
+    var GA_TRACKING_CODE = 'UA-53478356-1';
 
-  ga('create', GA_TRACKING_CODE, 'auto');
+    ga('create', GA_TRACKING_CODE, 'auto');
 </script>
 
 </body>

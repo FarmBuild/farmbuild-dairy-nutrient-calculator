@@ -39,6 +39,8 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		if(load){
 			$scope.farmData = findInSessionStorage();
+			$scope.balance = nutrientCalculator.balance($scope.farmData);
+			$scope.efficiency = nutrientCalculator.efficiency($scope.farmData);
 		}
 
 	})

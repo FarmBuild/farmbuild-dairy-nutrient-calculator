@@ -1,7 +1,7 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, FarmData, $log) {
-    var nutrientCalculator = {};
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, FarmData, $log, validations) {
+    var nutrientCalculator = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
     $log.info("Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?");
     nutrientCalculator.load = function(farmData) {
         if (!FarmData.isFarmData(farmData)) {
@@ -11,10 +11,83 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
             farmData.nutrientCalculator = {
                 milkSold: {},
                 cowsCulled: {},
-                cowsPurchased: {}
+                cowsPurchased: {},
+                fertilizersPurchased: {},
+                foragesPurchased: {},
+                legumes: {},
+                concentratesPurchased: {}
             };
         }
         return farmData;
+    };
+    function _efficiency(importedValue, exportedValue) {
+        if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue)) {
+            return undefined;
+        }
+        return exportedValue / importedValue * 100;
+    }
+    function _balance(importedValue, exportedValue, milkingArea) {
+        if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue) || !_isPositiveNumber(milkingArea)) {
+            return undefined;
+        }
+        return (importedValue - exportedValue) / milkingArea;
+    }
+    function _nutrientValues(farmData) {
+        var data = farmData.nutrientCalculator, exportedNitrogenInKg = 0, incomings = {
+            nitrogenInKg: 0,
+            potassiumInKg: 0,
+            phosphorusInKg: 0,
+            sulphurInKg: 0
+        }, outgoings = {
+            nitrogenInKg: 0,
+            potassiumInKg: 0,
+            phosphorusInKg: 0,
+            sulphurInKg: 0
+        }, addIncomings = function(key) {
+            incomings.nitrogenInKg += data[key].nitrogenInKg;
+            incomings.potassiumInKg += data[key].potassiumInKg;
+            incomings.phosphorusInKg += data[key].phosphorusInKg;
+            incomings.sulphurInKg += data[key].sulphurInKg;
+        }, addOutgoings = function(key) {
+            incomings.nitrogenInKg += data[key].nitrogenInKg;
+            incomings.potassiumInKg += data[key].potassiumInKg;
+            incomings.phosphorusInKg += data[key].phosphorusInKg;
+            incomings.sulphurInKg += data[key].sulphurInKg;
+        };
+        if (_isDefined(data.milkSold)) {
+            addIncomings("milkSold");
+        }
+        if (_isDefined(data.cowsCulled)) {
+            addIncomings("cowsCulled");
+        }
+        if (_isDefined(data.cowsPurchased)) {
+            addOutgoings("cowsPurchased");
+        }
+        if (_isDefined(data.concentratesPurchased)) {
+            addOutgoings("concentratesPurchased");
+        }
+        if (_isDefined(data.foragesPurchased)) {
+            addOutgoings("foragesPurchased");
+        }
+        if (_isDefined(data.fertilizersPurchased)) {
+            addOutgoings("fertilizersPurchased");
+        }
+        return {
+            incomings: incomings,
+            outgoings: outgoings
+        };
+    }
+    nutrientCalculator.efficiency = function(farmData) {
+        var nutrientValues = _nutrientValues(farmData);
+        return {
+            nitrogen: _efficiency(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg)
+        };
+    };
+    nutrientCalculator.balance = function(farmData) {
+        var nutrientValues = _nutrientValues(farmData), milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
+        return {
+            nitrogen: _balance(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg, milkingArea)
+        };
     };
     nutrientCalculator.milkSold = milkSold;
     nutrientCalculator.cowsPurchased = cowsPurchased;
