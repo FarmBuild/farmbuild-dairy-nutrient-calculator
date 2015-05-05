@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>legume/index.src.js - Documentation</title>
+    <title>concentrates-purchased/calculator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">legume/index.src.js</h1>
+    <h1 class="page-title">concentrates-purchased/calculator.src.js</h1>
     
 
     
@@ -49,99 +49,124 @@
 'use strict';
 
 /**
- * nutrientCalculator/legume singleton
- * @module nutrientCalculator/legume
+ * nutrientCalculator/concentrateCalculator singleton
+ * @module nutrientCalculator/concentrateCalculator
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('legume', function (validations, utilisationFactors, legumeCalculator, $log) {
+  .factory('concentrateCalculator', function (concentrateValidator, concentrateDefaults, concentrateTypes, $log) {
+    var calculator = {},
+      validator = concentrateValidator;
 
-		var legume,
-			_isDefined = validations.isDefined,
-			_utilisationFactors = utilisationFactors;
+    function createResult(total) {
+      return {
+        concentrates: total.incomings,
+        weight: total.weight,
+        dryMatterWeight: total.dryMatterWeight,
+        nitrogenInKg: total.nitrogenInKg,
+        nitrogenPercentage: 0,
+        phosphorusInKg: total.phosphorusInKg,
+        phosphorusPercentage: 0,
+        potassiumInKg: total.potassiumInKg,
+        potassiumPercentage: 0,
+        sulphurInKg: total.sulphurInKg,
+        sulphurPercentage: 0,
+        metabolisableEnergyInMJ: 0,
+        metabolisableEnergyInMJPerKg: 0
+      };
+    }
 
-		function _validate(legume) {
-			$log.info('validating legume ...', legume);
+    function _calculatePercentage(nutrientWeight, totalWeight) {
+      return (nutrientWeight / totalWeight) * 100
+    }
 
-			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
-				return false;
-			}
-			return true;
-		};
+    function _calculatePercentages(total) {
+      var result = createResult(total);
 
-		/**
-		 * Calculates total nutrient imported on to the farm in legumes
-		 * @method calculate
-		 * @param {!Number} milkSoldPerYearInLitre 
-		 * @param {!Number} milkFatPercentage 
-		 * @param {!Number} milkProteinPercentage 
-		 * @param {!Number} numberOfMilkingCows 
-		 * @param {!Number} numberOfMilkingDays 
-		 * @param {!Number} liveWeight 
-		 * @param {!Number} totalForageME 
-		 * @param {!Number} totalConcentrateME 
-		 * @param {!Number} milkingArea 
-		 * @param {!Number} utilisationFactor 
-		 * @param {!Number} totalNitrogenFromFertiliser 
-		 * @param {!Number} legumePercentage 
-		 * @returns {object} nutrient data of legumes purchased
-		 * @public
-		 * @static
-		 */
-		function _calculate(milkSoldPerYearInLitre, milkFatPercentage,
-		                    milkProteinPercentage, numberOfMilkingCows,
-		                    numberOfMilkingDays, liveWeight,
-		                    totalForageME, totalConcentrateME,
-		                    milkingArea, utilisationFactor,
-		                    totalNitrogenFromFertiliser, legumePercentage) {
-			$log.info('calculating legumes nutrient ...');
+      result.nitrogenPercentage = _calculatePercentage(total.nitrogenInKg, total.dryMatterWeight);
+      result.phosphorusPercentage = _calculatePercentage(total.phosphorusInKg, total.dryMatterWeight);
+      result.potassiumPercentage = _calculatePercentage(total.potassiumInKg, total.dryMatterWeight);
+      result.sulphurPercentage = _calculatePercentage(total.sulphurInKg, total.dryMatterWeight);
+      result.metabolisableEnergyInMJ = total.metabolisableEnergyInMJ;
+      result.metabolisableEnergyInMJPerKg = total.metabolisableEnergyInMJPerKg;
 
-			if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkFatPercentage) ||
-				!_isDefined(milkProteinPercentage) || !_isDefined(numberOfMilkingCows) ||
-				!_isDefined(numberOfMilkingDays) || !_isDefined(liveWeight) ||
-				!_isDefined(totalForageME) || !_isDefined(totalConcentrateME) ||
-				!_isDefined(milkingArea) || !_isDefined(utilisationFactor) ||
-				!_isDefined(totalNitrogenFromFertiliser) || !_isDefined(legumePercentage)) {
-				return undefined;
-			}
+      return result;
+    }
 
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatPercentage, milkProteinPercentage),
-				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, liveWeight),
-				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(totalForageME, totalConcentrateME),
-				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingArea),
-				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
-				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(totalNitrogenFromFertiliser, milkingArea),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
-				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
-				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
+    function _createTotal() {
+      return {
+        weight:0,
+        dryMatterWeight:0,
+        nitrogenInKg:0,
+        phosphorusInKg:0,
+        potassiumInKg:0,
+        sulphurInKg:0,
+        metabolisableEnergyInMJ: 0,
+        metabolisableEnergyInMJPerKg: 0,
+        incomings:[]
+      }
+    }
 
-			return {
-				importedEnergyConsumed: importedEnergyConsumed,
-				utilisationFactor: utilisationFactor,
-				dryMatterConsumedPerHaInKg: dryMatterConsumed,
-				dryMatterGrownPerHaInKg: dryMatterGrown,
-				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
-				availableNitrogenFromLegumes: availableNitrogenFromLegumes,
-				availableNitrogenToPasture: availableNitrogenToPasture,
-				cattleEnergyUsed: cattleEnergyUsed,
-				milkEnergy: milkEnergy,
-				milkEnergyNotSold: milkEnergy.notSold,
-				milkFatPercentage: milkFatPercentage,
-				milkProteinPercentage: milkProteinPercentage,
-				totalMilkInLitre: milkEnergy.total,
-				totalLegume: totalLegume,
-				legumePercentage: legumePercentage
-			};
+    function _calculateNutrientWeight(weight, percentage) {
+      return (weight * percentage) / 100;
+    }
 
-		};
+    function calculateDryMatterWeight(weight, dryMatterPercentage, isDry) {
+      return (isDry?weight:_calculateNutrientWeight(weight, dryMatterPercentage));
+    }
 
-		legume = {
-			calculate: _calculate
-		};
+    calculator.calculateDryMatterWeight = calculateDryMatterWeight;
 
-		return legume;
-	});
-</code></pre>
+    function updateTotal(concentrate, total) {
+      var type = concentrate.type,
+        weight = concentrate.weight,
+        dryMatterWeight = calculateDryMatterWeight(weight, type.dryMatterPercentage, concentrate.isDry)
+        ;
+
+      total.weight += weight;
+      total.dryMatterWeight += dryMatterWeight;
+      total.nitrogenInKg += _calculateNutrientWeight(dryMatterWeight, type.nitrogenPercentage);
+      total.phosphorusInKg += _calculateNutrientWeight(dryMatterWeight, type.phosphorusPercentage);
+      total.potassiumInKg += _calculateNutrientWeight(dryMatterWeight, type.potassiumPercentage);
+      total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
+      total.metabolisableEnergyInMJ += (dryMatterWeight * type.metabolisableEnergyInMJPerKg);
+      total.metabolisableEnergyInMJPerKg = type.metabolisableEnergyInMJPerKg;
+      total.incomings.push({
+        type: concentrate.type,
+        weight: concentrate.weight,
+        isDry: concentrate.isDry
+      });
+
+      return total;
+    }
+
+    function calculateAll(concentrates) {
+      $log.info('calculator.calculateAll...');
+      var i = 0,
+        total = _createTotal();
+
+      for (i; i &lt; concentrates.length; i++) {
+        var concentrate = concentrates[i];
+
+        if (!validator.validate(concentrate)) {
+          $log.error('calculator.calculateAll invalid concentrate at %s: %j', i, concentrate);
+          return undefined;
+        }
+
+        total = updateTotal(concentrate, total);
+      }
+
+      return total;
+    }
+
+    calculator.calculate = function(concentrates) {
+      var itemsTotal = calculateAll(concentrates);
+
+      return _calculatePercentages(itemsTotal);
+    }
+
+    return calculator;
+  });</code></pre>
         </article>
     </section>
 
