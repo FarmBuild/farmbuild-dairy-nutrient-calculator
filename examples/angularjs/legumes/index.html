@@ -12,7 +12,7 @@
 <body ng-controller="LegumesCtrl">
 <content>
     <h3>
-        Farmbuild Diary Nutrient Calculator - Legumes Purchased
+        <a ng-href="/examples/angularjs/index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Legumes Purchased
         <small>(angularJS)</small>
     </h3>
     <hr/>
@@ -115,7 +115,7 @@
                 <p>Milk Fat (Kg): <span ng-bind="result.milkFatInKg | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Milk Protein (Kg): <span ng-bind="result.proteinInKg | number : decimalPrecision"></span></p>
+                <p>Milk Protein (Kg): <span ng-bind="result.milkProteinInKg | number : decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Milk Energy (MJ): <span ng-bind="result.milkEnergyInMJ | number : decimalPrecision"></span></p>
