@@ -99,5 +99,18 @@ angular.module('farmbuild.nutrientCalculator')
       return calculator.calculate(concentrates);
     }
 
+    /**
+     * Loads the concentrates
+     * @method calculate
+     * @param concentrates
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    concentratesPurchased.load = function(concentrates) {
+      _concentrates = concentrates;
+      return concentratesPurchased;
+    }
+
     return concentratesPurchased;
   });

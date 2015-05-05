@@ -65,7 +65,6 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
       var fertilizersPurchasedData = nutrientCalculator.session.loadSection('fertilizersPurchased');
 
       fertilizersPurchased.load(fertilizersPurchasedData.fertilizers);
-
       $scope.calculate(fertilizersPurchasedData.fertilizers);
       $scope.fertilizers = fertilizersPurchasedData.fertilizers;
     }
