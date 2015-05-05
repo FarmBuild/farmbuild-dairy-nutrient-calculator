@@ -6,7 +6,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
-	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, cowsPurchased, validations) {
+	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, nutrientCalculator, cowsPurchased, validations) {
 
 		var isPositiveNumber = validations.isPositiveNumber;
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
@@ -18,6 +18,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$scope.calculate = function (cows, form) {
 			$scope.result = cowsPurchased.calculate(cows);
 			$scope.noResult = !$scope.result;
+      saveInSessionStorage($scope.result);
 		};
 
 		$scope.addCowType = function (type, form) {
@@ -64,5 +65,15 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			$scope.numberOfCows = '';
 			$scope.result = {};
 		};
+
+    function saveInSessionStorage(result) {
+      nutrientCalculator.session.saveSection('cowsPurchased', result);
+    };
+
+    if(nutrientCalculator.session.isLoadFlagSet(location)){
+      var cowsPurchasedData = nutrientCalculator.session.loadSection('cowsPurchased');
+      $scope.calculate(cowsPurchasedData.cows);
+      $scope.cows = cowsPurchasedData.cows;
+    }
 
 	});
