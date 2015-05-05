@@ -152,7 +152,7 @@
         {
           "name": "Average adult cattle",
           "numberOfCows": 38,
-          "weight": 550
+          "weight": 500
         },
         {
           "name": "Heavy adult cattle",
@@ -171,22 +171,22 @@
         }
       ],
       "numberOfCows": 174,
-      "weight": 29210,
-      "nitrogenInKg": 817.88,
-      "phosphorusInKg": 210.31199999999998,
-      "potassiumInKg": 58.419999999999995,
-      "sulphurInKg": 233.67999999999998
+      "weight": 27310,
+      "nitrogenInKg": 764.68,
+      "phosphorusInKg": 196.632,
+      "potassiumInKg": 54.62,
+      "sulphurInKg": 218.48
     },
     "fertilizersPurchased": {
       "fertilizers": [
         {
           "type": {
-            "name": "Dairy manure stockpile",
-            "nitrogenPercentage": 1.44,
-            "phosphorusPercentage": 0.55,
-            "potassiumPercentage": 1.38,
-            "sulphurPercentage": 0.3,
-            "dryMatterPercentage": 76.83
+            "name": "DAP",
+            "nitrogenPercentage": 18,
+            "phosphorusPercentage": 20,
+            "potassiumPercentage": 0,
+            "sulphurPercentage": 1.6,
+            "dryMatterPercentage": 100
           },
           "weight": 4000,
           "isDry": true
@@ -335,19 +335,6 @@
         },
         {
           "type": {
-            "name": "Pasture hay",
-            "nitrogenPercentage": "1.87",
-            "phosphorusPercentage": "0.28",
-            "potassiumPercentage": "1.87",
-            "sulphurPercentage": "0.24",
-            "dryMatterPercentage": "85.53",
-            "metabolisableEnergyInMJPerKg": "8.17"
-          },
-          "weight": 22500,
-          "isDry": true
-        },
-        {
-          "type": {
             "name": "Cereal hay",
             "nitrogenPercentage": "1.54",
             "phosphorusPercentage": "0.22",
@@ -360,17 +347,17 @@
           "isDry": true
         }
       ],
-      "weight": 788990,
-      "dryMatterWeight": 788990,
-      "nitrogenInKg": 13213.826000000001,
-      "nitrogenPercentage": 1.6747773736042284,
-      "phosphorusInKg": 1884.022,
-      "phosphorusPercentage": 0.23878908477927477,
-      "potassiumInKg": 13560.516999999998,
-      "potassiumPercentage": 1.7187184881937663,
-      "sulphurInKg": 1566.3760000000002,
-      "sulphurPercentage": 0.19852925892596868,
-      "metabolisableEnergyInMJ": 6482591.1,
+      "weight": 766490,
+      "dryMatterWeight": 766490,
+      "nitrogenInKg": 12793.076000000001,
+      "nitrogenPercentage": 1.669046693368472,
+      "phosphorusInKg": 1821.022,
+      "phosphorusPercentage": 0.23757935524272986,
+      "potassiumInKg": 13139.766999999998,
+      "potassiumPercentage": 1.7142776813787521,
+      "sulphurInKg": 1512.3760000000002,
+      "sulphurPercentage": 0.19731190230792314,
+      "metabolisableEnergyInMJ": 6298766.1,
       "metabolisableEnergyInMJPerKg": 8.32
     },
     "concentratesPurchased": {
