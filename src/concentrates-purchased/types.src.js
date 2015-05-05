@@ -21,9 +21,10 @@ angular.module('farmbuild.nutrientCalculator')
       _isEmpty = validations.isEmpty,
       _types = angular.copy(concentrateDefaults.types);
 
-    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+    function _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
       return {
         name: name,
+        metabolisableEnergyInMJPerKg:metabolisableEnergyInMJPerKg,
         dryMatterPercentage: dryMatterPercentage,
         sulphurPercentage: sulphurPercentage,
         potassiumPercentage: potassiumPercentage,
@@ -52,6 +53,7 @@ angular.module('farmbuild.nutrientCalculator')
      * Adds a new concentrate type for nutrient calculation
      * @method types.add
      * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
      * @param {!number} dryMatterPercentage - value must be > 0
      * @param {!number} sulphurPercentage - value must be > 0
      * @param {!number} potassiumPercentage - value must be > 0
@@ -61,8 +63,8 @@ angular.module('farmbuild.nutrientCalculator')
      * @private
      * @static
      */
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-      var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+    function _add(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+      var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
       $log.info('adding concentrate type ...', type);
 
       if (!_validate(type)) {
