@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>legumes/index.src.js - Documentation</title>
+    <title>collections/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">legumes/index.src.js</h1>
+    <h1 class="page-title">collections/index.src.js</h1>
     
 
     
@@ -49,111 +49,121 @@
 'use strict';
 
 /**
- * nutrientCalculator/legume singleton
- * @module nutrientCalculator/legume
+ * nutrientCalculator/collections singleton
+ * @module nutrientCalculator/collections
  */
 angular.module('farmbuild.nutrientCalculator')
+  .factory('collections', function (validations, $log) {
+    var collections = {},
+      _isDefined = validations.isDefined,
+      _isArray = validations.isArray,
+      _equals = validations.equals;
 
-	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
+    function _byProperty(collection, property, value) {
+      if(!_isArray(collection)) {
+        return undefined;
+      }
+      if(!_isDefined(property)) {
+        return undefined;
+      }
+      if(!_isDefined(value)) {
+        return undefined;
+      }
 
-		var legumes,
-			_isDefined = validations.isDefined,
-			_utilisationFactors = angular.copy(utilisationFactorsValues);
+      var i = 0;
+      for(i; i &lt; collection.length; i++) {
+        var item = collection[i];
 
-		function _validate(legume) {
-			$log.info('validating legume ...', legume);
+        if(!item.hasOwnProperty(property)) {
+          continue;
+        }
 
-			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
-				return false;
-			}
-			return true;
-		};
+        if(_equals(item[property], value)) {
+          return item;
+        }
 
-		/**
-		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
-		 * @method calculate
-		 * @param {!Number} milkSoldPerYearInLitre 
-		 * @param {!Number} milkFatInKg
-		 * @param {!Number} milkProteinInKg
-		 * @param {!Number} numberOfMilkingCows 
-		 * @param {!Number} numberOfMilkingDays 
-		 * @param {!Number} averageCowWeightInKg
-		 * @param {!Number} forageMetabolisableEnergyInMJ
-		 * @param {!Number} concentrateMetabolisableEnergyInMJ
-		 * @param {!Number} milkingAreaInHa
-		 * @param {!Number} utilisationFactor 
-		 * @param {!Number} nitrogenFromFertiliserInKg
-		 * @param {!Number} legumePercentage 
-		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
-		 * @public
-		 * @static
-		 */
-		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
-		                    milkProteinInKg, numberOfMilkingCows,
-		                    numberOfMilkingDays, averageCowWeightInKg,
-		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
-		                    milkingAreaInHa, utilisationFactor,
-		                    nitrogenFromFertiliserInKg, legumePercentage) {
-			$log.info('calculating legumes nutrient ...');
+      }
+      return undefined;
+    }
 
-			if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) ||
-				!_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) ||
-				!_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) ||
-				!_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) ||
-				!_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) ||
-				!_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
-				return undefined;
-			}
+    function _add(collection, item, index) {
+      if (_isDefined(index)) {
+        collection.splice(index, 0, item)
+      } else {
+        collection.push(item);
+      }
+      return collection;
+    };
 
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
-				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
-				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
-				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
-				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
-				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
-				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
-				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
+    function _isEmpty(collections){
+      return collections.length === 0;
+    };
 
-			return {
-				importedEnergyConsumedInMJ: importedEnergyConsumed,
-				utilisationFactor: utilisationFactor,
-				dryMatterConsumedPerHaInKg: dryMatterConsumed,
-				dryMatterGrownPerHaInKg: dryMatterGrown,
-				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
-				availableNitrogenFromLegumesPerHaInKg: availableNitrogenFromLegumes,
-				availableNitrogenToPasturePerHaInKg: availableNitrogenToPasture,
-				cattleEnergyUsedInMJ: cattleEnergyUsed,
-				milkEnergyInMJ: milkEnergy.total,
-				milkEnergyNotSoldInMJ: milkEnergy.notSold,
-				milkProteinInKg: milkProteinInKg,
-				milkFatInKg: milkFatInKg,
-				milkSoldPerYearInLitre: milkSoldPerYearInLitre,
-				legumePerHaInKg: totalLegume,
-				legumePercentage: legumePercentage
-			};
+    function _count(collection) {
+      if(!angular.isArray(collection)) {
+        return -1;
+      }
+      return collection.length;
+    };
 
-		};
+    function _toArray(){
+      return _collections;
+    };
 
-		/**
-		 * Utilisation factors reference values
-		 * @method utilisationFactors
-		 * @returns {Array} utilisationFactors
-		 * @public
-		 * @static
-		 */
-		function utilisationFactors(){
-			return _utilisationFactors;
-		}
+    function _at(collection, index){
+      return collection[index];
+    };
 
-		legumes = {
-			calculate: _calculate,
-			utilisationFactors: utilisationFactors
-		};
+    function _removeAt(collection, index) {
+      if (!angular.isArray(collection)) {
+        $log.warn('collection is not an array, returning as it is: %j', collection);
+        return collection;
+      }
 
-		return legumes;
-	});
-</code></pre>
+      if (!_isDefined(index) || index &lt; 0 || index > collection.length - 1) {
+        $log.warn('index is out of range for the array, index: %s, collection.length: %s', index, collection.length);
+        return collection;
+      }
+
+      collection.splice(index, 1);
+
+      return collection;
+    };
+
+
+    function _remove(forage) {
+      $log.info('removing forage type ', forage);
+
+      if (!_isDefined(forage)) {
+        return undefined;
+      }
+
+      return _collections;
+    };
+
+    function _first(collection) {
+      return collection[0];
+    };
+
+    function _last(collection) {
+      var length = _count(collection);
+      return collection[length - 1];
+    };
+
+    collections = {
+      add: _add,
+      at: _at,
+      size: _count,
+      byProperty:_byProperty,
+      removeAt: _removeAt,
+      remove: _remove,
+      first: _first,
+      last: _last,
+      isEmpty: _isEmpty
+    };
+
+    return collections;
+  });</code></pre>
         </article>
     </section>
 

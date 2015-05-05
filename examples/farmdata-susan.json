@@ -13,7 +13,7 @@
         [145.57363088613704,-36.22803939355771],
         [145.57368096419663,-36.224879531701255]]]
   },
-  "area" : 28.09,
+  "area" : 89.95,
   "paddocks" : [
     {
       "name" : "P3",
@@ -50,6 +50,12 @@
     }
   ],
   "nutrientCalculator": {
+    "summary": {
+      "milkingAreaInHa": 70.39,
+      "averageCowWeightInKg": 550,
+      "numberOfMilkingCows": 228,
+      "numberOfMilkingDays": 365
+    },
     "milkSold": {
       "totalPerYearInLitre": 100000.00,
       "fatInKg": 700.00,

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>legumes/index.src.js - Documentation</title>
+    <title>legumes/calculator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">legumes/index.src.js</h1>
+    <h1 class="page-title">legumes/calculator.src.js</h1>
     
 
     
@@ -38,122 +38,82 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
- */
-
-'use strict';
+            <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
- * nutrientCalculator/legume singleton
- * @module nutrientCalculator/legume
+ * nutrientCalculator/legumeCalculator singleton
+ * @module nutrientCalculator/legumeCalculator
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
+	.factory('legumeCalculator', function ($log) {
+		var legumeCalculator;
 
-		var legumes,
-			_isDefined = validations.isDefined,
-			_utilisationFactors = angular.copy(utilisationFactorsValues);
-
-		function _validate(legume) {
-			$log.info('validating legume ...', legume);
-
-			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
-				return false;
-			}
-			return true;
-		};
-
-		/**
-		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
-		 * @method calculate
-		 * @param {!Number} milkSoldPerYearInLitre 
-		 * @param {!Number} milkFatInKg
-		 * @param {!Number} milkProteinInKg
-		 * @param {!Number} numberOfMilkingCows 
-		 * @param {!Number} numberOfMilkingDays 
-		 * @param {!Number} averageCowWeightInKg
-		 * @param {!Number} forageMetabolisableEnergyInMJ
-		 * @param {!Number} concentrateMetabolisableEnergyInMJ
-		 * @param {!Number} milkingAreaInHa
-		 * @param {!Number} utilisationFactor 
-		 * @param {!Number} nitrogenFromFertiliserInKg
-		 * @param {!Number} legumePercentage 
-		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
-		 * @public
-		 * @static
-		 */
-		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
-		                    milkProteinInKg, numberOfMilkingCows,
-		                    numberOfMilkingDays, averageCowWeightInKg,
-		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
-		                    milkingAreaInHa, utilisationFactor,
-		                    nitrogenFromFertiliserInKg, legumePercentage) {
-			$log.info('calculating legumes nutrient ...');
-
-			if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) ||
-				!_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) ||
-				!_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) ||
-				!_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) ||
-				!_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) ||
-				!_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
-				return undefined;
-			}
-
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
-				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
-				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
-				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
-				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
-				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
-				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
-				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
-
+		function _milkEnergyInMJ(milkSoldPerYearInLitre, fatInKg, proteinInKg) {
+			var fatPercentage = fatInKg/milkSoldPerYearInLitre,
+				proteinPercentage = proteinInKg/milkSoldPerYearInLitre,
+				milkEnergyPerLitreInMJ = 1.694 * (0.386 * fatPercentage * 100 + 0.205 * (5.8 + proteinPercentage * 100) - 0.236),
+				totalMilkEnergyInMJ = milkEnergyPerLitreInMJ * milkSoldPerYearInLitre,
+				milkEnergyNotSoldInMJ = totalMilkEnergyInMJ * 0.04;
 			return {
-				importedEnergyConsumedInMJ: importedEnergyConsumed,
-				utilisationFactor: utilisationFactor,
-				dryMatterConsumedPerHaInKg: dryMatterConsumed,
-				dryMatterGrownPerHaInKg: dryMatterGrown,
-				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
-				availableNitrogenFromLegumesPerHaInKg: availableNitrogenFromLegumes,
-				availableNitrogenToPasturePerHaInKg: availableNitrogenToPasture,
-				cattleEnergyUsedInMJ: cattleEnergyUsed,
-				milkEnergyInMJ: milkEnergy.total,
-				milkEnergyNotSoldInMJ: milkEnergy.notSold,
-				milkProteinInKg: milkProteinInKg,
-				milkFatInKg: milkFatInKg,
-				milkSoldPerYearInLitre: milkSoldPerYearInLitre,
-				legumePerHaInKg: totalLegume,
-				legumePercentage: legumePercentage
-			};
-
-		};
-
-		/**
-		 * Utilisation factors reference values
-		 * @method utilisationFactors
-		 * @returns {Array} utilisationFactors
-		 * @public
-		 * @static
-		 */
-		function utilisationFactors(){
-			return _utilisationFactors;
+				perLitre: milkEnergyPerLitreInMJ,
+				total: totalMilkEnergyInMJ,
+				notSold: milkEnergyNotSoldInMJ
+			}
 		}
 
-		legumes = {
-			calculate: _calculate,
-			utilisationFactors: utilisationFactors
-		};
+		function _importedEnergyConsumedInMJ(totalForageMetabolisableEnergyInMJ, totalConcentrateMetabolisableEnergyInMJ) {
+			return (totalForageMetabolisableEnergyInMJ * (100 - 12.7)) / 100 + (totalConcentrateMetabolisableEnergyInMJ * (100 - 5)) / 100;
+		}
 
-		return legumes;
-	});
-</code></pre>
+		function _cattleEnergyUsedInMJ(totalMilkEnergyInMJ, milkEnergyNotSoldInMJ, numberOfMilkingCows, numberOfMilkingDays, liveWeightInKg) {
+			return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + (numberOfMilkingCows * numberOfMilkingDays * liveWeightInKg);
+		}
+
+		function _dryMatterConsumedPerHaInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {
+			return (cattleEnergyUsedInMJ - importedEnergyConsumedInMJ) / (milkingAreaInHa * 10.5);
+
+		}
+
+		function _dryMatterGrownInKg(dryMatterConsumedPerHaInKg, utilisationFactor) {
+			return (dryMatterConsumedPerHaInKg * 100) / utilisationFactor;
+
+		}
+
+		function _averageNitrogenAppliedInKg(totalNitrogenFromFertiliserInKg, milkingAreaInHa) {
+			return totalNitrogenFromFertiliserInKg / milkingAreaInHa;
+
+		}
+
+		function _totalLegumeInKg(dryMatterConsumedPerHaInKg, legumePercentage, utilisationFactor) {
+			return (dryMatterConsumedPerHaInKg * legumePercentage) / utilisationFactor;
+
+		}
+
+		function _availableNitrogenFromLegumesInKg(totalLegumeInKg, averageNitrogenAppliedInKg) {
+			return totalLegumeInKg * (0.0358 - 3.59e-5 * averageNitrogenAppliedInKg);
+
+		}
+
+		function _availableNitrogenToPastureInKg(totalLegumeInKg, averageNitrogenAppliedInKg) {
+			return averageNitrogenAppliedInKg + totalLegumeInKg * (0.0358 - 3.59e-5 * averageNitrogenAppliedInKg);
+
+		}
+
+		legumeCalculator = {
+			milkEnergy: _milkEnergyInMJ,
+			importedEnergyConsumed: _importedEnergyConsumedInMJ,
+			cattleEnergyUsed: _cattleEnergyUsedInMJ,
+			dryMatterConsumed: _dryMatterConsumedPerHaInKg,
+			dryMatterGrown: _dryMatterGrownInKg,
+			averageNitrogenApplied: _averageNitrogenAppliedInKg,
+			totalLegume: _totalLegumeInKg,
+			availableNitrogenFromLegumes: _availableNitrogenFromLegumesInKg,
+			availableNitrogenToPasture: _availableNitrogenToPastureInKg
+		}
+
+		return legumeCalculator;
+	});</code></pre>
         </article>
     </section>
 

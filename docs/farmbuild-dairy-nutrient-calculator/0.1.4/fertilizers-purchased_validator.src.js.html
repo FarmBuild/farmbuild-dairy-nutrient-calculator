@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>legumes/index.src.js - Documentation</title>
+    <title>fertilizers-purchased/validator.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">legumes/index.src.js</h1>
+    <h1 class="page-title">fertilizers-purchased/validator.src.js</h1>
     
 
     
@@ -49,111 +49,51 @@
 'use strict';
 
 /**
- * nutrientCalculator/legume singleton
- * @module nutrientCalculator/legume
+ * nutrientCalculator/fertilizerValidator singleton
+ * @module nutrientCalculator/fertilizerValidator
  */
 angular.module('farmbuild.nutrientCalculator')
+.factory('fertilizerValidator',
+  function (validations, fertilizerTypes,
+            $log) {
 
-	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
+    var fertilizerValidator = {},
+      _isDefined = validations.isDefined,
+      _isArray = validations.isArray;
 
-		var legumes,
-			_isDefined = validations.isDefined,
-			_utilisationFactors = angular.copy(utilisationFactorsValues);
+     function _validate(fertilizer) {
+      $log.info('validating fertilizer...', fertilizer);
 
-		function _validate(legume) {
-			$log.info('validating legume ...', legume);
+      if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
+        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
+        return false;
+      }
 
-			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
-				return false;
-			}
-			return true;
-		};
+      return fertilizerTypes.validate(fertilizer.type);
+    };
 
-		/**
-		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
-		 * @method calculate
-		 * @param {!Number} milkSoldPerYearInLitre 
-		 * @param {!Number} milkFatInKg
-		 * @param {!Number} milkProteinInKg
-		 * @param {!Number} numberOfMilkingCows 
-		 * @param {!Number} numberOfMilkingDays 
-		 * @param {!Number} averageCowWeightInKg
-		 * @param {!Number} forageMetabolisableEnergyInMJ
-		 * @param {!Number} concentrateMetabolisableEnergyInMJ
-		 * @param {!Number} milkingAreaInHa
-		 * @param {!Number} utilisationFactor 
-		 * @param {!Number} nitrogenFromFertiliserInKg
-		 * @param {!Number} legumePercentage 
-		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
-		 * @public
-		 * @static
-		 */
-		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
-		                    milkProteinInKg, numberOfMilkingCows,
-		                    numberOfMilkingDays, averageCowWeightInKg,
-		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
-		                    milkingAreaInHa, utilisationFactor,
-		                    nitrogenFromFertiliserInKg, legumePercentage) {
-			$log.info('calculating legumes nutrient ...');
+    fertilizerValidator.validate = _validate;
 
-			if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) ||
-				!_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) ||
-				!_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) ||
-				!_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) ||
-				!_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) ||
-				!_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
-				return undefined;
-			}
+    fertilizerValidator.validateAll = function(fertilizers) {
+      if(!_isArray(fertilizers)) {
+        return false;
+      }
 
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
-				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
-				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
-				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
-				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
-				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
-				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
-				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
+      var i = 0;
+      for (i; i &lt; fertilizers.length; i++) {
+        var fertilizer = fertilizers[i];
 
-			return {
-				importedEnergyConsumedInMJ: importedEnergyConsumed,
-				utilisationFactor: utilisationFactor,
-				dryMatterConsumedPerHaInKg: dryMatterConsumed,
-				dryMatterGrownPerHaInKg: dryMatterGrown,
-				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
-				availableNitrogenFromLegumesPerHaInKg: availableNitrogenFromLegumes,
-				availableNitrogenToPasturePerHaInKg: availableNitrogenToPasture,
-				cattleEnergyUsedInMJ: cattleEnergyUsed,
-				milkEnergyInMJ: milkEnergy.total,
-				milkEnergyNotSoldInMJ: milkEnergy.notSold,
-				milkProteinInKg: milkProteinInKg,
-				milkFatInKg: milkFatInKg,
-				milkSoldPerYearInLitre: milkSoldPerYearInLitre,
-				legumePerHaInKg: totalLegume,
-				legumePercentage: legumePercentage
-			};
+        if (!_validate(fertilizer)) {
+          $log.error('validator invalid at %s: %j', i, fertilizer);
+          return false;
+        }
+      }
+      return true;
+    }
 
-		};
 
-		/**
-		 * Utilisation factors reference values
-		 * @method utilisationFactors
-		 * @returns {Array} utilisationFactors
-		 * @public
-		 * @static
-		 */
-		function utilisationFactors(){
-			return _utilisationFactors;
-		}
-
-		legumes = {
-			calculate: _calculate,
-			utilisationFactors: utilisationFactors
-		};
-
-		return legumes;
-	});
-</code></pre>
+    return fertilizerValidator;
+  });</code></pre>
         </article>
     </section>
 
