@@ -30,7 +30,7 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		function _create(type, weight, isDry) {
-			return {type: type, weight:weight, isDry:isDry};
+			return {type: type, weight: weight, isDry: isDry};
 		};
 
 
@@ -59,7 +59,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		 function _calculate(forages) {
+		function _calculate(forages) {
 			$log.info('calculating forages nutrient ...', forages);
 
 			var totalWeight = 0,
@@ -124,11 +124,11 @@ angular.module('farmbuild.nutrientCalculator')
 
 		};
 
-		function _isEmpty(){
+		function _isEmpty() {
 			return _forages.length === 0;
 		};
 
-		function _count(){
+		function _count() {
 			return _forages.length;
 		};
 
@@ -139,7 +139,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		function _toArray(){
+		function _toArray() {
 			return _forages;
 		};
 
@@ -151,7 +151,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		function _at(index){
+		function _at(index) {
 			return _forages[index];
 		};
 
@@ -211,6 +211,10 @@ angular.module('farmbuild.nutrientCalculator')
 			last: _last,
 			isEmpty: _isEmpty,
 			calculate: _calculate,
+
+			load: function (forages) {
+				_forages = forages;
+			},
 
 			/**
 			 * types Forage types collection api

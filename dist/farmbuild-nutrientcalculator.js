@@ -1630,6 +1630,9 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
         last: _last,
         isEmpty: _isEmpty,
         calculate: _calculate,
+        load: function(forages) {
+            _forages = forages;
+        },
         types: forageTypes
     };
     return forages;

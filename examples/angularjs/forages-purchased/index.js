@@ -12,7 +12,7 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 		}
 	})
 
-	.controller('ForagesPurchasedCtrl', function ($scope, $rootScope, foragesPurchased) {
+	.controller('ForagesPurchasedCtrl', function ($scope, $rootScope, foragesPurchased, nutrientCalculator) {
 
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.forages = [];
@@ -22,6 +22,7 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 
 		$scope.calculate = function (forages) {
 			$scope.result = foragesPurchased.calculate(forages);
+			saveInSessionStorage($scope.result);
 			$scope.noResult = !$scope.result;
 		};
 
@@ -51,5 +52,16 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 			$scope.result = '';
 			$scope.forageTypes = foragesPurchased.types.removeAt(index).toArray();
 		};
+
+		function saveInSessionStorage(result) {
+			nutrientCalculator.session.saveSection('foragesPurchased', result);
+		};
+
+		if(nutrientCalculator.session.isLoadFlagSet(location)){
+			var foragesPurchasedData = nutrientCalculator.session.loadSection('foragesPurchased');
+			foragesPurchased.load(foragesPurchasedData.forages);
+			$scope.calculate(foragesPurchasedData.forages);
+			$scope.forages = foragesPurchasedData.forages;
+		}
 
 	});
