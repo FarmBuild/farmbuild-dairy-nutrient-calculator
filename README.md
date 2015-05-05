@@ -8,6 +8,7 @@ This is the dairy nutrient calculator module of farm build JavaScript library.
 To get you started simply download this repository using <a href="https://github.com/SpatialVision/farm-build-nutrient-calculator/archive/master.zip" target="_blank">"Download ZIP"</a> on the right side of this page.
 Unzip the downloaded folder and go to "examples" and open one of the html files in a browser.
 
+* <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/index.html" target="_blank">Load FarmData - angularJS example</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/milk-sold/index.html" target="_blank">Milk Sold - angularJS example</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/jquery/milk-sold/index.html" target="_blank">Milk Sold - jQuery example</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/cows-purchased/index.html" target="_blank">Cows Purchased - angularJS example</a>
