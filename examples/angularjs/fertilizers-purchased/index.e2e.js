@@ -15,7 +15,7 @@ describe('Calculate nutrient of fertilizer purchased (new farm data)', function(
 
     it('should render sample when user navigates to angularjs/fertilizers-purchased/index.html', function() {
       expect(element.all(by.css('body h3')).first().getText()).
-        toContain('Farmbuild Diary Nutrient Calculator - Fertilizer Purchased');
+        toContain('Fertilizers Purchased');
     });
 
     it('should add new fertilizer', function() {
