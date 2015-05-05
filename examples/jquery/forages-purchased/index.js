@@ -144,7 +144,16 @@ $(function(){
 				errorMsg.show();
 			}			
 			//reset form 
-			forageType = '';		
+			forageType = '';
+			$("#forageTypeSelect").val("default");
+			$("#newForageWeight").val('');
+			$("#isDry").val("default");
+			$("#newForageType_metabolisableEnergyInMJPerKg").text('');
+			$("#newForageType_dryMatterPercentage").text('');
+			$("#newForageType_sulphurPercentage").text('');
+			$("#newForageType_potassiumPercentage").text('');
+			$("#newForageType_phosphorusPercentage").text('');
+			$("#newForageType_nitrogenPercentage").text('');
 			
 		});
 		
