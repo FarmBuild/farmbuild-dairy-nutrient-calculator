@@ -8,12 +8,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	})
 
-	.controller('MilkSoldCtrl', function ($scope, milkSold, farmdata) {
-
-//		var load = false;
-//		if(location.href.split('?').length > 1 && location.href.split('?')[1].indexOf('load') === 0){
-//			load = location.href.split('?')[1].split('=')[1] === 'true';
-//		}
+	.controller('MilkSoldCtrl', function ($scope, nutrientCalculator, milkSold) {
 
 		$scope.calculateByPercent = function (milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			$scope.result = milkSold.calculateByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
@@ -39,20 +34,12 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 			}
 		};
 
-		function findInSessionStorage() {
-			var root = farmdata.session.find();
-			return root.nutrientCalculator.milkSold;
-		};
-
 		function saveInSessionStorage(result) {
-			var farmData = farmdata.session.find();
-			farmData.dateLastUpdated = new Date();
-			farmData.nutrientCalculator.milkSold = result;
-      farmdata.session.save(farmData);
+      nutrientCalculator.session.saveSection('milkSold', result);
 		};
 
-		if(farmdata.isLoadFlagSet(location)){
-			var milkSoldData = findInSessionStorage();
+		if(nutrientCalculator.session.isLoadFlagSet(location)){
+			var milkSoldData = nutrientCalculator.session.loadSection('milkSold');
 			$scope.calculateByKg(milkSoldData.totalPerYearInLitre, milkSoldData.proteinInKg, milkSoldData.fatInKg)
 			$scope.fatInKg = milkSoldData.fatInKg;
 			$scope.proteinInKg = milkSoldData.proteinInKg;

@@ -6,7 +6,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
-	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, cowsPurchased, validations) {
+	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, nutrientCalculator, cowsPurchased, validations) {
 
 		var isPositiveNumber = validations.isPositiveNumber;
 		var load = false;
@@ -21,6 +21,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$scope.calculate = function (cows, form) {
 			$scope.result = cowsPurchased.calculate(cows);
 			$scope.noResult = !$scope.result;
+      saveInSessionStorage($scope.result);
 		};
 
 		$scope.addCowType = function (type, form) {
@@ -66,13 +67,12 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			$scope.result = {};
 		};
 
-		function findInSessionStorage() {
-			var root = angular.fromJson(sessionStorage.getItem('farmData'));
-			return root.nutrientCalculator.cowsCulled;
-		};
+    function saveInSessionStorage(result) {
+      nutrientCalculator.session.saveSection('cowsCulled', result);
+    };
 
-		if(load){
-			var cowsCulledData = findInSessionStorage();
+    if(nutrientCalculator.session.isLoadFlagSet(location)){
+      var cowsCulledData = nutrientCalculator.session.loadSection('cowsCulled');
 			$scope.calculate(cowsCulledData.cows);
 			$scope.cows = cowsCulledData.cows;
 		}
