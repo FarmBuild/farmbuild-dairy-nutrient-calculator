@@ -16,17 +16,27 @@
             Farmbuild Diary Nutrient Calculator
             <small>(angularJS)</small>
         </h3>
-        <a ng-href="cows-culled/index.html?load=true">cows-culled</a> |
-        <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |
-        <a ng-href="fertilizers-purchased/index.html?load=true">fertilizers-purchased</a> |
-        <a ng-href="forages-purchased/index.html?load=true">forages-purchased</a> |
-        <a ng-href="concentrates-purchased/index.html?load=true">concentrates-purchased</a> |
-        <a ng-href="milk-sold/index.html?load=true">milk-sold</a> |
-        <a ng-href="legumes/index.html?load=true">legumes</a>
+        <a ng-href="cows-purchased/index.html">cows-purchased</a> |
+        <a ng-href="cows-culled/index.html">cows-culled</a> |
+        <a ng-href="forages-purchased/index.html">forages-purchased</a> |
+        <a ng-href="concentrates-purchased/index.html">concentrates-purchased</a> |
+        <a ng-href="fertilizers-purchased/index.html">fertilizers-purchased</a> |
+        <a ng-href="milk-sold/index.html">milk-sold</a> |
+        <a ng-href="legumes/index.html">legumes</a>
         <hr/>
         <form-item class="form-group col-md-6">
             <label>Please select your farm data</label>
             <input name="farmData" type="file" on-read-file="loadFarmData($fileContent)" class="form-control">
+            <br/>
+            <span ng-if="farmData.nutrientCalculator.cowsPurchased.cows.length>0">
+            <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |
+            <a ng-href="cows-culled/index.html?load=true">cows-culled</a> |
+            <a ng-href="forages-purchased/index.html?load=true">forages-purchased</a> |
+            <a ng-href="concentrates-purchased/index.html?load=true">concentrates-purchased</a> |
+            <a ng-href="fertilizers-purchased/index.html?load=true">fertilizers-purchased</a> |
+            <a ng-href="milk-sold/index.html?load=true">milk-sold</a> |
+            <a ng-href="legumes/index.html?load=true">legumes</a>
+                </span>
         </form-item>
         <buttons class="col-md-12">
             <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
@@ -35,6 +45,7 @@
         </buttons>
         <div class="clearfix"></div>
     </form>
+    <br/>
     <summary>
         <fieldset>
             <legend>
@@ -73,7 +84,8 @@
                 Balance and Efficiency
             </legend>
             <form-item class="form-group col-sm-6">
-                <table id="foragesTbl" class="table table-striped table-hover">
+                <table ng-if="balance.nitrogen || efficiency.nitrogen" id="foragesTbl"
+                       class="table table-striped table-hover">
                     <tr>
                         <th></th>
                         <th>Nitrogen</th>
@@ -96,6 +108,9 @@
                         <td ng-bind="efficiency.sulphur | number: decimalPrecision"></td>
                     </tr>
                 </table>
+                <empty-message ng-if="!balance.nitrogen && !efficiency.nitrogen"><i class="fa fa-warning icon"></i>Provide
+                    a complete farm data to see balance and efficiency!
+                </empty-message>
             </form-item>
         </fieldset>
     </summary>
