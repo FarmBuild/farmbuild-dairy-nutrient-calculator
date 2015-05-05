@@ -1,14 +1,14 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, FarmData, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, farmdata, $log) {
     var nutrientCalculator = {};
     $log.info("Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?");
-    nutrientCalculator.load = function(farmData) {
-        if (!FarmData.isFarmData(farmData)) {
+    nutrientCalculator.load = function(toLoad) {
+        if (!farmdata.isFarmData(toLoad)) {
             return undefined;
         }
-        if (!farmData.nutrientCalculator) {
-            farmData.nutrientCalculator = {
+        if (!toLoad.nutrientCalculator) {
+            toLoad.nutrientCalculator = {
                 milkSold: {},
                 cowsCulled: {},
                 cowsPurchased: {},
@@ -17,7 +17,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
                 legumes: {}
             };
         }
-        return farmData;
+        return toLoad;
     };
     nutrientCalculator.milkSold = milkSold;
     nutrientCalculator.cowsPurchased = cowsPurchased;
@@ -1829,41 +1829,6 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         return valuePercentage * totalInLitre / 100;
     }
     return milkSold;
-});
-
-angular.module("farmbuild.nutrientCalculator").factory("validations", function($log) {
-    var validations = {};
-    validations.isPositiveNumberOrZero = function(value) {
-        return !isNaN(parseFloat(value)) && isFinite(value) && parseFloat(value) >= 0;
-    };
-    validations.isPositiveNumber = function(value) {
-        return validations.isPositiveNumberOrZero(value) && parseFloat(value) > 0;
-    };
-    validations.isAlphabet = function(value) {
-        var regex = /^[A-Za-z]+$/gi;
-        return regex.test(value);
-    };
-    validations.isAlphanumeric = function(value) {
-        var regex = /^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9 _]*$/gi;
-        return regex.test(value);
-    };
-    var isEmpty = function(data) {
-        if (typeof data == "number" || typeof data == "boolean") {
-            return false;
-        }
-        if (typeof data == "undefined" || data === null) {
-            return true;
-        }
-        if (typeof data.length != "undefined") {
-            return data.length == 0;
-        }
-        return false;
-    };
-    validations.isEmpty = isEmpty;
-    validations.isDefined = angular.isDefined;
-    validations.isArray = angular.isArray;
-    validations.equals = angular.equals;
-    return validations;
 });
 
 "use strict";
