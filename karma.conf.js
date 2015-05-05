@@ -38,6 +38,7 @@ module.exports = function(config){
       'src/concentrates-purchased/index.src.js',
       'src/concentrates-purchased/types.spec.js',
 //      'src/concentrates-purchased/index.spec.js',
+      'src/session/index.src.js',
       'src/index.js',
       'src/*.js',
       'src/**/*.js'

@@ -15,10 +15,11 @@
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 	.factory('nutrientCalculator',
   function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes,
+            nutrientCalculatorSession,
             farmdata,
             validations,
             $log) {
-		var nutrientCalculator = {};
+		var nutrientCalculator = {session:nutrientCalculatorSession};
 
 		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
       'this should only be initialised once! why we see twice in the example?');

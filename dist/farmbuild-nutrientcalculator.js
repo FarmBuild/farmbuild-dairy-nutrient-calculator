@@ -1,7 +1,9 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, farmdata, validations, $log) {
-    var nutrientCalculator = {};
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, nutrientCalculatorSession, farmdata, validations, $log) {
+    var nutrientCalculator = {
+        session: nutrientCalculatorSession
+    };
     $log.info("Welcome to Farm Dairy Nutrient Calculator... " + "this should only be initialised once! why we see twice in the example?");
     nutrientCalculator.load = function(toLoad) {
         if (!farmdata.isFarmData(toLoad)) {
@@ -1899,6 +1901,20 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         return valuePercentage * totalInLitre / 100;
     }
     return milkSold;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientCalculatorSession", function(farmdata, validations) {
+    var nutrientCalculatorSession = {}, _isPositiveNumber = validations.isPositiveNumber;
+    nutrientCalculatorSession.isLoadFlagSet = function(location) {
+        var load = false;
+        if (location.href.split("?").length > 1 && location.href.split("?")[1].indexOf("load") === 0) {
+            load = location.href.split("?")[1].split("=")[1] === "true";
+        }
+        return load;
+    };
+    return nutrientCalculatorSession;
 });
 
 "use strict";
