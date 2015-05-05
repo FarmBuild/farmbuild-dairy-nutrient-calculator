@@ -86,7 +86,11 @@
 
             <form-item class="form-group col-md-6">
                 <label>Utilisation Factor</label>
-                <input name="utilisationFactor" ng-model="utilisationFactor" type="number" class="form-control">
+                <select name="utilisationFactor" id="utilisationFactor" class="form-control"
+                        ng-options="utilisationFactor as utilisationFactor.name for utilisationFactor in utilisationFactors"
+                        ng-model="utilisationFactor">
+                    <option value="">Select utilisation factor</option>
+                </select>
             </form-item>
 
             <buttons class="col-md-12">

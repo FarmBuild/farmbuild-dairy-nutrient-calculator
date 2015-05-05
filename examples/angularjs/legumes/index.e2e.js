@@ -38,8 +38,8 @@ describe('Farm web nutrient calculator', function () {
 				toBe('5780');
 			expect(element(by.model('legumePercentage')).sendKeys('3.5').getAttribute('value')).
 				toBe('3.5');
-			expect(element(by.model('utilisationFactor')).sendKeys('75').getAttribute('value')).
-				toBe('75');
+			element(by.model('utilisationFactor')).sendKeys('Average');
+
 			element(by.buttonText('Calculate')).click().then(function () {
 				expect(element.all(by.css('summary .form-group p span')).first().getText()).
 					toContain('1,751,317.00');
