@@ -8,7 +8,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	})
 
-	.controller('MilkSoldCtrl', function ($scope, nutrientCalculator, milkSold, farmdata) {
+	.controller('MilkSoldCtrl', function ($scope, nutrientCalculator, milkSold) {
 
 		$scope.calculateByPercent = function (milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			$scope.result = milkSold.calculateByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
