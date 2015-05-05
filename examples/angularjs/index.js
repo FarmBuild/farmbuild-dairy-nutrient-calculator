@@ -7,34 +7,39 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 	.controller('FarmCtrl', function ($scope, nutrientCalculator) {
 
+		var load = false;
+		if(location.href.split('?').length > 1 && location.href.split('?')[1].indexOf('load') === 0){
+			load = (location.href.split('?')[1].split('=')[1] === 'true');
+		}
+
 		$scope.farmData = {};
 
 		$scope.load = function ($fileContent) {
 			try {
 				$scope.farmData = nutrientCalculator.load(angular.fromJson($fileContent));
-			} catch(e){
+				$scope.saveToSessionStorage('farmData', angular.toJson($scope.farmData));
+			} catch (e) {
 				console.error('farmbuild.nutrientCalculator.examples > load: Your file should be in json format')
 			}
 		};
 
-		$scope.milkSold = function () {
-			$scope.farmData.nutrientCalculator.milkSold =
-				nutrientCalculator.milkSold.calculateByPercent(
-					$scope.farmData.nutrientCalculator.milkSold.totalPerYearInLitre,
-					$scope.farmData.nutrientCalculator.milkSold.proteinPercentage,
-					$scope.farmData.nutrientCalculator.milkSold.fatPercentage)
+		$scope.exportFarmData = function (farmData) {
+			var url = 'data:application/json;charset=utf8,' + encodeURIComponent(JSON.stringify(farmData, undefined, 2));
+			window.open(url, '_blank');
+			window.focus();
 		};
 
-/*		$scope.exportFarmData = function(farmData){
-			var blob = new Blob([angular.toJson(farmData)], { type: 'application/json' }),
-					url = window.URL.createObjectURL(blob);
-			return url;
-		}*/
-
-		$scope.exportFarmData = function(farmData){
-			var blob = new Blob([angular.toJson(farmData)], { type: 'application/json' });
-			$scope.exUrl = URL.createObjectURL(blob);
+		$scope.saveToSessionStorage = function (key, value) {
+			sessionStorage.setItem(key, value);
 		};
+
+		function findInSessionStorage() {
+			return angular.fromJson(sessionStorage.getItem('farmData'));
+		};
+
+		if(load){
+			$scope.farmData = findInSessionStorage();
+		}
 
 	})
 
