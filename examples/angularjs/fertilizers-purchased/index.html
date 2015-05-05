@@ -12,7 +12,7 @@
 <body ng-controller="FertilizersPurchasedCtrl">
 <content>
     <h3>
-        <a ng-href="../">Farmbuild Diary Nutrient Calculator</a> - Fertilizer Purchased
+        <a ng-href="/examples/angularjs/index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Fertilizers Purchased
         <small>(angularJS)</small>
     </h3>
     <hr/>
@@ -107,6 +107,7 @@
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
                         <th>Wet/Dry</th>
+                        <th>Dry Weight (kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
                         <th>Potassium (%)</th>
@@ -134,6 +135,7 @@
                                 <option value="">Select wet/dry</option>
                             </select>
                         </td>
+                        <td></td>
                         <td>
                             <span ng-bind='newFertilizer.type.dryMatterPercentage'></span>
                         </td>

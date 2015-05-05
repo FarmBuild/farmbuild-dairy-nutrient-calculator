@@ -23,7 +23,8 @@ angular.module('farmbuild.nutrientCalculator')
       _fertilizers = [],
       calculator = fertilizerCalculator,
       validator = fertilizerValidator;
-    
+
+
     /**
      * Removes the fertilizer at specified index
      * @method removeAt
@@ -97,6 +98,10 @@ angular.module('farmbuild.nutrientCalculator')
       }
 
       return calculator.calculate(fertilizers);
+    }
+
+    fertilizersPurchased.load = function(fertilizers) {
+      _fertilizers = fertilizers;
     }
 
     return fertilizersPurchased;

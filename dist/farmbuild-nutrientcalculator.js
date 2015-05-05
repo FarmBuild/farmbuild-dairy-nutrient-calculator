@@ -1159,6 +1159,9 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
         }
         return calculator.calculate(fertilizers);
     };
+    fertilizersPurchased.load = function(fertilizers) {
+        _fertilizers = fertilizers;
+    };
     return fertilizersPurchased;
 });
 
