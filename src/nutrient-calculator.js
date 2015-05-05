@@ -83,7 +83,6 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core', 'farmbuild.far
 
 		function _nutrientValues(farmData) {
 			var data = farmData.nutrientCalculator,
-				exportedNitrogenInKg = 0,
 				incomings = {
 					nitrogenInKg: 0,
 					potassiumInKg: 0,
