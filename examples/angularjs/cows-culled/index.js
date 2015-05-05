@@ -9,6 +9,10 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, cowsPurchased, validations) {
 
 		var isPositiveNumber = validations.isPositiveNumber;
+		var load = false;
+		if(location.href.split('?').length > 1 && location.href.split('?')[1].indexOf('load') === 0){
+			load = location.href.split('?')[1].split('=')[1] === 'true';
+		}
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.cows = [];
 		$scope.noResult = false;
@@ -61,5 +65,16 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			$scope.numberOfCows = '';
 			$scope.result = {};
 		};
+
+		function findInSessionStorage() {
+			var root = angular.fromJson(sessionStorage.getItem('farmData'));
+			return root.nutrientCalculator.cowsCulled;
+		};
+
+		if(load){
+			var cowsCulledData = findInSessionStorage();
+			$scope.calculate(cowsCulledData.cows);
+			$scope.cows = cowsCulledData.cows;
+		}
 
 	});

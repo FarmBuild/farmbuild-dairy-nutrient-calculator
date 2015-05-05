@@ -36,7 +36,10 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 				farmData.nutrientCalculator = {
 					milkSold: {},
 					cowsCulled: {},
-					cowsPurchased: {}
+					cowsPurchased: {},
+					fertilizersPurchased: {},
+					foragesPurchased: {},
+					legumes: {}
 				};
 			}
 			return farmData;

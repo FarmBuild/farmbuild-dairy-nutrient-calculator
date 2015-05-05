@@ -16,11 +16,11 @@
       Farmbuild Diary Nutrient Calculator
       <small>(angularJS)</small>
     </h3>
-    <a ng-href="cows-culled/">cows-culled</a> |
-    <a ng-href="cows-purchased/">cows-purchased</a> |
-    <a ng-href="fertilizers-purchased/">fertilizers-purchased</a> |
-    <a ng-href="forages-purchased/">forages-purchased</a> |
-    <a ng-href="milk-sold/">milk-sold</a> |
+    <a ng-href="cows-culled/index.html?load=true">cows-culled</a> |
+    <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |
+    <a ng-href="fertilizers-purchased/index.html?load=true">fertilizers-purchased</a> |
+    <a ng-href="forages-purchased/index.html?load=true">forages-purchased</a> |
+    <a ng-href="milk-sold/index.html?load=true">milk-sold</a> |
     <hr/>
     <form-item class="form-group col-md-6">
       <label>Please select your farm data</label>
@@ -28,7 +28,7 @@
     </form-item>
     <buttons class="col-md-12">
       <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
-      <a type="button" class="btn btn-primary" ng-href="{{exUrl}}" ng-disabled="!farmData.name" download="data.json">Export
+      <a type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export
         farm data</a>
     </buttons>
     <div class="clearfix"></div>
@@ -45,22 +45,18 @@
         <p>Area: <span ng-bind="farmData.area | number: decimalPrecision"></span></p>
       </form-item>
       <form-item class="form-group col-sm-6">
-        <p>Date Created: <span ng-bind="farmData.dateCreated | date: 'dd/MM/yyyy'"></span></p>
+        <p>Date Created: <span ng-bind="farmData.dateCreated | date: 'medium'"></span></p>
       </form-item>
       <form-item class="form-group col-sm-6">
-        <p>Date Last Updated: <span ng-bind="farmData.dateLastUpdated | date: 'dd/MM/yyyy'"></span></p>
+        <p>Date Last Updated: <span ng-bind="farmData.dateLastUpdated | date: 'medium'"></span></p>
       </form-item>
     </fieldset>
   </summary>
-  <ng-include src="'milk-sold/partial.tpl.html'"></ng-include>
   <version>
     Version: <span ng-bind="appVersion"></span>
   </version>
 </content>
 
-<!-- In production use:
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
--->
 <script src="../../dist/farmbuild-core.js"></script>
 <script src="../../dist/farmbuild-farmdata.js"></script>
 <script src="../../dist/farmbuild-nutrientcalculator.js"></script>
