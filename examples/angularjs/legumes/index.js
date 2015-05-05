@@ -29,17 +29,4 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 			$scope.noResult = !$scope.result;
 		};
 
-		$scope.addLegume = function (type, weight, isDry) {
-			isDry = (isDry === 'true');
-			$scope.legumes = legumes.add(type, weight, isDry).toArray();
-			$scope.result = '';
-			$scope.newLegume = {};
-			$scope.noResult = !$scope.legumes;
-		};
-
-		$scope.removeLegume = function (index) {
-			$scope.result = '';
-			$scope.legumes = legumes.removeAt(index).toArray();
-		};
-
 	});
