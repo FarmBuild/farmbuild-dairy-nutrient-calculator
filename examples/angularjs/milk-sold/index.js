@@ -34,17 +34,8 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 			}
 		};
 
-//		function findInSessionStorage() {
-//			var root = farmdata.session.find();
-//			return root.nutrientCalculator.milkSold;
-//		};
-
 		function saveInSessionStorage(result) {
       nutrientCalculator.session.saveSection('milkSold', result);
-//			var farmData = farmdata.session.find();
-//			farmData.dateLastUpdated = new Date();
-//			farmData.nutrientCalculator.milkSold = result;
-//      farmdata.session.save(farmData);
 		};
 
 		if(nutrientCalculator.session.isLoadFlagSet(location)){
