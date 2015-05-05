@@ -24,7 +24,7 @@
         <hr/>
         <form-item class="form-group col-md-6">
             <label>Please select your farm data</label>
-            <input name="farmData" type="file" on-read-file="load($fileContent)" class="form-control">
+            <input name="farmData" type="file" on-read-file="loadFarmData($fileContent)" class="form-control">
         </form-item>
         <buttons class="col-md-12">
             <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
@@ -81,17 +81,17 @@
                     </tr>
                     <tr>
                         <td>Balance (kg/ha)</td>
-                        <td ng-bind="balance.nitrogenInKg"></td>
-                        <td ng-bind="balance.phosphorusInKg"></td>
-                        <td ng-bind="balance.potassiumInKg"></td>
-                        <td ng-bind="balance.sulphurInKg"></td>
+                        <td ng-bind="balance.nitrogen | number: decimalPrecision"></td>
+                        <td ng-bind="balance.phosphorus | number: decimalPrecision"></td>
+                        <td ng-bind="balance.potassium | number: decimalPrecision"></td>
+                        <td ng-bind="balance.sulphur | number: decimalPrecision"></td>
                     </tr>
                     <tr>
                         <td>Efficiency (%)</td>
-                        <td ng-bind="efficiency.nitrogenInKg"></td>
-                        <td ng-bind="efficiency.phosphorusInKg"></td>
-                        <td ng-bind="efficiency.potassiumInKg"></td>
-                        <td ng-bind="efficiency.sulphurInKg"></td>
+                        <td ng-bind="efficiency.nitrogen | number: decimalPrecision"></td>
+                        <td ng-bind="efficiency.phosphorus | number: decimalPrecision"></td>
+                        <td ng-bind="efficiency.potassium | number: decimalPrecision"></td>
+                        <td ng-bind="efficiency.sulphur | number: decimalPrecision"></td>
                     </tr>
                 </table>
             </form-item>

@@ -372,6 +372,143 @@
       "sulphurPercentage": 0.19852925892596868,
       "metabolisableEnergyInMJ": 6482591.1,
       "metabolisableEnergyInMJPerKg": 8.32
+    },
+    "concentratesPurchased": {
+      "concentrates": [
+        {
+          "type": {
+            "name": "Pellets Calf",
+            "nitrogenPercentage": 3.14,
+            "phosphorusPercentage": 0.67,
+            "potassiumPercentage": 0.84,
+            "sulphurPercentage": 0.28,
+            "dryMatterPercentage": 88.78,
+            "metabolisableEnergyInMJPerKg": 12.72
+          },
+          "weight": 1850,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Pellets Dairy",
+            "nitrogenPercentage": 2.37,
+            "phosphorusPercentage": 0.72,
+            "potassiumPercentage": 0.7,
+            "sulphurPercentage": 0.24,
+            "dryMatterPercentage": 89.64,
+            "metabolisableEnergyInMJPerKg": 12.54
+          },
+          "weight": 8150,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Pellets Dairy",
+            "nitrogenPercentage": 2.37,
+            "phosphorusPercentage": 0.72,
+            "potassiumPercentage": 0.7,
+            "sulphurPercentage": 0.24,
+            "dryMatterPercentage": 89.64,
+            "metabolisableEnergyInMJPerKg": 12.54
+          },
+          "weight": 2050,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Average concentrate",
+            "nitrogenPercentage": 3.88,
+            "phosphorusPercentage": 0.64,
+            "potassiumPercentage": 0.74,
+            "sulphurPercentage": 0.32,
+            "dryMatterPercentage": 76,
+            "metabolisableEnergyInMJPerKg": 12.62
+          },
+          "weight": 7815,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Pellets Calf",
+            "nitrogenPercentage": 3.14,
+            "phosphorusPercentage": 0.67,
+            "potassiumPercentage": 0.84,
+            "sulphurPercentage": 0.28,
+            "dryMatterPercentage": 88.78,
+            "metabolisableEnergyInMJPerKg": 12.72
+          },
+          "weight": 1012,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Pellets Dairy",
+            "nitrogenPercentage": 2.37,
+            "phosphorusPercentage": 0.72,
+            "potassiumPercentage": 0.7,
+            "sulphurPercentage": 0.24,
+            "dryMatterPercentage": 89.64,
+            "metabolisableEnergyInMJPerKg": 12.54
+          },
+          "weight": 9658,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Pellets Dairy",
+            "nitrogenPercentage": 2.37,
+            "phosphorusPercentage": 0.72,
+            "potassiumPercentage": 0.7,
+            "sulphurPercentage": 0.24,
+            "dryMatterPercentage": 89.64,
+            "metabolisableEnergyInMJPerKg": 12.54
+          },
+          "weight": 8571,
+          "isDry": true
+        },
+        {
+          "type": {
+            "name": "Fruit",
+            "nitrogenPercentage": 2.74,
+            "phosphorusPercentage": 0.5,
+            "potassiumPercentage": 3.66,
+            "sulphurPercentage": 0.21,
+            "dryMatterPercentage": 3.85,
+            "metabolisableEnergyInMJPerKg": 11.6
+          },
+          "weight": 328,
+          "isDry": true
+        }
+      ],
+      "weight": 39434,
+      "dryMatterWeight": 39434,
+      "nitrogenInKg": 1075.8433,
+      "nitrogenPercentage": 2.728212456256023,
+      "phosphorusInKg": 275.5202,
+      "phosphorusPercentage": 0.6986869199168231,
+      "potassiumInKg": 292.8796,
+      "potassiumPercentage": 0.7427083227671551,
+      "sulphurInKg": 101.94000000000001,
+      "sulphurPercentage": 0.25850788659532387,
+      "metabolisableEnergyInMJ": 495334.39999999997,
+      "metabolisableEnergyInMJPerKg": 11.6
+    },
+    "legumes": {
+      "importedEnergyConsumedInMJ": 10204602.305,
+      "utilisationFactor": 75,
+      "dryMatterConsumedPerHaInKg": 8761.326115546455,
+      "dryMatterGrownPerHaInKg": 11681.76815406194,
+      "averageNitrogenAppliedPerHaInKg": 82.1139366387271,
+      "availableNitrogenFromLegumesPerHaInKg": 13.431975500695733,
+      "availableNitrogenToPasturePerHaInKg": 95.54591213942282,
+      "cattleEnergyUsedInMJ": 16680054.630369807,
+      "milkEnergyInMJ": 9751288.792938001,
+      "milkEnergyNotSoldInMJ": 390051.55171752005,
+      "milkProteinInKg": 59895.04,
+      "milkFatInKg": 74080.71,
+      "milkSoldPerYearInLitre": 1751317,
+      "legumePerHaInKg": 408.8618853921679,
+      "legumePercentage": 3.5
     }
   }
 }

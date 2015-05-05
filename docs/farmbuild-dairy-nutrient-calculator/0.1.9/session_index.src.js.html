@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>fertilizers-purchased/validator.src.js - Documentation</title>
+    <title>session/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">fertilizers-purchased/validator.src.js</h1>
+    <h1 class="page-title">session/index.src.js</h1>
     
 
     
@@ -49,51 +49,39 @@
 'use strict';
 
 /**
- * nutrientCalculator/fertilizerValidator singleton
- * @module nutrientCalculator/fertilizerValidator
+ * nutrientCalculator/nutrientCalculatorSession singleton
+ * @module nutrientCalculator/nutrientCalculatorSession
  */
 angular.module('farmbuild.nutrientCalculator')
-.factory('fertilizerValidator',
-  function (validations, fertilizerTypes,
-            $log) {
+  .factory('nutrientCalculatorSession',
+  function (farmdata, validations) {
 
-    var fertilizerValidator = {},
-      _isDefined = validations.isDefined,
-      _isArray = validations.isArray;
+    var nutrientCalculatorSession = {},
+      _isPositiveNumber = validations.isPositiveNumber;
 
-     function _validate(fertilizer) {
-      $log.info('validating fertilizer...', fertilizer);
+    /**
+     * Returns true if the location.search has ?load=true, false otherwise
+     * @method isLoadFlagSet
+     * @param {object} location instance
+     * @returns {boolean} Returns true if the location.search has ?load=true, false otherwise
+     * @public
+     * @static
+     */
+    nutrientCalculatorSession.isLoadFlagSet = function(location) {
+      var load = false;
 
-      if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
-        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
-        return false;
+      if(location.href.split('?').length > 1 &amp;&amp;
+        location.href.split('?')[1].indexOf('load') === 0){
+        load = (location.href.split('?')[1].split('=')[1] === 'true');
       }
 
-      return fertilizerTypes.validate(fertilizer.type);
-    };
-
-    fertilizerValidator.validate = _validate;
-
-    fertilizerValidator.validateAll = function(fertilizers) {
-      if(!_isArray(fertilizers)) {
-        return false;
-      }
-
-      var i = 0;
-      for (i; i &lt; fertilizers.length; i++) {
-        var fertilizer = fertilizers[i];
-
-        if (!_validate(fertilizer)) {
-          $log.error('validator invalid at %s: %j', i, fertilizer);
-          return false;
-        }
-      }
-      return true;
+      return load;
     }
 
+    return nutrientCalculatorSession;
 
-    return fertilizerValidator;
-  });</code></pre>
+  });
+</code></pre>
         </article>
     </section>
 

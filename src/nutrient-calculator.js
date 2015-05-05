@@ -107,32 +107,37 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 					incomings.phosphorusInKg += data[key].phosphorusInKg;
 					incomings.sulphurInKg += data[key].sulphurInKg;
 				}, addOutgoings = function (key) {
-					incomings.nitrogenInKg += data[key].nitrogenInKg;
-					incomings.potassiumInKg += data[key].potassiumInKg;
-					incomings.phosphorusInKg += data[key].phosphorusInKg;
-					incomings.sulphurInKg += data[key].sulphurInKg;
+					outgoings.nitrogenInKg += data[key].nitrogenInKg;
+					outgoings.potassiumInKg += data[key].potassiumInKg;
+					outgoings.phosphorusInKg += data[key].phosphorusInKg;
+					outgoings.sulphurInKg += data[key].sulphurInKg;
 				};
 
 			//Imported values
 			if (_isDefined(data.milkSold)) {
-				addIncomings('milkSold')
+				addOutgoings('milkSold')
 			}
 			if (_isDefined(data.cowsCulled)) {
-				addIncomings('cowsCulled')
+				addOutgoings('cowsCulled')
 			}
 
 			//Exported values
 			if (_isDefined(data.cowsPurchased)) {
-				addOutgoings('cowsPurchased');
+				addIncomings('cowsPurchased');
 			}
 			if (_isDefined(data.concentratesPurchased)) {
-				addOutgoings('concentratesPurchased');
+				addIncomings('concentratesPurchased');
 			}
 			if (_isDefined(data.foragesPurchased)) {
-				addOutgoings('foragesPurchased');
+				addIncomings('foragesPurchased');
 			}
 			if (_isDefined(data.fertilizersPurchased)) {
-				addOutgoings('fertilizersPurchased');
+				addIncomings('fertilizersPurchased');
+			}
+			if (_isDefined(data.legumes)) {
+				incomings.nitrogenInKg += data.legumes.averageNitrogenAppliedPerHaInKg;
+				incomings.nitrogenInKg += data.legumes.availableNitrogenFromLegumesPerHaInKg;
+				incomings.nitrogenInKg += data.legumes.availableNitrogenToPasturePerHaInKg;
 			}
 
 			return {
@@ -144,14 +149,20 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		nutrientCalculator.efficiency = function (farmData) {
 			var nutrientValues = _nutrientValues(farmData);
 			return {
-				nitrogen: _efficiency(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg)
+				nitrogen: _efficiency(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg),
+				potassium: _efficiency(nutrientValues.incomings.potassiumInKg, nutrientValues.outgoings.potassiumInKg),
+				phosphorus: _efficiency(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg),
+				sulphur: _efficiency(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg)
 			}
 		};
 
 		nutrientCalculator.balance = function (farmData) {
 			var nutrientValues = _nutrientValues(farmData), milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
 			return {
-				nitrogen: _balance(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg, milkingArea)
+				nitrogen: _balance(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg, milkingArea),
+				potassium: _balance(nutrientValues.incomings.potassiumInKg, nutrientValues.outgoings.potassiumInKg, milkingArea),
+				phosphorus: _balance(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg, milkingArea),
+				sulphur: _balance(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg, milkingArea)
 			}
 		};
 
