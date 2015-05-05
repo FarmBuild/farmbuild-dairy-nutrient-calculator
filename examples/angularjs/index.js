@@ -14,7 +14,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		$scope.farmData = {};
 
-		$scope.load = function ($fileContent) {
+		$scope.loadFarmData = function ($fileContent) {
 			try {
 				$scope.farmData = nutrientCalculator.load(angular.fromJson($fileContent));
 				$scope.saveToSessionStorage('farmData', angular.toJson($scope.farmData));
@@ -39,8 +39,10 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		if(load){
 			$scope.farmData = findInSessionStorage();
-			$scope.balance = nutrientCalculator.balance($scope.farmData);
-			$scope.efficiency = nutrientCalculator.efficiency($scope.farmData);
+			if($scope.farmData) {
+				$scope.balance = nutrientCalculator.balance($scope.farmData);
+				$scope.efficiency = nutrientCalculator.efficiency($scope.farmData);
+			}
 		}
 
 	})

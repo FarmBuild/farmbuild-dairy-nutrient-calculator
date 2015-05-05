@@ -11,7 +11,6 @@ module.exports = function(config){
       'src/cows-culled/cows.conf.src.js',
       'src/cows-purchased/index.src.js',
       'src/cows-culled/index.src.js',
-      'src/validations/index.src.js',
       'src/milk-sold/index.src.js',
       'src/forages-purchased/forages.conf.src.js',
       'src/forages-purchased/types.src.js',
@@ -28,14 +27,12 @@ module.exports = function(config){
       'src/fertilizers-purchased/validator.src.js',
       'src/fertilizers-purchased/calculator.src.js',
       'src/fertilizers-purchased/index.src.js',
-//      'src/fertilizers-purchased/types.spec.js',
-//      'src/fertilizers-purchased/index.spec.js',
-
       'src/concentrates-purchased/defaults.conf.src.js',
       'src/concentrates-purchased/types.src.js',
       'src/concentrates-purchased/validator.src.js',
       'src/concentrates-purchased/calculator.src.js',
       'src/concentrates-purchased/index.src.js',
+      'src/concentrates-purchased/index.spec.js',
       'src/session/index.src.js',
 //      'src/concentrates-purchased/types.spec.js',
 //      'src/concentrates-purchased/index.spec.js',
@@ -44,7 +41,7 @@ module.exports = function(config){
       'src/index.js',
 //      'src/index.spec.js',
       'src/*.js',
-      //'src/**/*.js'
+      'src/**/*.js'
     ],
 
     autoWatch : true,
