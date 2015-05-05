@@ -12,7 +12,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		}
 	})
 
-	.controller('ConcentratesPurchasedCtrl', function ($scope, $rootScope, concentratesPurchased) {
+	.controller('ConcentratesPurchasedCtrl', function ($scope, $rootScope, nutrientCalculator, concentratesPurchased) {
 
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.concentrates = [];
@@ -23,6 +23,8 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		$scope.calculate = function (concentrates) {
 			$scope.result = concentratesPurchased.calculate(concentrates);
 			$scope.noResult = !$scope.result;
+      saveInSessionStorage($scope.result);
+
 		};
 
 		$scope.addConcentrate = function (type, weight, isDry) {
@@ -51,5 +53,17 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 			$scope.result = '';
 			$scope.concentrateTypes = concentratesPurchased.types.removeAt(index);
 		};
+
+    function saveInSessionStorage(result) {
+      nutrientCalculator.session.saveSection('concentratesPurchased', result);
+    };
+
+    if(nutrientCalculator.session.isLoadFlagSet(location)){
+      var concentratesPurchasedData = nutrientCalculator.session.loadSection('concentratesPurchased');
+
+      concentratesPurchased.load(concentratesPurchasedData.concentrates);
+      $scope.calculate(concentratesPurchasedData.concentrates);
+      $scope.concentrates =  concentratesPurchasedData.concentrates;
+    }
 
 	});

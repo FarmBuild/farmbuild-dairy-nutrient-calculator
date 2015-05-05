@@ -12,7 +12,7 @@ describe('Farm web nutrient calculator', function() {
 
     it('should render sample when user navigates to angularjs/concentrates-purchased/index.html', function() {
       expect(element.all(by.css('body h3')).first().getText()).
-        toContain('Farmbuild Diary Nutrient Calculator - Concentrates Purchased');
+        toContain('Concentrates Purchased');
     });
 
     it('should add new concentrate', function() {

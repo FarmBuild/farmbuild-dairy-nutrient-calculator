@@ -100,8 +100,17 @@ angular.module('farmbuild.nutrientCalculator')
       return calculator.calculate(fertilizers);
     }
 
+    /**
+     * Loads the fertilizers
+     * @method calculate
+     * @param fertilizers
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
     fertilizersPurchased.load = function(fertilizers) {
       _fertilizers = fertilizers;
+      return fertilizersPurchased;
     }
 
     return fertilizersPurchased;

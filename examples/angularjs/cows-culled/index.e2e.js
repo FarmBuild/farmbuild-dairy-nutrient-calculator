@@ -12,7 +12,7 @@ describe('Farm web nutrient calculator', function() {
     
     it('should render sample when user navigates to angularjs/cows-culled/index.html', function() {
       expect(element.all(by.css('body h3')).first().getText()).
-        toContain('Farmbuild Diary Nutrient Calculator - Cows Culled');
+        toContain('Cows Culled');
     });
     
     it('should add new cow', function() {

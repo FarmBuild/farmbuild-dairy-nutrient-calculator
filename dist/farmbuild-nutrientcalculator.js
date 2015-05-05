@@ -549,6 +549,10 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
         }
         return calculator.calculate(concentrates);
     };
+    concentratesPurchased.load = function(concentrates) {
+        _concentrates = concentrates;
+        return concentratesPurchased;
+    };
     return concentratesPurchased;
 });
 
@@ -1161,6 +1165,7 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
     };
     fertilizersPurchased.load = function(fertilizers) {
         _fertilizers = fertilizers;
+        return fertilizersPurchased;
     };
     return fertilizersPurchased;
 });
