@@ -12,12 +12,17 @@
  * nutrientCalculator
  * @module nutrientCalculator
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core', 'farmbuild.farmdata'])
+angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+	.factory('nutrientCalculator',
+  function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes,
+            nutrientCalculatorSession,
+            farmdata,
+            validations,
+            $log) {
+		var nutrientCalculator = {session:nutrientCalculatorSession};
 
-	.factory('nutrientCalculator', function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, FarmData, $log, validations) {
-		var nutrientCalculator = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
-
-		$log.info('Welcome to Farm Dairy Nutrient Calculator... this should only be initialised once! why we see twice in the example?');
+		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
+      'this should only be initialised once! why we see twice in the example?');
 
 		/**
 		 * Adds nutrientCalculator block to farmData
@@ -27,13 +32,13 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core', 'farmbuild.far
 		 * @public
 		 * @static
 		 */
-		nutrientCalculator.load = function (farmData) {
-			if (!FarmData.isFarmData(farmData)) {
+		nutrientCalculator.load = function (toLoad) {
+			if (!farmdata.isFarmData(toLoad)) {
 				return undefined;
 			}
 
-			if (!farmData.nutrientCalculator) {
-				farmData.nutrientCalculator = {
+			if (!toLoad.nutrientCalculator) {
+				toLoad.nutrientCalculator = {
 					milkSold: {},
 					cowsCulled: {},
 					cowsPurchased: {},
@@ -43,7 +48,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core', 'farmbuild.far
 					concentratesPurchased: {}
 				};
 			}
-			return farmData;
+			return toLoad;
 		};
 
 		/**
