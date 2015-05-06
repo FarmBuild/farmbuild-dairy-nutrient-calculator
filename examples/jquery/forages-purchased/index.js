@@ -1,7 +1,7 @@
 'use strict';
 
 $(function(){
-	try{
+
 	var nc = farmbuild.nutrientcalculator,
 		decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	
@@ -28,7 +28,7 @@ $(function(){
          .text(forageTypes[i].name)); 
 	}
 	
-	}catch(err){alert(err.message);}
+
 	
 	//select onchange function
 	foragetypesel.on('change', function() {
@@ -54,24 +54,7 @@ $(function(){
 			$('#newForageType_phosphorusPercentage').text('');
 			$('#newForageType_nitrogenPercentage').text('');
 		}
-	});
-	function isPositiveInteger(s)
-	{    
-		return /^\d+$/.test(s);	
-	}
-	//Calculate total weight to show in the table
-	$("#numberOfCows").keyup(function() {
-			var numofcows = $('#numberOfCows').val();
-			
-		     if(!isPositiveInteger(numofcows)){
-				 noResult = true;
-				 errorMsg.show();				
-			 }else{ 
-				$("#totalCowWeight").text(parseFloat($('#avgCowWeight').text())*parseInt($('#numberOfCows').val()));			
-				errorMsg.hide();
-			 }
-	});
-	
+	});	
 	
     //add forage type to the API and also to the forageTypesTbl table
 	$('#addForageType').submit(function(event){		
@@ -85,7 +68,7 @@ $(function(){
 		newtype.phosphorusPercentage=$('#phosphorusPercentage').val();
 		newtype.nitrogenPercentage=$('#nitrogenPercentage').val();
 		
-		//addForageType(newtype);
+		
 		forageTypes = nc.foragesPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage).toArray();			
 		
 		
@@ -130,7 +113,7 @@ $(function(){
 			var weight = parseFloat($("#newForageWeight").val());
 			
 			forages = nc.foragesPurchased.add(forageType, weight, isDry).toArray();
-			
+			noResult = !forages;
 			if(noResult==false){				
 				errorMsg.hide();			  
 				var addedForage = forages[forages.length -1];
@@ -165,8 +148,6 @@ $(function(){
 		if(index > -1) {			
 			$(this).closest('tr').remove(); //remove the table row			
 			forageTypes = nc.foragesPurchased.types.removeAt(index).toArray();
-			//cows.splice(index, 1); //remove from the cows array
-			//$('#forageTypeSelect option[value='']').remove()
 			
 			//update forageType select options
 			$('#forageTypeSelect option:gt(0)').remove();
