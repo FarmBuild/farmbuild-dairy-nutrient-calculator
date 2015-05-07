@@ -12,7 +12,7 @@ describe('Farm web nutrient calculator', function () {
 
 		it('should render sample when user navigates to angularjs/legumes/index.html', function () {
 			expect(element.all(by.css('body h3')).first().getText()).
-				toContain('Legumes Purchased');
+				toContain('Legumes');
 		});
 
 		it('should render sample when user navigates to angularjs/milk-sold/index.html', function () {
