@@ -14,20 +14,12 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('foragesPurchased', function (validations, forageTypes, $log) {
+	.factory('foragesPurchased', function (validations, forageTypes, forageValidator, $log) {
 
-		var forages = {},
+		var foragesPurchased = {},
 			_isDefined = validations.isDefined,
-			_forages = [];
-
-		function _validate(forage) {
-			$log.info('validating forage ...', forage);
-
-			if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
-				return false;
-			}
-			return forageTypes.validate(forage.type);
-		};
+			_forages = [],
+      validator = forageValidator;
 
 		function _create(type, weight, isDry) {
 			return {type: type, weight: weight, isDry: isDry};
@@ -35,32 +27,47 @@ angular.module('farmbuild.nutrientCalculator')
 
 
 		/**
-		 * Adds a forage to forages collection
+		 * Adds a forage to foragesPurchased collection
 		 * @method add
 		 * @param {!object} type - Type of this forage.
 		 * @param {!number} weight
 		 * @param {!boolean} isDry - Whether it is dry (true/false)
-		 * @returns {object} nutrient data of forages purchased
+		 * @returns {object} nutrient data of foragesPurchased purchased
 		 * @public
 		 * @static
 		 */
 		function _add(type, weight, isDry) {
 			var forage = _create(type, weight, isDry);
 			_forages.push(forage);
-			return forages;
+			return foragesPurchased;
 		};
 
 
+    /**
+     * Returns true if the arguments are valid, false otherwise
+     * @method validate
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {!boolean}
+     * @public
+     * @static
+     */
+    function validate(type, weight, isDry) {
+      var fertilizer = _create(type, weight, isDry);
+      return validator.validate(fertilizer);
+    };
+
 		/**
-		 * Calculates total nutrient imported on to the farm in forages
+		 * Calculates total nutrient imported on to the farm in foragesPurchased
 		 * @method calculate
-		 * @param {!array} forages - Array of purchased forages, each item contains details of the forage {type, weight, isDry}
-		 * @returns {object} nutrient data of forages purchased
+		 * @param {!array} foragesPurchased - Array of purchased foragesPurchased, each item contains details of the forage {type, weight, isDry}
+		 * @returns {object} nutrient data of foragesPurchased purchased
 		 * @public
 		 * @static
 		 */
 		function _calculate(forages) {
-			$log.info('calculating forages nutrient ...', forages);
+			$log.info('calculating foragesPurchased nutrient ...', forages);
 
 			var totalWeight = 0,
 				totalDMWeight = 0,
@@ -82,7 +89,7 @@ angular.module('farmbuild.nutrientCalculator')
 					forage = forages[i],
 					type = forage.type;
 
-				if (!_validate(forage)) {
+				if (!validator.validate(forage)) {
 					return undefined;
 				}
 
@@ -133,9 +140,9 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		/**
-		 * Returns forages collection as an array
+		 * Returns foragesPurchased collection as an array
 		 * @method toArray
-		 * @returns {Array} forages
+		 * @returns {Array} foragesPurchased
 		 * @public
 		 * @static
 		 */
@@ -159,18 +166,18 @@ angular.module('farmbuild.nutrientCalculator')
 		/**
 		 * Removes the forage at specified index
 		 * @method removeAt
-		 * @returns {object} forages collection
+		 * @returns {object} foragesPurchased collection
 		 * @public
 		 * @static
 		 */
 		function _removeIndex(index) {
 			$log.info('removing forage at index ' + index);
 			if (!_isDefined(index) || index < 0 || index > _forages.length - 1) {
-				return forages;
+				return foragesPurchased;
 			}
 			_forages.splice(index, 1);
 
-			return forages;
+			return foragesPurchased;
 		};
 
 
@@ -178,7 +185,7 @@ angular.module('farmbuild.nutrientCalculator')
 			$log.info('removing forage ', forage);
 
 			if (!_isDefined(forage)) {
-				return forages;
+				return foragesPurchased;
 			}
 
 			angular.forEach(_forages, function (item, index) {
@@ -187,7 +194,7 @@ angular.module('farmbuild.nutrientCalculator')
 				}
 			});
 
-			return forages;
+			return foragesPurchased;
 		};
 
 		function _first() {
@@ -200,7 +207,7 @@ angular.module('farmbuild.nutrientCalculator')
 			return _forages[length - 1];
 		};
 
-		forages = {
+		foragesPurchased = {
 			add: _add,
 			at: _at,
 			size: _count,
@@ -222,9 +229,11 @@ angular.module('farmbuild.nutrientCalculator')
 			 * @public
 			 * @static
 			 */
+			types: forageTypes,
+      validate: validate,
+      validateAll: validator.validateAll
 
-			types: forageTypes
 		};
 
-		return forages;
+		return foragesPurchased;
 	});

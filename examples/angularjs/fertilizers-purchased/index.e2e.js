@@ -13,6 +13,8 @@ describe('Calculate nutrient of fertilizer purchased (new farm data)', function(
       browser.get(page);
     });
 
+    //Validation failed
+
     it('should render sample when user navigates to angularjs/fertilizers-purchased/index.html', function() {
       expect(element.all(by.css('body h3')).first().getText()).
         toContain('Fertilizers Purchased');

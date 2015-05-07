@@ -14,6 +14,7 @@ module.exports = function(config){
       'src/milk-sold/index.src.js',
       'src/forages-purchased/forages.conf.src.js',
       'src/forages-purchased/types.src.js',
+      'src/forages-purchased/validator.src.js',
       'src/forages-purchased/index.src.js',
       'src/legumes/utilisation-factors.conf.src.js',
       'src/legumes/calculator.src.js',
