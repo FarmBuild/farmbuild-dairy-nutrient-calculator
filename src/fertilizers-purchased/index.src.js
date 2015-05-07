@@ -19,7 +19,7 @@ angular.module('farmbuild.nutrientCalculator')
             collections,
             $log) {
 
-    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator, validator:fertilizerValidator},
+    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
       _fertilizers = [],
       calculator = fertilizerCalculator,
       validator = fertilizerValidator;
