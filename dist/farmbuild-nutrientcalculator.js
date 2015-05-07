@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, legumes, nutrientCalculatorSession, farmdata, validations, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, $log) {
     var nutrientCalculator = {
         session: nutrientCalculatorSession
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
@@ -107,6 +107,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.cowsCulled = cowsCulled;
     nutrientCalculator.foragesPurchased = foragesPurchased;
     nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.concentratesPurchased = concentratesPurchased;
     nutrientCalculator.legumes = legumes;
     nutrientCalculator.version = "0.1.0";
     if (typeof window.farmbuild === "undefined") {
