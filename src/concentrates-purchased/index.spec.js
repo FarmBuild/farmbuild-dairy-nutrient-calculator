@@ -78,9 +78,9 @@ describe('concentratesPurchased  module', function() {
   describe('Given the default value, calculate the nutrient of concentrate purchased', function(){
 
     it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
-      var weightPelletsCalf1=1850,weightPelletsDairy1 =8150,
-        weightPelletsDairy2 = 2050,weightAverageConcentrate1=7815,weightPelletsCalf2=1012,
-        weightPelletsDairy3=9658,weightPelletsDairy4=8571,weightFruit=328;
+      var weightPelletsCalf1=18500,weightPelletsDairy1 =81500,
+        weightPelletsDairy2 = 20500,weightAverageConcentrate1=78150,weightPelletsCalf2=10120,
+        weightPelletsDairy3=96580,weightPelletsDairy4=85710,weightFruit=3280;
         concentrates = concentratesPurchased
           .add(pelletsCalf, weightPelletsCalf1, true)
           .add(pelletsDairy, weightPelletsDairy1, true)
@@ -97,17 +97,17 @@ describe('concentratesPurchased  module', function() {
 
       $log.info('result generated: %j', result);
 
-      expect(result.weight).toEqual(39434)
-      expect(result.dryMatterWeight).toEqual(39434)
-      expect(result.nitrogenInKg).toEqual(1075.8433)
+      expect(result.weight).toEqual(394340)
+      expect(result.dryMatterWeight).toEqual(394340)
+      expect(result.nitrogenInKg).toEqual(10758.433)
       expect(result.nitrogenPercentage).toEqual(2.728212456256023)
-      expect(result.phosphorusInKg).toEqual(275.5202)
+      expect(result.phosphorusInKg).toEqual(2755.202)
       expect(result.phosphorusPercentage).toBe(0.6986869199168231)
-      expect(result.potassiumInKg).toEqual(292.8796)
-      expect(result.potassiumPercentage).toEqual(0.7427083227671551)
-      expect(result.sulphurInKg).toEqual(101.94000000000001)
+      expect(result.potassiumInKg).toEqual(2928.7960000000003)
+      expect(result.potassiumPercentage).toEqual(0.7427083227671553)
+      expect(result.sulphurInKg).toEqual(1019.4000000000001)
       expect(result.sulphurPercentage).toEqual(0.25850788659532387)
-      expect(result.metabolisableEnergyInMJ).toEqual(495334.39999999997)
+      expect(result.metabolisableEnergyInMJ).toEqual(4953343.9999999997)
       expect(result.metabolisableEnergyInMJPerKg).toEqual(11.6)
     }));
 
