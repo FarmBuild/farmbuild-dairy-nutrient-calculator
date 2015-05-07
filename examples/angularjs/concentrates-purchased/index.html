@@ -11,6 +11,7 @@
 </head>
 <body ng-controller="ConcentratesPurchasedCtrl">
 <content>
+    <modal ng-if="noResult" ng-include="'../modal-validation-error.html'"></modal>
     <h3>
       <a ng-href="../index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Concentrates Purchased
         <small>(angularJS)</small>
@@ -21,11 +22,6 @@
             <legend>
                 Here is a list of concentrates available, please add a new type if necessary.
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a
-                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
-                more information
-            </error>
             <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
                 <notification message="msgVehicle"
                               show="true" invalid="form.registration.$error.required"></notification>
@@ -100,11 +96,6 @@
             <legend>
                 Please enter the combination of concentrates available in the farm to calculate the nutrient
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a
-                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
-                more information
-            </error>
             <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
                 <table id="concentratesTbl" class="table table-striped table-hover">
                     <tr>
@@ -199,11 +190,6 @@
             <legend>
                 Summary - Total nutrient imported on to the farm in concentrates
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a
-                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
-                more information
-            </error>
             <form-item class="form-group col-sm-6">
                 <p>Total weight (Kg): <span ng-bind="result.weight | number"></span></p>
             </form-item>

@@ -22,6 +22,10 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 
 
 		$scope.calculate = function (concentrates) {
+      if(!concentratesPurchased.validateAll(concentrates)) {
+        $scope.noResult = true;
+        return;
+      }
 			$scope.result = concentratesPurchased.calculate(concentrates);
 			$scope.noResult = !$scope.result;
       saveInSessionStorage($scope.result);
@@ -29,6 +33,11 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		};
 
 		$scope.addConcentrate = function (type, weight, isDry) {
+      if(!concentratesPurchased.validate(type, weight, isDry)) {
+        $scope.noResult = true;
+        return;
+      }
+
 			isDry = (isDry === 'true');
 			$scope.concentrates = concentratesPurchased.add(type, weight, isDry).concentrates();
 			$scope.result = '';
@@ -42,6 +51,10 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		};
 
 		$scope.addConcentrateType = function (type) {
+      if(!concentratesPurchased.types.validate(type)) {
+        $scope.noResult = true;
+        return;
+      }
 			$scope.concentrateTypes = concentratesPurchased.types.add(type.name, type.metabolisableEnergyInMJPerKg, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
 																									type.phosphorusPercentage, type.nitrogenPercentage);
