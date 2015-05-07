@@ -15,33 +15,33 @@ $(function(){
 	var result={};
 	var noResult = false;
 	
-	var concentrates = [];
+	var fertilizers = [];
+	alert(nc.fertilizersPurchased);
+	var fertilizerTypes = nc.fertilizersPurchased.types.toArray();
 	
-	var concentrateTypes = nc.concentratesPurchased.types.defaultTypes();
-	
-	var concentratetypesel = $('#concentrateTypeSelect');	
-	for(var i=0; i<concentrateTypes.length; i++){
-		$('#concentrateTypesTbl').append('<tr><td>'+concentrateTypes[i].name+'</td><td>'+ concentrateTypes[i].metabolisableEnergyInMJPerKg+'</td><td>'+concentrateTypes[i].dryMatterPercentage+'</td><td>'+concentrateTypes[i].sulphurPercentage+'</td><td>'+concentrateTypes[i].potassiumPercentage+'</td><td>'+concentrateTypes[i].phosphorusPercentage+'</td><td>'+concentrateTypes[i].nitrogenPercentage+'</td><td>'+'<button type="button" class="btn btn-link" id="deleteConcentrateTypeRow"  > Remove</button>'+'</td><td></td></tr>');		
+	var fertilizertypesel = $('#fertilizerTypeSelect');	
+	for(var i=0; i<fertilizerTypes.length; i++){
+		$('#fertilizerTypesTbl').append('<tr><td>'+fertilizerTypes[i].name+'</td><td>'+ fertilizerTypes[i].metabolisableEnergyInMJPerKg+'</td><td>'+fertilizerTypes[i].dryMatterPercentage+'</td><td>'+fertilizerTypes[i].sulphurPercentage+'</td><td>'+fertilizerTypes[i].potassiumPercentage+'</td><td>'+fertilizerTypes[i].phosphorusPercentage+'</td><td>'+fertilizerTypes[i].nitrogenPercentage+'</td><td>'+'<button type="button" class="btn btn-link" id="deleteConcentrateTypeRow"  > Remove</button>'+'</td><td></td></tr>');		
 		//add select options
-		concentratetypesel
+		fertilizertypesel
          .append($("<option></option>")
-         .attr("value",concentrateTypes[i].name)
-         .text(concentrateTypes[i].name)); 
+         .attr("value",fertilizerTypes[i].name)
+         .text(fertilizerTypes[i].name)); 
 	}
 
 	
 	//select onchange function
-	concentratetypesel.on('change', function() {
+	fertilizertypesel.on('change', function() {
 		var noselection=true;
 		
-		for(var i=0; i<concentrateTypes.length; i++){
-		if(concentrateTypes[i].name==this.value) {			
-			$('#newConcentrateType_metabolisableEnergyInMJPerKg').text(concentrateTypes[i].metabolisableEnergyInMJPerKg);
-			$('#newConcentrateType_dryMatterPercentage').text(concentrateTypes[i].dryMatterPercentage);
-			$('#newConcentrateType_sulphurPercentage').text(concentrateTypes[i].sulphurPercentage);
-			$('#newConcentrateType_potassiumPercentage').text(concentrateTypes[i].potassiumPercentage);
-			$('#newConcentrateType_phosphorusPercentage').text(concentrateTypes[i].phosphorusPercentage);
-			$('#newConcentrateType_nitrogenPercentage').text(concentrateTypes[i].nitrogenPercentage);
+		for(var i=0; i<fertilizerTypes.length; i++){
+		if(fertilizerTypes[i].name==this.value) {			
+			$('#newConcentrateType_metabolisableEnergyInMJPerKg').text(fertilizerTypes[i].metabolisableEnergyInMJPerKg);
+			$('#newConcentrateType_dryMatterPercentage').text(fertilizerTypes[i].dryMatterPercentage);
+			$('#newConcentrateType_sulphurPercentage').text(fertilizerTypes[i].sulphurPercentage);
+			$('#newConcentrateType_potassiumPercentage').text(fertilizerTypes[i].potassiumPercentage);
+			$('#newConcentrateType_phosphorusPercentage').text(fertilizerTypes[i].phosphorusPercentage);
+			$('#newConcentrateType_nitrogenPercentage').text(fertilizerTypes[i].nitrogenPercentage);
 			
 			noselection=false;
 		}
@@ -56,7 +56,7 @@ $(function(){
 		}
 	});	
 	
-    //add concentrate type to the API and also to the concentrateTypesTbl table
+    //add fertilizer type to the API and also to the fertilizerTypesTbl table
 	$('#addConcentrateType').submit(function(event){		
 		
 		var newtype={name:'', metabolisableEnergyInMJPerKg:'', dryMatterPercentage:'', sulphurPercentage:'', potassiumPercentage:'', phosphorusPercentage:'', nitrogenPercentage:'' };
@@ -69,15 +69,16 @@ $(function(){
 		newtype.nitrogenPercentage=$('#nitrogenPercentage').val();
 		
 		
-		concentrateTypes = nc.concentratesPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage);
+		fertilizerTypes = nc.fertilizersPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage).toArray();			
+		
 		
 		if(noResult==true){
 			errorMsg.show();
 		}else{
 			errorMsg.hide();
-			$('#concentrateTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.metabolisableEnergyInMJPerKg+'</td><td>'+newtype.dryMatterPercentage+'</td><td>'+newtype.sulphurPercentage+'</td><td>'+newtype.potassiumPercentage+'</td><td>'+newtype.phosphorusPercentage+'</td><td>'+newtype.nitrogenPercentage+'</td><td>'+'<button type="button" class="btn btn-link" id="deleteConcentrateTypeRow"  > Remove</button>'+'</td><td></td></tr>');
+			$('#fertilizerTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.metabolisableEnergyInMJPerKg+'</td><td>'+newtype.dryMatterPercentage+'</td><td>'+newtype.sulphurPercentage+'</td><td>'+newtype.potassiumPercentage+'</td><td>'+newtype.phosphorusPercentage+'</td><td>'+newtype.nitrogenPercentage+'</td><td>'+'<button type="button" class="btn btn-link" id="deleteConcentrateTypeRow"  > Remove</button>'+'</td><td></td></tr>');
 				//add to select
-				concentratetypesel
+				fertilizertypesel
 					.append($("<option></option>")
 					.attr("value",newtype.name)
 					.text(newtype.name)); 
@@ -94,7 +95,6 @@ $(function(){
 		$('#potassiumPercentage').val('');
 		$('#phosphorusPercentage').val('');
 		$('#nitrogenPercentage').val('');
-		
 		//event.preventDefault();
 		return false;
 	});
@@ -102,34 +102,33 @@ $(function(){
 	$("#addConcentrate").click(function() {
             
 			noResult = false;
-			var concentrateType; 
-			for(var i=0; i<concentrateTypes.length; i++){
-				if(concentrateTypes[i].name==concentratetypesel.val()) concentrateType=concentrateTypes[i];
+			var fertilizerType; 
+			for(var i=0; i<fertilizerTypes.length; i++){
+				if(fertilizerTypes[i].name==fertilizertypesel.val()) fertilizerType=fertilizerTypes[i];
 			} //get curretnly selected cowType
-			
 			// get wet dry selection
 			var DryWetSel = $("#isDry").val();
 			var isDry = (DryWetSel === 'true');
 			var DryOrWet = isDry ? 'Dry': 'Wet';
 			var weight = parseFloat($("#newConcentrateWeight").val());
 			
-			concentrates = nc.concentratesPurchased.add(concentrateType, weight, isDry).concentrates();
-			noResult = !concentrates;
+			fertilizers = nc.fertilizersPurchased.add(fertilizerType, weight, isDry).toArray();
+			noResult = !fertilizers;
 			if(noResult==false){				
 				errorMsg.hide();			  
-				var addedConcentrate = concentrates[concentrates.length -1];
+				var addedConcentrate = fertilizers[fertilizers.length -1];
 					
 				var DryMatter = addedConcentrate.isDry ? addedConcentrate.weight : (parseFloat(addedConcentrate.weight)*parseFloat(addedConcentrate.type.dryMatterPercentage)/100);
-				//add to concentratessTbl
+				//add to fertilizerssTbl
 				
-				$('#concentratesTbl').append('<tr><td>'+addedConcentrate.type.name+'</td><td>'+addedConcentrate.weight+'</td><td>'+DryMatter+'</td><td>'+DryOrWet+'</td><td>'+addedConcentrate.type.metabolisableEnergyInMJPerKg+'</td><td>'+addedConcentrate.type.dryMatterPercentage+'</td><td>'+addedConcentrate.type.sulphurPercentage+'</td><td>'+addedConcentrate.type.potassiumPercentage+'</td><td>'+addedConcentrate.type.phosphorusPercentage+'</td><td>'+addedConcentrate.type.nitrogenPercentage+'</td><td><button type="button" class="btn btn-link" id="deleteConcentrateRow"  > Remove</button></td></tr>');
+				$('#fertilizersTbl').append('<tr><td>'+addedConcentrate.type.name+'</td><td>'+addedConcentrate.weight+'</td><td>'+DryMatter+'</td><td>'+DryOrWet+'</td><td>'+addedConcentrate.type.metabolisableEnergyInMJPerKg+'</td><td>'+addedConcentrate.type.dryMatterPercentage+'</td><td>'+addedConcentrate.type.sulphurPercentage+'</td><td>'+addedConcentrate.type.potassiumPercentage+'</td><td>'+addedConcentrate.type.phosphorusPercentage+'</td><td>'+addedConcentrate.type.nitrogenPercentage+'</td><td><button type="button" class="btn btn-link" id="deleteConcentrateRow"  > Remove</button></td></tr>');
 			  
 			}else{
 				errorMsg.show();
 			}			
 			//reset form 
-			concentrateType = '';
-			$("#concentrateTypeSelect").val("default");
+			fertilizerType = '';
+			$("#fertilizerTypeSelect").val("default");
 			$("#newConcentrateWeight").val('');
 			$("#isDry").val("default");
 			$("#newConcentrateType_metabolisableEnergyInMJPerKg").text('');
@@ -141,42 +140,42 @@ $(function(){
 			
 		});
 		
-	//this function is used to remove a row of concentrateType added
+	//this function is used to remove a row of fertilizerType added
 	$("body").on("click", "#deleteConcentrateTypeRow", function(e){	
 		
 		var index = $(this).closest('tr').index()-2; //cows array row i = table row index - 2 to exclude two top rows
 		
 		if(index > -1) {			
 			$(this).closest('tr').remove(); //remove the table row			
-			concentrateTypes = nc.concentratesPurchased.types.removeAt(index);
+			fertilizerTypes = nc.fertilizersPurchased.types.removeAt(index).toArray();
 			
-			//update concentrateType select options
-			$('#concentrateTypeSelect option:gt(0)').remove();
-			for(var i=0; i<concentrateTypes.length; i++){	
+			//update fertilizerType select options
+			$('#fertilizerTypeSelect option:gt(0)').remove();
+			for(var i=0; i<fertilizerTypes.length; i++){	
 			//add select options
-				concentratetypesel
+				fertilizertypesel
 				.append($("<option></option>")
-				.attr("value",concentrateTypes[i].name)
-				.text(concentrateTypes[i].name)); 
+				.attr("value",fertilizerTypes[i].name)
+				.text(fertilizerTypes[i].name)); 
 			}			
 		}		
 	});
 	
-	//this function is used to remove a row of concentrateType added
+	//this function is used to remove a row of fertilizerType added
 	$("body").on("click", "#deleteConcentrateRow", function(e){	
 		
 		var index = $(this).closest('tr').index()-2; //cows array row i = table row index - 2 to exclude two top rows
 		
 		if(index > -1) {			
 			$(this).closest('tr').remove(); //remove the table row			
-			concentrates = nc.concentratesPurchased.removeAt(index).concentrates();							
+			fertilizers = nc.fertilizersPurchased.removeAt(index).toArray();							
 		}		
 	});
 	
 	
 	$("#calculateNutrient").click(function () {
 			//call the nutrient calculator API function
-			result = nc.concentratesPurchased.calculate(concentrates);
+			result = nc.fertilizersPurchased.calculate(fertilizers);
 						
 			noResult = !result;
 			if(noResult==false){
