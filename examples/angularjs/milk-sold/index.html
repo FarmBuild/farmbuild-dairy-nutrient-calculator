@@ -11,6 +11,7 @@
 </head>
 <body ng-controller="MilkSoldCtrl">
 <content>
+  <modal ng-if="noResult" ng-include="'../modal-validation-error.html'"></modal>
     <h3>
         <a ng-href="../index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Milk Sold
         <small>(angularJS)</small>
@@ -77,9 +78,6 @@
             <legend>
                 Summary
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-show="noResult">
-                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
-            </error>
             <form-item class="form-group col-sm-6">
                 <p>Milk Sold Per Year (Litre):
                     <span ng-bind="result.totalPerYearInLitre | number : decimalPrecision"></span>
