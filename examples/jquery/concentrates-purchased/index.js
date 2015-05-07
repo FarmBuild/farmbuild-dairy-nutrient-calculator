@@ -16,8 +16,8 @@ $(function(){
 	var noResult = false;
 	
 	var concentrates = [];
-	alert(nc.concentratesPurchased);
-	var concentrateTypes = nc.concentratesPurchased.types.toArray();
+	
+	var concentrateTypes = nc.concentratesPurchased.types.defaultTypes();
 	
 	var concentratetypesel = $('#concentrateTypeSelect');	
 	for(var i=0; i<concentrateTypes.length; i++){
@@ -69,8 +69,7 @@ $(function(){
 		newtype.nitrogenPercentage=$('#nitrogenPercentage').val();
 		
 		
-		concentrateTypes = nc.concentratesPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage).toArray();			
-		
+		concentrateTypes = nc.concentratesPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage);
 		
 		if(noResult==true){
 			errorMsg.show();
@@ -95,6 +94,7 @@ $(function(){
 		$('#potassiumPercentage').val('');
 		$('#phosphorusPercentage').val('');
 		$('#nitrogenPercentage').val('');
+		
 		//event.preventDefault();
 		return false;
 	});
@@ -106,13 +106,14 @@ $(function(){
 			for(var i=0; i<concentrateTypes.length; i++){
 				if(concentrateTypes[i].name==concentratetypesel.val()) concentrateType=concentrateTypes[i];
 			} //get curretnly selected cowType
+			
 			// get wet dry selection
 			var DryWetSel = $("#isDry").val();
 			var isDry = (DryWetSel === 'true');
 			var DryOrWet = isDry ? 'Dry': 'Wet';
 			var weight = parseFloat($("#newConcentrateWeight").val());
 			
-			concentrates = nc.concentratesPurchased.add(concentrateType, weight, isDry).toArray();
+			concentrates = nc.concentratesPurchased.add(concentrateType, weight, isDry).concentrates();
 			noResult = !concentrates;
 			if(noResult==false){				
 				errorMsg.hide();			  
@@ -147,7 +148,7 @@ $(function(){
 		
 		if(index > -1) {			
 			$(this).closest('tr').remove(); //remove the table row			
-			concentrateTypes = nc.concentratesPurchased.types.removeAt(index).toArray();
+			concentrateTypes = nc.concentratesPurchased.types.removeAt(index);
 			
 			//update concentrateType select options
 			$('#concentrateTypeSelect option:gt(0)').remove();
@@ -168,7 +169,7 @@ $(function(){
 		
 		if(index > -1) {			
 			$(this).closest('tr').remove(); //remove the table row			
-			concentrates = nc.concentratesPurchased.removeAt(index).toArray();							
+			concentrates = nc.concentratesPurchased.removeAt(index).concentrates();							
 		}		
 	});
 	
