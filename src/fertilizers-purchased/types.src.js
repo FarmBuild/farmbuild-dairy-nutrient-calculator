@@ -35,7 +35,10 @@ angular.module('farmbuild.nutrientCalculator')
     function _validate(type) {
       $log.info('validating type  ...', type);
 
-      var valid =  !(_isEmpty(type.name) ||
+
+      var valid =
+        !(_isEmpty(type)) &&
+        !(_isEmpty(type.name) ||
         !_isPositiveNumber(type.dryMatterPercentage) ||
         !_isPositiveNumberOrZero(type.potassiumPercentage) ||
         !_isPositiveNumberOrZero(type.phosphorusPercentage) ||

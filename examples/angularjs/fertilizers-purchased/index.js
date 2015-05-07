@@ -22,13 +22,24 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
     $scope.calculateDryMatterWeight = fertilizersPurchased.calculator.calculateDryMatterWeight;
     $scope.newFertilizer = {isDry:false};
 		$scope.calculate = function (fertilizers) {
+      if(!fertilizersPurchased.validateAll(fertilizers)) {
+        $scope.noResult = true;
+        return;
+      }
+
 			$scope.result = fertilizersPurchased.calculate(fertilizers);
 			$scope.noResult = !$scope.result;
+
       saveInSessionStorage($scope.result);
 		};
 
 		$scope.add = function (type, weight, isDry) {
       $log.info('add type: %s, weight: %s, isDry', type, weight, isDry);
+
+      if(!fertilizersPurchased.validate(type, weight, isDry)) {
+        $scope.noResult = true;
+        return;
+      }
 
 			isDry = (isDry === 'true');
 			$scope.fertilizers = fertilizersPurchased.add(type, weight, isDry).fertilizers();
@@ -43,6 +54,10 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		};
 
 		$scope.addType = function (type) {
+      if(!fertilizersPurchased.types.validate(type)) {
+        $scope.noResult = true;
+        return;
+      }
 			$scope.fertilizerTypes = fertilizersPurchased.types.add(type.name, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
 																									type.phosphorusPercentage, type.nitrogenPercentage);

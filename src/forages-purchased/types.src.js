@@ -25,7 +25,8 @@ angular.module('farmbuild.nutrientCalculator')
 		function _validate(type) {
 			$log.info('validating type  ...', type);
 
-			return !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
+			return !(_isEmpty(type)) &&
+        !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
 
 		}
 
@@ -160,7 +161,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 
 		function _isEmpty() {
-			$log.info('Is forage types empty?', types.types.size() === 0);
+			$log.info('Is forage types empty? %s', forageTypes.size() === 0);
 			return forageTypes.size() === 0;
 		};
 
