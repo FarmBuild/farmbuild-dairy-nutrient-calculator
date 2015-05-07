@@ -18,6 +18,7 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 		$scope.forages = [];
 		$scope.noResult = false;
 		$scope.forageTypes = foragesPurchased.types.toArray();
+    $scope.newForage = {isDry:false};
 
 
 		$scope.calculate = function (forages) {

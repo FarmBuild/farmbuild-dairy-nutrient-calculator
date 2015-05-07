@@ -127,7 +127,7 @@
                             <select name="forageType" id="forageType" class="form-control"
                                     ng-options="forageType as forageType.name for forageType in forageTypes"
                                     ng-model="newForage.Type">
-                                <option value="">Select type</option>
+                                <option value="">Select</option>
                             </select>
                         </td>
                         <td>
@@ -137,12 +137,11 @@
                         <td>
                             N/A
                         </td>
-                        <td>
+                        <td class="td-is-dry">
                             <select name="isDry" id="isDry" class="form-control"
                                     ng-model="newForage.isDry">
                                 <option value="true">Dry</option>
                                 <option value="false">Wet</option>
-                                <option value="">Select wet/dry</option>
                             </select>
                         </td>
                         <td>

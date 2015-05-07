@@ -20,7 +20,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		$scope.noResult = false,
 		$scope.fertilizerTypes = fertilizersPurchased.types.defaultTypes(),
     $scope.calculateDryMatterWeight = fertilizersPurchased.calculator.calculateDryMatterWeight;
-
+    $scope.newFertilizer = {isDry:false};
 		$scope.calculate = function (fertilizers) {
 			$scope.result = fertilizersPurchased.calculate(fertilizers);
 			$scope.noResult = !$scope.result;
