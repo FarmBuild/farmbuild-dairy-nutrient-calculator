@@ -39,7 +39,7 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 				foragesPurchasedData = nutrientCalculator.session.loadSection('foragesPurchased'),
 				fertilizersPurchasedData = nutrientCalculator.session.loadSection('fertilizersPurchased'),
 				concentratesPurchased = nutrientCalculator.session.loadSection('concentratesPurchased');
-
+      $scope.utilisationFactor = 0;
 			$scope.calculate(
 				legumesData.milkSoldPerYearInLitre,
 				legumesData.milkFatInKg,
