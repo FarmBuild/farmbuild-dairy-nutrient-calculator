@@ -11,7 +11,8 @@
 </head>
 <body ng-controller="FarmCtrl">
 <content>
-    <form role="form" name="form" novalidate>
+  <modal ng-if="noResult" ng-include="'modal-validation-error.html'"></modal>
+  <form role="form" name="form" novalidate>
         <h3>
             Farmbuild Diary Nutrient Calculator
             <small>(angularJS)</small>
@@ -37,7 +38,7 @@
             <label>Please select your farm data</label>
             <input name="farmData" type="file" on-read-file="loadFarmData($fileContent)" class="form-control">
             <br/>
-            <span ng-if="farmData.nutrientCalculator.cowsPurchased.cows.length>0">
+            <span ng-if="farmData.name">
             <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |
             <a ng-href="cows-culled/index.html?load=true">cows-culled</a> |
             <a ng-href="forages-purchased/index.html?load=true">forages-purchased</a> |
