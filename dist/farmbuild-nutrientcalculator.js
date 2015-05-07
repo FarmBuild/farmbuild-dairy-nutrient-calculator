@@ -528,6 +528,12 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
         };
     }
     concentratesPurchased.create = _create;
+    function validate(type, weight, isDry) {
+        var fertilizer = _create(type, weight, isDry);
+        return validator.validate(fertilizer);
+    }
+    concentratesPurchased.validate = validate;
+    concentratesPurchased.validateAll = validator.validateAll;
     function _add(type, weight, isDry) {
         var concentrate = _create(type, weight, isDry);
         $log.info("concentratesPurchased.add concentrate ...", concentrate);
@@ -619,7 +625,7 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", funct
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("concentrateValidator", function(validations, concentrateTypes, $log) {
-    var concentrateValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray;
+    var concentrateValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isEmpty = validations.isEmpty;
     function _validate(concentrate) {
         $log.info("validating concentrate...", concentrate);
         if (!_isDefined(concentrate.type) || !_isDefined(concentrate.weight) || !_isDefined(concentrate.isDry)) {
@@ -630,7 +636,7 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateValidator", f
     }
     concentrateValidator.validate = _validate;
     concentrateValidator.validateAll = function(concentrates) {
-        if (!_isArray(concentrates)) {
+        if (!_isArray(concentrates) || _isEmpty(concentrates)) {
             return false;
         }
         var i = 0;
@@ -1729,7 +1735,7 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
         return forageTypes;
     }
     function _isEmpty() {
-        $log.info("Is forage types empty?", types.types.size() === 0);
+        $log.info("Is forage types empty? %s", forageTypes.size() === 0);
         return forageTypes.size() === 0;
     }
     forageTypes = {

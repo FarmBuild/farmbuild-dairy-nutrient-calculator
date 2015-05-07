@@ -19,7 +19,8 @@ angular.module('farmbuild.nutrientCalculator')
 
     var concentrateValidator = {},
       _isDefined = validations.isDefined,
-      _isArray = validations.isArray;
+      _isArray = validations.isArray,
+      _isEmpty = validations.isEmpty;
 
      function _validate(concentrate) {
       $log.info('validating concentrate...', concentrate);
@@ -35,7 +36,7 @@ angular.module('farmbuild.nutrientCalculator')
     concentrateValidator.validate = _validate;
 
     concentrateValidator.validateAll = function(concentrates) {
-      if(!_isArray(concentrates)) {
+      if(!_isArray(concentrates)|| _isEmpty(concentrates)) {
         return false;
       }
 

@@ -58,6 +58,23 @@ angular.module('farmbuild.nutrientCalculator')
     concentratesPurchased.create = _create;
 
     /**
+     * Returns true if the arguments are valid, false otherwise
+     * @method validate
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function validate(type, weight, isDry) {
+      var fertilizer = _create(type, weight, isDry);
+      return validator.validate(fertilizer);
+    };
+    concentratesPurchased.validate = validate;
+    concentratesPurchased.validateAll = validator.validateAll;
+
+    /**
      * Adds a new concentrate for nutrient calculation
      * @method add
      * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
