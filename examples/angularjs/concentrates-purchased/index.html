@@ -164,7 +164,7 @@
                         <td ng-bind="concentrate.weight | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.isDry ? concentrate.weight : (concentrate.weight*concentrate.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.isDry | dryWet"></td>
-                        <td ng-bind="concentrate.type.metabolisableEnergyRatio | number : decimalPrecision"></td>
+                        <td ng-bind="concentrate.type.metabolisableEnergyInMJPerKg | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.sulphurPercentage | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.potassiumPercentage | number : decimalPrecision"></td>

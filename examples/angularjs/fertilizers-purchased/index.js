@@ -20,8 +20,13 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		$scope.noResult = false,
 		$scope.fertilizerTypes = fertilizersPurchased.types.defaultTypes(),
     $scope.calculateDryMatterWeight = fertilizersPurchased.calculator.calculateDryMatterWeight;
-    $scope.newFertilizer = {isDry:false};
-		$scope.calculate = function (fertilizers) {
+    $scope.newFertilizer = createNew();
+
+    function createNew() {
+      return {isDry:false};
+    }
+
+    $scope.calculate = function (fertilizers) {
       if(!fertilizersPurchased.validateAll(fertilizers)) {
         $scope.noResult = true;
         return;
@@ -44,7 +49,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 			isDry = (isDry === 'true');
 			$scope.fertilizers = fertilizersPurchased.add(type, weight, isDry).fertilizers();
 			$scope.result = '';
-			$scope.newFertilizer = {};
+			$scope.newFertilizer = createNew();
 			$scope.noResult = !$scope.fertilizers;
 		};
 

@@ -18,8 +18,11 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		$scope.concentrates = [];
 		$scope.noResult = false;
 		$scope.concentrateTypes = concentratesPurchased.types.toArray();
-    $scope.newConcentrate = {isDry:false};
+    $scope.newConcentrate = createNew();
 
+    function createNew() {
+      return {isDry:false};
+    }
 
 		$scope.calculate = function (concentrates) {
       if(!concentratesPurchased.validateAll(concentrates)) {
@@ -41,7 +44,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 			isDry = (isDry === 'true');
 			$scope.concentrates = concentratesPurchased.add(type, weight, isDry).concentrates();
 			$scope.result = '';
-			$scope.newConcentrate = {};
+			$scope.newConcentrate = createNew();
 			$scope.noResult = !$scope.concentrates;
 		};
 
