@@ -372,7 +372,7 @@
             "dryMatterPercentage": 88.78,
             "metabolisableEnergyInMJPerKg": 12.72
           },
-          "weight": 1850,
+          "weight": 18500,
           "isDry": true
         },
         {
@@ -385,7 +385,7 @@
             "dryMatterPercentage": 89.64,
             "metabolisableEnergyInMJPerKg": 12.54
           },
-          "weight": 8150,
+          "weight": 81500,
           "isDry": true
         },
         {
@@ -398,7 +398,7 @@
             "dryMatterPercentage": 89.64,
             "metabolisableEnergyInMJPerKg": 12.54
           },
-          "weight": 2050,
+          "weight": 20500,
           "isDry": true
         },
         {
@@ -411,7 +411,7 @@
             "dryMatterPercentage": 76,
             "metabolisableEnergyInMJPerKg": 12.62
           },
-          "weight": 7815,
+          "weight": 78150,
           "isDry": true
         },
         {
@@ -424,7 +424,7 @@
             "dryMatterPercentage": 88.78,
             "metabolisableEnergyInMJPerKg": 12.72
           },
-          "weight": 1012,
+          "weight": 10120,
           "isDry": true
         },
         {
@@ -437,7 +437,7 @@
             "dryMatterPercentage": 89.64,
             "metabolisableEnergyInMJPerKg": 12.54
           },
-          "weight": 9658,
+          "weight": 96580,
           "isDry": true
         },
         {
@@ -450,7 +450,7 @@
             "dryMatterPercentage": 89.64,
             "metabolisableEnergyInMJPerKg": 12.54
           },
-          "weight": 8571,
+          "weight": 85710,
           "isDry": true
         },
         {
@@ -463,21 +463,21 @@
             "dryMatterPercentage": 3.85,
             "metabolisableEnergyInMJPerKg": 11.6
           },
-          "weight": 328,
+          "weight": 3280,
           "isDry": true
         }
       ],
-      "weight": 39434,
-      "dryMatterWeight": 39434,
-      "nitrogenInKg": 1075.8433,
+      "weight": 394340,
+      "dryMatterWeight": 394340,
+      "nitrogenInKg": 10758.433,
       "nitrogenPercentage": 2.728212456256023,
-      "phosphorusInKg": 275.5202,
+      "phosphorusInKg": 2755.202,
       "phosphorusPercentage": 0.6986869199168231,
-      "potassiumInKg": 292.8796,
+      "potassiumInKg": 2928.796,
       "potassiumPercentage": 0.7427083227671551,
-      "sulphurInKg": 101.94000000000001,
+      "sulphurInKg": 1019.4000000000001,
       "sulphurPercentage": 0.25850788659532387,
-      "metabolisableEnergyInMJ": 495334.39999999997,
+      "metabolisableEnergyInMJ": 4953343.9999999997,
       "metabolisableEnergyInMJPerKg": 11.6
     },
     "legumes": {

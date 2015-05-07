@@ -27,7 +27,7 @@ angular.module('farmbuild.nutrientCalculator')
 		}
 
 		function _cattleEnergyUsedInMJ(totalMilkEnergyInMJ, milkEnergyNotSoldInMJ, numberOfMilkingCows, numberOfMilkingDays, liveWeightInKg) {
-			return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + (numberOfMilkingCows * numberOfMilkingDays * liveWeightInKg);
+			return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + (numberOfMilkingCows * numberOfMilkingDays * (liveWeightInKg/7));
 		}
 
 		function _dryMatterConsumedPerHaInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {

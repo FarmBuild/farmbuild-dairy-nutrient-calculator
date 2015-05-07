@@ -16,7 +16,7 @@ describe('farmbuild.nutrientCalculator module', function () {
 		averageUtilisationFactor = 75,
 		totalNitrogenFromFertiliser = 5780,
 		animalWeight = 550,
-		liveWeight = parseFloat(animalWeight)/7,
+		liveWeight = animalWeight,
 		expectedResult = {
 			milkEnergy: {
 				total: 9751288.792938001,

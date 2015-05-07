@@ -13,7 +13,6 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 		$scope.noResult = false;
 		$scope.utilisationFactors = legumes.utilisationFactors();
 
-
 		$scope.calculate = function (milkSoldPerYearInLitre, milkFatInKg,
 		                             milkProteinInKg, numberOfMilkingCows,
 		                             numberOfMilkingDays, averageCowWeightInKg,

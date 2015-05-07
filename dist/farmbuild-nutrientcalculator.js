@@ -1763,7 +1763,7 @@ angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", funct
         return totalForageMetabolisableEnergyInMJ * (100 - 12.7) / 100 + totalConcentrateMetabolisableEnergyInMJ * (100 - 5) / 100;
     }
     function _cattleEnergyUsedInMJ(totalMilkEnergyInMJ, milkEnergyNotSoldInMJ, numberOfMilkingCows, numberOfMilkingDays, liveWeightInKg) {
-        return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + numberOfMilkingCows * numberOfMilkingDays * liveWeightInKg;
+        return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + numberOfMilkingCows * numberOfMilkingDays * (liveWeightInKg / 7);
     }
     function _dryMatterConsumedPerHaInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {
         return (cattleEnergyUsedInMJ - importedEnergyConsumedInMJ) / (milkingAreaInHa * 10.5);
