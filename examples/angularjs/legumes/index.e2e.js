@@ -15,7 +15,7 @@ describe('Farm web nutrient calculator', function () {
 				toContain('Legumes');
 		});
 
-		it('should render sample when user navigates to angularjs/milk-sold/index.html', function () {
+		it('should calculates nutrient values of legumes', function () {
 			expect(element(by.model('milkSoldPerYearInLitre')).sendKeys('1751317').getAttribute('value')).
 				toBe('1751317');
 			expect(element(by.model('milkProteinInKg')).sendKeys('74080.71').getAttribute('value')).

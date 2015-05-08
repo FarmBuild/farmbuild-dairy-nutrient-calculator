@@ -18,6 +18,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 		var legumes,
 			_isDefined = validations.isDefined,
+			_isPositiveNumber = validations.isPositiveNumber,
 			_utilisationFactors = angular.copy(utilisationFactorsValues);
 
 		function _validate(legume) {
@@ -56,12 +57,12 @@ angular.module('farmbuild.nutrientCalculator')
 		                    nitrogenFromFertiliserInKg, legumePercentage) {
 			$log.info('calculating legumes nutrient ...');
 
-			if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) ||
-				!_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) ||
-				!_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) ||
-				!_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) ||
-				!_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) ||
-				!_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
+			if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProteinInKg) ||
+				!_isPositiveNumber(milkFatInKg) || !_isPositiveNumber(numberOfMilkingCows) ||
+				!_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(averageCowWeightInKg) ||
+				!_isPositiveNumber(forageMetabolisableEnergyInMJ) || !_isPositiveNumber(concentrateMetabolisableEnergyInMJ) ||
+				!_isPositiveNumber(milkingAreaInHa) || !_isPositiveNumber(utilisationFactor) ||
+				!_isPositiveNumber(nitrogenFromFertiliserInKg) || !_isPositiveNumber(legumePercentage)) {
 				return undefined;
 			}
 

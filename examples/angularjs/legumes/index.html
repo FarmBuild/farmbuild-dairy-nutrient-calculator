@@ -87,7 +87,7 @@
             <form-item class="form-group col-md-6">
                 <label>Utilisation Factor</label>
                 <select name="utilisationFactor" id="utilisationFactor" class="form-control"
-                        ng-options="utilisationFactor as utilisationFactor.name for utilisationFactor in utilisationFactors"
+                        ng-options="utilisationFactor.weight as utilisationFactor.name for utilisationFactor in utilisationFactors"
                         ng-model="utilisationFactor">
                     <option value="">Select utilisation factor</option>
                 </select>

@@ -1749,8 +1749,8 @@ angular.module("farmbuild.nutrientCalculator").factory("incomings", function(val
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", function($log) {
-    var legumeCalculator;
+angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", function($log, validations) {
+    var legumeCalculator, _isPositiveNumber = validations.isPositiveNumber;
     function _milkEnergyInMJ(milkSoldPerYearInLitre, fatInKg, proteinInKg) {
         var fatPercentage = fatInKg / milkSoldPerYearInLitre, proteinPercentage = proteinInKg / milkSoldPerYearInLitre, milkEnergyPerLitreInMJ = 1.694 * (.386 * fatPercentage * 100 + .205 * (5.8 + proteinPercentage * 100) - .236), totalMilkEnergyInMJ = milkEnergyPerLitreInMJ * milkSoldPerYearInLitre, milkEnergyNotSoldInMJ = totalMilkEnergyInMJ * .04;
         return {
@@ -1760,27 +1760,51 @@ angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", funct
         };
     }
     function _importedEnergyConsumedInMJ(totalForageMetabolisableEnergyInMJ, totalConcentrateMetabolisableEnergyInMJ) {
+        if (!_isPositiveNumber(totalForageMetabolisableEnergyInMJ) || !_isPositiveNumber(totalConcentrateMetabolisableEnergyInMJ)) {
+            return undefined;
+        }
         return totalForageMetabolisableEnergyInMJ * (100 - 12.7) / 100 + totalConcentrateMetabolisableEnergyInMJ * (100 - 5) / 100;
     }
     function _cattleEnergyUsedInMJ(totalMilkEnergyInMJ, milkEnergyNotSoldInMJ, numberOfMilkingCows, numberOfMilkingDays, liveWeightInKg) {
+        if (!_isPositiveNumber(totalMilkEnergyInMJ) || !_isPositiveNumber(milkEnergyNotSoldInMJ) || !_isPositiveNumber(numberOfMilkingCows) || !_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(liveWeightInKg)) {
+            return undefined;
+        }
         return totalMilkEnergyInMJ + milkEnergyNotSoldInMJ + numberOfMilkingCows * numberOfMilkingDays * (liveWeightInKg / 7);
     }
     function _dryMatterConsumedPerHaInKg(cattleEnergyUsedInMJ, importedEnergyConsumedInMJ, milkingAreaInHa) {
+        if (!_isPositiveNumber(cattleEnergyUsedInMJ) || !_isPositiveNumber(importedEnergyConsumedInMJ) || !_isPositiveNumber(milkingAreaInHa)) {
+            return undefined;
+        }
         return (cattleEnergyUsedInMJ - importedEnergyConsumedInMJ) / (milkingAreaInHa * 10.5);
     }
     function _dryMatterGrownInKg(dryMatterConsumedPerHaInKg, utilisationFactor) {
+        if (!_isPositiveNumber(dryMatterConsumedPerHaInKg) || !_isPositiveNumber(utilisationFactor)) {
+            return undefined;
+        }
         return dryMatterConsumedPerHaInKg * 100 / utilisationFactor;
     }
     function _averageNitrogenAppliedInKg(totalNitrogenFromFertiliserInKg, milkingAreaInHa) {
+        if (!_isPositiveNumber(totalNitrogenFromFertiliserInKg) || !_isPositiveNumber(milkingAreaInHa)) {
+            return undefined;
+        }
         return totalNitrogenFromFertiliserInKg / milkingAreaInHa;
     }
     function _totalLegumeInKg(dryMatterConsumedPerHaInKg, legumePercentage, utilisationFactor) {
+        if (!_isPositiveNumber(dryMatterConsumedPerHaInKg) || !_isPositiveNumber(legumePercentage) || !_isPositiveNumber(utilisationFactor)) {
+            return undefined;
+        }
         return dryMatterConsumedPerHaInKg * legumePercentage / utilisationFactor;
     }
     function _availableNitrogenFromLegumesInKg(totalLegumeInKg, averageNitrogenAppliedInKg) {
+        if (!_isPositiveNumber(totalLegumeInKg) || !_isPositiveNumber(averageNitrogenAppliedInKg)) {
+            return undefined;
+        }
         return totalLegumeInKg * (.0358 - 359e-7 * averageNitrogenAppliedInKg);
     }
     function _availableNitrogenToPastureInKg(totalLegumeInKg, averageNitrogenAppliedInKg) {
+        if (!_isPositiveNumber(totalLegumeInKg) || !_isPositiveNumber(averageNitrogenAppliedInKg)) {
+            return undefined;
+        }
         return averageNitrogenAppliedInKg + totalLegumeInKg * (.0358 - 359e-7 * averageNitrogenAppliedInKg);
     }
     legumeCalculator = {
@@ -1800,7 +1824,7 @@ angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", funct
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("legumes", function(validations, utilisationFactorsValues, legumeCalculator, $log) {
-    var legumes, _isDefined = validations.isDefined, _utilisationFactors = angular.copy(utilisationFactorsValues);
+    var legumes, _isDefined = validations.isDefined, _isPositiveNumber = validations.isPositiveNumber, _utilisationFactors = angular.copy(utilisationFactorsValues);
     function _validate(legume) {
         $log.info("validating legume ...", legume);
         if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
@@ -1810,7 +1834,7 @@ angular.module("farmbuild.nutrientCalculator").factory("legumes", function(valid
     }
     function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg, forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ, milkingAreaInHa, utilisationFactor, nitrogenFromFertiliserInKg, legumePercentage) {
         $log.info("calculating legumes nutrient ...");
-        if (!_isDefined(milkSoldPerYearInLitre) || !_isDefined(milkProteinInKg) || !_isDefined(milkFatInKg) || !_isDefined(numberOfMilkingCows) || !_isDefined(numberOfMilkingDays) || !_isDefined(averageCowWeightInKg) || !_isDefined(forageMetabolisableEnergyInMJ) || !_isDefined(concentrateMetabolisableEnergyInMJ) || !_isDefined(milkingAreaInHa) || !_isDefined(utilisationFactor) || !_isDefined(nitrogenFromFertiliserInKg) || !_isDefined(legumePercentage)) {
+        if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProteinInKg) || !_isPositiveNumber(milkFatInKg) || !_isPositiveNumber(numberOfMilkingCows) || !_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(averageCowWeightInKg) || !_isPositiveNumber(forageMetabolisableEnergyInMJ) || !_isPositiveNumber(concentrateMetabolisableEnergyInMJ) || !_isPositiveNumber(milkingAreaInHa) || !_isPositiveNumber(utilisationFactor) || !_isPositiveNumber(nitrogenFromFertiliserInKg) || !_isPositiveNumber(legumePercentage)) {
             return undefined;
         }
         var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg), cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg), importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ), dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa), dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor), averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa), totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor), availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied), availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
