@@ -24,7 +24,7 @@
     "static-livereload":"0.1.4"
   },
   "scripts": {
-    "postinstall": "bower install",
+    "postinstall": "bower install | bower update",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ",
     "livereload": "static-livereload --path .",

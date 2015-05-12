@@ -18,6 +18,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
             nutrientCalculatorSession,
             farmdata,
             validations,
+            googleAnalyticsCalculator,
             $log) {
 		var nutrientCalculator = {session:nutrientCalculatorSession},
 			_isPositiveNumber = validations.isPositiveNumber,
@@ -191,6 +192,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		nutrientCalculator.concentratesPurchased = concentratesPurchased;
 		nutrientCalculator.legumes = legumes;
 		nutrientCalculator.version = '0.1.0';
+        nutrientCalculator.ga = googleAnalyticsCalculator;
 
 		if (typeof window.farmbuild === 'undefined') {
 			window.farmbuild = {

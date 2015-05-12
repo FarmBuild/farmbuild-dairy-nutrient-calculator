@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, googleAnalyticsCalculator, $log) {
     var nutrientCalculator = {
         session: nutrientCalculatorSession
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
@@ -110,6 +110,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.concentratesPurchased = concentratesPurchased;
     nutrientCalculator.legumes = legumes;
     nutrientCalculator.version = "0.1.0";
+    nutrientCalculator.ga = googleAnalyticsCalculator;
     if (typeof window.farmbuild === "undefined") {
         window.farmbuild = {
             nutrientcalculator: nutrientCalculator
@@ -1775,6 +1776,17 @@ angular.module("farmbuild.nutrientCalculator").factory("forageValidator", functi
         return true;
     };
     return forageValidator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("googleAnalyticsCalculator", function($log, validations, googleAnalytics) {
+    var googleAnalyticsCalculator = {}, api = "farmbuild-dairy-nutrient-calculator", _isDefined = validations.isDefined;
+    googleAnalyticsCalculator.trackCalculate = function(clientName) {
+        $log.info("googleAnalyticsCalculator.trackCalculate clientName: %s", clientName);
+        googleAnalytics.track(api, clientName);
+    };
+    return googleAnalyticsCalculator;
 });
 
 "use strict";
