@@ -18,19 +18,32 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 		$scope.forages = [];
 		$scope.noResult = false;
 		$scope.forageTypes = foragesPurchased.types.toArray();
+    $scope.newForage = createNew();
+    function createNew() {
+      return {isDry:false};
+    }
 
 
 		$scope.calculate = function (forages) {
+      if(!foragesPurchased.validateAll(forages)) {
+        $scope.noResult = true;
+        return;
+      }
 			$scope.result = foragesPurchased.calculate(forages);
 			saveInSessionStorage($scope.result);
 			$scope.noResult = !$scope.result;
 		};
 
 		$scope.addForage = function (type, weight, isDry) {
+      if(!foragesPurchased.validate(type, weight, isDry)) {
+        $scope.noResult = true;
+        return;
+      }
+
 			isDry = (isDry === 'true');
 			$scope.forages = foragesPurchased.add(type, weight, isDry).toArray();
 			$scope.result = '';
-			$scope.newForage = {};
+			$scope.newForage = createNew();
 			$scope.noResult = !$scope.forages;
 		};
 
@@ -40,11 +53,15 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 		};
 
 		$scope.addForageType = function (type) {
+      if(!foragesPurchased.types.validate(type)) {
+        $scope.noResult = true;
+        return;
+      }
 			$scope.forageTypes = foragesPurchased.types.add(type.name, type.metabolisableEnergyInMJPerKg, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
 																									type.phosphorusPercentage, type.nitrogenPercentage).toArray();
 			$scope.result = '';
-			$scope.newForage = {};
+			$scope.type = {};
 			$scope.noResult = !$scope.forages;
 		};
 

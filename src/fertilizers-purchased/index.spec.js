@@ -112,7 +112,7 @@ describe('fertilizersPurchased module', function() {
       expect(result.sulphurPercentage).toEqual(11)
     }));
 
-    it('DAP, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
+    it('Dairy Manure Stockpile, Super and Urea type and the weight of 4000kg, 13000kg, 11000kg', inject(function() {
       var weightDairyManureStockpile = 4000, weightSuperphosphate = 13000,
         weightUrea = 11000,
         fertilizers = fertilizersPurchased

@@ -109,35 +109,5 @@
       },
       "area": 0.87
     }
-  ],
-  "nutrientCalculator": {
-    "summary": {
-      "milkingAreaInHa": 70.39,
-      "averageCowWeightInKg": 550,
-      "numberOfMilkingCows": 228,
-      "numberOfMilkingDays": 365
-    },
-    "milkSold": {
-
-    },
-    "cowsPurchased": {
-      "cows": [
-      ]
-    },
-    "cowsCulled": {
-      "cows": [
-      ]
-    },
-    "fertilizersPurchased": {
-      "fertilizers": []
-    },
-    "foragesPurchased": {
-      "forages": []
-    },
-    "concentratesPurchased": {
-      "concentrates": []
-    },
-    "legumes": {
-    }
-  }
+  ]
 }

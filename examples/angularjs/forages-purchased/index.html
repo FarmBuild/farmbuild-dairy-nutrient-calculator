@@ -11,6 +11,7 @@
 </head>
 <body ng-controller="ForagesPurchasedCtrl">
 <content>
+    <modal ng-if="noResult" ng-include="'../modal-validation-error.html'"></modal>
     <h3>
         <a ng-href="../index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Forages Purchased
         <small>(angularJS)</small>
@@ -21,14 +22,7 @@
             <legend>
                 Here is a list of forages available, please add a new type if necessary.
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a
-                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
-                more information
-            </error>
             <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
-                <notification message="msgVehicle"
-                              show="true" invalid="form.registration.$error.required"></notification>
                 <table id="forageTypesTbl" class="table table-striped table-hover">
                     <tr>
                         <th>Name</th>
@@ -100,14 +94,7 @@
             <legend>
                 Please enter the combination of forages available in the farm to calculate the nutrient
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a
-                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
-                more information
-            </error>
             <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
-                <notification message="msgVehicle"
-                              show="true" invalid="form.registration.$error.required"></notification>
                 <table id="foragesTbl" class="table table-striped table-hover">
                     <tr>
                         <th>Type</th>
@@ -127,7 +114,7 @@
                             <select name="forageType" id="forageType" class="form-control"
                                     ng-options="forageType as forageType.name for forageType in forageTypes"
                                     ng-model="newForage.Type">
-                                <option value="">Select type</option>
+                                <option value="">Select</option>
                             </select>
                         </td>
                         <td>
@@ -137,12 +124,11 @@
                         <td>
                             N/A
                         </td>
-                        <td>
+                        <td class="td-is-dry">
                             <select name="isDry" id="isDry" class="form-control"
                                     ng-model="newForage.isDry">
                                 <option value="true">Dry</option>
                                 <option value="false">Wet</option>
-                                <option value="">Select wet/dry</option>
                             </select>
                         </td>
                         <td>
@@ -202,11 +188,6 @@
             <legend>
                 Summary - Total nutrient imported on to the farm in forages
             </legend>
-            <error ng-cloak class="col-sm-12 bg-danger" ng-if="noResult">
-                There is a problem with input values. Please read <a
-                    href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
-                more information
-            </error>
             <form-item class="form-group col-sm-6">
                 <p>Total weight (Kg): <span ng-bind="result.weight | number"></span></p>
             </form-item>
@@ -242,7 +223,7 @@
 
 <script src="../../../dist/farmbuild-core.js"></script>
 <script src="../../../dist/farmbuild-farmdata.js"></script>
-<script src="../../../dist/farmbuild-nutrientcalculator.min.js"></script>
+<script src="../../../dist/farmbuild-nutrientcalculator.js"></script>
 <script src="../../config.js"></script>
 <script src="index.js"></script>
 

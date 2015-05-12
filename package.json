@@ -17,12 +17,18 @@
     "uglify-js": "2.4.19",
     "jshint": "2.6.3",
     "ncp": "2.0.0",
-    "replace": "0.3.0"
+    "replace": "0.3.0",
+    "livereload":"0.3.7",
+    "connect":"3.3.5",
+    "serve-static":"1.9.2",
+    "static-livereload":"0.1.4"
   },
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000 -c-1",
+    "start": "http-server -a localhost -p 8000 -c-1 ",
+    "livereload": "static-livereload --path .",
+    "livereloads": "node_modules/.bin/static-livereload --path . --config process.cwd/livereload.js",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",

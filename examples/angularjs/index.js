@@ -16,12 +16,19 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		$scope.loadFarmData = function ($fileContent) {
 			try {
-				$scope.farmData = nutrientCalculator.load(angular.fromJson($fileContent));
+        $scope.farmData = {};
+        var farmData = nutrientCalculator.load(angular.fromJson($fileContent));
+        if(!angular.isDefined(farmData)) {
+          $scope.noResult = true;
+          return;
+        }
+				$scope.farmData = farmData;
 				$scope.balance = nutrientCalculator.balance($scope.farmData);
 				$scope.efficiency = nutrientCalculator.efficiency($scope.farmData);
 				$scope.saveToSessionStorage('farmData', angular.toJson($scope.farmData));
 			} catch (e) {
 				console.error('farmbuild.nutrientCalculator.examples > load: Your file should be in json format')
+        $scope.noResult = true;
 			}
 		};
 
