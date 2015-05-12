@@ -23,7 +23,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
     $scope.newFertilizer = createNew();
 
     function createNew() {
-      return {isDry:false};
+      return {isDry:true};
     }
 
     $scope.calculate = function (fertilizers) {

@@ -21,7 +21,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
     $scope.newConcentrate = createNew();
 
     function createNew() {
-      return {isDry:false};
+      return {isDry:true};
     }
 
 		$scope.calculate = function (concentrates) {
