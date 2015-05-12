@@ -148,8 +148,8 @@
                     <tr ng-repeat="fertilizer in fertilizers ">
                         <td ng-bind="fertilizer.type.name"></td>
                         <td ng-bind="fertilizer.weight | number : decimalPrecision"></td>
-                        <td ng-bind="calculateDryMatterWeight(fertilizer.weight, fertilizer.isDry, fertilizer.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.isDry | dryWet"></td>
+                        <td ng-bind="calculateDryMatterWeight(fertilizer.weight, fertilizer.isDry, fertilizer.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.sulphurPercentage | number : decimalPrecision"></td>
                         <td ng-bind="fertilizer.type.potassiumPercentage | number : decimalPrecision"></td>
