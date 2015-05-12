@@ -5,7 +5,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	})
 
-	.controller('FarmCtrl', function ($scope, nutrientCalculator) {
+	.controller('FarmCtrl', function ($scope, nutrientCalculator, googleAnalytics) {
 
 		var load = false;
 		if(location.href.split('?').length > 1 && location.href.split('?')[1].indexOf('load') === 0){
