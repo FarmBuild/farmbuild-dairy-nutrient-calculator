@@ -6,7 +6,9 @@
   "repository": "https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator",
   "license": "MIT",
   "devDependencies": {
-    "karma": "~0.10",
+    "karma": "^0.12",
+    "karma-html2js-preprocessor": "^0.0",
+    "karma-fixture": "^0.2",
     "protractor": "^2.0",
     "http-server": "^0.6.1",
     "bower": "^1.4",

@@ -625,15 +625,11 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", funct
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("concentrateValidator", function(validations, concentrateTypes, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("concentrateValidator", function(validations, nutrientMediumValidator, concentrateTypes, $log) {
     var concentrateValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isEmpty = validations.isEmpty;
     function _validate(concentrate) {
         $log.info("validating concentrate...", concentrate);
-        if (!_isDefined(concentrate.type) || !_isDefined(concentrate.weight) || !_isDefined(concentrate.isDry)) {
-            $log.error("invalid concentrate, must have type, weight and isDry: %j", concentrate);
-            return false;
-        }
-        return concentrateTypes.validate(concentrate.type);
+        return nutrientMediumValidator.validate(concentrate);
     }
     concentrateValidator.validate = _validate;
     concentrateValidator.validateAll = function(concentrates) {
@@ -1750,15 +1746,11 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("forageValidator", function(validations, forageTypes, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("forageValidator", function(validations, nutrientMediumValidator, forageTypes, $log) {
     var forageValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isEmpty = validations.isEmpty;
     function _validate(forage) {
         $log.info("validating forage...", forage);
-        if (!_isDefined(forage.type) || !_isDefined(forage.weight) || !_isDefined(forage.isDry)) {
-            $log.error("invalid forage, must have type, weight and isDry: %j", forage);
-            return false;
-        }
-        return forageTypes.validate(forage.type);
+        return nutrientMediumValidator.validate(forage);
     }
     forageValidator.validate = _validate;
     forageValidator.validateAll = function(forages) {
@@ -1997,6 +1989,85 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         return valuePercentage * totalInLitre / 100;
     }
     return milkSold;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumTypes", function(collections, validations, $log) {
+    var nutrientMediumTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isEmpty = validations.isEmpty, _isDefined = validations.isDefined, _types = [];
+    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg) {
+        var type = {
+            name: name,
+            dryMatterPercentage: dryMatterPercentage,
+            sulphurPercentage: sulphurPercentage,
+            potassiumPercentage: potassiumPercentage,
+            phosphorusPercentage: phosphorusPercentage,
+            nitrogenPercentage: nitrogenPercentage
+        };
+        if (_isDefined(metabolisableEnergyInMJPerKg)) {
+            type.metabolisableEnergyInMJPerKg = metabolisableEnergyInMJPerKg;
+        }
+        return type;
+    }
+    function _validate(type) {
+        $log.info("validating type  ...", type);
+        var valid = !_isEmpty(type) && !(_isEmpty(type.name) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumberOrZero(type.potassiumPercentage) || !_isPositiveNumberOrZero(type.phosphorusPercentage) || !_isPositiveNumberOrZero(type.nitrogenPercentage) || !_isPositiveNumberOrZero(type.sulphurPercentage));
+        if (type.hasOwnProperty("metabolisableEnergyInMJPerKg")) {
+            valid = valid && _isPositiveNumber(type.metabolisableEnergyInMJPerKg);
+        }
+        if (!valid) {
+            $log.error("invalid type: %j", type);
+        }
+        return valid;
+    }
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index) {
+        var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg);
+        $log.info("adding a type ...", type);
+        if (!_validate(type)) {
+            return undefined;
+        }
+        return collections.add(_types, type, index);
+    }
+    nutrientMediumTypes = {
+        add: _add,
+        at: function(index) {
+            return collections.at(_types, index);
+        },
+        size: function() {
+            return collections.size(_types);
+        },
+        byName: function(name) {
+            return collections.byProperty(_types, "name", name);
+        },
+        toArray: function() {
+            return angular.copy(_types);
+        },
+        removeAt: function(index) {
+            return collections.removeAt(_types, index);
+        },
+        last: function() {
+            return collections.last(_types);
+        },
+        validate: _validate,
+        create: _create
+    };
+    return nutrientMediumTypes;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumValidator", function(validations, nutrientMediumTypes, $log) {
+    var nutrientMediumValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isPositiveNumber = validations.isPositiveNumber, _isEmpty = validations.isEmpty;
+    function _validate(nutrientMedium) {
+        $log.info("validating nutrientMedium...", nutrientMedium);
+        if (!_isDefined(nutrientMedium.type) || !_isDefined(nutrientMedium.weight) || !_isPositiveNumber(nutrientMedium.weight) || !_isDefined(nutrientMedium.isDry)) {
+            $log.error("invalid, must have type (must pass type validate), weight (positive number) and isDry (boolean): %j", nutrientMedium);
+            return false;
+        }
+        return nutrientMediumTypes.validate(nutrientMedium.type);
+    }
+    nutrientMediumValidator.validate = _validate;
+    return nutrientMediumValidator;
 });
 
 "use strict";
