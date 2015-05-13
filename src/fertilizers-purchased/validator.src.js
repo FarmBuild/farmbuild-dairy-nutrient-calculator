@@ -14,45 +14,20 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 .factory('fertilizerValidator',
-  function (validations, fertilizerTypes,
+  function (nutrientMediumValidator,
             $log) {
 
-    var fertilizerValidator = {},
-      _isDefined = validations.isDefined,
-      _isArray = validations.isArray,
-      _isPositiveNumber = validations.isPositiveNumber,
-      _isEmpty = validations.isEmpty;
+    var fertilizerValidator = {};
 
      function _validate(fertilizer) {
       $log.info('validating fertilizer...', fertilizer);
-
-      if (!_isDefined(fertilizer.type) ||
-        !_isDefined(fertilizer.weight) ||
-        !_isPositiveNumber(fertilizer.weight) ||
-        !_isDefined(fertilizer.isDry)) {
-        $log.error('invalid fertilizer, must have type, weight and isDry: %j', fertilizer);
-        return false;
-      }
-      return fertilizerTypes.validate(fertilizer.type);
+      return nutrientMediumValidator.validate(fertilizer);
     };
 
     fertilizerValidator.validate = _validate;
 
     fertilizerValidator.validateAll = function(fertilizers) {
-      if(!_isArray(fertilizers) || _isEmpty(fertilizers)) {
-        return false;
-      }
-
-      var i = 0;
-      for (i; i < fertilizers.length; i++) {
-        var fertilizer = fertilizers[i];
-
-        if (!_validate(fertilizer)) {
-          $log.error('validator invalid at %s: %j', i, fertilizer);
-          return false;
-        }
-      }
-      return true;
+      return nutrientMediumValidator.validateAll(fertilizers);
     }
 
 

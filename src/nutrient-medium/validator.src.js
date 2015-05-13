@@ -40,22 +40,22 @@ angular.module('farmbuild.nutrientCalculator')
 
     nutrientMediumValidator.validate = _validate;
 
-//    nutrientMediumValidator.validateAll = function(fertilizers) {
-//      if(!_isArray(fertilizers) || _isEmpty(fertilizers)) {
-//        return false;
-//      }
-//
-//      var i = 0;
-//      for (i; i < fertilizers.length; i++) {
-//        var fertilizer = fertilizers[i];
-//
-//        if (!_validate(fertilizer)) {
-//          $log.error('validator invalid at %s: %j', i, fertilizer);
-//          return false;
-//        }
-//      }
-//      return true;
-//    }
+    nutrientMediumValidator.validateAll = function(items) {
+      if(!_isArray(items) || _isEmpty(items)) {
+        return false;
+      }
+
+      var i = 0;
+      for (i; i < items.length; i++) {
+        var item = items[i];
+
+        if (!_validate(item)) {
+          $log.error('validator invalid at %s: %j', i, item);
+          return false;
+        }
+      }
+      return true;
+    }
 
 
     return nutrientMediumValidator;
