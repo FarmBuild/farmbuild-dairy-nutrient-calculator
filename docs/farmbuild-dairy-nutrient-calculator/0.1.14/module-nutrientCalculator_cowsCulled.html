@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Global - Documentation</title>
+    <title>nutrientCalculator/cowsCulled - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">nutrientCalculator/cowsCulled</h1>
     
 
     
@@ -40,9 +40,8 @@
 
 <header>
     
-        <h2>
         
-        </h2>
+            
         
     
 </header>
@@ -51,8 +50,24 @@
     <div class="container-overview">
     
         
+            <div class="description"><p>nutrientCalculator/cowsCulled singleton</p></div>
+        
 
         
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -82,6 +97,11 @@
     
 
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
 
     
 
@@ -89,6 +109,20 @@
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -115,14 +149,14 @@
 
     
 
-    <h4 class="name" id="isLoadFlagSet"><span class="type-signature">(static) </span>isLoadFlagSet<span class="signature">(location)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id=".addType"><span class="type-signature">(static) </span>addType<span class="signature">(name<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns true if the location.search has ?load=true, false otherwise</p>
+    <p>Adds a new cow type for nutrient calculation</p>
 </div>
 
 
@@ -158,13 +192,13 @@
 
         <tr>
             
-                <td class="name"><code>location</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
             
@@ -174,7 +208,30 @@
 
             
 
-            <td class="description last"><p>instance</p></td>
+            <td class="description last"><p>name of new type, can only contain alphanumeric values with space or underscore but no other special characters</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>weight</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>average weight of this type in Kg, value must be &gt; 0</p></td>
         </tr>
 
     
@@ -215,7 +272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session_index.src.js.html">session/index.src.js</a>, <a href="session_index.src.js.html#line102">line 102</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line91">line 91</a>
     </li></ul></dd>
     
 
@@ -242,7 +299,7 @@
 
         
 <div class="param-desc">
-    <p>Returns true if the location.search has ?load=true, false otherwise</p>
+    <p>cowsCulled - useful for chaining multiple add()</p>
 </div>
 
 
@@ -253,7 +310,7 @@
     </dt>
     <dd>
         
-<span class="param-type">boolean</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -268,118 +325,14 @@
 
     
 
-    <h4 class="name" id="loadSection"><span class="type-signature">(static) </span>loadSection<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(cows<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns a section of the farmData as an object from the sessionStorage</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session_index.src.js.html">session/index.src.js</a>, <a href="session_index.src.js.html#line90">line 90</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>the farmdata, null, if not found.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="save"><span class="type-signature">(static) </span>save<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Saves the farmData.nutrientCalculator into the sessionStorage</p>
+    <p>Calculates total nutrient exported from the farm in cows culled</p>
 </div>
 
 
@@ -415,13 +368,13 @@
 
         <tr>
             
-                <td class="name"><code>farmData.nutrientCalculator</code></td>
+                <td class="name"><code>cows</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">array</span>
 
 
             
@@ -431,7 +384,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Array of culled cows, each item contains details of the cow {type{name, weight}, numberOfCows}</p></td>
         </tr>
 
     
@@ -472,7 +425,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session_index.src.js.html">session/index.src.js</a>, <a href="session_index.src.js.html#line66">line 66</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -499,7 +452,160 @@
 
         
 <div class="param-desc">
-    <p>farmData.nutrientCalculator</p>
+    <p>nutrient data of cows culled</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeTypeByIndex"><span class="type-signature">(static) </span>removeTypeByIndex<span class="signature">(index<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Remove this cow from cow types</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>index (starts from 0) of the type you want to remove in types Array</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line142">line 142</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>cowsCulled - useful for chaining functions</p>
 </div>
 
 
@@ -511,6 +617,263 @@
     <dd>
         
 <span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeTypeByName"><span class="type-signature">(static) </span>removeTypeByName<span class="signature">(name<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the type you want to remove.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>cowsCulled - useful for chaining functions</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns current cow types</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Types - cow types array</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
 
 
     </dd>
@@ -538,7 +901,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 11:12:05 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 15:53:29 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

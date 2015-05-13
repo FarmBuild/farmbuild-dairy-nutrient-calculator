@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/legume - Documentation</title>
+    <title>nutrientCalculator/milkSold - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/legume</h1>
+    <h1 class="page-title">nutrientCalculator/milkSold</h1>
     
 
     
@@ -50,7 +50,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>nutrientCalculator/legume singleton</p></div>
+            <div class="description"><p>nutrientCalculator/milkSold singleton</p></div>
         
 
         
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line11">line 11</a>
+        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -149,14 +149,14 @@
 
     
 
-    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkFatInKg<span class="signature-attributes">non-null</span>, milkProteinInKg<span class="signature-attributes">non-null</span>, numberOfMilkingCows<span class="signature-attributes">non-null</span>, numberOfMilkingDays<span class="signature-attributes">non-null</span>, averageCowWeightInKg<span class="signature-attributes">non-null</span>, forageMetabolisableEnergyInMJ<span class="signature-attributes">non-null</span>, concentrateMetabolisableEnergyInMJ<span class="signature-attributes">non-null</span>, milkingAreaInHa<span class="signature-attributes">non-null</span>, utilisationFactor<span class="signature-attributes">non-null</span>, nitrogenFromFertiliserInKg<span class="signature-attributes">non-null</span>, legumePercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".calculateByKg"><span class="type-signature">(static) </span>calculateByKg<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkFatInKg<span class="signature-attributes">non-null</span>, milkProteinInKg<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Calculates total Nitrogen nutrient imported on to the farm in legumes</p>
+    <p>Calculates nutrient from milk sold, input values are in Kg</p>
 </div>
 
 
@@ -198,7 +198,7 @@
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">number</span>
 
 
             
@@ -208,7 +208,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Quantity of milk sold in a year in litre, value must be &gt; 0</p></td>
         </tr>
 
     
@@ -221,7 +221,7 @@
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">number</span>
 
 
             
@@ -231,7 +231,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>Quantity of milk fat in Kg, value must be &gt; 0</p></td>
         </tr>
 
     
@@ -244,7 +244,7 @@
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">number</span>
 
 
             
@@ -254,214 +254,7 @@
 
             
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>numberOfMilkingCows</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>numberOfMilkingDays</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>averageCowWeightInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>forageMetabolisableEnergyInMJ</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>concentrateMetabolisableEnergyInMJ</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkingAreaInHa</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>utilisationFactor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nitrogenFromFertiliserInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>legumePercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>Quantity of milk protein in Kg, value must be &gt; 0</p></td>
         </tr>
 
     
@@ -502,7 +295,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line32">line 32</a>
+        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -529,7 +322,7 @@
 
         
 <div class="param-desc">
-    <p>Nitrogen nutrient data imported on the farm in legumes purchased</p>
+    <p>milk nutrient data</p>
 </div>
 
 
@@ -555,14 +348,14 @@
 
     
 
-    <h4 class="name" id=".utilisationFactors"><span class="type-signature">(static) </span>utilisationFactors<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id=".calculateByPercent"><span class="type-signature">(static) </span>calculateByPercent<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkProteinPercentage<span class="signature-attributes">non-null</span>, milkFatPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Utilisation factors reference values</p>
+    <p>Calculates nutrient from milk sold, input values are in percentage</p>
 </div>
 
 
@@ -571,6 +364,101 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>milkSoldPerYearInLitre</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Quantity of milk sold in a year in litre, value must be &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>milkProteinPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Percentage of milk protein, value must be &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>milkFatPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Percentage of milk fat, value must be &gt; 0</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -606,7 +494,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line98">line 98</a>
+        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -633,7 +521,7 @@
 
         
 <div class="param-desc">
-    <p>utilisationFactors</p>
+    <p>milk nutrient data</p>
 </div>
 
 
@@ -644,7 +532,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -672,7 +560,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 11:12:05 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 15:53:29 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

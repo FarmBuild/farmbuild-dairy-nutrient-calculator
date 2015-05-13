@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>concentrates-purchased/types.src.js - Documentation</title>
+    <title>forages-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">concentrates-purchased/types.src.js</h1>
+    <h1 class="page-title">forages-purchased/types.src.js</h1>
     
 
     
@@ -49,116 +49,172 @@
 'use strict';
 
 /**
- * nutrientCalculator/concentrateTypes singleton
- * @module nutrientCalculator/concentrateTypes
+ * Singleton - forageTypes Collection, This is a shortcut for "nutrientCalculator.foragesPurchased.types"
+ * @module nutrientCalculator/foragesTypes
  */
+
 angular.module('farmbuild.nutrientCalculator')
-  .factory('concentrateTypes', function (collections, validations, concentrateDefaults, $log) {
 
-    var concentrateTypes,
-      _isPositiveNumber = validations.isPositiveNumber,
-      _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
+	.factory('forageTypes', function (validations, forageTypeValues, $log) {
+		var _isPositiveNumber = validations.isPositiveNumber,
+			_isAlphanumeric = validations.isAlphanumeric,
+			_isDefined = validations.isDefined,
+			_types = angular.copy(forageTypeValues),
       _isEmpty = validations.isEmpty,
-      _types = angular.copy(concentrateDefaults.types);
+			forageTypes = {};
 
-    function _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-      return {
-        name: name,
-        metabolisableEnergyInMJPerKg:metabolisableEnergyInMJPerKg,
-        dryMatterPercentage: dryMatterPercentage,
-        sulphurPercentage: sulphurPercentage,
-        potassiumPercentage: potassiumPercentage,
-        phosphorusPercentage: phosphorusPercentage,
-        nitrogenPercentage: nitrogenPercentage
-      };
-    }
+		function _validate(type) {
+			$log.info('validating type  ...', type);
 
-    function _validate(type) {
-      $log.info('validating type  ...', type);
+			return !(_isEmpty(type)) &amp;&amp;
+        !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
 
-      var valid = !(_isEmpty(type)) &amp;&amp;
-        !(_isEmpty(type.name) ||
-        !_isPositiveNumber(type.dryMatterPercentage) ||
-        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
-        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
-        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
-        !_isPositiveNumberOrZero(type.sulphurPercentage));
+		}
 
-      if(!valid) {
-        $log.error('invalid type: %j', type);
-      }
-      return valid;
-    }
+		function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+			return {
+				name: name,
+				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
+				dryMatterPercentage: dryMatterPercentage,
+				sulphurPercentage: sulphurPercentage,
+				potassiumPercentage: potassiumPercentage,
+				phosphorusPercentage: phosphorusPercentage,
+				nitrogenPercentage: nitrogenPercentage
+			};
+		}
 
-    function _add(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-      var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-      $log.info('adding concentrate type ...', type);
+		/**
+		 * Adds a new forage type for nutrient calculation
+		 * @method add
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
+		 * @param {!number} dryMatterPercentage - value must be > 0
+		 * @param {!number} sulphurPercentage - value must be > 0
+		 * @param {!number} potassiumPercentage - value must be > 0
+		 * @param {!number} phosphorusPercentage - value must be > 0
+		 * @param {!number} nitrogenPercentage - value must be > 0
+		 * @returns {object} types - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
 
-      if (!_validate(type)) {
-        return undefined;
-      }
+			var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+			$log.info('adding forage type ...', type);
 
-      return collections.add(_types, type, index);
-    };
+			if (!_validate(type)) {
+				return undefined;
+			}
 
-    /**
-     * Concentrate types collection api
-     * @property {object} Types - concentrate types collection
-     * @public
-     * @static
-     */
-    concentrateTypes = {
-      /**
-       * Adds a new concentrate type for nutrient calculation
-       * @method add
-       * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-       * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
-       * @param {!number} dryMatterPercentage - value must be > 0
-       * @param {!number} sulphurPercentage - value must be > 0
-       * @param {!number} potassiumPercentage - value must be > 0
-       * @param {!number} phosphorusPercentage - value must be > 0
-       * @param {!number} nitrogenPercentage - value must be > 0
-       * @returns {object} concentrates - useful for chaining multiple add()
-       * @public
-       * @static
-       */
-      add: _add,
-      /**
-       * Returns the concentrateType at specified index
-       * @method at
-       * @returns {object} concentrateType
-       * @public
-       * @static
-       */
-      at: function(index) { return collections.at(_types, index)},
-      size: function() { return collections.size(_types)},
-      byName: function(name) { return collections.byProperty(_types, 'name', name)},
-      defaultTypes: function() { return angular.copy(concentrateDefaults.types)},
-      /**
-       * Returns concentrateTypes collection as an array
-       * @method toArray
-       * @returns {Array} concentrateTypes
-       * @public
-       * @static
-       */
-      toArray: function() { return angular.copy(_types) },
-      /**
-       * Removes the concentrate type at specified index
-       * @method removeAt
-       * @returns {object} concentrateTypes collection
-       * @public
-       * @static
-       */
-      removeAt: function(index) { return collections.removeAt(_types, index)},
-//      remove: _removeType,
-//      first: _getFirstType,
-      last: function() { return collections.last(_types) },
-//      isEmpty: _isTypesEmpty
-      validate: _validate
-    };
+			if (_isDefined(index)) {
+				_types.splice(index, 0, type)
+			} else {
+				_types.push(type);
+			}
 
-    return concentrateTypes;
-  });</code></pre>
+			return forageTypes;
+		};
+
+
+		/**
+		 * Returns the forageType at specified index
+		 * @method at
+		 * @returns {object} forageType
+		 * @public
+		 * @static
+		 */
+		function _at(index) {
+			var type;
+			$log.info('getting forage type at index: ', index);
+			if (!_isDefined(index) || index &lt; 0) {
+				return undefined;
+			}
+
+			return _types[index];
+		};
+
+
+		function _last() {
+			$log.info('getting last forage type ...');
+			var length = _count();
+			return _types[length - 1];
+		};
+
+
+		function _first() {
+			$log.info('getting first forage type ...');
+			return _types[0];
+		};
+
+
+		function _count() {
+			$log.info('counting forage types ...', _types);
+			return _types.length;
+		};
+
+
+		/**
+		 * Returns forageTypes collection as an array
+		 * @method toArray
+		 * @returns {Array} forageTypes
+		 * @public
+		 * @static
+		 */
+		function _toArray() {
+			$log.info('toArray types ...', _types);
+			return _types;
+		};
+
+		/**
+		 * Removes the forage type at specified index
+		 * @method removeAt
+		 * @returns {object} forageTypes collection
+		 * @public
+		 * @static
+		 */
+		function _removeAt(index) {
+			$log.info('removing forage type at index ' + index);
+			if (!_isDefined(index) || index &lt; 0 || index > _types.length - 1) {
+				return forageTypes;
+			}
+
+			_types.splice(index, 1);
+
+			return forageTypes;
+		};
+
+
+		function _remove(type) {
+			$log.info('removing forage type ', type);
+
+			if (!_isDefined(type)) {
+				return forageTypes;
+			}
+
+			angular.forEach(_types, function (item, index) {
+				if (angular.equals(item, type)) {
+					_removeAt(index);
+				}
+			});
+
+			return forageTypes;
+		};
+
+		forageTypes = {
+			add: _addType,
+			at: _at,
+			size: _count,
+			toArray: _toArray,
+			removeAt: _removeAt,
+			remove: _remove,
+			first: _first,
+			last: _last,
+			isEmpty: _isEmpty,
+			validate: _validate
+		};
+
+		return forageTypes;
+	});</code></pre>
         </article>
     </section>
 
@@ -170,7 +226,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 11:12:05 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 15:53:29 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

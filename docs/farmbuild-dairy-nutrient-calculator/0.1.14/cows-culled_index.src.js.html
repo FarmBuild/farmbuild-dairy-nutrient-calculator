@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>session/index.src.js - Documentation</title>
+    <title>cows-culled/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">session/index.src.js</h1>
+    <h1 class="page-title">cows-culled/index.src.js</h1>
     
 
     
@@ -49,118 +49,170 @@
 'use strict';
 
 /**
- * nutrientCalculator/nutrientCalculatorSession singleton
- * @private-module nutrientCalculator/nutrientCalculatorSession
+ * nutrientCalculator/cowsCulled singleton
+ * @module nutrientCalculator/cowsCulled
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('nutrientCalculatorSession',
-  function ($log, farmdata, validations) {
-
-    var nutrientCalculatorSession = {},
-      _isDefined = validations.isDefined;
-
-
-    function findInSessionStorage() {
-      var root = farmdata.session.find();
-      return root.nutrientCalculator.milkSold;
-    };
-
-    function saveInSessionStorage(result) {
-      var farmData = farmdata.session.find();
-      farmData.dateLastUpdated = new Date();
-      farmData.nutrientCalculator.milkSold = result;
-      farmdata.session.save(farmData);
-    };
-
-    function load() {
-      var root = farmdata.session.find();
-
-      if(!_isDefined(root)) {
-        return undefined;
-      }
-
-      return root.nutrientCalculator;
-    }
-
-    /**
-     * Saves the farmData.nutrientCalculator into the sessionStorage
-     * @method saveSection
-     * @param {!object} farmData.nutrientCalculator
-     * @returns {Object} farmData.nutrientCalculator
-     * @private
-     * @static
-     */
-    nutrientCalculatorSession.saveSection = function(section, value) {
-      var loaded = load();
-
-      if(!_isDefined(loaded)) {
-        $log.error('Unable to find an existing farmData! please create then save.');
-        return nutrientCalculatorSession
-      }
-
-      loaded[section] = value;
-
-      return save(loaded);
-    }
-
-    /**
-     * Saves the farmData.nutrientCalculator into the sessionStorage
-     * @method save
-     * @param {!object} farmData.nutrientCalculator
-     * @returns {Object} farmData.nutrientCalculator
-     * @public
-     * @static
-     */
-    function save(toSave) {
-      var farmData = farmdata.session.find();
-
-      if(!_isDefined(farmData)) {
-        $log.error('Unable to find the farmData in the session!');
-        return undefined;
-      }
-
-      farmData.dateLastUpdated = new Date();
-
-      farmData.nutrientCalculator = toSave;
-      farmdata.session.save(farmData);
-      return toSave;
-    }
-    nutrientCalculatorSession.save = save;
-
-    /**
-     * Returns a section of the farmData as an object from the sessionStorage
-     * @method loadSection
-     * @returns {Object} the farmdata, null, if not found.
-     * @public
-     * @static
-     */
-    nutrientCalculatorSession.loadSection = function(section) {
-      var loaded = load();
-      return loaded?loaded[section]:null;
-    }
-
-    /**
-     * Returns true if the location.search has ?load=true, false otherwise
-     * @method isLoadFlagSet
-     * @param {object} location instance
-     * @returns {boolean} Returns true if the location.search has ?load=true, false otherwise
-     * @public
-     * @static
-     */
-    nutrientCalculatorSession.isLoadFlagSet = function(location) {
-      var load = false;
-
-      if(location.href.split('?').length > 1 &amp;&amp;
-        location.href.split('?')[1].indexOf('load') === 0){
-        load = (location.href.split('?')[1].split('=')[1] === 'true');
-      }
-
-      return load;
-    }
-
-    return nutrientCalculatorSession;
-
-  });
+	
+	.factory('cowsCulled', function (validations, cowTypes) {
+		
+		var cowsCulled = {},
+			_isPositiveNumber = validations.isPositiveNumber,
+			_isAlphanumeric = validations.isAlphanumeric,
+			_types = angular.copy(cowTypes);
+		
+		/**
+		 * Calculates total nutrient exported from the farm in cows culled
+		 * @method calculate
+		 * @param {!array} cows - Array of culled cows, each item contains details of the cow {type{name, weight}, numberOfCows}
+		 * @returns {object} nutrient data of cows culled
+		 * @public
+		 * @static
+		 */
+		cowsCulled.calculate = function (cows) {
+			var numberOfCows = 0,
+				weight = 0,
+				nitrogenInKg = 0,
+				phosphorusInKg = 0,
+				potassiumInKg = 0,
+				sulphurInKg = 0,
+				nitrogenPercentage = 2.8,
+				phosphorusPercentage = 0.72,
+				potassiumPercentage = 0.2,
+				sulphurPercentage = 0.8,
+				incomings = [],
+				i = 0;
+			
+			if (!cows || cows.length === 0) {
+				return undefined;
+			}
+			
+			for (i; i &lt; cows.length; i++) {
+				var cowWeight,
+					cowCount,
+					cow = cows[i];
+				
+				if (!cow.name || !cow.weight) {
+					return undefined;
+				}
+				
+				cowWeight = cow.weight;
+				cowCount = cow.numberOfCows;
+				
+				if (!_isPositiveNumber(cowCount)) {
+					return undefined;
+				}
+				
+				weight += cowWeight * cowCount;
+				numberOfCows += cowCount;
+				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
+				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
+				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
+				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
+				incomings.push({
+					name: cow.name,
+					numberOfCows: cowCount,
+					weight: cow.weight
+				});
+			}
+			
+			return {
+				cows: incomings,
+				numberOfCows: numberOfCows,
+				weight: weight,
+				nitrogenInKg: nitrogenInKg,
+				phosphorusInKg: phosphorusInKg,
+				potassiumInKg: potassiumInKg,
+				sulphurInKg: sulphurInKg
+			};
+			
+		};
+		
+		/**
+		 * Adds a new cow type for nutrient calculation
+		 * @method addType
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
+		 * @returns {object} cowsCulled - useful for chaining multiple add()
+		 * @public
+		 * @static
+		 */
+		cowsCulled.addType = function (name, weight) {
+			if (!_isPositiveNumber(weight)) {
+				return undefined;
+			}
+			
+			if (!name || !_isAlphanumeric(name)) {
+				return undefined;
+			}
+			
+			weight = parseFloat(weight);
+			
+			_types.push({
+				name: name,
+				weight: weight
+			});
+			
+			return cowsCulled;
+		};
+		
+		/**
+		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
+		 * @method removeTypeByName
+		 * @param {!String} name - name of the type you want to remove.
+		 * @returns {Object} cowsCulled - useful for chaining functions
+		 * @public
+		 * @static
+		 */
+		cowsCulled.removeTypeByName = function (name) {
+			
+			if (!name) {
+				return undefined;
+			}
+			
+			angular.forEach(_types, function(type, i){
+				if(type.name === name){
+					_types.splice(i, 1);
+				}
+			});
+			
+			return _types;
+		};
+		
+		/**
+		 * Remove this cow from cow types
+		 * @method removeTypeByIndex
+		 * @param {!Number} index - index (starts from 0) of the type you want to remove in types Array
+		 * @returns {Object} cowsCulled - useful for chaining functions
+		 * @public
+		 * @static
+		 */
+		cowsCulled.removeTypeByIndex = function (index) {
+			
+			if (!index || index &lt; 0 || index > _types.length-1) {
+				return undefined;
+			}
+			
+			_types.splice(index, 1);
+			
+			return _types;
+		};
+		
+		
+		/**
+		 * Returns current cow types
+		 * @method types
+		 * @returns {object} Types - cow types array
+		 * @public
+		 * @static
+		 */
+		cowsCulled.types = function () {
+			return _types;
+		};
+		
+		return cowsCulled;
+		
+	});
 </code></pre>
         </article>
     </section>
@@ -173,7 +225,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 11:12:05 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 15:53:29 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/fertilizerTypes - Documentation</title>
+    <title>nutrientCalculator/foragesTypes - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/fertilizerTypes</h1>
+    <h1 class="page-title">nutrientCalculator/foragesTypes</h1>
     
 
     
@@ -50,7 +50,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>nutrientCalculator/fertilizerTypes singleton</p></div>
+            <div class="description"><p>Singleton - forageTypes Collection, This is a shortcut for &quot;nutrientCalculator.foragesPurchased.types&quot;</p></div>
         
 
         
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line11">line 11</a>
+        <a href="forages-purchased_types.src.js.html">forages-purchased/types.src.js</a>, <a href="forages-purchased_types.src.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -140,124 +140,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".fertilizerTypes"><span class="type-signature">(static) </span>fertilizerTypes<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Fertilizer types collection api</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>Types</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>fertilizer types collection</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line71">line 71</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -267,14 +149,14 @@
 
     
 
-    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(name<span class="signature-attributes">non-null</span>, dryMatterPercentage<span class="signature-attributes">non-null</span>, sulphurPercentage<span class="signature-attributes">non-null</span>, potassiumPercentage<span class="signature-attributes">non-null</span>, phosphorusPercentage<span class="signature-attributes">non-null</span>, nitrogenPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(name<span class="signature-attributes">non-null</span>, metabolisableEnergyInMJPerKg<span class="signature-attributes">non-null</span>, dryMatterPercentage<span class="signature-attributes">non-null</span>, sulphurPercentage<span class="signature-attributes">non-null</span>, potassiumPercentage<span class="signature-attributes">non-null</span>, phosphorusPercentage<span class="signature-attributes">non-null</span>, nitrogenPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Adds a new fertilizer type for nutrient calculation</p>
+    <p>Adds a new forage type for nutrient calculation</p>
 </div>
 
 
@@ -327,6 +209,29 @@
             
 
             <td class="description last"><p>name of new type, can only contain alphanumeric values with space or underscore but no other special characters</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>metabolisableEnergyInMJPerKg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value must be &gt; 0</p></td>
         </tr>
 
     
@@ -482,7 +387,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line72">line 72</a>
+        <a href="forages-purchased_types.src.js.html">forages-purchased/types.src.js</a>, <a href="forages-purchased_types.src.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -509,7 +414,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizers</p>
+    <p>types - useful for chaining multiple add()</p>
 </div>
 
 
@@ -542,7 +447,7 @@
 
 
 <div class="description">
-    <p>Returns the fertilizerType at specified index</p>
+    <p>Returns the forageType at specified index</p>
 </div>
 
 
@@ -586,7 +491,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line86">line 86</a>
+        <a href="forages-purchased_types.src.js.html">forages-purchased/types.src.js</a>, <a href="forages-purchased_types.src.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -613,7 +518,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizerType</p>
+    <p>forageType</p>
 </div>
 
 
@@ -646,7 +551,7 @@
 
 
 <div class="description">
-    <p>Removes the fertilizer type at specified index</p>
+    <p>Removes the forage type at specified index</p>
 </div>
 
 
@@ -690,7 +595,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line105">line 105</a>
+        <a href="forages-purchased_types.src.js.html">forages-purchased/types.src.js</a>, <a href="forages-purchased_types.src.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -717,7 +622,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizerTypes collection</p>
+    <p>forageTypes collection</p>
 </div>
 
 
@@ -750,7 +655,7 @@
 
 
 <div class="description">
-    <p>Returns fertilizerTypes collection as an array</p>
+    <p>Returns forageTypes collection as an array</p>
 </div>
 
 
@@ -794,7 +699,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line97">line 97</a>
+        <a href="forages-purchased_types.src.js.html">forages-purchased/types.src.js</a>, <a href="forages-purchased_types.src.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -821,7 +726,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizerTypes</p>
+    <p>forageTypes</p>
 </div>
 
 
@@ -860,7 +765,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 11:12:05 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 13 2015 15:53:29 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
