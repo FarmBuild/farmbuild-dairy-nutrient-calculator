@@ -41,7 +41,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
         $scope.calculate = function() {
             $log.info('calculate...');
 
-            nutrientCalculator.ga.track('farmbuild-dairy-nutrient-calculator', 'AgSmart');
+            nutrientCalculator.ga.trackCalculate('AgSmart');
         };
 
         $scope.saveToSessionStorage = function (key, value) {

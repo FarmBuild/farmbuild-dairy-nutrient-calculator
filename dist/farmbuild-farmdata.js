@@ -8,24 +8,27 @@ window.farmbuild = {
 
 "use strict";
 
-angular.module("farmbuild.farmdata").factory("farmdata", function(farmdataSession) {
+angular.module("farmbuild.farmdata").factory("farmdata", function(farmdataSession, validations) {
     var farmdata = {
         session: farmdataSession
-    }, defaults = {
+    }, isEmpty = validations.isEmpty, defaults = {
+        id: "" + new Date().getTime(),
         name: "My new farm",
         geometry: {
             type: "Polygon",
             crs: "EPSG:4283",
             coordinates: []
         }
-    }, create = function(name) {
+    }, create = function(name, id) {
         return {
             version: 1,
             dateCreated: new Date(),
             dateLastUpdated: new Date(),
-            name: name ? name : defaults.name,
+            id: isEmpty(id) ? defaults.id : id,
+            name: isEmpty(name) ? defaults.name : name,
             geometry: angular.copy(defaults.geometry),
-            area: 0
+            area: 0,
+            areaUnit: "hectare"
         };
     };
     farmdata.defaultValues = function() {
@@ -36,13 +39,7 @@ angular.module("farmbuild.farmdata").factory("farmdata", function(farmdataSessio
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
-    farmdata.isLoadFlagSet = function(location) {
-        var load = false;
-        if (location.href.split("?").length > 1 && location.href.split("?")[1].indexOf("load") === 0) {
-            load = location.href.split("?")[1].split("=")[1] === "true";
-        }
-        return load;
-    };
+    farmdata.validate = function(farmData) {};
     farmdata.isFarmData = function(farmData) {
         if (!angular.isDefined(farmData)) {
             return false;

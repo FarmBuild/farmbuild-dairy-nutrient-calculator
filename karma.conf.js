@@ -33,15 +33,14 @@ module.exports = function(config){
       'src/session/index.src.js',
       'src/ga/index.src.js',
       'src/index.js',
-      //'src/*.js',
-      //'src/**/*.js'
 //      'src/index.spec.js',
 //      'src/legumes/calculator.spec.js',
 //      'src/collections/index.spec.js',
-//        'src/legumes/index.spec.js',
+//      'src/legumes/index.spec.js',
 //      'src/concentrates-purchased/index.spec.js',
-//        'src/session/index.spec.js',
-        'src/ga/index.spec.js',
+//      'src/session/index.spec.js',
+//      'src/ga/index.spec.js'
+      'src/**/*.spec.js'
     ],
 
     autoWatch : true,
