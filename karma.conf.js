@@ -8,6 +8,8 @@ module.exports = function(config){
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/farmbuild-farmdata/dist/farmbuild-farmdata.js',
       'src/nutrient-calculator.js',
+      'src/nutrient-medium/validator.src.js',
+      'src/nutrient-medium/types.src.js',
       'src/cows-culled/cows.conf.src.js',
       'src/cows-purchased/index.src.js',
       'src/cows-culled/index.src.js',
@@ -33,10 +35,17 @@ module.exports = function(config){
       'src/session/index.src.js',
       'src/ga/index.src.js',
       'src/index.js',
+//      'src/blank.spec.js',//use this as a basis of creating your module test
+//      'src/nutrient-medium/validator.spec.js',
+//      'src/nutrient-medium/types.spec.js',
 //      'src/index.spec.js',
 //      'src/legumes/calculator.spec.js',
 //      'src/collections/index.spec.js',
 //      'src/legumes/index.spec.js',
+//      'src/forages-purchased/index.spec.js',
+//      'src/fertilizers-purchased/types.spec.js',
+//      'src/fertilizers-purchased/index.spec.js',
+//      'src/concentrates-purchased/types.spec.js',
 //      'src/concentrates-purchased/index.spec.js',
 //      'src/session/index.spec.js',
 //      'src/ga/index.spec.js'
@@ -44,19 +53,25 @@ module.exports = function(config){
     ],
 
     autoWatch : true,
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'fixture'],
     browsers : ['Chrome'],
     //logLevel: 'LOG_INFO', //this it NOT application log level, it's karma's log level.
     plugins : [
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-fixture',
+            'karma-html2js-preprocessor'
             ],
 
     junitReporter : {
       outputFile: 'test_out/unit.xml',
       suite: 'unit'
+    },
+    preprocessors: {
+      '**/*.html'   : ['html2js'],
+      '**/*.json'   : ['html2js']
     }
 
   });
