@@ -13,13 +13,14 @@
  * @module nutrientCalculator/fertilizerTypes
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('fertilizerTypes', function (collections, validations, fertilizerDefaults, $log) {
+  .factory('fertilizerTypes', function (collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
 
     var fertilizerTypes,
       _isPositiveNumber = validations.isPositiveNumber,
       _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
       _isEmpty = validations.isEmpty,
-      _types = angular.copy(fertilizerDefaults.types);
+      _types = angular.copy(fertilizerDefaults.types),
+      _validate = nutrientMediumTypes.validate;
 
     function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
       return {
@@ -32,24 +33,24 @@ angular.module('farmbuild.nutrientCalculator')
       };
     }
 
-    function _validate(type) {
-      $log.info('validating type  ...', type);
-
-
-      var valid =
-        !(_isEmpty(type)) &&
-        !(_isEmpty(type.name) ||
-        !_isPositiveNumber(type.dryMatterPercentage) ||
-        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
-        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
-        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
-        !_isPositiveNumberOrZero(type.sulphurPercentage));
-
-      if(!valid) {
-        $log.error('invalid type: %j', type);
-      }
-      return valid;
-    }
+//    function _validate(type) {
+//      $log.info('validating type  ...', type);
+//
+//
+//      var valid =
+//        !(_isEmpty(type)) &&
+//        !(_isEmpty(type.name) ||
+//        !_isPositiveNumber(type.dryMatterPercentage) ||
+//        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
+//        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
+//        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
+//        !_isPositiveNumberOrZero(type.sulphurPercentage));
+//
+//      if(!valid) {
+//        $log.error('invalid type: %j', type);
+//      }
+//      return valid;
+//    }
 
     function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
       var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);

@@ -4,6 +4,10 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate service
   var $log;
+  beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
+    $provide.value('$log', console)
+  }));
+
   var fertilizerTypes, dairyManureStockpileName = 'Dairy manure stockpile',
     dapName = 'DAP', superphosphate = 'Superphosphate (Super)';
 
@@ -64,6 +68,31 @@ describe('farmbuild.nutrientCalculator module', function() {
       var types = fertilizerTypes.defaultTypes(),
         removed = fertilizerTypes.removeAt(0);
       expect(removed.length).toEqual(types.length -1);
+    }));
+  });
+
+  describe('types.add', function() {
+    it('add should create ' + dapName, inject(function() {
+      var nitrogenPercentage = 3.14,
+        phosphorusPercentage = 0.67,
+        potassiumPercentage = 0.84,
+        sulphurPercentage = 0.28,
+        dryMatterPercentage = 88.78,
+        metabolisableEnergyInMJPerKg = 12.72,
+        types = fertilizerTypes.add(dapName,dryMatterPercentage,
+          sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage),
+        added = fertilizerTypes.last(types);
+
+      $log.info('added: %j', added)
+
+      expect(added.name).toEqual(dapName);
+      expect(added.nitrogenPercentage).toEqual(nitrogenPercentage);
+      expect(added.phosphorusPercentage).toEqual(phosphorusPercentage);
+      expect(added.potassiumPercentage).toEqual(potassiumPercentage);
+      expect(added.sulphurPercentage).toEqual(sulphurPercentage);
+      expect(added.dryMatterPercentage).toEqual(dryMatterPercentage);
+      expect(added.dryMatterPercentage).toEqual(dryMatterPercentage);
+
     }));
   });
 
