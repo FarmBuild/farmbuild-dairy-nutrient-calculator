@@ -24,11 +24,12 @@
     "static-livereload":"0.1.4"
   },
   "scripts": {
+    "bower-update": "bower update",
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ",
     "livereload": "static-livereload --path .",
-    "livereloads": "node_modules/.bin/static-livereload --path . --config process.cwd/livereload.js",
+    "livereloads": "node_modules/.bin/static-livereload --path . --config process.cwd/lslivereload.js",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",
