@@ -50,7 +50,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 
 		$scope.removeConcentrate = function (index) {
 			$scope.result = '';
-			$scope.concentrates = concentratesPurchased.removeAt(index);
+			$scope.concentrates = concentratesPurchased.removeAt(index).concentrates();
 		};
 
 		$scope.addConcentrateType = function (type) {
