@@ -15,7 +15,7 @@
 
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('forageTypes', function (validations, nutrientMediumTypes, forageTypeValues, $log) {
+	.factory('forageTypes', function (collections, validations, nutrientMediumTypes, forageTypeValues, $log) {
 		var _isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
 			_isDefined = validations.isDefined,
@@ -58,7 +58,7 @@ angular.module('farmbuild.nutrientCalculator')
 		 * @public
 		 * @static
 		 */
-		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
 
 			var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
 			$log.info('adding forage type ...');
@@ -66,14 +66,14 @@ angular.module('farmbuild.nutrientCalculator')
 			if (!_validate(type)) {
 				return undefined;
 			}
+//
+//			if (_isDefined(index)) {
+//				_types.splice(index, 0, type)
+//			} else {
+//				_types.push(type);
+//			}
 
-			if (_isDefined(index)) {
-				_types.splice(index, 0, type)
-			} else {
-				_types.push(type);
-			}
-
-			return _types;
+			return collections.add(_types, type);
 		};
 
 

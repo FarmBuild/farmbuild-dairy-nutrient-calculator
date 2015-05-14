@@ -62,7 +62,7 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     function _add(types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
-                  metabolisableEnergyInMJPerKg, index) {
+                  metabolisableEnergyInMJPerKg) {
       var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage,
         nitrogenPercentage, metabolisableEnergyInMJPerKg);
       $log.info('adding a type ...', type);
@@ -71,7 +71,7 @@ angular.module('farmbuild.nutrientCalculator')
         return undefined;
       }
 
-      return collections.add(types, type, index);
+      return collections.add(types, type);
     };
 
     /**

@@ -22,45 +22,28 @@ angular.module('farmbuild.nutrientCalculator')
       _types = angular.copy(fertilizerDefaults.types),
       _validate = nutrientMediumTypes.validate;
 
-    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-      return {
-        name: name,
-        dryMatterPercentage: dryMatterPercentage,
-        sulphurPercentage: sulphurPercentage,
-        potassiumPercentage: potassiumPercentage,
-        phosphorusPercentage: phosphorusPercentage,
-        nitrogenPercentage: nitrogenPercentage
-      };
-    }
-
-//    function _validate(type) {
-//      $log.info('validating type  ...', type);
-//
-//
-//      var valid =
-//        !(_isEmpty(type)) &&
-//        !(_isEmpty(type.name) ||
-//        !_isPositiveNumber(type.dryMatterPercentage) ||
-//        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
-//        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
-//        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
-//        !_isPositiveNumberOrZero(type.sulphurPercentage));
-//
-//      if(!valid) {
-//        $log.error('invalid type: %j', type);
-//      }
-//      return valid;
+//    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+//      return {
+//        name: name,
+//        dryMatterPercentage: dryMatterPercentage,
+//        sulphurPercentage: sulphurPercentage,
+//        potassiumPercentage: potassiumPercentage,
+//        phosphorusPercentage: phosphorusPercentage,
+//        nitrogenPercentage: nitrogenPercentage
+//      };
 //    }
 
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-      var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-      $log.info('adding fertilizer type ...', type);
-
-      if (!_validate(type)) {
-        return undefined;
-      }
-
-      return collections.add(_types, type, index);
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+      return nutrientMediumTypes.add(_types, name,
+        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+//      var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
+//      $log.info('adding fertilizer type ...', type);
+//
+//      if (!_validate(type)) {
+//        return undefined;
+//      }
+//
+//      return collections.add(_types, type, index);
     };
 
     /**

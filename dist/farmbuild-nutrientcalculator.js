@@ -568,8 +568,8 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
 
 angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", function(collections, validations, nutrientMediumTypes, concentrateDefaults, $log) {
     var concentrateTypes, _types = angular.copy(concentrateDefaults.types), _validate = nutrientMediumTypes.validate;
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index) {
-        return nutrientMediumTypes.add(_types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index);
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg) {
+        return nutrientMediumTypes.add(_types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg);
     }
     concentrateTypes = {
         add: _add,
@@ -1149,23 +1149,8 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
 
 angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", function(collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
     var fertilizerTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isEmpty = validations.isEmpty, _types = angular.copy(fertilizerDefaults.types), _validate = nutrientMediumTypes.validate;
-    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-        return {
-            name: name,
-            dryMatterPercentage: dryMatterPercentage,
-            sulphurPercentage: sulphurPercentage,
-            potassiumPercentage: potassiumPercentage,
-            phosphorusPercentage: phosphorusPercentage,
-            nitrogenPercentage: nitrogenPercentage
-        };
-    }
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-        var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-        $log.info("adding fertilizer type ...", type);
-        if (!_validate(type)) {
-            return undefined;
-        }
-        return collections.add(_types, type, index);
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+        return nutrientMediumTypes.add(_types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
     }
     fertilizerTypes = {
         add: _add,
@@ -1596,7 +1581,7 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(validations, nutrientMediumTypes, forageTypeValues, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(collections, validations, nutrientMediumTypes, forageTypeValues, $log) {
     var _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(forageTypeValues), _isEmpty = validations.isEmpty, forageTypes = {}, _validate = nutrientMediumTypes.validate;
     function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
         return {
@@ -1609,18 +1594,13 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
             nitrogenPercentage: nitrogenPercentage
         };
     }
-    function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
+    function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
         var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
         $log.info("adding forage type ...");
         if (!_validate(type)) {
             return undefined;
         }
-        if (_isDefined(index)) {
-            _types.splice(index, 0, type);
-        } else {
-            _types.push(type);
-        }
-        return _types;
+        return collections.add(_types, type);
     }
     function _at(index) {
         var type;
@@ -1947,13 +1927,13 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumTypes", fu
         }
         return valid;
     }
-    function _add(types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index) {
+    function _add(types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg) {
         var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg);
         $log.info("adding a type ...", type);
         if (!_validate(type)) {
             return undefined;
         }
-        return collections.add(types, type, index);
+        return collections.add(types, type);
     }
     nutrientMediumTypes = {
         add: _add,
