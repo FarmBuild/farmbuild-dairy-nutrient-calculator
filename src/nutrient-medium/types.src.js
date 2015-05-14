@@ -50,7 +50,7 @@ angular.module('farmbuild.nutrientCalculator')
           !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
           !_isPositiveNumberOrZero(type.sulphurPercentage));
 
-      if(type.hasOwnProperty('metabolisableEnergyInMJPerKg')) {
+      if(_isDefined(type) && type.hasOwnProperty('metabolisableEnergyInMJPerKg')) {
         valid = valid && _isPositiveNumber(type.metabolisableEnergyInMJPerKg);
       }
 
@@ -61,7 +61,7 @@ angular.module('farmbuild.nutrientCalculator')
       return valid;
     }
 
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
+    function _add(types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
                   metabolisableEnergyInMJPerKg, index) {
       var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage,
         nitrogenPercentage, metabolisableEnergyInMJPerKg);
@@ -71,7 +71,7 @@ angular.module('farmbuild.nutrientCalculator')
         return undefined;
       }
 
-      return collections.add(_types, type, index);
+      return collections.add(types, type, index);
     };
 
     /**

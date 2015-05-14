@@ -58,9 +58,9 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
         $scope.noResult = true;
         return;
       }
-			$scope.concentrateTypes = concentratesPurchased.types.add(type.name, type.metabolisableEnergyInMJPerKg, type.dryMatterPercentage,
+			$scope.concentrateTypes = concentratesPurchased.types.add(type.name, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
-																									type.phosphorusPercentage, type.nitrogenPercentage);
+																									type.phosphorusPercentage, type.nitrogenPercentage,type.metabolisableEnergyInMJPerKg);
 			$scope.result = '';
 			$scope.type = {};
 			$scope.noResult = !$scope.concentrates;

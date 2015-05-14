@@ -40,6 +40,14 @@ describe('Farm web nutrient calculator', function() {
       });
     });
 
+    it('adding empty new concentrate should present validation', function() {
+      element(by.buttonText('Add concentrate')).click().then(function(){
+        expect(element.all(by.css('h3.modal-title')).getText()).
+          toContain('Validation failed');
+      });
+    });
+
+
   });
 
 });

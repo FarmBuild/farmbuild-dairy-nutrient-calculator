@@ -4,10 +4,11 @@ exports.config = {
   allScriptsTimeout: 11000,
 
   specs: [
-    'examples/**/*.e2e.js'
+    //'examples/**/*.e2e.js'
     //'examples/angularjs/milk-sold/index.e2e.js'
     //'examples/angularjs/fertilizers-purchased/*.e2e.js'
-    //'examples/angularjs/concentrates-purchased/*.e2e.js'
+    //'examples/angularjs/concentrates-purchased/index.e2e.js'
+    'examples/angularjs/concentrates-purchased/index-types.e2e.js'
     //'examples/angularjs/legumes/*.e2e.js'
 
   ],

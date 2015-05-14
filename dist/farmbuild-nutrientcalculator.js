@@ -566,34 +566,10 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", function(collections, validations, concentrateDefaults, $log) {
-    var concentrateTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isEmpty = validations.isEmpty, _types = angular.copy(concentrateDefaults.types);
-    function _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-        return {
-            name: name,
-            metabolisableEnergyInMJPerKg: metabolisableEnergyInMJPerKg,
-            dryMatterPercentage: dryMatterPercentage,
-            sulphurPercentage: sulphurPercentage,
-            potassiumPercentage: potassiumPercentage,
-            phosphorusPercentage: phosphorusPercentage,
-            nitrogenPercentage: nitrogenPercentage
-        };
-    }
-    function _validate(type) {
-        $log.info("validating type  ...", type);
-        var valid = !_isEmpty(type) && !(_isEmpty(type.name) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumberOrZero(type.potassiumPercentage) || !_isPositiveNumberOrZero(type.phosphorusPercentage) || !_isPositiveNumberOrZero(type.nitrogenPercentage) || !_isPositiveNumberOrZero(type.sulphurPercentage));
-        if (!valid) {
-            $log.error("invalid type: %j", type);
-        }
-        return valid;
-    }
-    function _add(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-        var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-        $log.info("adding concentrate type ...", type);
-        if (!_validate(type)) {
-            return undefined;
-        }
-        return collections.add(_types, type, index);
+angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", function(collections, validations, nutrientMediumTypes, concentrateDefaults, $log) {
+    var concentrateTypes, _types = angular.copy(concentrateDefaults.types), _validate = nutrientMediumTypes.validate;
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index) {
+        return nutrientMediumTypes.add(_types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index);
     }
     concentrateTypes = {
         add: _add,
@@ -625,26 +601,15 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", funct
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("concentrateValidator", function(validations, nutrientMediumValidator, concentrateTypes, $log) {
-    var concentrateValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isEmpty = validations.isEmpty;
+angular.module("farmbuild.nutrientCalculator").factory("concentrateValidator", function(nutrientMediumValidator, $log) {
+    var concentrateValidator = {};
     function _validate(concentrate) {
         $log.info("validating concentrate...", concentrate);
         return nutrientMediumValidator.validate(concentrate);
     }
     concentrateValidator.validate = _validate;
     concentrateValidator.validateAll = function(concentrates) {
-        if (!_isArray(concentrates) || _isEmpty(concentrates)) {
-            return false;
-        }
-        var i = 0;
-        for (i; i < concentrates.length; i++) {
-            var concentrate = concentrates[i];
-            if (!_validate(concentrate)) {
-                $log.error("validator invalid at %s: %j", i, concentrate);
-                return false;
-            }
-        }
-        return true;
+        return nutrientMediumValidator.validateAll(concentrates);
     };
     return concentrateValidator;
 });
@@ -1182,8 +1147,8 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", function(collections, validations, fertilizerDefaults, $log) {
-    var fertilizerTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isEmpty = validations.isEmpty, _types = angular.copy(fertilizerDefaults.types);
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", function(collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
+    var fertilizerTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isEmpty = validations.isEmpty, _types = angular.copy(fertilizerDefaults.types), _validate = nutrientMediumTypes.validate;
     function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
         return {
             name: name,
@@ -1193,14 +1158,6 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", functi
             phosphorusPercentage: phosphorusPercentage,
             nitrogenPercentage: nitrogenPercentage
         };
-    }
-    function _validate(type) {
-        $log.info("validating type  ...", type);
-        var valid = !_isEmpty(type) && !(_isEmpty(type.name) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumberOrZero(type.potassiumPercentage) || !_isPositiveNumberOrZero(type.phosphorusPercentage) || !_isPositiveNumberOrZero(type.nitrogenPercentage) || !_isPositiveNumberOrZero(type.sulphurPercentage));
-        if (!valid) {
-            $log.error("invalid type: %j", type);
-        }
-        return valid;
     }
     function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
         var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
@@ -1240,30 +1197,15 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", functi
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("fertilizerValidator", function(validations, fertilizerTypes, $log) {
-    var fertilizerValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isPositiveNumber = validations.isPositiveNumber, _isEmpty = validations.isEmpty;
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerValidator", function(nutrientMediumValidator, $log) {
+    var fertilizerValidator = {};
     function _validate(fertilizer) {
         $log.info("validating fertilizer...", fertilizer);
-        if (!_isDefined(fertilizer.type) || !_isDefined(fertilizer.weight) || !_isPositiveNumber(fertilizer.weight) || !_isDefined(fertilizer.isDry)) {
-            $log.error("invalid fertilizer, must have type, weight and isDry: %j", fertilizer);
-            return false;
-        }
-        return fertilizerTypes.validate(fertilizer.type);
+        return nutrientMediumValidator.validate(fertilizer);
     }
     fertilizerValidator.validate = _validate;
     fertilizerValidator.validateAll = function(fertilizers) {
-        if (!_isArray(fertilizers) || _isEmpty(fertilizers)) {
-            return false;
-        }
-        var i = 0;
-        for (i; i < fertilizers.length; i++) {
-            var fertilizer = fertilizers[i];
-            if (!_validate(fertilizer)) {
-                $log.error("validator invalid at %s: %j", i, fertilizer);
-                return false;
-            }
-        }
-        return true;
+        return nutrientMediumValidator.validateAll(fertilizers);
     };
     return fertilizerValidator;
 });
@@ -1654,12 +1596,8 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(validations, forageTypeValues, $log) {
-    var _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(forageTypeValues), _isEmpty = validations.isEmpty, forageTypes = {};
-    function _validate(type) {
-        $log.info("validating type  ...", type);
-        return !_isEmpty(type) && !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
-    }
+angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(validations, nutrientMediumTypes, forageTypeValues, $log) {
+    var _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(forageTypeValues), _isEmpty = validations.isEmpty, forageTypes = {}, _validate = nutrientMediumTypes.validate;
     function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
         return {
             name: name,
@@ -1673,7 +1611,7 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
     }
     function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
         var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-        $log.info("adding forage type ...", type);
+        $log.info("adding forage type ...");
         if (!_validate(type)) {
             return undefined;
         }
@@ -1682,7 +1620,7 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
         } else {
             _types.push(type);
         }
-        return forageTypes;
+        return _types;
     }
     function _at(index) {
         var type;
@@ -1746,26 +1684,15 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(v
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("forageValidator", function(validations, nutrientMediumValidator, forageTypes, $log) {
-    var forageValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isEmpty = validations.isEmpty;
+angular.module("farmbuild.nutrientCalculator").factory("forageValidator", function(nutrientMediumValidator, $log) {
+    var forageValidator = {};
     function _validate(forage) {
         $log.info("validating forage...", forage);
         return nutrientMediumValidator.validate(forage);
     }
     forageValidator.validate = _validate;
     forageValidator.validateAll = function(forages) {
-        if (!_isArray(forages) || _isEmpty(forages)) {
-            return false;
-        }
-        var i = 0;
-        for (i; i < forages.length; i++) {
-            var forage = forages[i];
-            if (!_validate(forage)) {
-                $log.error("validator invalid at %s: %j", i, forage);
-                return false;
-            }
-        }
-        return true;
+        return nutrientMediumValidator.validateAll(forages);
     };
     return forageValidator;
 });
@@ -2012,7 +1939,7 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumTypes", fu
     function _validate(type) {
         $log.info("validating type  ...", type);
         var valid = !_isEmpty(type) && !(_isEmpty(type.name) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumberOrZero(type.potassiumPercentage) || !_isPositiveNumberOrZero(type.phosphorusPercentage) || !_isPositiveNumberOrZero(type.nitrogenPercentage) || !_isPositiveNumberOrZero(type.sulphurPercentage));
-        if (type.hasOwnProperty("metabolisableEnergyInMJPerKg")) {
+        if (_isDefined(type) && type.hasOwnProperty("metabolisableEnergyInMJPerKg")) {
             valid = valid && _isPositiveNumber(type.metabolisableEnergyInMJPerKg);
         }
         if (!valid) {
@@ -2020,13 +1947,13 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumTypes", fu
         }
         return valid;
     }
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index) {
+    function _add(types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg, index) {
         var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg);
         $log.info("adding a type ...", type);
         if (!_validate(type)) {
             return undefined;
         }
-        return collections.add(_types, type, index);
+        return collections.add(types, type, index);
     }
     nutrientMediumTypes = {
         add: _add,
@@ -2067,6 +1994,20 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumValidator"
         return nutrientMediumTypes.validate(nutrientMedium.type);
     }
     nutrientMediumValidator.validate = _validate;
+    nutrientMediumValidator.validateAll = function(items) {
+        if (!_isArray(items) || _isEmpty(items)) {
+            return false;
+        }
+        var i = 0;
+        for (i; i < items.length; i++) {
+            var item = items[i];
+            if (!_validate(item)) {
+                $log.error("validator invalid at %s: %j", i, item);
+                return false;
+            }
+        }
+        return true;
+    };
     return nutrientMediumValidator;
 });
 

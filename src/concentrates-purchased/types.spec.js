@@ -54,8 +54,8 @@ describe('farmbuild.nutrientCalculator module', function() {
         sulphurPercentage = 0.28,
         dryMatterPercentage = 88.78,
         metabolisableEnergyInMJPerKg = 12.72,
-        types = concentrateTypes.add(pelletsCalfName,metabolisableEnergyInMJPerKg,dryMatterPercentage,
-          sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage),
+        types = concentrateTypes.add(pelletsCalfName,dryMatterPercentage,
+          sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg),
         added = collections.last(types);
 
       expect(added.name).toEqual(pelletsCalfName);
