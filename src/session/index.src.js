@@ -20,17 +20,17 @@ angular.module('farmbuild.nutrientCalculator')
       _isDefined = validations.isDefined;
 
 
-    function findInSessionStorage() {
-      var root = farmdata.session.find();
-      return root.nutrientCalculator.milkSold;
-    };
-
-    function saveInSessionStorage(result) {
-      var farmData = farmdata.session.find();
-      farmData.dateLastUpdated = new Date();
-      farmData.nutrientCalculator.milkSold = result;
-      farmdata.session.save(farmData);
-    };
+//    function findInSessionStorage() {
+//      var root = farmdata.session.find();
+//      return root.nutrientCalculator.milkSold;
+//    };
+//
+//    function saveInSessionStorage(result) {
+//      var farmData = farmdata.session.find();
+//      farmData.dateLastUpdated = new Date();
+//      farmData.nutrientCalculator.milkSold = result;
+//      farmdata.session.save(farmData);
+//    };
 
     function load() {
       var root = farmdata.session.find();
@@ -117,6 +117,10 @@ angular.module('farmbuild.nutrientCalculator')
       }
 
       return load;
+    }
+
+    nutrientCalculatorSession.find = function() {
+      return farmdata.session.find();
     }
 
     return nutrientCalculatorSession;

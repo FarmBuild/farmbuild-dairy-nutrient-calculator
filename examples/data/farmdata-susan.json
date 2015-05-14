@@ -1,7 +1,7 @@
 {
-  "version": 1.0,
+  "version": 1,
   "dateCreated": "2015-03-30T21:19:00",
-  "dateLastUpdated": "2015-03-30T21:19:06",
+  "dateLastUpdated": "2015-05-14T07:25:56.815Z",
   "name": "Susan's Farm",
   "geometry": {
     "type": "Polygon",
@@ -32,7 +32,7 @@
     ]
   },
   "area": 89.95,
-  "areaUnit":"hectare",
+  "areaUnit": "hectare",
   "paddocks": [
     {
       "name": "P3",
@@ -478,7 +478,7 @@
       "potassiumPercentage": 0.7427083227671551,
       "sulphurInKg": 1019.4000000000001,
       "sulphurPercentage": 0.25850788659532387,
-      "metabolisableEnergyInMJ": 4953343.9999999997,
+      "metabolisableEnergyInMJ": 4953344,
       "metabolisableEnergyInMJPerKg": 11.6
     },
     "legumes": {
@@ -497,6 +497,18 @@
       "milkSoldPerYearInLitre": 1751317,
       "legumePerHaInKg": 408.8618853921679,
       "legumePercentage": 3.5
+    },
+    "balance": {
+      "nitrogen": 273.6671256703739,
+      "potassium": 194.09432021593972,
+      "phosphorus": 56.32872631751669,
+      "sulphur": 40.97891461855377
+    },
+    "efficiency": {
+      "nitrogen": 34.678542575137975,
+      "potassium": 15.501889662183807,
+      "phosphorus": 32.84504372649141,
+      "sulphur": 30.557020888945384
     }
   }
 }

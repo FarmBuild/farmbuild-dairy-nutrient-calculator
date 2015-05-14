@@ -45,11 +45,25 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(loaded.nutrientCalculator.summary).toBeDefined()
       expect(loaded.nutrientCalculator.summary.milkingAreaInHa).toBe(milkingAreaInHa)
       expect(loaded.nutrientCalculator.summary.milkingAreaInHa).toBe(milkingAreaInHa)
-
-
-      //nutrientCalculator.
+      //expect(loaded.nutrientCalculator.balance).toBeDefined()
     }))
   })
+
+  describe('Loading the existing susans farm data and calculate', function() {
+    it('Update ', inject(function() {
+      var loaded = fixture.load(susanFarm);
+      $log.info('loaded: %j', loaded)
+
+      var calculated = nutrientCalculator.calculate(loaded)
+      expect(calculated.nutrientCalculator.balance).toBeDefined()
+      expect(calculated.nutrientCalculator.efficiency).toBeDefined()
+
+
+
+
+    }))
+  })
+
 
   afterEach(function() {
     fixture.cleanup()

@@ -44,8 +44,9 @@ angular.module("farmbuild.farmdata").factory("farmdata", function(farmdataSessio
     farmdata.create = function(name) {
         return create(name);
     };
-    farmdata.load = function(farmData) {
-        return farmdataSession.load(farmData);
+    farmdata.load = farmdataSession.load;
+    farmdata.save = function(farmData) {
+        return farmdataSession.save(farmData).find();
     };
     window.farmbuild.farmdata = farmdata;
     return farmdata;
@@ -65,6 +66,7 @@ angular.module("farmbuild.farmdata").factory("farmdataSession", function($log, f
             $log.error("Unable to save farmData... it is invalid");
             return farmdataSession;
         }
+        farmData.dateLastUpdated = new Date();
         sessionStorage.setItem("farmData", angular.toJson(farmData));
         return farmdataSession;
     };

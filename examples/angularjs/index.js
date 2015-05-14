@@ -27,9 +27,9 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
         }
 
         $scope.farmData = farmData;
-        $scope.balance = nutrientCalculator.balance($scope.farmData);
-        $scope.efficiency = nutrientCalculator.efficiency($scope.farmData);
-        $scope.saveToSessionStorage('farmData', angular.toJson($scope.farmData));
+        $scope.balance = farmData.nutrientCalculator.balance;
+        $scope.efficiency = farmData.nutrientCalculator.efficiency;
+
       } catch (e) {
         console.error('farmbuild.nutrientCalculator.examples > load: Your file should be in json format')
         $scope.noResult = true;
@@ -44,23 +44,18 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
     $scope.calculate = function () {
       $log.info('calculate...');
+      $scope.farmData = nutrientCalculator.calculate($scope.farmData);
+      $scope.balance = $scope.farmData.nutrientCalculator.balance;
+      $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
 
       nutrientCalculator.ga.trackCalculate('AgSmart');
     };
 
-    $scope.saveToSessionStorage = function (key, value) {
-      sessionStorage.setItem(key, value);
-    };
-
-    function findInSessionStorage() {
-      return angular.fromJson(sessionStorage.getItem('farmData'));
-    };
-
-    if (load) {
-      $scope.farmData = findInSessionStorage();
+    if (nutrientCalculator.session.isLoadFlagSet(location)) {
+      $scope.farmData = nutrientCalculator.find();
       if ($scope.farmData) {
-        $scope.balance = nutrientCalculator.balance($scope.farmData);
-        $scope.efficiency = nutrientCalculator.efficiency($scope.farmData);
+        $scope.balance = $scope.farmData.nutrientCalculator.balance;
+        $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
       }
     }
 
@@ -126,13 +121,13 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
           var reader = new FileReader();
 
           reader.onload = function (onLoadEvent) {
-            console.log('reader.onload', angular.toJson(onLoadEvent));
+            //console.log('reader.onload', angular.toJson(onLoadEvent));
             scope.$apply(function () {
               fn(scope, {$fileContent: onLoadEvent.target.result});
             });
           };
           reader.onerror = function (onLoadEvent) {
-            console.log('reader.onload', angular.toJson(onLoadEvent));
+            //console.log('reader.onload', angular.toJson(onLoadEvent));
           };
 
           reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);

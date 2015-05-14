@@ -44,6 +44,17 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
       };
     }
 
+    /**
+     * Finds the farmData from the session.
+     * @method find
+     * @returns {object} the farmData stored in session, undefined if the farmData is found in session
+     * @public
+     * @static
+     */
+    nutrientCalculator.find = function () {
+      return nutrientCalculatorSession.find();
+    }
+
 		/**
 		 * Loads the farmData into session.
      * If the farmData has no nutrientCalculator section, then append one
@@ -195,6 +206,20 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 				sulphur: _balance(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg, milkingArea)
 			}
 		};
+
+    /**
+     * Calculates balance
+     * @method balance
+     * @param {!Object} farmData
+     * @returns {Object} the farmData calculated
+     * @public
+     * @static
+     */
+    nutrientCalculator.calculate = function (farmData) {
+      farmData.nutrientCalculator.balance = nutrientCalculator.balance(farmData);
+      farmData.nutrientCalculator.efficiency = nutrientCalculator.efficiency(farmData);
+      return farmdata.save(farmData);
+    };
 
 		// Provide a shortcut for modules
 		nutrientCalculator.milkSold = milkSold;

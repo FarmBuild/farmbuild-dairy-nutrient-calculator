@@ -22,6 +22,9 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
             concentratesPurchased: {}
         };
     }
+    nutrientCalculator.find = function() {
+        return nutrientCalculatorSession.find();
+    };
     nutrientCalculator.load = function(farmData) {
         var loaded = farmdata.load(farmData);
         if (!_isDefined(loaded)) {
@@ -111,6 +114,11 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
             phosphorus: _balance(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg, milkingArea),
             sulphur: _balance(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg, milkingArea)
         };
+    };
+    nutrientCalculator.calculate = function(farmData) {
+        farmData.nutrientCalculator.balance = nutrientCalculator.balance(farmData);
+        farmData.nutrientCalculator.efficiency = nutrientCalculator.efficiency(farmData);
+        return farmdata.save(farmData);
     };
     nutrientCalculator.milkSold = milkSold;
     nutrientCalculator.cowsPurchased = cowsPurchased;
@@ -1978,16 +1986,6 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumValidator"
 
 angular.module("farmbuild.nutrientCalculator").factory("nutrientCalculatorSession", function($log, farmdata, validations) {
     var nutrientCalculatorSession = {}, _isDefined = validations.isDefined;
-    function findInSessionStorage() {
-        var root = farmdata.session.find();
-        return root.nutrientCalculator.milkSold;
-    }
-    function saveInSessionStorage(result) {
-        var farmData = farmdata.session.find();
-        farmData.dateLastUpdated = new Date();
-        farmData.nutrientCalculator.milkSold = result;
-        farmdata.session.save(farmData);
-    }
     function load() {
         var root = farmdata.session.find();
         if (!_isDefined(root)) {
@@ -2026,6 +2024,9 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientCalculatorSessio
             load = location.href.split("?")[1].split("=")[1] === "true";
         }
         return load;
+    };
+    nutrientCalculatorSession.find = function() {
+        return farmdata.session.find();
     };
     return nutrientCalculatorSession;
 });
