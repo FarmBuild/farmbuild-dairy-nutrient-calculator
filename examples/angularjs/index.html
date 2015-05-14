@@ -36,7 +36,12 @@
         </h4>
         <form-item class="form-group col-md-6">
             <label>Please select your farm data</label>
-            <input name="farmData" type="file" on-read-file="loadFarmData($fileContent)" class="form-control">
+            <input id="loadFile" name="farmData" type="file" on-read-file="loadFarmData($fileContent)" class="form-control">
+            <!-- input id="loadFile" name="farmData" type="file"
+                   onchange="angular.element(this).scope().readFile(event)" class="form-control">
+            <button class="btn btn-primary"
+                ng-click="loadFile(file)"
+                id="loadButton">Load</button  -->
             <br>
             <span ng-if="farmData.name">
             <a ng-href="cows-purchased/index.html?load=true">cows-purchased</a> |

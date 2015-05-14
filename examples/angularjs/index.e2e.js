@@ -19,6 +19,8 @@ describe('Farm web nutrient calculator', function() {
       expect(element.all(by.css('version span')).first().getText()).
         toContain('0.1');
     });
+
+
     
   });
   
