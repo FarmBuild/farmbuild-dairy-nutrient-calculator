@@ -1148,7 +1148,7 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", function(collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
-    var fertilizerTypes, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _isEmpty = validations.isEmpty, _types = angular.copy(fertilizerDefaults.types), _validate = nutrientMediumTypes.validate;
+    var fertilizerTypes, _types = angular.copy(fertilizerDefaults.types), _validate = nutrientMediumTypes.validate;
     function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
         return nutrientMediumTypes.add(_types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
     }
@@ -1583,32 +1583,8 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
 
 angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(collections, validations, nutrientMediumTypes, forageTypeValues, $log) {
     var _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(forageTypeValues), _isEmpty = validations.isEmpty, forageTypes = {}, _validate = nutrientMediumTypes.validate;
-    function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-        return {
-            name: name,
-            metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
-            dryMatterPercentage: dryMatterPercentage,
-            sulphurPercentage: sulphurPercentage,
-            potassiumPercentage: potassiumPercentage,
-            phosphorusPercentage: phosphorusPercentage,
-            nitrogenPercentage: nitrogenPercentage
-        };
-    }
-    function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-        var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-        $log.info("adding forage type ...");
-        if (!_validate(type)) {
-            return undefined;
-        }
-        return collections.add(_types, type);
-    }
-    function _at(index) {
-        var type;
-        $log.info("getting forage type at index: ", index);
-        if (!_isDefined(index) || index < 0) {
-            return undefined;
-        }
-        return _types[index];
+    function add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg) {
+        return nutrientMediumTypes.add(_types, name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, metabolisableEnergyInMJPerKg);
     }
     function _last() {
         $log.info("getting last forage type ...");
@@ -1623,18 +1599,6 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(c
         $log.info("counting forage types ...", _types);
         return _types.length;
     }
-    function _toArray() {
-        $log.info("toArray types ...", _types);
-        return _types;
-    }
-    function _removeAt(index) {
-        $log.info("removing forage type at index " + index);
-        if (!_isDefined(index) || index < 0 || index > _types.length - 1) {
-            return forageTypes;
-        }
-        _types.splice(index, 1);
-        return forageTypes;
-    }
     function _remove(type) {
         $log.info("removing forage type ", type);
         if (!_isDefined(type)) {
@@ -1642,17 +1606,25 @@ angular.module("farmbuild.nutrientCalculator").factory("forageTypes", function(c
         }
         angular.forEach(_types, function(item, index) {
             if (angular.equals(item, type)) {
-                _removeAt(index);
+                forageTypes.removeAt(index);
             }
         });
         return forageTypes;
     }
     forageTypes = {
-        add: _addType,
-        at: _at,
-        size: _count,
-        toArray: _toArray,
-        removeAt: _removeAt,
+        add: add,
+        at: function(index) {
+            return collections.at(_types, index);
+        },
+        size: function() {
+            return collections.size(_types);
+        },
+        toArray: function() {
+            return angular.copy(_types);
+        },
+        removeAt: function(index) {
+            return collections.removeAt(_types, index);
+        },
         remove: _remove,
         first: _first,
         last: _last,

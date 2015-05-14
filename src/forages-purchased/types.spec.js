@@ -31,8 +31,9 @@ describe('farmbuild.nutrientCalculator.types module', function() {
         sulphurPercentage = 0.28,
         dryMatterPercentage = 88.78,
         metabolisableEnergyInMJPerKg = 12.72,
-        types = forageTypes.add(pelletsCalfName,metabolisableEnergyInMJPerKg,dryMatterPercentage,
-          sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage),
+        types = forageTypes.add(pelletsCalfName,dryMatterPercentage,
+          sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
+          metabolisableEnergyInMJPerKg),
         added = collections.last(types);
 
       $log.info('added: %j', added)

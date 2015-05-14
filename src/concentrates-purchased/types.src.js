@@ -39,10 +39,10 @@ angular.module('farmbuild.nutrientCalculator')
        * @method add
        * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
        * @param {!number} dryMatterPercentage - value must be > 0
-       * @param {!number} sulphurPercentage - value must be > 0
-       * @param {!number} potassiumPercentage - value must be > 0
-       * @param {!number} phosphorusPercentage - value must be > 0
-       * @param {!number} nitrogenPercentage - value must be > 0
+       * @param {!number} sulphurPercentage - value must be >= 0
+       * @param {!number} potassiumPercentage - value must be >= 0
+       * @param {!number} phosphorusPercentage - value must be >= 0
+       * @param {!number} nitrogenPercentage - value must be >= 0
        * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
        * @returns {object} types
        * @public
