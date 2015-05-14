@@ -62,7 +62,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
     })
 
-    .directive('onReadFile', function ($parse) {
+    .directive('onReadFile', function ($parse, $log) {
         return {
             restrict: 'A',
             scope: false,
@@ -70,6 +70,10 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
                 var fn = $parse(attrs.onReadFile);
 
                 element.on('change', function (onChangeEvent) {
+                    $log.info('onReadFile.onChange... onChangeEvent.srcElement:%s, ' +
+                        'onChangeEvent.target:%s, (onChangeEvent.srcElement || onChangeEvent.target).files[0]: %s',
+                      onChangeEvent.srcElement,onChangeEvent.target,
+                      (onChangeEvent.srcElement || onChangeEvent.target).files[0])
                     var reader = new FileReader();
 
                     reader.onload = function (onLoadEvent) {
