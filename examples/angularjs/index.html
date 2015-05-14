@@ -72,7 +72,7 @@
                 <p>Farm Name: <span ng-bind="farmData.name"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
-                <p>Area: <span ng-bind="farmData.area | number: decimalPrecision"></span></p>
+                <p>Area in hectare: <span ng-bind="farmData.area | number: decimalPrecision"></span></p>
             </form-item>
             <form-item class="form-group col-sm-6">
                 <p>Date Created: <span ng-bind="farmData.dateCreated | date: 'medium'"></span></p>
@@ -81,7 +81,46 @@
                 <p>Date Last Updated: <span ng-bind="farmData.dateLastUpdated | date: 'medium'"></span></p>
             </form-item>
         </fieldset>
-        <fieldset>
+      "milkingAreaInHa": 70.39,
+      "averageCowWeightInKg": 550,
+      "numberOfMilkingCows": 228,
+      "numberOfMilkingDays": 365
+      <fieldset>
+        <legend>
+          Farm area breakdown (ha)
+        </legend>
+        <form-item class="form-group col-sm-6">
+          <label>Milking area in hectare:</label>
+          <input ng-model="farmData.nutrientCalculator.summary.milkingAreaInHa" type="number"
+                 class="form-control">
+        </form-item>
+        <form-item class="form-group col-sm-6">
+          <label>Non milking area in hectare:</label>
+          <p class="form-control"><span
+              ng-bind="(farmData.area - farmData.nutrientCalculator.summary.milkingAreaInHa) | number: decimalPrecision"></span>
+          </p>
+        </form-item>
+
+        <form-item class="form-group col-sm-6">
+          <label>Average cow weight in Kg:</label>
+          <input ng-model="farmData.nutrientCalculator.summary.averageCowWeightInKg" type="number"
+                 class="form-control">
+        </form-item>
+
+        <form-item class="form-group col-sm-6">
+          <label>Number of milking cows:</label>
+          <input ng-model="farmData.nutrientCalculator.summary.numberOfMilkingCows" type="number"
+                 class="form-control">
+        </form-item>
+
+        <form-item class="form-group col-sm-6">
+          <label>Number of milking days:</label>
+          <input ng-model="farmData.nutrientCalculator.summary.numberOfMilkingDays" type="number"
+                 class="form-control">
+        </form-item>
+      </fieldset>
+
+      <!-- fieldset>
             <legend>
                 Farm area breakdown (ha)
             </legend>
@@ -95,7 +134,7 @@
                         ng-bind="(farmData.area - farmData.nutrientCalculator.summary.milkingAreaInHa) | number: decimalPrecision"></span>
                 </p>
             </form-item>
-        </fieldset>
+        </fieldset -->
         <fieldset>
             <legend>
                 Balance and Efficiency

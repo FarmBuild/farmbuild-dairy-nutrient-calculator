@@ -36,6 +36,7 @@ module.exports = function(config){
       'src/ga/index.src.js',
       'src/index.js',
 //      'src/blank.spec.js',//use this as a basis of creating your module test
+      'src/nutrient-calculator-load.spec.js',
 //      'src/nutrient-medium/validator.spec.js',
 //      'src/nutrient-medium/types.spec.js',
 //      'src/index.spec.js',
@@ -50,7 +51,8 @@ module.exports = function(config){
 //      'src/concentrates-purchased/index.spec.js',
 //      'src/session/index.spec.js',
 //      'src/ga/index.spec.js'
-      'src/**/*.spec.js'
+//      'src/**/*.spec.js'
+      {pattern: 'examples/data/*.json'}
     ],
 
     autoWatch : true,

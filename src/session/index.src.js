@@ -41,6 +41,7 @@ angular.module('farmbuild.nutrientCalculator')
 
       return root.nutrientCalculator;
     }
+    //nutrientCalculatorSession
 
     /**
      * Saves the farmData.nutrientCalculator into the sessionStorage

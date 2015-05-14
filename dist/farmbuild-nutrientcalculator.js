@@ -2,25 +2,35 @@
 
 angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, googleAnalyticsCalculator, $log) {
     var nutrientCalculator = {
-        session: nutrientCalculatorSession
+        farmdata: farmdata
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
     $log.info("Welcome to Farm Dairy Nutrient Calculator... " + "this should only be initialised once! why we see twice in the example?");
-    nutrientCalculator.load = function(toLoad) {
-        if (!farmdata.isFarmData(toLoad)) {
+    function createDefault() {
+        return {
+            summary: {
+                milkingAreaInHa: 0,
+                averageCowWeightInKg: 0,
+                numberOfMilkingCows: 0,
+                numberOfMilkingDays: 365
+            },
+            milkSold: {},
+            cowsCulled: {},
+            cowsPurchased: {},
+            fertilizersPurchased: {},
+            foragesPurchased: {},
+            legumes: {},
+            concentratesPurchased: {}
+        };
+    }
+    nutrientCalculator.load = function(farmData) {
+        var loaded = farmdata.load(farmData);
+        if (!_isDefined(loaded)) {
             return undefined;
         }
-        if (!toLoad.nutrientCalculator) {
-            toLoad.nutrientCalculator = {
-                milkSold: {},
-                cowsCulled: {},
-                cowsPurchased: {},
-                fertilizersPurchased: {},
-                foragesPurchased: {},
-                legumes: {},
-                concentratesPurchased: {}
-            };
+        if (!loaded.hasOwnProperty("nutrientCalculator")) {
+            loaded.nutrientCalculator = createDefault();
         }
-        return toLoad;
+        return loaded;
     };
     function _efficiency(importedValue, exportedValue) {
         if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue)) {
@@ -111,6 +121,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.legumes = legumes;
     nutrientCalculator.version = "0.1.0";
     nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.session = nutrientCalculatorSession;
     if (typeof window.farmbuild === "undefined") {
         window.farmbuild = {
             nutrientcalculator: nutrientCalculator

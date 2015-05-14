@@ -20,10 +20,12 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
       try {
         $scope.farmData = {};
         var farmData = nutrientCalculator.load(angular.fromJson($fileContent));
+
         if (!angular.isDefined(farmData)) {
           $scope.noResult = true;
           return;
         }
+
         $scope.farmData = farmData;
         $scope.balance = nutrientCalculator.balance($scope.farmData);
         $scope.efficiency = nutrientCalculator.efficiency($scope.farmData);

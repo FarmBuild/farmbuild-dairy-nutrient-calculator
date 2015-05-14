@@ -20,38 +20,51 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
             validations,
             googleAnalyticsCalculator,
             $log) {
-		var nutrientCalculator = {session:nutrientCalculatorSession},
+		var nutrientCalculator = {farmdata:farmdata},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isDefined = validations.isDefined;
 
 		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
       'this should only be initialised once! why we see twice in the example?');
+    function createDefault() {
+      return {
+        summary: {
+          milkingAreaInHa: 0,
+          averageCowWeightInKg: 0,
+          numberOfMilkingCows: 0,
+          numberOfMilkingDays: 365
+        },
+        milkSold: {},
+        cowsCulled: {},
+        cowsPurchased: {},
+        fertilizersPurchased: {},
+        foragesPurchased: {},
+        legumes: {},
+        concentratesPurchased: {}
+      };
+    }
 
 		/**
-		 * Adds nutrientCalculator block to farmData
+		 * Loads the farmData into session.
+     * If the farmData has no nutrientCalculator section, then append one
 		 * @method load
-		 * @param {!object} farmData - Saved farm data or default in case of new
-		 * @returns {object} updated farmData
+		 * @param {!object} farmData -
+		 * @returns {object} the farmData stored in session, undefined if the farmData is invalid
 		 * @public
 		 * @static
 		 */
-		nutrientCalculator.load = function (toLoad) {
-			if (!farmdata.isFarmData(toLoad)) {
+		nutrientCalculator.load = function (farmData) {
+      var loaded = farmdata.load(farmData);
+
+			if (!_isDefined(loaded)) {
 				return undefined;
 			}
 
-			if (!toLoad.nutrientCalculator) {
-				toLoad.nutrientCalculator = {
-					milkSold: {},
-					cowsCulled: {},
-					cowsPurchased: {},
-					fertilizersPurchased: {},
-					foragesPurchased: {},
-					legumes: {},
-					concentratesPurchased: {}
-				};
+			if (!loaded.hasOwnProperty('nutrientCalculator')) {
+        loaded.nutrientCalculator = createDefault();
 			}
-			return toLoad;
+
+			return loaded;
 		};
 
 		/**
@@ -192,7 +205,8 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		nutrientCalculator.concentratesPurchased = concentratesPurchased;
 		nutrientCalculator.legumes = legumes;
 		nutrientCalculator.version = '0.1.0';
-        nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.session = nutrientCalculatorSession;
 
 		if (typeof window.farmbuild === 'undefined') {
 			window.farmbuild = {
