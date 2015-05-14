@@ -2,6 +2,7 @@
   "version": 1.0,
   "dateCreated": "2015-03-30T21:19:00",
   "dateLastUpdated": "2015-03-30T21:19:06",
+  "id":"1234567890",
   "name": "Susan's Farm",
   "geometry": {
     "type": "Polygon",
@@ -32,6 +33,7 @@
     ]
   },
   "area": 89.95,
+  "areaUnit":"hectare",
   "paddocks": [
     {
       "name": "P3",

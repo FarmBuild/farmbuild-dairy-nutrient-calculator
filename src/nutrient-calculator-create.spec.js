@@ -12,7 +12,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   // instantiate log
   var $log, nutrientCalculator,
-    susanFarm = 'farmdata-susan.json',
+    susanFarmJson = 'farmdata-new.json',
     susanFarmName = "Susan's Farm",
     susanFarmArea = 89.95,
     milkingAreaInHa= 70.39,
@@ -31,9 +31,9 @@ describe('farmbuild.nutrientCalculator module', function() {
     nutrientCalculator = _nutrientCalculator_
   }))
 
-  describe('Loading the existing susans farm data', function() {
+  describe('Loading the new susans farm data', function() {
     it('Load from file should create the complete farmdata.nutrientCalculator section', inject(function() {
-      var loaded = fixture.load(susanFarm);
+      var loaded = fixture.load(susanFarmJson);
       $log.info('loaded: %j', loaded)
 
       expect(loaded).toBeDefined()
@@ -43,29 +43,24 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(loaded.name).toBe(susanFarmName)
       expect(loaded.nutrientCalculator).toBeDefined()
       expect(loaded.nutrientCalculator.summary).toBeDefined()
-      expect(loaded.nutrientCalculator.summary.milkingAreaInHa).toBe(milkingAreaInHa)
-      expect(loaded.nutrientCalculator.summary.averageCowWeightInKg).toBe(averageCowWeightInKg)
-      expect(loaded.nutrientCalculator.summary.numberOfMilkingCows).toBe(numberOfMilkingCows)
-      expect(loaded.nutrientCalculator.summary.numberOfMilkingDays).toBe(numberOfMilkingDays)
+      expect(loaded.nutrientCalculator.summary.milkingAreaInHa).toBe(0)
+      expect(loaded.nutrientCalculator.summary.averageCowWeightInKg).toBe(0)
       expect(loaded.nutrientCalculator.balance).toBeDefined()
       expect(loaded.nutrientCalculator.efficiency).toBeDefined()
-    }))
-  })
-
-  describe('Loading the existing susans farm data and calculate', function() {
-    it('Update ', inject(function() {
-      var loaded = fixture.load(susanFarm);
-      $log.info('loaded: %j', loaded)
-
-      var calculated = nutrientCalculator.calculate(loaded)
-      expect(calculated.nutrientCalculator.balance).toBeDefined()
-      expect(calculated.nutrientCalculator.efficiency).toBeDefined()
-
-
-
 
     }))
   })
+
+//  describe('Loading the existing susans farm data and calculate', function() {
+//    it('Update ', inject(function() {
+//      var loaded = fixture.load(susanFarmJson);
+//      $log.info('loaded: %j', loaded)
+//
+//      var calculated = nutrientCalculator.calculate(loaded)
+//      expect(calculated.nutrientCalculator.balance).toBeDefined()
+//      expect(calculated.nutrientCalculator.efficiency).toBeDefined()
+//    }))
+//  })
 
 
   afterEach(function() {

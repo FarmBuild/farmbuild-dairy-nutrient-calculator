@@ -84,6 +84,7 @@ angular.module('farmbuild.nutrientCalculator')
 
       farmData.nutrientCalculator = toSave;
       farmdata.session.save(farmData);
+
       return toSave;
     }
     nutrientCalculatorSession.save = save;

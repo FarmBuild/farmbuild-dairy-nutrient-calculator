@@ -51,6 +51,14 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
       nutrientCalculator.ga.trackCalculate('AgSmart');
     };
 
+    $scope.clear = function () {
+      $scope.farmData ={};
+      nutrientCalculator.farmdata.session.clear();
+      var path = location.href.toString(),
+        path = path.substring(0, path.indexOf('?'));
+      location.href = path;
+    }
+
     if (nutrientCalculator.session.isLoadFlagSet(location)) {
       $scope.farmData = nutrientCalculator.find();
       if ($scope.farmData) {

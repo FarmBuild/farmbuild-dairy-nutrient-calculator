@@ -35,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 			$scope.result = fertilizersPurchased.calculate(fertilizers);
 			$scope.noResult = !$scope.result;
 
-      saveInSessionStorage($scope.result);
+      //saveInSessionStorage($scope.result);
 		};
 
 		$scope.add = function (type, weight, isDry) {
@@ -83,9 +83,9 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 
     if(nutrientCalculator.session.isLoadFlagSet(location)){
       var fertilizersPurchasedData = nutrientCalculator.session.loadSection('fertilizersPurchased');
-
-      fertilizersPurchased.load(fertilizersPurchasedData.fertilizers);
+      fertilizersPurchased.load(fertilizersPurchasedData);
       $scope.calculate(fertilizersPurchasedData.fertilizers);
       $scope.fertilizers = fertilizersPurchasedData.fertilizers;
+      $scope.fertilizerTypes = fertilizersPurchased.types.toArray();
     }
 	});

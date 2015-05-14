@@ -34,7 +34,7 @@
     <h4>
       Test farmData load
     </h4>
-    <form-item class="form-group col-md-6">
+    <form-item class="form-group col-md-8">
       <label>Please select your farm data</label>
       <input id="loadFile" name="farmData" type="file" on-read-file="loadFarmData($fileContent)" class="form-control">
       <!-- input id="loadFile" name="farmData" type="file"
@@ -51,18 +51,20 @@
             <a ng-href="fertilizers-purchased/index.html?load=true">fertilizers-purchased</a> |
             <a ng-href="milk-sold/index.html?load=true">milk-sold</a> |
             <a ng-href="legumes/index.html?load=true">legumes</a>
-            <br>
-            <button class="btn btn-primary" ng-click="calculate()">Calculate</button>
             </span>
     </form-item>
-    <buttons class="col-md-12">
+    <buttons class="col-md-12" ng-if="farmData.name">
       <!--<button type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export farm data</button>-->
+      <button class="btn btn-primary" ng-click="calculate()">Calculate</button>
       <a type="button" class="btn btn-primary" ng-click="exportFarmData(farmData)" ng-disabled="!farmData.name">Export
         farm data</a>
+      <button class="btn btn-primary" ng-click="clear()">Clear session</button>
     </buttons>
+
     <div class="clearfix"></div>
   </form>
   <br/>
+  <hr>
   <summary>
     <fieldset>
       <legend>
@@ -116,7 +118,13 @@
                class="form-control">
       </form-item>
     </fieldset>
-
+    <fieldset>
+      <form-item class="form-group col-sm-6">
+        <span ng-if="farmData.name">
+          <button class="btn btn-primary" ng-click="calculate()">Calculate</button>
+        </span>
+      </form-item>
+    </fieldset>
     <!-- fieldset>
           <legend>
               Farm area breakdown (ha)

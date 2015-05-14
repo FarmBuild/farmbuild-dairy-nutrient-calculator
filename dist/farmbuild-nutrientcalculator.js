@@ -4,6 +4,16 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     var nutrientCalculator = {
         farmdata: farmdata
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    nutrientCalculator.milkSold = milkSold;
+    nutrientCalculator.cowsPurchased = cowsPurchased;
+    nutrientCalculator.cowsCulled = cowsCulled;
+    nutrientCalculator.foragesPurchased = foragesPurchased;
+    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.concentratesPurchased = concentratesPurchased;
+    nutrientCalculator.legumes = legumes;
+    nutrientCalculator.version = "0.1.0";
+    nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.session = nutrientCalculatorSession;
     $log.info("Welcome to Farm Dairy Nutrient Calculator... " + "this should only be initialised once! why we see twice in the example?");
     function createDefault() {
         return {
@@ -19,7 +29,9 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
             fertilizersPurchased: {},
             foragesPurchased: {},
             legumes: {},
-            concentratesPurchased: {}
+            concentratesPurchased: {},
+            balance: {},
+            efficiency: {}
         };
     }
     nutrientCalculator.find = function() {
@@ -120,16 +132,6 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         farmData.nutrientCalculator.efficiency = nutrientCalculator.efficiency(farmData);
         return farmdata.save(farmData);
     };
-    nutrientCalculator.milkSold = milkSold;
-    nutrientCalculator.cowsPurchased = cowsPurchased;
-    nutrientCalculator.cowsCulled = cowsCulled;
-    nutrientCalculator.foragesPurchased = foragesPurchased;
-    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
-    nutrientCalculator.concentratesPurchased = concentratesPurchased;
-    nutrientCalculator.legumes = legumes;
-    nutrientCalculator.version = "0.1.0";
-    nutrientCalculator.ga = googleAnalyticsCalculator;
-    nutrientCalculator.session = nutrientCalculatorSession;
     if (typeof window.farmbuild === "undefined") {
         window.farmbuild = {
             nutrientcalculator: nutrientCalculator
@@ -1107,7 +1109,7 @@ angular.module("farmbuild.nutrientCalculator").constant("fertilizerDefaults", {
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", function(validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator, collections, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", function(validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator, collections, nutrientCalculatorSession, $log) {
     var fertilizersPurchased = {
         types: fertilizerTypes,
         calculator: fertilizerCalculator
@@ -1155,10 +1157,14 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
             $log.error("fertilizersPurchased.calculate invalid fertilizers, see the error above and fix based on API...");
             return undefined;
         }
-        return calculator.calculate(fertilizers);
+        var result = calculator.calculate(fertilizers);
+        result.types = fertilizerTypes.toArray();
+        nutrientCalculatorSession.saveSection("fertilizersPurchased", result);
+        return result;
     };
-    fertilizersPurchased.load = function(fertilizers) {
-        _fertilizers = fertilizers;
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+        _fertilizers = fertilizersPurchasedSection.fertilizers;
+        fertilizerTypes.load(fertilizersPurchasedSection);
         return fertilizersPurchased;
     };
     return fertilizersPurchased;
@@ -1194,7 +1200,10 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", functi
         last: function() {
             return collections.last(_types);
         },
-        validate: _validate
+        validate: _validate,
+        load: function(fertilizersPurchasedSection) {
+            _types = fertilizersPurchasedSection.types;
+        }
     };
     return fertilizerTypes;
 });

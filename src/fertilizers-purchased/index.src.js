@@ -15,8 +15,11 @@
 angular.module('farmbuild.nutrientCalculator')
 
   .factory('fertilizersPurchased',
-  function (validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator,
+  function (validations,
+            fertilizerDefaults, fertilizerTypes, fertilizerValidator,
+            fertilizerCalculator,
             collections,
+            nutrientCalculatorSession,
             $log) {
 
     var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
@@ -114,19 +117,32 @@ angular.module('farmbuild.nutrientCalculator')
         return undefined;
       }
 
-      return calculator.calculate(fertilizers);
+      var result = calculator.calculate(fertilizers);
+
+      result.types = fertilizerTypes.toArray();
+
+      nutrientCalculatorSession.saveSection('fertilizersPurchased', result);
+
+      return result;
     }
 
     /**
-     * Loads the fertilizers
+     * Loads the fertilizers in fertilizersPurchasedSection.fertilizers
      * @method load
-     * @param fertilizers
+     * @param fertilizersPurchasedSection
      * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    fertilizersPurchased.load = function(fertilizers) {
-      _fertilizers = fertilizers;
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+//      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+//
+//      }
+
+      _fertilizers = fertilizersPurchasedSection.fertilizers;
+
+      fertilizerTypes.load(fertilizersPurchasedSection);
+
       return fertilizersPurchased;
     }
 
