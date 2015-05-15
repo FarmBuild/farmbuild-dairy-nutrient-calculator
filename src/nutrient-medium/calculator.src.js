@@ -9,12 +9,12 @@
 'use strict';
 
 /**
- * nutrientCalculator/fertilizerCalculator singleton
- * @private-module nutrientCalculator/fertilizerCalculator
+ * nutrientCalculator/nutrientMediumCalculator singleton
+ * @private-module nutrientCalculator/nutrientMediumCalculator
  */
 angular.module('farmbuild.nutrientCalculator')
 
-  .factory('fertilizerCalculator', function (nutrientMediumValidator, fertilizerDefaults, fertilizerTypes, $log) {
+  .factory('nutrientMediumCalculator', function (nutrientMediumValidator, fertilizerDefaults, nutrientMediumTypes, $log) {
     var calculator = {},
       validator = nutrientMediumValidator;
 

@@ -41,7 +41,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 		$scope.add = function (type, weight, isDry) {
       $log.info('add type: %s, weight: %s, isDry', type, weight, isDry);
 
-      if(!fertilizersPurchased.validate(type, weight, isDry)) {
+      if(!fertilizersPurchased.validateNew(type, weight, isDry)) {
         $scope.noResult = true;
         return;
       }

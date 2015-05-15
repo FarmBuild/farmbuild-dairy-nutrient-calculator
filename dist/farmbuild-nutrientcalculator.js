@@ -812,8 +812,8 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", function(fertilizerValidator, fertilizerDefaults, fertilizerTypes, $log) {
-    var calculator = {}, validator = fertilizerValidator;
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", function(nutrientMediumValidator, fertilizerDefaults, fertilizerTypes, $log) {
+    var calculator = {}, validator = nutrientMediumValidator;
     function createResult(total) {
         return {
             fertilizers: total.incomings,
@@ -1109,44 +1109,30 @@ angular.module("farmbuild.nutrientCalculator").constant("fertilizerDefaults", {
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", function(validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator, collections, nutrientCalculatorSession, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", function(validations, nutrientMedium, fertilizerDefaults, fertilizerTypes, nutrientMediumValidator, fertilizerCalculator, collections, nutrientCalculatorSession, $log) {
     var fertilizersPurchased = {
         types: fertilizerTypes,
         calculator: fertilizerCalculator
-    }, _fertilizers = [], calculator = fertilizerCalculator, validator = fertilizerValidator;
+    }, _fertilizers = [], calculator = fertilizerCalculator, validator = nutrientMediumValidator;
     function _removeAt(index) {
         $log.info("removing fertilizer at index " + index);
-        collections.removeAt(_fertilizers, index);
+        nutrientMedium.removeAt(_fertilizers, index);
         return fertilizersPurchased;
     }
     fertilizersPurchased.removeAt = _removeAt;
     fertilizersPurchased.fertilizers = function() {
         return _fertilizers;
     };
-    function _create(type, weight, isDry) {
-        return {
-            type: type,
-            weight: weight,
-            isDry: isDry
-        };
-    }
-    fertilizersPurchased.create = _create;
     function _add(type, weight, isDry) {
-        var fertilizer = _create(type, weight, isDry);
-        $log.info("fertilizersPurchased.add fertilizer ...", fertilizer);
-        if (!validator.validate(fertilizer)) {
-            $log.error("fertilizersPurchased.add unable to add as the validation has been failed");
-            return undefined;
-        }
-        collections.add(_fertilizers, fertilizer);
+        _fertilizers = nutrientMedium.add(_fertilizers, type, weight, isDry);
         return fertilizersPurchased;
     }
     fertilizersPurchased.add = _add;
-    function validate(type, weight, isDry) {
-        var fertilizer = _create(type, weight, isDry);
+    function validateNew(type, weight, isDry) {
+        var fertilizer = nutrientMedium.create(type, weight, isDry);
         return validator.validate(fertilizer);
     }
-    fertilizersPurchased.validate = validate;
+    fertilizersPurchased.validateNew = validateNew;
     fertilizersPurchased.validateAll = validator.validateAll;
     fertilizersPurchased.asArray = function() {
         return _fertilizers;
@@ -1206,21 +1192,6 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizerTypes", functi
         }
     };
     return fertilizerTypes;
-});
-
-"use strict";
-
-angular.module("farmbuild.nutrientCalculator").factory("fertilizerValidator", function(nutrientMediumValidator, $log) {
-    var fertilizerValidator = {};
-    function _validate(fertilizer) {
-        $log.info("validating fertilizer...", fertilizer);
-        return nutrientMediumValidator.validate(fertilizer);
-    }
-    fertilizerValidator.validate = _validate;
-    fertilizerValidator.validateAll = function(fertilizers) {
-        return nutrientMediumValidator.validateAll(fertilizers);
-    };
-    return fertilizerValidator;
 });
 
 angular.module("farmbuild.nutrientCalculator").constant("forageTypeValues", [ {
@@ -1896,6 +1867,139 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         return valuePercentage * totalInLitre / 100;
     }
     return milkSold;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumCalculator", function(nutrientMediumValidator, fertilizerDefaults, nutrientMediumTypes, $log) {
+    var calculator = {}, validator = nutrientMediumValidator;
+    function createResult(total) {
+        return {
+            fertilizers: total.incomings,
+            weight: total.weight,
+            dryMatterWeight: total.dryMatterWeight,
+            nitrogenInKg: total.nitrogenInKg,
+            nitrogenPercentage: 0,
+            phosphorusInKg: total.phosphorusInKg,
+            phosphorusPercentage: 0,
+            potassiumInKg: total.potassiumInKg,
+            potassiumPercentage: 0,
+            sulphurInKg: total.sulphurInKg,
+            sulphurPercentage: 0
+        };
+    }
+    function _calculatePercentage(nutrientWeight, totalWeight) {
+        return nutrientWeight / totalWeight * 100;
+    }
+    function _calculatePercentages(total) {
+        var result = createResult(total);
+        result.nitrogenPercentage = _calculatePercentage(total.nitrogenInKg, total.dryMatterWeight);
+        result.phosphorusPercentage = _calculatePercentage(total.phosphorusInKg, total.dryMatterWeight);
+        result.potassiumPercentage = _calculatePercentage(total.potassiumInKg, total.dryMatterWeight);
+        result.sulphurPercentage = _calculatePercentage(total.sulphurInKg, total.dryMatterWeight);
+        return result;
+    }
+    function _createTotal() {
+        return {
+            weight: 0,
+            dryMatterWeight: 0,
+            nitrogenInKg: 0,
+            phosphorusInKg: 0,
+            potassiumInKg: 0,
+            sulphurInKg: 0,
+            incomings: []
+        };
+    }
+    function _calculateNutrientWeight(weight, percentage) {
+        return weight * percentage / 100;
+    }
+    function calculateDryMatterWeight(weight, dryMatterPercentage, isDry) {
+        return isDry ? weight : _calculateNutrientWeight(weight, dryMatterPercentage);
+    }
+    calculator.calculateDryMatterWeight = calculateDryMatterWeight;
+    function updateTotal(fertilizer, total) {
+        var type = fertilizer.type, weight = fertilizer.weight, dryMatterWeight = calculateDryMatterWeight(weight, type.dryMatterPercentage, fertilizer.isDry);
+        total.weight += weight;
+        total.dryMatterWeight += dryMatterWeight;
+        total.nitrogenInKg += _calculateNutrientWeight(dryMatterWeight, type.nitrogenPercentage);
+        total.phosphorusInKg += _calculateNutrientWeight(dryMatterWeight, type.phosphorusPercentage);
+        total.potassiumInKg += _calculateNutrientWeight(dryMatterWeight, type.potassiumPercentage);
+        total.sulphurInKg += _calculateNutrientWeight(dryMatterWeight, type.sulphurPercentage);
+        total.incomings.push({
+            type: fertilizer.type,
+            weight: fertilizer.weight,
+            isDry: fertilizer.isDry
+        });
+        return total;
+    }
+    function calculateAll(fertilizers) {
+        $log.info("calculator.calculateAll...");
+        var i = 0, total = _createTotal();
+        for (i; i < fertilizers.length; i++) {
+            var fertilizer = fertilizers[i];
+            if (!validator.validate(fertilizer)) {
+                $log.error("calculator.calculateAll invalid fertilizer at %s: %j", i, fertilizer);
+                return undefined;
+            }
+            total = updateTotal(fertilizer, total);
+        }
+        return total;
+    }
+    calculator.calculate = function(fertilizers) {
+        var itemsTotal = calculateAll(fertilizers);
+        return _calculatePercentages(itemsTotal);
+    };
+    return calculator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientMedium", function(validations, nutrientMediumTypes, nutrientMediumValidator, nutrientMediumCalculator, collections, nutrientCalculatorSession, $log) {
+    var nutrientMedium = {
+        types: nutrientMediumTypes,
+        calculator: nutrientMediumCalculator
+    }, calculator = nutrientMediumCalculator, validator = nutrientMediumValidator;
+    function _removeAt(items, index) {
+        $log.info("removing item at index " + index);
+        return collections.removeAt(items, index);
+    }
+    nutrientMedium.removeAt = _removeAt;
+    function _create(type, weight, isDry) {
+        return {
+            type: type,
+            weight: weight,
+            isDry: isDry
+        };
+    }
+    nutrientMedium.create = _create;
+    function _add(items, type, weight, isDry) {
+        var item = _create(type, weight, isDry);
+        $log.info("nutrientMedium.add item ...", item);
+        if (!validator.validate(item)) {
+            $log.error("nutrientMedium.add unable to add as the validation has been failed, %j", item);
+            return undefined;
+        }
+        return collections.add(items, item);
+    }
+    nutrientMedium.add = _add;
+    function validate(type, weight, isDry) {
+        var items = _create(type, weight, isDry);
+        return validator.validate(items);
+    }
+    nutrientMedium.validate = validate;
+    nutrientMedium.validateAll = validator.validateAll;
+    nutrientMedium.calculate = function(fertilizers) {
+        $log.info("nutrientMedium.calculate...");
+        if (!validator.validateAll(fertilizers)) {
+            $log.error("nutrientMedium.calculate invalid fertilizers, see the error above and fix based on API...");
+            return undefined;
+        }
+        var result = calculator.calculate(fertilizers);
+        result.types = nutrientMediumTypes.toArray();
+        nutrientCalculatorSession.saveSection("nutrientMedium", result);
+        return result;
+    };
+    return nutrientMedium;
 });
 
 "use strict";
