@@ -26,10 +26,10 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
             milkSold: {},
             cowsCulled: cows.createDefault(),
             cowsPurchased: cows.createDefault(),
-            fertilizersPurchased: {},
-            foragesPurchased: {},
+            fertilizersPurchased: fertilizersPurchased.createDefault(),
+            foragesPurchased: foragesPurchased.createDefault(),
             legumes: {},
-            concentratesPurchased: {},
+            concentratesPurchased: concentratesPurchased.createDefault(),
             balance: {},
             efficiency: {}
         };
@@ -534,6 +534,13 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
         types: concentrateTypes,
         calculator: concentrateCalculator
     }, _concentrates = [], calculator = concentrateCalculator, validator = nutrientMediumValidator;
+    function createDefault() {
+        return {
+            types: concentrateTypes.toArray(),
+            concentrates: []
+        };
+    }
+    concentratesPurchased.createDefault = createDefault;
     function _removeAt(index) {
         $log.info("removing concentrate at index " + index);
         nutrientMedium.removeAt(_concentrates, index);
@@ -1267,6 +1274,13 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
         types: fertilizerTypes,
         calculator: fertilizerCalculator
     }, _fertilizers = [], calculator = fertilizerCalculator, validator = nutrientMediumValidator;
+    function createDefault() {
+        return {
+            types: fertilizerTypes.toArray(),
+            fertilizers: []
+        };
+    }
+    fertilizersPurchased.createDefault = createDefault;
     function _removeAt(index) {
         $log.info("removing fertilizer at index " + index);
         nutrientMedium.removeAt(_fertilizers, index);
@@ -1614,6 +1628,12 @@ angular.module("farmbuild.nutrientCalculator").constant("forageDefaults", {
 
 angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", function(validations, nutrientMedium, forageTypes, forageValidator, nutrientMediumValidator, nutrientCalculatorSession, $log) {
     var foragesPurchased = {}, _isDefined = validations.isDefined, _forages = [], validator = nutrientMediumValidator;
+    function createDefault() {
+        return {
+            types: forageTypes.toArray(),
+            forages: []
+        };
+    }
     function _add(type, weight, isDry) {
         _forages = nutrientMedium.add(_forages, type, weight, isDry);
         return foragesPurchased;
@@ -1733,7 +1753,8 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
             _forages = foragesPurchasedSection.forages;
             forageTypes.load(foragesPurchasedSection);
             return foragesPurchased;
-        }
+        },
+        createDefault: createDefault
     };
     return foragesPurchased;
 });

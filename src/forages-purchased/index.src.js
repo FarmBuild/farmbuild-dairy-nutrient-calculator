@@ -20,6 +20,14 @@ angular.module('farmbuild.nutrientCalculator')
       _isDefined = validations.isDefined,
       _forages = [],
       validator = nutrientMediumValidator;
+    function createDefault() {
+      return {
+        types:forageTypes.toArray(),
+        forages:[]
+      };
+    }
+
+
 
     /**
      * Adds a forage to foragesPurchased collection
@@ -250,7 +258,8 @@ angular.module('farmbuild.nutrientCalculator')
         _forages = foragesPurchasedSection.forages;
         forageTypes.load(foragesPurchasedSection);
         return foragesPurchased;
-      }
+      },
+      createDefault: createDefault
     };
 
     return foragesPurchased;

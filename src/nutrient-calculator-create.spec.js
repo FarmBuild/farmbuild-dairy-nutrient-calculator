@@ -56,6 +56,20 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(loaded.nutrientCalculator.cowsPurchased.cows).toBeDefined()
       expect(loaded.nutrientCalculator.cowsPurchased.types).toBeDefined()
 
+
+      expect(loaded.nutrientCalculator.fertilizersPurchased).toBeDefined()
+      expect(loaded.nutrientCalculator.fertilizersPurchased.fertilizers).toBeDefined()
+      expect(loaded.nutrientCalculator.fertilizersPurchased.types).toBeDefined()
+
+      expect(loaded.nutrientCalculator.foragesPurchased).toBeDefined()
+      expect(loaded.nutrientCalculator.foragesPurchased.forages).toBeDefined()
+      expect(loaded.nutrientCalculator.foragesPurchased.types).toBeDefined()
+
+      expect(loaded.nutrientCalculator.concentratesPurchased).toBeDefined()
+      expect(loaded.nutrientCalculator.concentratesPurchased.concentrates).toBeDefined()
+      expect(loaded.nutrientCalculator.concentratesPurchased.types).toBeDefined()
+
+
     }))
   })
 

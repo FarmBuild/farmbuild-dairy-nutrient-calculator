@@ -27,7 +27,15 @@ angular.module('farmbuild.nutrientCalculator')
       _concentrates = [],
       calculator = concentrateCalculator,
       validator = nutrientMediumValidator;
-    
+
+    function createDefault() {
+      return {
+        types:concentrateTypes.toArray(),
+        concentrates:[]
+      };
+    }
+    concentratesPurchased.createDefault = createDefault;
+
     /**
      * Removes the concentrate at specified index
      * @method removeAt

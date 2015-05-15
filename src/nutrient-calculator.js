@@ -16,7 +16,8 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 	.factory('nutrientCalculator',
   function (milkSold,
             cowsPurchased, cowsCulled, cows,
-            foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes,
+            foragesPurchased, fertilizersPurchased, concentratesPurchased,
+            legumes,
             nutrientCalculatorSession,
             farmdata,
             validations,
@@ -51,10 +52,10 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
         milkSold: {},
         cowsCulled: cows.createDefault(),
         cowsPurchased: cows.createDefault(),
-        fertilizersPurchased: {},
-        foragesPurchased: {},
+        fertilizersPurchased: fertilizersPurchased.createDefault(),
+        foragesPurchased: foragesPurchased.createDefault(),
         legumes: {},
-        concentratesPurchased: {},
+        concentratesPurchased: concentratesPurchased.createDefault(),
         balance:{},
         efficiency:{}
       };

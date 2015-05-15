@@ -28,6 +28,13 @@ angular.module('farmbuild.nutrientCalculator')
       _fertilizers = [],
       calculator = fertilizerCalculator,
       validator = nutrientMediumValidator;
+    function createDefault() {
+      return {
+        types:fertilizerTypes.toArray(),
+        fertilizers:[]
+      };
+    }
+    fertilizersPurchased.createDefault = createDefault;
 
     /**
      * Removes the fertilizer at specified index
