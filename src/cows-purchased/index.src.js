@@ -216,6 +216,7 @@ angular.module('farmbuild.nutrientCalculator')
         return undefined
       }
       _cows = cowsPurchasedSection.cows;
+      _types = cowsPurchasedSection.types;
 
       return cowsPurchased;
     }

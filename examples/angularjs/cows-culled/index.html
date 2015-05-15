@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="farmbuild.nutrientCalculator.examples.cowsPurchased">
+<html ng-app="farmbuild.nutrientCalculator.examples.cowsCulled">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
-<body ng-controller="CowsPurchasedCtrl">
+<body ng-controller="CowsCulledCtrl">
 <content>
     <modal ng-if="noResult" ng-include="'../modal-validation-error.html'"></modal>
     <h3>
@@ -143,6 +143,7 @@
         </fieldset>
     </summary>
     <version class="col-md-12">
+      <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a>
         Version: <span ng-bind="appVersion"></span>
     </version>
 </content>
@@ -152,7 +153,7 @@
 -->
 <script src="../../../dist/farmbuild-core.js"></script>
 <script src="../../../dist/farmbuild-farmdata.js"></script>
-<script src="../../../dist/farmbuild-nutrientcalculator.min.js"></script>
+<script src="../../../dist/farmbuild-nutrientcalculator.js"></script>
 <script src="../../config.js"></script>
 <script src="index.js"></script>
 

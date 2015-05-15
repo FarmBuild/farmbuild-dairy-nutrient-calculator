@@ -618,8 +618,9 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", funct
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, cowTypeDefaults) {
-    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(cowTypeDefaults);
+angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, cowTypeDefaults, cowValidator, cowTypes, cows, nutrientCalculatorSession) {
+    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(cowTypeDefaults), _cows = [], validator = cowValidator;
+    cowsCulled.validateNew = cows.validateNew;
     cowsCulled.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -647,7 +648,7 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(va
                 weight: cow.weight
             });
         }
-        return {
+        var result = {
             cows: incomings,
             numberOfCows: numberOfCows,
             weight: weight,
@@ -656,6 +657,9 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(va
             potassiumInKg: potassiumInKg,
             sulphurInKg: sulphurInKg
         };
+        result.types = _types;
+        nutrientCalculatorSession.saveSection("cowsCulled", result);
+        return result;
     };
     cowsCulled.addType = function(name, weight) {
         if (!_isPositiveNumber(weight)) {
@@ -691,6 +695,20 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(va
     };
     cowsCulled.types = function() {
         return _types;
+    };
+    cowsCulled.validateType = function(type) {
+        return cowTypes.validate(type);
+    };
+    cowsCulled.cows = function() {
+        return _cows;
+    };
+    cowsCulled.load = function(cowsCulledSection) {
+        if (!validator.validateAll(cowsCulledSection.cows)) {
+            return undefined;
+        }
+        _cows = cowsCulledSection.cows;
+        _types = cowsCulledSection.types;
+        return cowsCulled;
     };
     return cowsCulled;
 });
@@ -786,6 +804,7 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
             return undefined;
         }
         _cows = cowsPurchasedSection.cows;
+        _types = cowsPurchasedSection.types;
         return cowsPurchased;
     };
     return cowsPurchased;

@@ -134,6 +134,28 @@
       "sulphurPercentage": 0.06
     },
     "cowsPurchased": {
+      "types":[
+        {
+          "name": "Heavy adult cattle",
+          "weight": 650
+        },
+        {
+          "name": "Average adult cattle",
+          "weight": 500
+        },
+        {
+          "name": "Yearling",
+          "weight": 300
+        },
+        {
+          "name": "Weaned young stock",
+          "weight": 120
+        },
+        {
+          "name": "Bobby calve",
+          "weight": 40
+        }
+      ],
       "cows": [
         {
           "name": "Average adult cattle",
@@ -149,6 +171,28 @@
       "sulphurInKg": 180
     },
     "cowsCulled": {
+      "types":[
+        {
+          "name": "Heavy adult cattle",
+          "weight": 650
+        },
+        {
+          "name": "Average adult cattle",
+          "weight": 500
+        },
+        {
+          "name": "Yearling",
+          "weight": 300
+        },
+        {
+          "name": "Weaned young stock",
+          "weight": 120
+        },
+        {
+          "name": "Bobby calve",
+          "weight": 40
+        }
+      ],
       "cows": [
         {
           "name": "Average adult cattle",

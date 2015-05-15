@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuild.nutrientCalculator'])
+angular.module('farmbuild.nutrientCalculator.examples.cowsCulled', ['farmbuild.nutrientCalculator'])
 
 	.run(function($rootScope){
 		$rootScope.appVersion = farmbuild.examples.nutrientcalculator.version;
 	})
 
-	.controller('CowsPurchasedCtrl', function ($scope, $rootScope, nutrientCalculator, cowsPurchased, validations) {
+	.controller('CowsCulledCtrl', function ($scope, $rootScope, nutrientCalculator, cowsCulled, validations) {
 
 		var isPositiveNumber = validations.isPositiveNumber;
 		var load = false;
@@ -16,24 +16,23 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 		$scope.cows = [];
 		$scope.noResult = false;
-		$scope.cowTypes = cowsPurchased.types();
+		$scope.cowTypes = cowsCulled.types();
 
 		$scope.calculate = function (cows, form) {
-			$scope.result = cowsPurchased.calculate(cows);
+			$scope.result = cowsCulled.calculate(cows);
 			$scope.noResult = !$scope.result;
-      saveInSessionStorage($scope.result);
 		};
 
 		$scope.addCowType = function (type, form) {
 
 			//Validate type
-			if(!type || !type.name || !type.weight){
+      if(!cowsCulled.validateType(type)){
 				$scope.noResult = true;
 				return;
 			}
 
-			$scope.noResult = !cowsPurchased.addType(type.name, type.weight);
-			$scope.cowTypes = cowsPurchased.types();
+			$scope.noResult = !cowsCulled.addType(type.name, type.weight);
+			$scope.cowTypes = cowsCulled.types();
 			$scope.type = '';
 		};
 		
@@ -50,7 +49,8 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			$scope.noResult = false;
 			
 			//Validate numberOfCows to be a valid number
-			if(!cowType || !isPositiveNumber(numberOfCows)){
+      if(!cowsCulled.validateType(cowType) ||
+        !cowsCulled.validateNew(cowType.name, cowType.weight, numberOfCows)){
 				$scope.noResult = true;
 				return;
 			}
@@ -67,14 +67,13 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsPurchased', ['farmbuil
 			$scope.result = {};
 		};
 
-    function saveInSessionStorage(result) {
-      nutrientCalculator.session.saveSection('cowsCulled', result);
-    };
-
     if(nutrientCalculator.session.isLoadFlagSet(location)){
       var cowsCulledData = nutrientCalculator.session.loadSection('cowsCulled');
-			$scope.calculate(cowsCulledData.cows);
-			$scope.cows = cowsCulledData.cows;
+      cowsCulled.load(cowsCulledData);
+
+      $scope.result = cowsCulledData;
+      $scope.cows = cowsCulled.cows();
+      $scope.cowTypes = cowsCulled.types();
 		}
 
 	});
