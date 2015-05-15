@@ -36,7 +36,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		};
 
 		$scope.addConcentrate = function (type, weight, isDry) {
-      if(!concentratesPurchased.validate(type, weight, isDry)) {
+      if(!concentratesPurchased.validateNew(type, weight, isDry)) {
         $scope.noResult = true;
         return;
       }
@@ -77,10 +77,10 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 
     if(nutrientCalculator.session.isLoadFlagSet(location)){
       var concentratesPurchasedData = nutrientCalculator.session.loadSection('concentratesPurchased');
-
-      concentratesPurchased.load(concentratesPurchasedData.concentrates);
-      $scope.calculate(concentratesPurchasedData.concentrates);
+      concentratesPurchased.load(concentratesPurchasedData);
+      $scope.result =  concentratesPurchasedData;
       $scope.concentrates =  concentratesPurchasedData.concentrates;
+      $scope.concentrateTypes =  concentratesPurchasedData.types;
     }
 
 	});

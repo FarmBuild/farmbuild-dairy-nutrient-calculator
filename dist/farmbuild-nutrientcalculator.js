@@ -130,7 +130,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.calculate = function(farmData) {
         farmData.nutrientCalculator.balance = nutrientCalculator.balance(farmData);
         farmData.nutrientCalculator.efficiency = nutrientCalculator.efficiency(farmData);
-        return farmdata.save(farmData);
+        return farmdata.update(farmData);
     };
     if (typeof window.farmbuild === "undefined") {
         window.farmbuild = {
@@ -233,7 +233,7 @@ angular.module("farmbuild.nutrientCalculator").factory("collections", function(v
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("concentrateCalculator", function(concentrateValidator, concentrateDefaults, concentrateTypes, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("concentrateCalculator", function(nutrientMediumCalculator, concentrateValidator, concentrateDefaults, concentrateTypes, $log) {
     var calculator = {}, validator = concentrateValidator;
     function createResult(total) {
         return {
@@ -528,14 +528,14 @@ angular.module("farmbuild.nutrientCalculator").constant("concentrateDefaults", {
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", function(validations, concentrateDefaults, concentrateTypes, concentrateValidator, concentrateCalculator, collections, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", function(validations, nutrientMedium, concentrateDefaults, concentrateTypes, concentrateValidator, concentrateCalculator, collections, nutrientCalculatorSession, $log) {
     var concentratesPurchased = {
         types: concentrateTypes,
         calculator: concentrateCalculator
     }, _concentrates = [], calculator = concentrateCalculator, validator = concentrateValidator;
     function _removeAt(index) {
         $log.info("removing concentrate at index " + index);
-        collections.removeAt(_concentrates, index);
+        nutrientMedium.removeAt(_concentrates, index);
         return concentratesPurchased;
     }
     concentratesPurchased.removeAt = _removeAt;
@@ -550,20 +550,14 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
         };
     }
     concentratesPurchased.create = _create;
-    function validate(type, weight, isDry) {
-        var fertilizer = _create(type, weight, isDry);
-        return validator.validate(fertilizer);
+    function validateNew(type, weight, isDry) {
+        var concentrate = nutrientMedium.create(type, weight, isDry);
+        return validator.validate(concentrate);
     }
-    concentratesPurchased.validate = validate;
+    concentratesPurchased.validateNew = validateNew;
     concentratesPurchased.validateAll = validator.validateAll;
     function _add(type, weight, isDry) {
-        var concentrate = _create(type, weight, isDry);
-        $log.info("concentratesPurchased.add concentrate ...", concentrate);
-        if (!validator.validate(concentrate)) {
-            $log.error("concentratesPurchased.add unable to add as the validation has been failed");
-            return undefined;
-        }
-        collections.add(_concentrates, concentrate);
+        _concentrates = nutrientMedium.add(_concentrates, type, weight, isDry);
         return concentratesPurchased;
     }
     concentratesPurchased.add = _add;
@@ -576,10 +570,17 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
             $log.error("concentratesPurchased.calculate invalid concentrates, see the error above and fix based on API...");
             return undefined;
         }
-        return calculator.calculate(concentrates);
+        var result = calculator.calculate(concentrates);
+        result.types = concentrateTypes.toArray();
+        nutrientCalculatorSession.saveSection("concentratesPurchased", result);
+        return result;
     };
-    concentratesPurchased.load = function(concentrates) {
-        _concentrates = concentrates;
+    concentratesPurchased.load = function(concentratesPurchasedSection) {
+        if (!validator.validateAll(concentratesPurchasedSection.concentrates)) {
+            return undefined;
+        }
+        _concentrates = concentratesPurchasedSection.concentrates;
+        concentrateTypes.load(concentratesPurchasedSection);
         return concentratesPurchased;
     };
     return concentratesPurchased;
@@ -615,7 +616,10 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", funct
         last: function() {
             return collections.last(_types);
         },
-        validate: _validate
+        validate: _validate,
+        load: function(concentratesPurchasedSection) {
+            _types = concentratesPurchasedSection.types;
+        }
     };
     return concentrateTypes;
 });
@@ -812,7 +816,7 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", function(nutrientMediumValidator, fertilizerDefaults, fertilizerTypes, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("fertilizerCalculator", function(nutrientMediumCalculator, nutrientMediumValidator, fertilizerDefaults, fertilizerTypes, $log) {
     var calculator = {}, validator = nutrientMediumValidator;
     function createResult(total) {
         return {
@@ -1149,6 +1153,9 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
         return result;
     };
     fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+        if (!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+            return undefined;
+        }
         _fertilizers = fertilizersPurchasedSection.fertilizers;
         fertilizerTypes.load(fertilizersPurchasedSection);
         return fertilizersPurchased;

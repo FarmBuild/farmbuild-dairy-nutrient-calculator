@@ -77,7 +77,18 @@ angular.module('farmbuild.nutrientCalculator')
        */
       removeAt: function(index) { return collections.removeAt(_types, index)},
       last: function() { return collections.last(_types) },
-      validate: _validate
+      validate: _validate,
+      /**
+       * Loads the types in concentratesPurchasedSection.types
+       * @method load
+       * @param concentratesPurchasedSection
+       * @returns {object} fertilizersPurchased
+       * @public
+       * @static
+       */
+      load: function(concentratesPurchasedSection) {
+        _types = concentratesPurchasedSection.types;
+      }
     };
 
     return concentrateTypes;

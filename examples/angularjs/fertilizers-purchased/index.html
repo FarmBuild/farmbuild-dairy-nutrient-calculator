@@ -200,9 +200,10 @@
         </fieldset>
 
     </summary>
+
     <version class="col-md-12">
       <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a>
-        Version: <span ng-bind="appVersion"></span>
+      Version: <span ng-bind="appVersion"></span>
     </version>
 </content>
 
@@ -229,6 +230,7 @@
     var GA_TRACKING_CODE = 'UA-53478356-1';
 
     ga('create', GA_TRACKING_CODE, 'auto');
+    ga('send', 'pageview', {'title': document.title});
 </script>
 
 </body>
