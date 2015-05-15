@@ -54,12 +54,13 @@ angular.module('farmbuild.nutrientCalculator')
 
     nutrientMedium.add = _add;
 
-    function validate(type, weight, isDry) {
+    function validateNew(type, weight, isDry) {
       var items = _create(type, weight, isDry);
       return validator.validate(items);
     };
 
-    nutrientMedium.validate = validate;
+    nutrientMedium.validate = validator.validate;
+    nutrientMedium.validateNew = validateNew;
     nutrientMedium.validateAll = validator.validateAll;
 
     nutrientMedium.calculate = function(fertilizers) {

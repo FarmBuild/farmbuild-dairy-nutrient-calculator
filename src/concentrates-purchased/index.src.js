@@ -45,19 +45,11 @@ angular.module('farmbuild.nutrientCalculator')
     /**
      * Returns the current instance of concentrates purchased
      * @method concentrates
-     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-     * @param {!number} weight - value must be > 0
-     * @param {!boolean} isDry -true if the concentrate is dry, false if it's wet
-     * @returns {object} concentratesPurchased
+     * @returns {object} concentrates
      * @public
      * @static
      */
     concentratesPurchased.concentrates = function() { return _concentrates};
-
-    function _create(type, weight, isDry) {
-      return {type: type, weight:weight, isDry:isDry};
-    }
-    concentratesPurchased.create = _create;
 
     /**
      * Returns true if the arguments are valid, false otherwise
@@ -90,14 +82,6 @@ angular.module('farmbuild.nutrientCalculator')
     function _add(type, weight, isDry) {
       _concentrates = nutrientMedium.add(_concentrates, type, weight, isDry);
       return concentratesPurchased;
-//      var concentrate = _create(type, weight, isDry);
-//      $log.info('concentratesPurchased.add concentrate ...', concentrate);
-//      if (!validator.validateNew(concentrate)) {
-//        $log.error('concentratesPurchased.add unable to add as the validation has been failed');
-//        return undefined;
-//      }
-//      collections.add(_concentrates, concentrate);
-//      return concentratesPurchased;
     };
     concentratesPurchased.add = _add;
 

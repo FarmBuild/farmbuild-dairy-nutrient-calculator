@@ -13,7 +13,9 @@
  * @module nutrientCalculator/concentrateTypes
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('concentrateTypes', function (collections, validations, nutrientMediumTypes, concentrateDefaults, $log) {
+  .factory('concentrateTypes',
+  function (collections, validations,
+            nutrientMediumTypes, concentrateDefaults, $log) {
 
     var concentrateTypes,
       _types = angular.copy(concentrateDefaults.types),

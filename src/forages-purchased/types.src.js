@@ -14,36 +14,14 @@
  */
 
 angular.module('farmbuild.nutrientCalculator')
-
-	.factory('forageTypes', function (collections, validations, nutrientMediumTypes, forageTypeValues, $log) {
+	.factory('forageTypes',
+  function (collections, validations, nutrientMediumTypes, forageDefaults, $log) {
 		var
-      _isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
 			_isDefined = validations.isDefined,
-			_types = angular.copy(forageTypeValues),
+			_types = angular.copy(forageDefaults.types),
       _isEmpty = validations.isEmpty,
 			forageTypes = {},
       _validate = nutrientMediumTypes.validate;
-
-//		function _validate(type) {
-//			$log.info('validating type  ...', type);
-//
-//			return !(_isEmpty(type)) &&
-//        !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
-//
-//		}
-
-//		function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-//			return {
-//				name: name,
-//				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
-//				dryMatterPercentage: dryMatterPercentage,
-//				sulphurPercentage: sulphurPercentage,
-//				potassiumPercentage: potassiumPercentage,
-//				phosphorusPercentage: phosphorusPercentage,
-//				nitrogenPercentage: nitrogenPercentage
-//			};
-//		}
 
 		/**
 		 * Adds a new forage type for nutrient calculation
@@ -122,7 +100,18 @@ angular.module('farmbuild.nutrientCalculator')
 			first: _first,
 			last: _last,
 			isEmpty: _isEmpty,
-      validate: _validate
+      validate: _validate,
+      /**
+       * Loads the types in foragesPurchasedSection.types
+       * @method load
+       * @param foragesPurchasedSection
+       * @returns {object} fertilizersPurchased
+       * @public
+       * @static
+       */
+      load: function(foragesPurchasedSection) {
+        _types = foragesPurchasedSection.types;
+      }
 		};
 
 		return forageTypes;
