@@ -99,8 +99,8 @@
                     <tr>
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
-                        <th>Dry Matter Weight (kg)</th>
                         <th>Wet/Dry</th>
+                        <th>Dry Matter Weight (kg)</th>
                         <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
@@ -121,9 +121,6 @@
                             <input name="weight" id="weight"
                                    ng-model="newForage.weight" type="number" class="form-control" placeholder="Enter weight"/>
                         </td>
-                        <td>
-                            N/A
-                        </td>
                         <td class="td-is-dry">
                             <select name="isDry" id="isDry" class="form-control"
                                     ng-model="newForage.isDry">
@@ -131,6 +128,9 @@
                                 <option value="false">Wet</option>
                             </select>
                         </td>
+                      <td>
+                        N/A
+                      </td>
                         <td>
                             <span ng-bind='newForage.Type.metabolisableEnergyRatio'></span>
                         </td>
