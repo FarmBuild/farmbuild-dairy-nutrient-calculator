@@ -14,7 +14,9 @@
  */
 angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
 	.factory('nutrientCalculator',
-  function (milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes,
+  function (milkSold,
+            cowsPurchased, cowsCulled, cows,
+            foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes,
             nutrientCalculatorSession,
             farmdata,
             validations,
@@ -47,8 +49,8 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
           numberOfMilkingDays: 365
         },
         milkSold: {},
-        cowsCulled: {},
-        cowsPurchased: {},
+        cowsCulled: cows.createDefault(),
+        cowsPurchased: cows.createDefault(),
         fertilizersPurchased: {},
         foragesPurchased: {},
         legumes: {},
@@ -87,6 +89,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 
 			if (!loaded.hasOwnProperty('nutrientCalculator')) {
         loaded.nutrientCalculator = createDefault();
+        loaded = farmdata.update(loaded);
 			}
 
 			return loaded;

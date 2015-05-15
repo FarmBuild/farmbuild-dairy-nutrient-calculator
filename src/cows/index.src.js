@@ -17,11 +17,27 @@ angular.module('farmbuild.nutrientCalculator')
   function (validations,
             cowTypes, cowValidator,
             collections,
+            cowTypeDefaults,
             nutrientCalculatorSession,
             $log) {
 
     var cows = {types:cowTypes},
       validator = cowValidator;
+
+    function createDefault() {
+      return {
+        types:angular.copy(cowTypeDefaults),
+        cows:[],
+        numberOfCows: 0,
+        weight: 0,
+        nitrogenInKg: 0,
+        phosphorusInKg: 0,
+        potassiumInKg: 0,
+        sulphurInKg: 0
+      };
+    }
+    cows.createDefault = createDefault;
+
 
     function _removeAt(items, index) {
       $log.info('removing item at index ' + index);

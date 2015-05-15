@@ -61,10 +61,14 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
     if (nutrientCalculator.session.isLoadFlagSet(location)) {
       $scope.farmData = nutrientCalculator.find();
-      if ($scope.farmData) {
+
+      if ($scope.farmData && $scope.farmData.nutrientCalculator) {
         $scope.balance = $scope.farmData.nutrientCalculator.balance;
         $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
+        return;
       }
+      $scope.noResult = true;
+
     }
 
 //    $scope.file;

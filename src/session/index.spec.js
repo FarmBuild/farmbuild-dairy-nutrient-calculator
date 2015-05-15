@@ -40,7 +40,7 @@ describe('farmbuild.nutrientCalculator module', function() {
 
       var data = nutrientCalculatorSession.loadSection();
 
-      expect(data).toBe(null);
+      expect(data).toBe(undefined);
     }));
   });
 

@@ -48,6 +48,14 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(loaded.nutrientCalculator.balance).toBeDefined()
       expect(loaded.nutrientCalculator.efficiency).toBeDefined()
 
+      expect(loaded.nutrientCalculator.cowsCulled).toBeDefined()
+      expect(loaded.nutrientCalculator.cowsCulled.cows).toBeDefined()
+      expect(loaded.nutrientCalculator.cowsCulled.types).toBeDefined()
+
+      expect(loaded.nutrientCalculator.cowsPurchased).toBeDefined()
+      expect(loaded.nutrientCalculator.cowsPurchased.cows).toBeDefined()
+      expect(loaded.nutrientCalculator.cowsPurchased.types).toBeDefined()
+
     }))
   })
 

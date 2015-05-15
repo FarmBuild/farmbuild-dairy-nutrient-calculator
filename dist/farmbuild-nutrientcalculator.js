@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, googleAnalyticsCalculator, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, googleAnalyticsCalculator, $log) {
     var nutrientCalculator = {
         farmdata: farmdata
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
@@ -24,8 +24,8 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
                 numberOfMilkingDays: 365
             },
             milkSold: {},
-            cowsCulled: {},
-            cowsPurchased: {},
+            cowsCulled: cows.createDefault(),
+            cowsPurchased: cows.createDefault(),
             fertilizersPurchased: {},
             foragesPurchased: {},
             legumes: {},
@@ -44,6 +44,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         }
         if (!loaded.hasOwnProperty("nutrientCalculator")) {
             loaded.nutrientCalculator = createDefault();
+            loaded = farmdata.update(loaded);
         }
         return loaded;
     };
@@ -829,10 +830,23 @@ angular.module("farmbuild.nutrientCalculator").constant("cowTypeDefaults", [ {
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("cows", function(validations, cowTypes, cowValidator, collections, nutrientCalculatorSession, $log) {
+angular.module("farmbuild.nutrientCalculator").factory("cows", function(validations, cowTypes, cowValidator, collections, cowTypeDefaults, nutrientCalculatorSession, $log) {
     var cows = {
         types: cowTypes
     }, validator = cowValidator;
+    function createDefault() {
+        return {
+            types: angular.copy(cowTypeDefaults),
+            cows: [],
+            numberOfCows: 0,
+            weight: 0,
+            nitrogenInKg: 0,
+            phosphorusInKg: 0,
+            potassiumInKg: 0,
+            sulphurInKg: 0
+        };
+    }
+    cows.createDefault = createDefault;
     function _removeAt(items, index) {
         $log.info("removing item at index " + index);
         return collections.removeAt(items, index);
