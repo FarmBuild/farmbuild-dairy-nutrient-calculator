@@ -23,7 +23,6 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
       return {isDry:true};
     }
 
-
 		$scope.calculate = function (forages) {
       if(!foragesPurchased.validateAll(forages)) {
         $scope.noResult = true;
@@ -35,7 +34,7 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 		};
 
 		$scope.addForage = function (type, weight, isDry) {
-      if(!foragesPurchased.validate(type, weight, isDry)) {
+      if(!foragesPurchased.validateNew(type, weight, isDry)) {
         $scope.noResult = true;
         return;
       }
@@ -59,7 +58,7 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
       }
 			$scope.forageTypes = foragesPurchased.types.add(type.name, type.metabolisableEnergyInMJPerKg, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
-																									type.phosphorusPercentage, type.nitrogenPercentage).toArray();
+																									type.phosphorusPercentage, type.nitrogenPercentage);
 			$scope.result = '';
 			$scope.type = {};
 			$scope.noResult = !$scope.forages;
@@ -76,9 +75,11 @@ angular.module('farmbuild.nutrientCalculator.examples.foragesPurchased', ['farmb
 
 		if(nutrientCalculator.session.isLoadFlagSet(location)){
 			var foragesPurchasedData = nutrientCalculator.session.loadSection('foragesPurchased');
-			foragesPurchased.load(foragesPurchasedData.forages);
-			$scope.calculate(foragesPurchasedData.forages);
-			$scope.forages = foragesPurchasedData.forages;
+      foragesPurchased.load(foragesPurchasedData);
+
+      $scope.result = foragesPurchasedData;
+      $scope.forages = foragesPurchased.forages();
+      $scope.forageTypes = foragesPurchased.types.toArray();
 		}
 
 	});

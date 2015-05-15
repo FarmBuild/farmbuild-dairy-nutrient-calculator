@@ -113,7 +113,7 @@
                         <td>
                             <select name="forageType" id="forageType" class="form-control"
                                     ng-options="forageType as forageType.name for forageType in forageTypes"
-                                    ng-model="newForage.Type">
+                                    ng-model="newForage.type">
                                 <option value="">Select</option>
                             </select>
                         </td>
@@ -132,26 +132,26 @@
                         N/A
                       </td>
                         <td>
-                            <span ng-bind='newForage.Type.metabolisableEnergyRatio'></span>
+                            <span ng-bind='newForage.type.metabolisableEnergyInMJPerKg'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.dryMatterPercentage'></span>
+                            <span ng-bind='newForage.type.dryMatterPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.sulphurPercentage'></span>
+                            <span ng-bind='newForage.type.sulphurPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.potassiumPercentage'></span>
+                            <span ng-bind='newForage.type.potassiumPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.phosphorusPercentage'></span>
+                            <span ng-bind='newForage.type.phosphorusPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.nitrogenPercentage'></span>
+                            <span ng-bind='newForage.type.nitrogenPercentage'></span>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    ng-click="addForage(newForage.Type, newForage.weight, newForage.isDry, form)">
+                                    ng-click="addForage(newForage.type, newForage.weight, newForage.isDry, form)">
                                 <i class="icon fa fa-plus"></i>
                                 Add forage
                             </button>
@@ -217,6 +217,7 @@
         </fieldset>
     </summary>
     <version class="col-md-12">
+        <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a>
         Version: <span ng-bind="appVersion"></span>
     </version>
 </content>

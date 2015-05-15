@@ -81,7 +81,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
       var fertilizersPurchasedData = nutrientCalculator.session.loadSection('fertilizersPurchased');
       fertilizersPurchased.load(fertilizersPurchasedData);
       $scope.result = fertilizersPurchasedData;
-      $scope.fertilizers = fertilizersPurchasedData.fertilizers;
-      $scope.fertilizerTypes = fertilizersPurchasedData.types;
+      $scope.fertilizers = fertilizersPurchased.fertilizers();
+      $scope.fertilizerTypes = fertilizersPurchased.types.toArray();
     }
 	});

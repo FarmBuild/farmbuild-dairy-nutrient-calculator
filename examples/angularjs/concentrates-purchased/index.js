@@ -79,8 +79,8 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
       var concentratesPurchasedData = nutrientCalculator.session.loadSection('concentratesPurchased');
       concentratesPurchased.load(concentratesPurchasedData);
       $scope.result =  concentratesPurchasedData;
-      $scope.concentrates =  concentratesPurchasedData.concentrates;
-      $scope.concentrateTypes =  concentratesPurchasedData.types;
+      $scope.concentrates =  concentratesPurchased.concentrates();
+      $scope.concentrateTypes =  concentratesPurchased.types.toArray();
     }
 
 	});
