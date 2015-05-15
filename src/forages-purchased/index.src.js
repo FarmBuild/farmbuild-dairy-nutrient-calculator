@@ -14,7 +14,12 @@
  */
 angular.module('farmbuild.nutrientCalculator')
   .factory('foragesPurchased',
-  function (validations, nutrientMedium, forageTypes, forageValidator, $log) {
+  function (validations,
+            nutrientMedium,
+            forageTypes, forageValidator,
+            nutrientMediumValidator,
+            nutrientCalculatorSession,
+            $log) {
 
     var foragesPurchased = {},
       _isDefined = validations.isDefined,

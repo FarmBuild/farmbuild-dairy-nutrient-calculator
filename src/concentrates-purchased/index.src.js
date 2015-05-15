@@ -17,7 +17,8 @@ angular.module('farmbuild.nutrientCalculator')
   .factory('concentratesPurchased',
   function (validations,
             nutrientMedium,
-            concentrateDefaults, concentrateTypes, concentrateValidator, concentrateCalculator,
+            concentrateDefaults, concentrateTypes,
+            nutrientMediumValidator, concentrateCalculator,
             collections,
             nutrientCalculatorSession,
             $log) {
@@ -25,7 +26,7 @@ angular.module('farmbuild.nutrientCalculator')
     var concentratesPurchased = {types:concentrateTypes, calculator:concentrateCalculator},
       _concentrates = [],
       calculator = concentrateCalculator,
-      validator = concentrateValidator;
+      validator = nutrientMediumValidator;
     
     /**
      * Removes the concentrate at specified index
