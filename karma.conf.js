@@ -12,7 +12,10 @@ module.exports = function(config){
       'src/nutrient-medium/types.src.js',
       'src/nutrient-medium/calculator.src.js',
       'src/nutrient-medium/index.src.js',
-      'src/cows-culled/cows.conf.src.js',
+      'src/cows/index.src.js',
+      'src/cows/types.src.js',
+      'src/cows/validator.src.js',
+      'src/cows/cows.conf.src.js',
       'src/cows-purchased/index.src.js',
       'src/cows-culled/index.src.js',
       'src/milk-sold/index.src.js',
@@ -40,11 +43,14 @@ module.exports = function(config){
 //      'src/blank.spec.js',//use this as a basis of creating your module test
       'src/nutrient-calculator-load.spec.js',
       'src/nutrient-calculator-create.spec.js',
+      'src/cows/types.spec.js',
+      'src/cows/validator.spec.js',
+      'src/cows-culled/index.spec.js',
+      'src/cows-purchased/index.spec.js',
       'src/nutrient-medium/validator.spec.js',
       'src/nutrient-medium/types.spec.js',
       'src/index.spec.js',
 //      'src/legumes/calculator.spec.js',
-      'src/collections/index.spec.js',
 //      'src/legumes/index.spec.js',
       'src/forages-purchased/index.spec.js',
       'src/forages-purchased/types.spec.js',
@@ -53,6 +59,7 @@ module.exports = function(config){
       'src/concentrates-purchased/types.spec.js',
       'src/concentrates-purchased/index.spec.js',
       'src/session/index.spec.js',
+      'src/collections/index.spec.js',
 //      'src/ga/index.spec.js'
 //      'src/**/*.spec.js'
       {pattern: 'examples/data/*.json'}

@@ -14,13 +14,24 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('cowsPurchased', function (validations, cowTypes) {
+	.factory('cowsPurchased',
+  function (validations,
+            cowTypeDefaults,
+            cowValidator,
+            cowTypes,
+            cows,
+            nutrientCalculatorSession
+    ) {
 
 		var cowsPurchased = {},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
 			_isDefined = validations.isDefined,
-			_types = angular.copy(cowTypes);
+			_types = angular.copy(cowTypeDefaults),
+      _cows = [],
+      validator = cowValidator;
+
+    cowsPurchased.validateNew = cows.validateNew;
 
 		/**
 		 * Calculates total nutrient imported on to the farm in cows
@@ -77,7 +88,7 @@ angular.module('farmbuild.nutrientCalculator')
 				});
 			}
 
-			return {
+      var result =  {
 				cows: incomings,
 				numberOfCows: numberOfCows,
 				weight: weight,
@@ -87,6 +98,11 @@ angular.module('farmbuild.nutrientCalculator')
 				sulphurInKg: sulphurInKg
 			};
 
+      result.types = _types;
+
+      nutrientCalculatorSession.saveSection('cowsPurchased', result);
+
+      return result;
 		};
 
 		/**
@@ -170,6 +186,39 @@ angular.module('farmbuild.nutrientCalculator')
 		cowsPurchased.types = function () {
 			return _types;
 		};
+
+    cowsPurchased.validateType = function (type) {
+      return cowTypes.validate(type);
+    };
+
+
+    /**
+     * Returns current cow types
+     * @method types
+     * @returns {object} Types - cow types array
+     * @public
+     * @static
+     */
+    cowsPurchased.cows = function () {
+      return _cows;
+    };
+
+    /**
+     * Loads the fertilizers in cowsPurchasedSection.fertilizers
+     * @method load
+     * @param cowsPurchasedSection
+     * @returns {object} cowsPurchased
+     * @public
+     * @static
+     */
+    cowsPurchased.load = function(cowsPurchasedSection) {
+      if(!validator.validateAll(cowsPurchasedSection.cows)) {
+        return undefined
+      }
+      _cows = cowsPurchasedSection.cows;
+
+      return cowsPurchased;
+    }
 
 		return cowsPurchased;
 

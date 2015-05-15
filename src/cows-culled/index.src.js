@@ -14,12 +14,12 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 	
-	.factory('cowsCulled', function (validations, cowTypes) {
+	.factory('cowsCulled', function (validations, cowTypeDefaults) {
 		
 		var cowsCulled = {},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
-			_types = angular.copy(cowTypes);
+			_types = angular.copy(cowTypeDefaults);
 		
 		/**
 		 * Calculates total nutrient exported from the farm in cows culled

@@ -616,27 +616,10 @@ angular.module("farmbuild.nutrientCalculator").factory("concentrateTypes", funct
     return concentrateTypes;
 });
 
-angular.module("farmbuild.nutrientCalculator").constant("cowTypes", [ {
-    name: "Heavy adult cattle",
-    weight: 650
-}, {
-    name: "Average adult cattle",
-    weight: 500
-}, {
-    name: "Yearling",
-    weight: 300
-}, {
-    name: "Weaned young stock",
-    weight: 120
-}, {
-    name: "Bobby calve",
-    weight: 40
-} ]);
-
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, cowTypes) {
-    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(cowTypes);
+angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(validations, cowTypeDefaults) {
+    var cowsCulled = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _types = angular.copy(cowTypeDefaults);
     cowsCulled.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -714,8 +697,9 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsCulled", function(va
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function(validations, cowTypes) {
-    var cowsPurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(cowTypes);
+angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function(validations, cowTypeDefaults, cowValidator, cowTypes, cows, nutrientCalculatorSession) {
+    var cowsPurchased = {}, _isPositiveNumber = validations.isPositiveNumber, _isAlphanumeric = validations.isAlphanumeric, _isDefined = validations.isDefined, _types = angular.copy(cowTypeDefaults), _cows = [], validator = cowValidator;
+    cowsPurchased.validateNew = cows.validateNew;
     cowsPurchased.calculate = function(cows) {
         var numberOfCows = 0, weight = 0, nitrogenInKg = 0, phosphorusInKg = 0, potassiumInKg = 0, sulphurInKg = 0, nitrogenPercentage = 2.8, phosphorusPercentage = .72, potassiumPercentage = .2, sulphurPercentage = .8, incomings = [], i = 0;
         if (!cows || cows.length === 0) {
@@ -743,7 +727,7 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
                 weight: cow.weight
             });
         }
-        return {
+        var result = {
             cows: incomings,
             numberOfCows: numberOfCows,
             weight: weight,
@@ -752,6 +736,9 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
             potassiumInKg: potassiumInKg,
             sulphurInKg: sulphurInKg
         };
+        result.types = _types;
+        nutrientCalculatorSession.saveSection("cowsPurchased", result);
+        return result;
     };
     cowsPurchased.addType = function(name, weight) {
         if (!_isPositiveNumber(weight)) {
@@ -788,7 +775,159 @@ angular.module("farmbuild.nutrientCalculator").factory("cowsPurchased", function
     cowsPurchased.types = function() {
         return _types;
     };
+    cowsPurchased.validateType = function(type) {
+        return cowTypes.validate(type);
+    };
+    cowsPurchased.cows = function() {
+        return _cows;
+    };
+    cowsPurchased.load = function(cowsPurchasedSection) {
+        if (!validator.validateAll(cowsPurchasedSection.cows)) {
+            return undefined;
+        }
+        _cows = cowsPurchasedSection.cows;
+        return cowsPurchased;
+    };
     return cowsPurchased;
+});
+
+angular.module("farmbuild.nutrientCalculator").constant("cowTypeDefaults", [ {
+    name: "Heavy adult cattle",
+    weight: 650
+}, {
+    name: "Average adult cattle",
+    weight: 500
+}, {
+    name: "Yearling",
+    weight: 300
+}, {
+    name: "Weaned young stock",
+    weight: 120
+}, {
+    name: "Bobby calve",
+    weight: 40
+} ]);
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("cows", function(validations, cowTypes, cowValidator, collections, nutrientCalculatorSession, $log) {
+    var cows = {
+        types: cowTypes
+    }, validator = cowValidator;
+    function _removeAt(items, index) {
+        $log.info("removing item at index " + index);
+        return collections.removeAt(items, index);
+    }
+    cows.removeAt = _removeAt;
+    function _create(name, weight, numberOfCows) {
+        return {
+            name: name,
+            weight: weight,
+            numberOfCows: numberOfCows
+        };
+    }
+    cows.create = _create;
+    function _add(items, name, weight, numberOfCows) {
+        var item = _create(name, weight, numberOfCows);
+        $log.info("cows.add item ...", item);
+        if (!validator.validate(item)) {
+            $log.error("cows.add unable to add as the validation has been failed, %j", item);
+            return undefined;
+        }
+        return collections.add(items, item);
+    }
+    cows.add = _add;
+    function validateNew(name, weight, numberOfCows) {
+        var items = _create(name, weight, numberOfCows);
+        return validator.validate(items);
+    }
+    cows.validate = validator.validate;
+    cows.validateNew = validateNew;
+    cows.validateAll = validator.validateAll;
+    return cows;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("cowTypes", function(cowTypeDefaults, collections, validations, $log) {
+    var cowTypes, _isPositiveNumber = validations.isPositiveNumber, _isEmpty = validations.isEmpty, _types = angular.copy(cowTypeDefaults);
+    function _create(name, weight) {
+        var type = {
+            name: name,
+            weight: weight
+        };
+        return type;
+    }
+    function _validate(type) {
+        $log.info("validating type  ...", type);
+        var valid = !_isEmpty(type) && !(_isEmpty(type.name) || !_isPositiveNumber(type.weight));
+        if (!valid) {
+            $log.error("invalid type: %j", type);
+        }
+        return valid;
+    }
+    function _add(types, name, weight) {
+        var type = _create(name, weight);
+        $log.info("adding a type ...", type);
+        if (!_validate(type)) {
+            return undefined;
+        }
+        return collections.add(types, type);
+    }
+    cowTypes = {
+        add: _add,
+        at: function(index) {
+            return collections.at(_types, index);
+        },
+        size: function() {
+            return collections.size(_types);
+        },
+        byName: function(name) {
+            return collections.byProperty(_types, "name", name);
+        },
+        toArray: function() {
+            return angular.copy(_types);
+        },
+        removeAt: function(index) {
+            return collections.removeAt(_types, index);
+        },
+        last: function() {
+            return collections.last(_types);
+        },
+        validate: _validate,
+        create: _create
+    };
+    return cowTypes;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("cowValidator", function(validations, cowTypes, $log) {
+    var cowValidator = {}, _isDefined = validations.isDefined, _isArray = validations.isArray, _isPositiveNumber = validations.isPositiveNumber, _isEmpty = validations.isEmpty;
+    function _validate(cow) {
+        $log.info("validating cow...", cow);
+        if (!_isDefined(cow.name) || !_isDefined(cow.weight) || !_isPositiveNumber(cow.weight) || !_isDefined(cow.numberOfCows) || !_isPositiveNumber(cow.numberOfCows)) {
+            $log.error("invalid, must have name, weight (positive number) and numberOfCows: %j", cow);
+            return false;
+        }
+        return true;
+    }
+    cowValidator.validate = _validate;
+    cowValidator.validateAll = function(items) {
+        if (!_isArray(items) || _isEmpty(items)) {
+            return false;
+        }
+        var i = 0;
+        for (i; i < items.length; i++) {
+            var item = items[i];
+            if (!_validate(item)) {
+                $log.error("validator invalid at %s: %j", i, item);
+                return false;
+            }
+        }
+        return true;
+    };
+    return cowValidator;
 });
 
 "use strict";
