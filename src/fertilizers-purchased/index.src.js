@@ -124,14 +124,11 @@ angular.module('farmbuild.nutrientCalculator')
      * @static
      */
     fertilizersPurchased.load = function(fertilizersPurchasedSection) {
-//      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
-//
-//      }
-
+      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+        return undefined
+      }
       _fertilizers = fertilizersPurchasedSection.fertilizers;
-
       fertilizerTypes.load(fertilizersPurchasedSection);
-
       return fertilizersPurchased;
     }
 

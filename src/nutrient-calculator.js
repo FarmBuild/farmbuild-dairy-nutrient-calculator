@@ -222,7 +222,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		};
 
     /**
-     * Calculates balance
+     * Calculates balance and updates the farmData
      * @method balance
      * @param {!Object} farmData
      * @returns {Object} the farmData calculated
@@ -232,7 +232,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
     nutrientCalculator.calculate = function (farmData) {
       farmData.nutrientCalculator.balance = nutrientCalculator.balance(farmData);
       farmData.nutrientCalculator.efficiency = nutrientCalculator.efficiency(farmData);
-      return farmdata.save(farmData);
+      return farmdata.update(farmData);
     };
 
 		if (typeof window.farmbuild === 'undefined') {

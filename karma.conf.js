@@ -50,8 +50,8 @@ module.exports = function(config){
 //      'src/forages-purchased/types.spec.js',
       'src/fertilizers-purchased/types.spec.js',
       'src/fertilizers-purchased/index.spec.js',
-//      'src/concentrates-purchased/types.spec.js',
-//      'src/concentrates-purchased/index.spec.js',
+      'src/concentrates-purchased/types.spec.js',
+      'src/concentrates-purchased/index.spec.js',
       'src/session/index.spec.js',
 //      'src/ga/index.spec.js'
 //      'src/**/*.spec.js'
