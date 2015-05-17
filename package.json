@@ -23,7 +23,8 @@
     "livereload": "0.3.7",
     "connect": "3.3.5",
     "serve-static": "1.9.2",
-    "static-livereload": "0.1.4"
+    "static-livereload": "0.1.4",
+    "jasmine": "2.3.1"
   },
   "scripts": {
     "bower-update": "bower update",

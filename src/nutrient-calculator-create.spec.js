@@ -69,6 +69,13 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(loaded.nutrientCalculator.concentratesPurchased.concentrates).toBeDefined()
       expect(loaded.nutrientCalculator.concentratesPurchased.types).toBeDefined()
 
+      expect(loaded.nutrientCalculator.milkSold).toBeDefined()
+      expect(loaded.nutrientCalculator.milkSold.totalPerYearInLitre).toBeDefined()
+      expect(loaded.nutrientCalculator.milkSold.fatInKg).toBeDefined()
+      expect(loaded.nutrientCalculator.milkSold.fatPercentage).toBeDefined()
+      expect(loaded.nutrientCalculator.milkSold.proteinInKg).toBeDefined()
+      expect(loaded.nutrientCalculator.milkSold.proteinPercentage).toBeDefined()
+
 
     }))
   })

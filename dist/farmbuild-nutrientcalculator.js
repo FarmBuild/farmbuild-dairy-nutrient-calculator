@@ -23,7 +23,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
                 numberOfMilkingCows: 0,
                 numberOfMilkingDays: 365
             },
-            milkSold: {},
+            milkSold: milkSold.createDefault(),
             cowsCulled: cows.createDefault(),
             cowsPurchased: cows.createDefault(),
             fertilizersPurchased: fertilizersPurchased.createDefault(),
@@ -1987,6 +1987,16 @@ angular.module("farmbuild.nutrientCalculator").constant("utilisationFactorsValue
 
 angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(validations) {
     var milkSold = {}, _isPositiveNumber = validations.isPositiveNumber;
+    function createDefault() {
+        return {
+            totalPerYearInLitre: 0,
+            fatInKg: 0,
+            fatPercentage: 0,
+            proteinInKg: 0,
+            proteinPercentage: 0
+        };
+    }
+    milkSold.createDefault = createDefault;
     milkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
         var milkProteinInKg, milkFatInKg;
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {

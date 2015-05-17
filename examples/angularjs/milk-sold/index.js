@@ -40,7 +40,8 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 
 		if(nutrientCalculator.session.isLoadFlagSet(location)){
 			var milkSoldData = nutrientCalculator.session.loadSection('milkSold');
-			$scope.calculateByKg(milkSoldData.totalPerYearInLitre, milkSoldData.proteinInKg, milkSoldData.fatInKg)
+
+			//$scope.calculateByKg(milkSoldData.totalPerYearInLitre, milkSoldData.proteinInKg, milkSoldData.fatInKg)
 			$scope.fatInKg = milkSoldData.fatInKg;
 			$scope.proteinInKg = milkSoldData.proteinInKg;
 			$scope.totalPerYearInLitre = milkSoldData.totalPerYearInLitre;

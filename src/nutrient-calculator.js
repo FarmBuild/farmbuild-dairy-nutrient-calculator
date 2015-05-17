@@ -49,7 +49,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
           numberOfMilkingCows: 0,
           numberOfMilkingDays: 365
         },
-        milkSold: {},
+        milkSold: milkSold.createDefault(),
         cowsCulled: cows.createDefault(),
         cowsPurchased: cows.createDefault(),
         fertilizersPurchased: fertilizersPurchased.createDefault(),

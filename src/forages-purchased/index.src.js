@@ -27,8 +27,6 @@ angular.module('farmbuild.nutrientCalculator')
       };
     }
 
-
-
     /**
      * Adds a forage to foragesPurchased collection
      * @method add
