@@ -19,19 +19,6 @@ angular.module('farmbuild.nutrientCalculator')
     var nutrientCalculatorSession = {},
       _isDefined = validations.isDefined;
 
-
-//    function findInSessionStorage() {
-//      var root = farmdata.session.find();
-//      return root.nutrientCalculator.milkSold;
-//    };
-//
-//    function saveInSessionStorage(result) {
-//      var farmData = farmdata.session.find();
-//      farmData.dateLastUpdated = new Date();
-//      farmData.nutrientCalculator.milkSold = result;
-//      farmdata.session.save(farmData);
-//    };
-
     function load() {
       var root = farmdata.session.find();
 
@@ -41,7 +28,6 @@ angular.module('farmbuild.nutrientCalculator')
 
       return root.nutrientCalculator;
     }
-    //nutrientCalculatorSession
 
     /**
      * Saves the farmData.nutrientCalculator into the sessionStorage
