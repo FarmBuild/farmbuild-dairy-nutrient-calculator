@@ -48,7 +48,7 @@ module.exports = function(config){
       'src/ga/index.src.js',
       'src/index.js',
 //      'src/blank.spec.js',//use this as a basis of creating your module test
-      'src/nutrient-calculator-load.spec.js',
+//      'src/nutrient-calculator-load.spec.js',
 //      'src/nutrient-calculator-create.spec.js',
 //      'src/cows/types.spec.js',
 //      'src/cows/validator.spec.js',
@@ -68,7 +68,7 @@ module.exports = function(config){
 //      'src/session/index.spec.js',
 //      'src/collections/index.spec.js',
 //      'src/ga/index.spec.js',
-//      'src/**/*.spec.js',
+      'src/**/*.spec.js',
       {pattern: 'examples/data/*.json'}
     ],
 
