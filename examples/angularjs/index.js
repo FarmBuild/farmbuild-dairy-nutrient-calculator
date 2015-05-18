@@ -75,6 +75,8 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
       }
       $scope.balance = $scope.farmData.nutrientCalculator.balance;
       $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
+      $scope.feedBalance = $scope.farmData.nutrientCalculator.feedBalance;
+
       $scope.milkProduction = $scope.farmData.nutrientCalculator.milkProduction;
 
     }

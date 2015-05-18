@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, nutrientAggregator, nutrientBalance, nutrientEfficiency, milkProduction, googleAnalyticsCalculator, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, nutrientAggregator, nutrientBalance, nutrientEfficiency, feedBalance, milkProduction, googleAnalyticsCalculator, $log) {
     var nutrientCalculator = {
         farmdata: farmdata
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
@@ -58,6 +58,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         var nutrientValues = nutrientAggregator.calculate(farmData), milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
         farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
         farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
+        farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
         farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
         return farmdata.update(farmData);
     };
@@ -2334,6 +2335,40 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientEfficiency", fun
 
 angular.module("farmbuild.nutrientCalculator").factory("feedBalance", function(validations, $log) {
     var feedBalance = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    function validate(summary, concentratesPurchased, foragesPurchased, legumes) {
+        if (!_isDefined(summary) || !_isDefined(summary.milkingAreaInHa)) {
+            $log.error("nutrientCalculator.summary must be populated for milkingAreaInHa");
+            return false;
+        }
+        if (!_isDefined(concentratesPurchased) || !_isDefined(concentratesPurchased.dryMatterWeight)) {
+            $log.error("nutrientCalculator.concentratesPurchased must be populated for dryMatterWeightCombined");
+            return false;
+        }
+        if (!_isDefined(foragesPurchased) || !_isDefined(foragesPurchased.dryMatterWeight)) {
+            $log.error("nutrientCalculator.foragesPurchased must be populated for dryMatterWeightCombined");
+            return false;
+        }
+        if (!_isDefined(legumes) || !_isDefined(legumes.dryMatterConsumedPerHaInKg)) {
+            $log.error("nutrientCalculator.legumes must be populated for dryMatterConsumedPerHaInKg");
+            return false;
+        }
+        return true;
+    }
+    function calculate(nutrientCalculator) {
+        var summary = nutrientCalculator.summary, concentratesPurchased = nutrientCalculator.concentratesPurchased, foragesPurchased = nutrientCalculator.foragesPurchased, legumes = nutrientCalculator.legumes;
+        if (!validate(summary, concentratesPurchased, foragesPurchased, legumes)) {
+            return undefined;
+        }
+        var result = {}, milkingAreaInHa = summary.milkingAreaInHa, dryMatterWeightCombined = foragesPurchased.dryMatterWeight + concentratesPurchased.dryMatterWeight, dryMatterConsumedPerHaInKg = legumes.dryMatterConsumedPerHaInKg, dryMatterConsumedPerMilkingAreaInKg = dryMatterConsumedPerHaInKg * milkingAreaInHa / 1e3, dryMatterTotal = dryMatterWeightCombined + dryMatterConsumedPerMilkingAreaInKg;
+        var forageTotalFeedRatio = 100 * foragesPurchased.dryMatterWeight / dryMatterTotal, supplementTotalFeedRatio = 100 * concentratesPurchased.dryMatterWeight / dryMatterTotal, homegrownTotalFeedRatio = 100 * dryMatterConsumedPerMilkingAreaInKg / dryMatterTotal, supplementHomegrownRatio = 100 * dryMatterWeightCombined / homegrownTotalFeedRatio;
+        result.homeForageConsumed = dryMatterConsumedPerMilkingAreaInKg / milkingAreaInHa;
+        result.forageTotalFeedRatio = forageTotalFeedRatio;
+        result.supplementTotalFeedRatio = supplementTotalFeedRatio;
+        result.homegrownTotalFeedRatio = homegrownTotalFeedRatio;
+        result.supplementHomegrownRatio = supplementHomegrownRatio;
+        return result;
+    }
+    feedBalance.calculate = calculate;
     return feedBalance;
 });
 
@@ -2342,31 +2377,27 @@ angular.module("farmbuild.nutrientCalculator").factory("feedBalance", function(v
 angular.module("farmbuild.nutrientCalculator").factory("milkProduction", function(validations, $log) {
     var milkProduction = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
     function calculateStockingRates(nutrientCalculator, result) {}
-    function calculateFeedBalance(nutrientCalculator, result) {}
-    function calculateMilkProduction(nutrientCalculator) {
-        var summary = nutrientCalculator.summary, milkSold = nutrientCalculator.milkSold, concentratesPurchased = nutrientCalculator.concentratesPurchased, foragesPurchased = nutrientCalculator.foragesPurchased, legumes = nutrientCalculator.legumes;
+    function validate(summary, milkSold, feedBalance) {
         if (!_isDefined(summary) || !_isDefined(summary.numberOfMilkingCows) || !_isDefined(summary.milkingAreaInHa)) {
             $log.error("nutrientCalculator.summary must be populated for numberOfMilkingCows, milkingAreaInHa");
-            return undefined;
+            return false;
         }
         if (!_isDefined(milkSold) || !_isDefined(milkSold.fatInKg) || !_isDefined(milkSold.proteinInKg) || !_isDefined(milkSold.totalPerYearInLitre)) {
             $log.error("nutrientCalculator.milkSold must be populated for totalPerYearInLitre, fatInKg, proteinInKg");
+            return false;
+        }
+        if (!_isDefined(feedBalance)) {
+            $log.error("nutrientCalculator.feedBalance must be populated");
+            return false;
+        }
+        return true;
+    }
+    function calculate(nutrientCalculator) {
+        var summary = nutrientCalculator.summary, milkSold = nutrientCalculator.milkSold, feedBalance = nutrientCalculator.feedBalance;
+        if (!validate(summary, milkSold, feedBalance)) {
             return undefined;
         }
-        if (!_isDefined(concentratesPurchased) || !_isDefined(concentratesPurchased.dryMatterWeight)) {
-            $log.error("nutrientCalculator.concentratesPurchased must be populated for dryMatterWeightCombined");
-            return undefined;
-        }
-        if (!_isDefined(foragesPurchased) || !_isDefined(foragesPurchased.dryMatterWeight)) {
-            $log.error("nutrientCalculator.foragesPurchased must be populated for dryMatterWeightCombined");
-            return undefined;
-        }
-        if (!_isDefined(legumes) || !_isDefined(legumes.dryMatterConsumedPerHaInKg)) {
-            $log.error("nutrientCalculator.legumes must be populated for dryMatterConsumedPerHaInKg");
-            return undefined;
-        }
-        var result = {}, numberOfMilkingCows = summary.numberOfMilkingCows, milkingAreaInHa = summary.milkingAreaInHa, milkSoldPerYearInLitre = milkSold.totalPerYearInLitre, fatInKg = milkSold.fatInKg, proteinInKg = milkSold.proteinInKg, fatNProteinInKg = fatInKg + proteinInKg, dryMatterWeightCombined = foragesPurchased.dryMatterWeight + concentratesPurchased.dryMatterWeight, dryMatterConsumedPerHaInKg = legumes.dryMatterConsumedPerHaInKg, dryMatterConsumedPerMilkingAreaInKg = dryMatterConsumedPerHaInKg * milkingAreaInHa / 1e3, dryMatterTotal = dryMatterWeightCombined + dryMatterConsumedPerMilkingAreaInKg;
-        var forageTotalFeedRatio = 100 * foragesPurchased.dryMatterWeight / dryMatterTotal, supplementTotalFeedRatio = 100 * concentratesPurchased.dryMatterWeight / dryMatterTotal, homegrownTotalFeedRatio = 100 * dryMatterConsumedPerMilkingAreaInKg / dryMatterTotal;
+        var result = {}, numberOfMilkingCows = summary.numberOfMilkingCows, milkingAreaInHa = summary.milkingAreaInHa, milkSoldPerYearInLitre = milkSold.totalPerYearInLitre, fatInKg = milkSold.fatInKg, proteinInKg = milkSold.proteinInKg, fatNProteinInKg = fatInKg + proteinInKg, forageTotalFeedRatio = feedBalance.forageTotalFeedRatio, supplementTotalFeedRatio = feedBalance.supplementTotalFeedRatio, homegrownTotalFeedRatio = feedBalance.homegrownTotalFeedRatio;
         result.milkSoldPerYearInLitre = milkSoldPerYearInLitre;
         result.milkSoldPerCowInLitre = milkSoldPerYearInLitre / numberOfMilkingCows;
         result.milkSoldPerHectareInLitre = milkSoldPerYearInLitre / milkingAreaInHa;
@@ -2376,7 +2407,7 @@ angular.module("farmbuild.nutrientCalculator").factory("milkProduction", functio
         result.milkSoldFromHomeGrownFeedInKg = milkSoldPerYearInLitre * homegrownTotalFeedRatio / 100;
         return result;
     }
-    milkProduction.calculate = calculateMilkProduction;
+    milkProduction.calculate = calculate;
     return milkProduction;
 });
 
