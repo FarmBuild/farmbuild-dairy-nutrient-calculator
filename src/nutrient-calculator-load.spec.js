@@ -71,6 +71,9 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(milkProduction.milkSoldPerCowInKg).toBe(587.6129407894737)
       expect(milkProduction.milkSoldPerHectareInInKg).toBe(1903.3349978690153)
 
+      expect(milkProduction.milkSoldFromImportedFeedInKg).toBe(1750387.0785047645)
+      expect(milkProduction.milkSoldFromHomeGrownFeedInKg).toBe(929.9214952356291)
+
 
 
 

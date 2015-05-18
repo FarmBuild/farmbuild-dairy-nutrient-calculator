@@ -210,12 +210,12 @@
 
       <form-item class="form-group col-sm-6">
         <p>Milk (Litre) from imported feed (Kg):
-          <span ng-bind="milkProduction | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldFromImportedFeedInKg | number : decimalPrecision"></span>
         </p>
       </form-item>
       <form-item class="form-group col-sm-6">
         <p>Milk (Litre) from home grown feed (Kg):
-          <span ng-bind="milkProduction | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldFromHomeGrownFeedInKg | number : decimalPrecision"></span>
         </p>
       </form-item>
 
