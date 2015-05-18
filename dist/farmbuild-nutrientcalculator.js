@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, nutrientAggregator, nutrientBalance, nutrientEfficiency, feedBalance, milkProduction, googleAnalyticsCalculator, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, nutrientAggregator, nutrientBalance, nutrientEfficiency, feedBalance, milkProduction, stockingRate, googleAnalyticsCalculator, $log) {
     var nutrientCalculator = {
         farmdata: farmdata
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
@@ -60,6 +60,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
         farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
         farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
+        farmData.nutrientCalculator.stockingRate = stockingRate.calculate(farmData.nutrientCalculator, farmData.area);
         return farmdata.update(farmData);
     };
     if (typeof window.farmbuild === "undefined") {
@@ -2376,7 +2377,6 @@ angular.module("farmbuild.nutrientCalculator").factory("feedBalance", function(v
 
 angular.module("farmbuild.nutrientCalculator").factory("milkProduction", function(validations, $log) {
     var milkProduction = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
-    function calculateStockingRates(nutrientCalculator, result) {}
     function validate(summary, milkSold, feedBalance) {
         if (!_isDefined(summary) || !_isDefined(summary.numberOfMilkingCows) || !_isDefined(summary.milkingAreaInHa)) {
             $log.error("nutrientCalculator.summary must be populated for numberOfMilkingCows, milkingAreaInHa");
@@ -2409,6 +2409,35 @@ angular.module("farmbuild.nutrientCalculator").factory("milkProduction", functio
     }
     milkProduction.calculate = calculate;
     return milkProduction;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("stockingRate", function(validations, $log) {
+    var stockingRate = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    function validate(summary, area) {
+        if (!_isDefined(area)) {
+            $log.error("farmData.area must be populated");
+            return false;
+        }
+        if (!_isDefined(summary) || !_isDefined(summary.numberOfMilkingCows) || !_isDefined(summary.milkingAreaInHa)) {
+            $log.error("nutrientCalculator.summary must be populated for numberOfMilkingCows, milkingAreaInHa");
+            return false;
+        }
+        return true;
+    }
+    function calculate(nutrientCalculator, area) {
+        var summary = nutrientCalculator.summary;
+        if (!validate(summary, area)) {
+            return undefined;
+        }
+        var result = {}, numberOfMilkingCows = summary.numberOfMilkingCows, milkingAreaInHa = summary.milkingAreaInHa;
+        result.milkingArea = numberOfMilkingCows / milkingAreaInHa;
+        result.wholeFarm = numberOfMilkingCows / area;
+        return result;
+    }
+    stockingRate.calculate = calculate;
+    return stockingRate;
 });
 
 "use strict";

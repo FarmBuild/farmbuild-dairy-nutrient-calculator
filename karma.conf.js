@@ -14,7 +14,7 @@ module.exports = function(config){
       'src/reporting/efficiency.src.js',
       'src/reporting/milk-production.src.js',
       'src/reporting/feed-balance.src.js',
-
+      'src/reporting/stocking-rate.src.js',
       'src/nutrient-medium/validator.src.js',
       'src/nutrient-medium/types.src.js',
       'src/nutrient-medium/calculator.src.js',

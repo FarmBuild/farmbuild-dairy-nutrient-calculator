@@ -21,16 +21,6 @@ angular.module('farmbuild.nutrientCalculator')
       _isDefined = validations.isDefined;
 
 
-    function calculateStockingRates(nutrientCalculator, result) {
-      //stocking_rate_milker
-      //totalmilkingcows / milkingarea
-
-      //stocking_rate_whole_farm
-      //totalmilkingcows / totalfarmarea
-
-
-    }
-
     function validate(summary, milkSold, feedBalance) {
 
       if(!_isDefined(summary) ||

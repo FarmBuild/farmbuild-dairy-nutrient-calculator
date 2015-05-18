@@ -26,12 +26,10 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
           return;
         }
 
-        $scope.farmData = farmData;
-        $scope.balance = farmData.nutrientCalculator.balance;
-        $scope.efficiency = farmData.nutrientCalculator.efficiency;
+        updateFarmData($scope, farmData);
 
       } catch (e) {
-        console.error('farmbuild.nutrientCalculator.examples > load: Your file should be in json format')
+        console.error('farmbuild.nutrientCalculator.examples > load: Your file should be in json format: ', e);
         $scope.noResult = true;
       }
     };
@@ -44,11 +42,9 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
     $scope.calculate = function () {
       $log.info('calculate...');
-      $scope.farmData = nutrientCalculator.calculate($scope.farmData);
+      var farmData = nutrientCalculator.calculate($scope.farmData);
 
-      updateFarmData($scope, $scope.farmData);
-//      $scope.balance = $scope.farmData.nutrientCalculator.balance;
-//      $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
+      updateFarmData($scope, farmData);
 
       nutrientCalculator.ga.trackCalculate('AgSmart');
     };
@@ -62,9 +58,9 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
     }
 
     if (nutrientCalculator.session.isLoadFlagSet(location)) {
-      $scope.farmData = nutrientCalculator.find();
+      var farmData = nutrientCalculator.find();
 
-      updateFarmData($scope, $scope.farmData);
+      updateFarmData($scope, farmData);
     }
 
     function updateFarmData($scope, farmData) {
@@ -73,11 +69,12 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
         $scope.noResult = true;
         return;
       }
-      $scope.balance = $scope.farmData.nutrientCalculator.balance;
-      $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
-      $scope.feedBalance = $scope.farmData.nutrientCalculator.feedBalance;
-
-      $scope.milkProduction = $scope.farmData.nutrientCalculator.milkProduction;
+      $scope.farmData = farmData;
+      $scope.balance = farmData.nutrientCalculator.balance;
+      $scope.efficiency = farmData.nutrientCalculator.efficiency;
+      $scope.feedBalance = farmData.nutrientCalculator.feedBalance;
+      $scope.milkProduction = farmData.nutrientCalculator.milkProduction;
+      $scope.stockingRate = farmData.nutrientCalculator.stockingRate;
 
     }
 //    $scope.file;
