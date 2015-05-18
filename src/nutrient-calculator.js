@@ -22,6 +22,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
             farmdata,
             validations,
             nutrientAggregator,nutrientBalance,nutrientEfficiency,
+            milkProduction,
             googleAnalyticsCalculator,
             $log) {
 		var nutrientCalculator = {farmdata:farmdata},
@@ -112,11 +113,13 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
      * @static
      */
     nutrientCalculator.calculate = function (farmData) {
-      var nutrientValues = nutrientAggregator.aggregate(farmData),
+      var nutrientValues = nutrientAggregator.calculate(farmData),
         milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
 
       farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
       farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
+      farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
+
 
       return farmdata.update(farmData);
     };

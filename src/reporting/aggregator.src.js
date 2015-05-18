@@ -78,14 +78,14 @@ angular.module('farmbuild.nutrientCalculator')
     }
 
     /**
-     * Aggregate incomings/outgoings from each module
+     * calculate incomings/outgoings from each module
      * @method aggregate
      * @param {!Object} farmData
      * @returns {Object} the farmData calculated
      * @public
      * @static
      */
-    nutrientAggregator.aggregate = function (farmData) {
+    nutrientAggregator.calculate = function (farmData) {
       return _aggregate(farmData);
     };
 

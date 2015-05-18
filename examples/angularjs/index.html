@@ -182,44 +182,44 @@
       </legend>
       <form-item class="form-group col-sm-12">
         <p>Milk sold per year (Litre):
-          <span ng-bind="milkSold.totalPerYearInLitre | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldPerYearInLitre | number : decimalPrecision"></span>
         </p>
       </form-item>
 
       <form-item class="form-group col-sm-6">
         <p>Milk sold per cow (Litre):
-          <span ng-bind="milkSold.milkSoldPerCowInLitre | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldPerCowInLitre | number : decimalPrecision"></span>
         </p>
       </form-item>
       <form-item class="form-group col-sm-6">
         <p>Milk sold per hectare (Litre):
-          <span ng-bind="milkSold.milkSoldPerHectareInLitre | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldPerHectareInLitre | number : decimalPrecision"></span>
         </p>
       </form-item>
 
       <form-item class="form-group col-sm-6">
         <p>Milk sold per cow (Kg):
-          <span ng-bind="milkSold.milkSoldPerCowInKg | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldPerCowInKg | number : decimalPrecision"></span>
         </p>
       </form-item>
       <form-item class="form-group col-sm-6">
         <p>Milk sold per hectare (Kg):
-          <span ng-bind="milkSold.milkSoldPerHectareInInKg | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction.milkSoldPerHectareInInKg | number : decimalPrecision"></span>
         </p>
       </form-item>
 
       <form-item class="form-group col-sm-6">
         <p>Milk (Litre) from imported feed (Kg):
-          <span ng-bind="milkSold.milkSoldPerCowInKg | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction | number : decimalPrecision"></span>
         </p>
       </form-item>
       <form-item class="form-group col-sm-6">
         <p>Milk (Litre) from home grown feed (Kg):
-          <span ng-bind="milkSold.milkSoldPerHectareInInKg | number : decimalPrecision"></span>
+          <span ng-bind="milkProduction | number : decimalPrecision"></span>
         </p>
       </form-item>
 
-      <empty-message ng-if="!milkSold"><i class="fa fa-warning icon"></i>Provide
+      <empty-message ng-if="!milkProduction"><i class="fa fa-warning icon"></i>Provide
         a complete farm data to see balance and efficiency!
       </empty-message>
     </fieldset>

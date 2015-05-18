@@ -45,8 +45,10 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
     $scope.calculate = function () {
       $log.info('calculate...');
       $scope.farmData = nutrientCalculator.calculate($scope.farmData);
-      $scope.balance = $scope.farmData.nutrientCalculator.balance;
-      $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
+
+      updateFarmData($scope, $scope.farmData);
+//      $scope.balance = $scope.farmData.nutrientCalculator.balance;
+//      $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
 
       nutrientCalculator.ga.trackCalculate('AgSmart');
     };
@@ -62,18 +64,20 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
     if (nutrientCalculator.session.isLoadFlagSet(location)) {
       $scope.farmData = nutrientCalculator.find();
 
-      if(!$scope.farmData) {
+      updateFarmData($scope, $scope.farmData);
+    }
+
+    function updateFarmData($scope, farmData) {
+      if(!farmData) {
         $log.error('Failed to load milkSold data...');
         $scope.noResult = true;
         return;
       }
-
       $scope.balance = $scope.farmData.nutrientCalculator.balance;
       $scope.efficiency = $scope.farmData.nutrientCalculator.efficiency;
-      $scope.milkSold = $scope.farmData.nutrientCalculator.milkSold;
+      $scope.milkProduction = $scope.farmData.nutrientCalculator.milkProduction;
 
     }
-
 //    $scope.file;
 //
 //    $scope.loadFile =  function (file) {

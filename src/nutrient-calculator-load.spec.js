@@ -58,8 +58,18 @@ describe('farmbuild.nutrientCalculator module', function() {
       $log.info('loaded: %j', loaded)
 
       var calculated = nutrientCalculator.calculate(loaded)
+
       expect(calculated.nutrientCalculator.balance).toBeDefined()
       expect(calculated.nutrientCalculator.efficiency).toBeDefined()
+
+      expect(calculated.nutrientCalculator.milkProduction).toBeDefined()
+
+      var milkProduction = calculated.nutrientCalculator.milkProduction
+      expect(milkProduction.milkSoldPerCowInLitre).toBe(7681.214912280701)
+      expect(milkProduction.milkSoldPerHectareInLitre).toBe(24880.196050575367)
+
+      expect(milkProduction.milkSoldPerCowInKg).toBe(587.6129407894737)
+      expect(milkProduction.milkSoldPerHectareInInKg).toBe(1903.3349978690153)
 
 
 
