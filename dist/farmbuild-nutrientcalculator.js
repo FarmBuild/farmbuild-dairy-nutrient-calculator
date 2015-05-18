@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, googleAnalyticsCalculator, $log) {
+angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.farmdata" ]).factory("nutrientCalculator", function(milkSold, cowsPurchased, cowsCulled, cows, foragesPurchased, fertilizersPurchased, concentratesPurchased, legumes, nutrientCalculatorSession, farmdata, validations, nutrientAggregator, nutrientBalance, nutrientEfficiency, googleAnalyticsCalculator, $log) {
     var nutrientCalculator = {
         farmdata: farmdata
     }, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
@@ -11,6 +11,9 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
     nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
     nutrientCalculator.concentratesPurchased = concentratesPurchased;
     nutrientCalculator.legumes = legumes;
+    nutrientCalculator.aggregator = nutrientAggregator;
+    nutrientCalculator.balance = nutrientBalance;
+    nutrientCalculator.efficiency = nutrientEfficiency;
     nutrientCalculator.version = "0.1.0";
     nutrientCalculator.ga = googleAnalyticsCalculator;
     nutrientCalculator.session = nutrientCalculatorSession;
@@ -48,89 +51,10 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         }
         return loaded;
     };
-    function _efficiency(importedValue, exportedValue) {
-        if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue)) {
-            return undefined;
-        }
-        return exportedValue / importedValue * 100;
-    }
-    function _balance(importedValue, exportedValue, milkingArea) {
-        if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue) || !_isPositiveNumber(milkingArea)) {
-            return undefined;
-        }
-        return (importedValue - exportedValue) / milkingArea;
-    }
-    function _nutrientValues(farmData) {
-        var data = farmData.nutrientCalculator, incomings = {
-            nitrogenInKg: 0,
-            potassiumInKg: 0,
-            phosphorusInKg: 0,
-            sulphurInKg: 0
-        }, outgoings = {
-            nitrogenInKg: 0,
-            potassiumInKg: 0,
-            phosphorusInKg: 0,
-            sulphurInKg: 0
-        }, addIncomings = function(key) {
-            incomings.nitrogenInKg += data[key].nitrogenInKg;
-            incomings.potassiumInKg += data[key].potassiumInKg;
-            incomings.phosphorusInKg += data[key].phosphorusInKg;
-            incomings.sulphurInKg += data[key].sulphurInKg;
-        }, addOutgoings = function(key) {
-            outgoings.nitrogenInKg += data[key].nitrogenInKg;
-            outgoings.potassiumInKg += data[key].potassiumInKg;
-            outgoings.phosphorusInKg += data[key].phosphorusInKg;
-            outgoings.sulphurInKg += data[key].sulphurInKg;
-        };
-        if (_isDefined(data.milkSold)) {
-            addOutgoings("milkSold");
-        }
-        if (_isDefined(data.cowsCulled)) {
-            addOutgoings("cowsCulled");
-        }
-        if (_isDefined(data.cowsPurchased)) {
-            addIncomings("cowsPurchased");
-        }
-        if (_isDefined(data.concentratesPurchased)) {
-            addIncomings("concentratesPurchased");
-        }
-        if (_isDefined(data.foragesPurchased)) {
-            addIncomings("foragesPurchased");
-        }
-        if (_isDefined(data.fertilizersPurchased)) {
-            addIncomings("fertilizersPurchased");
-        }
-        if (_isDefined(data.legumes)) {
-            incomings.nitrogenInKg += data.legumes.averageNitrogenAppliedPerHaInKg;
-            incomings.nitrogenInKg += data.legumes.availableNitrogenFromLegumesPerHaInKg;
-            incomings.nitrogenInKg += data.legumes.availableNitrogenToPasturePerHaInKg;
-        }
-        return {
-            incomings: incomings,
-            outgoings: outgoings
-        };
-    }
-    nutrientCalculator.efficiency = function(farmData) {
-        var nutrientValues = _nutrientValues(farmData);
-        return {
-            nitrogen: _efficiency(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg),
-            potassium: _efficiency(nutrientValues.incomings.potassiumInKg, nutrientValues.outgoings.potassiumInKg),
-            phosphorus: _efficiency(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg),
-            sulphur: _efficiency(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg)
-        };
-    };
-    nutrientCalculator.balance = function(farmData) {
-        var nutrientValues = _nutrientValues(farmData), milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
-        return {
-            nitrogen: _balance(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg, milkingArea),
-            potassium: _balance(nutrientValues.incomings.potassiumInKg, nutrientValues.outgoings.potassiumInKg, milkingArea),
-            phosphorus: _balance(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg, milkingArea),
-            sulphur: _balance(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg, milkingArea)
-        };
-    };
     nutrientCalculator.calculate = function(farmData) {
-        farmData.nutrientCalculator.balance = nutrientCalculator.balance(farmData);
-        farmData.nutrientCalculator.efficiency = nutrientCalculator.efficiency(farmData);
+        var nutrientValues = nutrientAggregator.aggregate(farmData), milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
+        farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
+        farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
         return farmdata.update(farmData);
     };
     if (typeof window.farmbuild === "undefined") {
@@ -1985,7 +1909,7 @@ angular.module("farmbuild.nutrientCalculator").constant("utilisationFactorsValue
 
 "use strict";
 
-angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(validations) {
+angular.module("farmbuild.nutrientCalculator").factory("milkSold", function($log, validations, nutrientCalculatorSession) {
     var milkSold = {}, _isPositiveNumber = validations.isPositiveNumber;
     function createDefault() {
         return {
@@ -1997,9 +1921,23 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         };
     }
     milkSold.createDefault = createDefault;
+    function calculateStockingRates(nutrientCalculator, result) {}
+    function calculateFeedBalance(nutrientCalculator, result) {}
+    function calculateMilkProduction(nutrientCalculator, result) {
+        var numberOfMilkingCows = nutrientCalculator.numberOfMilkingCows, milkingAreaInHa = nutrientCalculator.milkingAreaInHa, milkFatInKg = result.milkFatInKg, milkProteinInKg = result.milkProteinInKg;
+        result.milkSoldPerCowInLitre = result.milkSoldPerYearInLitre / milkingAreaInHa;
+        result.milkSoldPerHectareInLitre = result.milkSoldPerYearInLitre / numberOfMilkingCows;
+        result.milkSoldPerCowInKg = (milkFatInKg + milkProteinInKg) / numberOfMilkingCows;
+        result.milkSoldPerHectareInInKg = (milkFatInKg + milkProteinInKg) / numberOfMilkingCows;
+        return result;
+    }
+    function saveToSession(result) {
+        nutrientCalculatorSession.saveSection("milkSold", result);
+    }
     milkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
         var milkProteinInKg, milkFatInKg;
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, "%")) {
+            $log.error("validation failed, ");
             return undefined;
         }
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
@@ -2007,11 +1945,14 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         milkFatPercentage = parseFloat(milkFatPercentage);
         milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
         milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
-        return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+        var result = _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+        saveToSession(result);
+        return result;
     };
     milkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
         var milkProteinPercentage, milkFatPercentage;
         if (!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, "kg")) {
+            $log.error("validation failed...");
             return undefined;
         }
         milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
@@ -2019,7 +1960,9 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
         milkFatInKg = parseFloat(milkFatInKg);
         milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
         milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
-        return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+        var result = _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+        saveToSession(result);
+        return result;
     };
     function _validateInputs(milkSoldPerYearInLitre, milkProtein, milkFat, unit) {
         if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
@@ -2038,7 +1981,7 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
     }
     function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
         var nitrogenPercentage = milkProteinPercentage / 6.33, phosphorusPercentage = .0111 * milkFatPercentage + .05255, potassiumPercentage = .14, sulphurPercentage = .06, nitrogenInKg = milkSoldPerYearInLitre * nitrogenPercentage / 100, potassiumInKg = milkSoldPerYearInLitre * potassiumPercentage / 100, sulphurInKg = milkSoldPerYearInLitre * sulphurPercentage / 100, phosphorusInKg = milkSoldPerYearInLitre * phosphorusPercentage / 100;
-        return {
+        var result = {
             totalPerYearInLitre: milkSoldPerYearInLitre,
             fatInKg: milkFatInKg,
             fatPercentage: milkFatPercentage,
@@ -2053,6 +1996,8 @@ angular.module("farmbuild.nutrientCalculator").factory("milkSold", function(vali
             sulphurInKg: sulphurInKg,
             sulphurPercentage: sulphurPercentage
         };
+        nutrientCalculatorSession.saveSection("milkSold", result);
+        return result;
     }
     function _kgToPercentage(valueInKg, totalInLitre) {
         return valueInKg / totalInLitre * 100;
@@ -2288,6 +2233,122 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientMediumValidator"
         return true;
     };
     return nutrientMediumValidator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientAggregator", function(validations, $log) {
+    var nutrientAggregator = {}, _isDefined = validations.isDefined;
+    function _aggregate(farmData) {
+        var data = farmData.nutrientCalculator, incomings = {
+            nitrogenInKg: 0,
+            potassiumInKg: 0,
+            phosphorusInKg: 0,
+            sulphurInKg: 0
+        }, outgoings = {
+            nitrogenInKg: 0,
+            potassiumInKg: 0,
+            phosphorusInKg: 0,
+            sulphurInKg: 0
+        }, addIncomings = function(key) {
+            incomings.nitrogenInKg += data[key].nitrogenInKg;
+            incomings.potassiumInKg += data[key].potassiumInKg;
+            incomings.phosphorusInKg += data[key].phosphorusInKg;
+            incomings.sulphurInKg += data[key].sulphurInKg;
+        }, addOutgoings = function(key) {
+            outgoings.nitrogenInKg += data[key].nitrogenInKg;
+            outgoings.potassiumInKg += data[key].potassiumInKg;
+            outgoings.phosphorusInKg += data[key].phosphorusInKg;
+            outgoings.sulphurInKg += data[key].sulphurInKg;
+        };
+        if (_isDefined(data.milkSold)) {
+            addOutgoings("milkSold");
+        }
+        if (_isDefined(data.cowsCulled)) {
+            addOutgoings("cowsCulled");
+        }
+        if (_isDefined(data.cowsPurchased)) {
+            addIncomings("cowsPurchased");
+        }
+        if (_isDefined(data.concentratesPurchased)) {
+            addIncomings("concentratesPurchased");
+        }
+        if (_isDefined(data.foragesPurchased)) {
+            addIncomings("foragesPurchased");
+        }
+        if (_isDefined(data.fertilizersPurchased)) {
+            addIncomings("fertilizersPurchased");
+        }
+        if (_isDefined(data.legumes)) {
+            incomings.nitrogenInKg += data.legumes.averageNitrogenAppliedPerHaInKg;
+            incomings.nitrogenInKg += data.legumes.availableNitrogenFromLegumesPerHaInKg;
+            incomings.nitrogenInKg += data.legumes.availableNitrogenToPasturePerHaInKg;
+        }
+        return {
+            incomings: incomings,
+            outgoings: outgoings
+        };
+    }
+    nutrientAggregator.aggregate = function(farmData) {
+        return _aggregate(farmData);
+    };
+    return nutrientAggregator;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientBalance", function(validations, $log) {
+    var nutrientBalance = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    function _balance(importedValue, exportedValue, milkingArea) {
+        if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue) || !_isPositiveNumber(milkingArea)) {
+            return undefined;
+        }
+        return (importedValue - exportedValue) / milkingArea;
+    }
+    nutrientBalance.calculate = function(nutrientValues, milkingArea) {
+        return {
+            nitrogen: _balance(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg, milkingArea),
+            potassium: _balance(nutrientValues.incomings.potassiumInKg, nutrientValues.outgoings.potassiumInKg, milkingArea),
+            phosphorus: _balance(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg, milkingArea),
+            sulphur: _balance(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg, milkingArea)
+        };
+    };
+    return nutrientBalance;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("nutrientEfficiency", function(validations, $log) {
+    var nutrientEfficiency = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    function _efficiency(importedValue, exportedValue) {
+        if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue)) {
+            return undefined;
+        }
+        return exportedValue / importedValue * 100;
+    }
+    nutrientEfficiency.calculate = function(nutrientValues) {
+        return {
+            nitrogen: _efficiency(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg),
+            potassium: _efficiency(nutrientValues.incomings.potassiumInKg, nutrientValues.outgoings.potassiumInKg),
+            phosphorus: _efficiency(nutrientValues.incomings.phosphorusInKg, nutrientValues.outgoings.phosphorusInKg),
+            sulphur: _efficiency(nutrientValues.incomings.sulphurInKg, nutrientValues.outgoings.sulphurInKg)
+        };
+    };
+    return nutrientEfficiency;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("feedBalance", function(validations, $log) {
+    var feedBalance = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    return feedBalance;
+});
+
+"use strict";
+
+angular.module("farmbuild.nutrientCalculator").factory("milkProduction", function(validations, $log) {
+    var milkProduction = {}, _isPositiveNumber = validations.isPositiveNumber, _isDefined = validations.isDefined;
+    return milkProduction;
 });
 
 "use strict";

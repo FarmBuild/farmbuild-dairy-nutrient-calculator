@@ -30,6 +30,55 @@ angular.module('farmbuild.nutrientCalculator')
     }
     milkSold.createDefault = createDefault;
 
+
+    function calculateStockingRates(nutrientCalculator, result) {
+      //stocking_rate_milker
+      //totalmilkingcows / milkingarea
+
+      //stocking_rate_whole_farm
+      //totalmilkingcows / totalfarmarea
+
+
+    }
+    function calculateFeedBalance(nutrientCalculator, result) {
+//      //calculate feed balance
+//      var B8 = parseFloat(forms_data['concentrates_purchased_frm'].mass);
+//      var B9 = parseFloat(forms_data['forages_purchased_frm'].mass);
+//      var B15 = parseFloat(decommafy(document.getElementById("DM_Consumed_kg_per_ha").value)) * parseFloat(milkingarea) / 1000;
+//DM_Consumed_kg_per_ha in legume
+//
+//      var forage_totalfeed_ratio = 100 * B9 / (B8 + B9 + B15);
+//      var supplement_totalfeed_ratio = 100 * B8 / (B8 + B9 + B15);
+//      var homegrown_totalfeed_ratio = 100 * B15 / (B8 + B9 + B15);
+
+    }
+    function calculateMilkProduction(nutrientCalculator, result) {
+      var numberOfMilkingCows = nutrientCalculator.numberOfMilkingCows,
+        milkingAreaInHa = nutrientCalculator.milkingAreaInHa,
+        milkFatInKg = result.milkFatInKg,
+        milkProteinInKg = result.milkProteinInKg
+        ;
+
+      result.milkSoldPerCowInLitre = result.milkSoldPerYearInLitre/milkingAreaInHa;
+      result.milkSoldPerHectareInLitre = result.milkSoldPerYearInLitre/numberOfMilkingCows;
+      //((fat_kg+prot_kg)/totalmilkingcows)
+      result.milkSoldPerCowInKg = (milkFatInKg+milkProteinInKg)/numberOfMilkingCows;
+      //(fat_kg+prot_kg)/totalfarmarea
+      result.milkSoldPerHectareInInKg = (milkFatInKg+milkProteinInKg)/numberOfMilkingCows;
+      //(total_milk * (forage_totalfeed_ratio+supplement_totalfeed_ratio)/100
+      //result.
+
+      return result;
+    }
+
+
+
+    function saveToSession(result) {
+
+      nutrientCalculatorSession.saveSection('milkSold', result);
+
+    }
+
 		/**
 		 * Calculates nutrient from milk sold, input values are in percentage
 		 * @method calculateByPercent
@@ -56,7 +105,7 @@ angular.module('farmbuild.nutrientCalculator')
 			milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
 			var result =  _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
 
-      nutrientCalculatorSession.saveSection('milkSold', result);
+      saveToSession(result);
 
       return result;
     };
@@ -87,7 +136,7 @@ angular.module('farmbuild.nutrientCalculator')
 			milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
 			var result =  _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
 
-      nutrientCalculatorSession.saveSection('milkSold', result);
+      saveToSession(result);
 
       return result;
 		};
@@ -145,7 +194,7 @@ angular.module('farmbuild.nutrientCalculator')
 				sulphurInKg = (milkSoldPerYearInLitre * sulphurPercentage / 100),
 				phosphorusInKg = (milkSoldPerYearInLitre * phosphorusPercentage / 100);
 
-			return {
+      var result =  {
 				totalPerYearInLitre: milkSoldPerYearInLitre,
 				fatInKg: milkFatInKg,
 				fatPercentage: milkFatPercentage,
@@ -160,6 +209,10 @@ angular.module('farmbuild.nutrientCalculator')
 				sulphurInKg: sulphurInKg,
 				sulphurPercentage: sulphurPercentage
 			};
+
+      nutrientCalculatorSession.saveSection('milkSold', result);
+
+      return result;
 
 		}
 

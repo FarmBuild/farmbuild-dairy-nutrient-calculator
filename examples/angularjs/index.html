@@ -71,16 +71,16 @@
         Farm details
       </legend>
       <form-item class="form-group col-sm-6">
-        <p>Farm Name: <span ng-bind="farmData.name"></span></p>
+        <p>Farm name: <span ng-bind="farmData.name"></span></p>
       </form-item>
       <form-item class="form-group col-sm-6">
         <p>Area in hectare: <span ng-bind="farmData.area | number: decimalPrecision"></span></p>
       </form-item>
       <form-item class="form-group col-sm-6">
-        <p>Date Created: <span ng-bind="farmData.dateCreated | date: 'medium'"></span></p>
+        <p>Date created: <span ng-bind="farmData.dateCreated | date: 'medium'"></span></p>
       </form-item>
       <form-item class="form-group col-sm-6">
-        <p>Date Last Updated: <span ng-bind="farmData.dateLastUpdated | date: 'medium'"></span></p>
+        <p>Date last updated: <span ng-bind="farmData.dateLastUpdated | date: 'medium'"></span></p>
       </form-item>
     </fieldset>
     <fieldset>
@@ -125,24 +125,9 @@
         </span>
       </form-item>
     </fieldset>
-    <!-- fieldset>
-          <legend>
-              Farm area breakdown (ha)
-          </legend>
-          <form-item class="form-group col-sm-6">
-              <p>Milking area: <span
-                      ng-bind="farmData.nutrientCalculator.summary.milkingAreaInHa | number: decimalPrecision"></span>
-              </p>
-          </form-item>
-          <form-item class="form-group col-sm-6">
-              <p>Non milking area: <span
-                      ng-bind="(farmData.area - farmData.nutrientCalculator.summary.milkingAreaInHa) | number: decimalPrecision"></span>
-              </p>
-          </form-item>
-      </fieldset -->
     <fieldset>
       <legend>
-        Balance and Efficiency
+        Balance and efficiency
       </legend>
       <form-item class="form-group col-sm-6">
         <table ng-if="balance.nitrogen || efficiency.nitrogen" id="foragesTbl"
@@ -174,6 +159,108 @@
         </empty-message>
       </form-item>
     </fieldset>
+
+    <fieldset>
+      <legend>
+        Stocking rate
+      </legend>
+      <form-item class="form-group col-sm-12">
+        <p>Stocking rate (cows/ha) milker area:
+          <span ng-bind="milkSold.totalPerYearInLitre | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+      <form-item class="form-group col-sm-12">
+        <p>Stocking rate (cows/ha) whole farm:
+          <span ng-bind="milkSold.totalPerYearInLitre | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        Milk production
+      </legend>
+      <form-item class="form-group col-sm-12">
+        <p>Milk sold per year (Litre):
+          <span ng-bind="milkSold.totalPerYearInLitre | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <form-item class="form-group col-sm-6">
+        <p>Milk sold per cow (Litre):
+          <span ng-bind="milkSold.milkSoldPerCowInLitre | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+      <form-item class="form-group col-sm-6">
+        <p>Milk sold per hectare (Litre):
+          <span ng-bind="milkSold.milkSoldPerHectareInLitre | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <form-item class="form-group col-sm-6">
+        <p>Milk sold per cow (Kg):
+          <span ng-bind="milkSold.milkSoldPerCowInKg | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+      <form-item class="form-group col-sm-6">
+        <p>Milk sold per hectare (Kg):
+          <span ng-bind="milkSold.milkSoldPerHectareInInKg | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <form-item class="form-group col-sm-6">
+        <p>Milk (Litre) from imported feed (Kg):
+          <span ng-bind="milkSold.milkSoldPerCowInKg | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+      <form-item class="form-group col-sm-6">
+        <p>Milk (Litre) from home grown feed (Kg):
+          <span ng-bind="milkSold.milkSoldPerHectareInInKg | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <empty-message ng-if="!milkSold"><i class="fa fa-warning icon"></i>Provide
+        a complete farm data to see balance and efficiency!
+      </empty-message>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        Feed balance
+      </legend>
+      <form-item class="form-group col-sm-12">
+        <p>Home forage consumed (kg DM/ha):
+          <span ng-bind="feedBalance.home_forage_consumed | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+      <form-item class="form-group col-sm-12">
+        <p>Purchased forage as a proportion of total feed:
+          <span ng-bind="feedBalance.forage_totalfeed_ratio | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+      <form-item class="form-group col-sm-12">
+        <p>Purchased grain/supplement as a proportion of total feed:
+          <span ng-bind="feedBalance.supplement_totalfeed_ratio | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <form-item class="form-group col-sm-12">
+        <p>Home grown feed as proportion of total feed:
+          <span ng-bind="feedBalance.homegrown_totalfeed_ratio | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <form-item class="form-group col-sm-12">
+        <p>Supplement: Home grown feed ratio:
+          <span ng-bind="feedBalance.supplement_homegrown_ratio | number : decimalPrecision"></span>
+        </p>
+      </form-item>
+
+      <empty-message ng-if="!milkSold"><i class="fa fa-warning icon"></i>Provide
+        a complete farm data to see balance and efficiency!
+      </empty-message>
+    </fieldset>
+
   </summary>
   <version>
     Version: <span ng-bind="appVersion"></span>

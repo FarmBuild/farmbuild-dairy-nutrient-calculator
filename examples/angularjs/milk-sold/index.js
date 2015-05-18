@@ -8,7 +8,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 		$rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
 	})
 
-	.controller('MilkSoldCtrl', function ($scope, nutrientCalculator, milkSold) {
+	.controller('MilkSoldCtrl', function ($log, $scope, nutrientCalculator, milkSold) {
 
 		$scope.calculateByPercent = function (milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			$scope.result = milkSold.calculateByPercent(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage);
@@ -40,11 +40,14 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 
 		if(nutrientCalculator.session.isLoadFlagSet(location)){
 			var milkSoldData = nutrientCalculator.session.loadSection('milkSold');
-
-			//$scope.calculateByKg(milkSoldData.totalPerYearInLitre, milkSoldData.proteinInKg, milkSoldData.fatInKg)
+      if(!milkSoldData) {
+        $log.error('Failed to load milkSold data...');
+        return;
+      }
 			$scope.fatInKg = milkSoldData.fatInKg;
 			$scope.proteinInKg = milkSoldData.proteinInKg;
 			$scope.totalPerYearInLitre = milkSoldData.totalPerYearInLitre;
+      $scope.result = milkSoldData;
 		}
 
 	});
