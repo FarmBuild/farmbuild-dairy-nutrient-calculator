@@ -64,6 +64,19 @@ describe('farmbuild.nutrientCalculator module', function() {
 
       expect(calculated.nutrientCalculator.milkProduction).toBeDefined()
 
+      var feedBalance = calculated.nutrientCalculator.feedBalance,
+        stockingRate = calculated.nutrientCalculator.stockingRate
+
+      expect(feedBalance.homeForageConsumed).toBe(8761.326115546455)
+      expect(feedBalance.forageTotalFeedRatio).toBe(43.12083609034263)
+      expect(feedBalance.supplementTotalFeedRatio).toBe(22.18459536832276)
+      expect(feedBalance.homegrownTotalFeedRatio).toBe(34.69456854133462)
+      expect(feedBalance.supplementHomegrownRatio).toBe(188.22955351314263)
+
+      expect(calculated.nutrientCalculator.stockingRate).toBeDefined()
+      expect(stockingRate.milkingArea).toBe(3.2390964625657053)
+      expect(stockingRate.wholeFarm).toBe(2.534741523068371)
+
       var milkProduction = calculated.nutrientCalculator.milkProduction
       expect(milkProduction.milkSoldPerCowInLitre).toBe(7681.214912280701)
       expect(milkProduction.milkSoldPerHectareInLitre).toBe(24880.196050575367)
@@ -71,24 +84,12 @@ describe('farmbuild.nutrientCalculator module', function() {
       expect(milkProduction.milkSoldPerCowInKg).toBe(587.6129407894737)
       expect(milkProduction.milkSoldPerHectareInInKg).toBe(1903.3349978690153)
 
-      expect(milkProduction.milkSoldFromImportedFeedInKg).toBe(1750387.0785047645)
-      expect(milkProduction.milkSoldFromHomeGrownFeedInKg).toBe(929.9214952356291)
+      expect(milkProduction.milkSoldFromImportedFeedInKg).toBe(1143705.1230589552)
+      expect(milkProduction.milkSoldFromHomeGrownFeedInKg).toBe(607611.8769410453)
 
       expect(calculated.nutrientCalculator.feedBalance).toBeDefined()
       expect(calculated.nutrientCalculator.stockingRate).toBeDefined()
 
-      var feedBalance = calculated.nutrientCalculator.feedBalance,
-        stockingRate = calculated.nutrientCalculator.stockingRate
-
-      expect(feedBalance.homeForageConsumed).toBe(8.761326115546455)
-      expect(feedBalance.forageTotalFeedRatio).toBe(65.994418303368)
-      expect(feedBalance.supplementTotalFeedRatio).toBe(33.95248328582257)
-      expect(feedBalance.homegrownTotalFeedRatio).toBe(0.05309841080944393)
-      expect(feedBalance.supplementHomegrownRatio).toBe(2186185956.046613)
-
-      expect(calculated.nutrientCalculator.stockingRate).toBeDefined()
-      expect(stockingRate.milkingArea).toBe(3.2390964625657053)
-      expect(stockingRate.wholeFarm).toBe(2.534741523068371)
 
 
     }))

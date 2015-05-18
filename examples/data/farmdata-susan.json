@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dateCreated": "2015-03-30T21:19:00",
-  "dateLastUpdated": "2015-05-14T07:25:56.815Z",
+  "dateLastUpdated": "2015-05-18T23:40:28.764Z",
   "name": "Susan's Farm",
   "geometry": {
     "type": "Polygon",
@@ -134,7 +134,7 @@
       "sulphurPercentage": 0.06
     },
     "cowsPurchased": {
-      "types":[
+      "types": [
         {
           "name": "Heavy adult cattle",
           "weight": 650
@@ -171,7 +171,7 @@
       "sulphurInKg": 180
     },
     "cowsCulled": {
-      "types":[
+      "types": [
         {
           "name": "Heavy adult cattle",
           "weight": 650
@@ -223,7 +223,7 @@
       "sulphurInKg": 218.48
     },
     "fertilizersPurchased": {
-      "types":[
+      "types": [
         {
           "name": "Dairy manure stockpile",
           "nitrogenPercentage": 1.44,
@@ -463,7 +463,8 @@
           "potassiumPercentage": 12.8,
           "sulphurPercentage": 4,
           "dryMatterPercentage": 100
-        }],
+        }
+      ],
       "fertilizers": [
         {
           "type": {
@@ -1311,6 +1312,26 @@
       "potassium": 15.501889662183807,
       "phosphorus": 32.84504372649141,
       "sulphur": 30.557020888945384
+    },
+    "feedBalance": {
+      "homeForageConsumed": 8761.326115546455,
+      "forageTotalFeedRatio": 43.12083609034263,
+      "supplementTotalFeedRatio": 22.18459536832276,
+      "homegrownTotalFeedRatio": 34.69456854133462,
+      "supplementHomegrownRatio": 188.22955351314263
+    },
+    "milkProduction": {
+      "milkSoldPerYearInLitre": 1751317,
+      "milkSoldPerCowInLitre": 7681.214912280701,
+      "milkSoldPerHectareInLitre": 24880.196050575367,
+      "milkSoldPerCowInKg": 587.6129407894737,
+      "milkSoldPerHectareInInKg": 1903.3349978690153,
+      "milkSoldFromImportedFeedInKg": 1143705.1230589552,
+      "milkSoldFromHomeGrownFeedInKg": 607611.8769410453
+    },
+    "stockingRate": {
+      "milkingArea": 3.2390964625657053,
+      "wholeFarm": 2.534741523068371
     }
   }
 }

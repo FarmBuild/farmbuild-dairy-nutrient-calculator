@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dateCreated": "2015-03-30T21:19:00",
-  "dateLastUpdated": "2015-05-18T23:18:11.780Z",
+  "dateLastUpdated": "2015-05-18T23:40:28.764Z",
   "name": "Susan's Farm",
   "geometry": {
     "type": "Polygon",
@@ -1314,11 +1314,11 @@
       "sulphur": 30.557020888945384
     },
     "feedBalance": {
-      "homeForageConsumed": 8.761326115546455,
-      "forageTotalFeedRatio": 65.994418303368,
-      "supplementTotalFeedRatio": 33.95248328582257,
-      "homegrownTotalFeedRatio": 0.05309841080944393,
-      "supplementHomegrownRatio": 2186185956.046613
+      "homeForageConsumed": 8761.326115546455,
+      "forageTotalFeedRatio": 43.12083609034263,
+      "supplementTotalFeedRatio": 22.18459536832276,
+      "homegrownTotalFeedRatio": 34.69456854133462,
+      "supplementHomegrownRatio": 188.22955351314263
     },
     "milkProduction": {
       "milkSoldPerYearInLitre": 1751317,
@@ -1326,8 +1326,8 @@
       "milkSoldPerHectareInLitre": 24880.196050575367,
       "milkSoldPerCowInKg": 587.6129407894737,
       "milkSoldPerHectareInInKg": 1903.3349978690153,
-      "milkSoldFromImportedFeedInKg": 1750387.0785047645,
-      "milkSoldFromHomeGrownFeedInKg": 929.9214952356291
+      "milkSoldFromImportedFeedInKg": 1143705.1230589552,
+      "milkSoldFromHomeGrownFeedInKg": 607611.8769410453
     },
     "stockingRate": {
       "milkingArea": 3.2390964625657053,
