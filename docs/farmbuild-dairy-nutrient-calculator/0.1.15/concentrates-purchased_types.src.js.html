@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/legume - Documentation</title>
+    <title>concentrates-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,641 +28,115 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/legume</h1>
-    
-
-    
-
-
-
-
-<section>
-
-<header>
-    
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>nutrientCalculator/legume singleton</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkFatInKg<span class="signature-attributes">non-null</span>, milkProteinInKg<span class="signature-attributes">non-null</span>, numberOfMilkingCows<span class="signature-attributes">non-null</span>, numberOfMilkingDays<span class="signature-attributes">non-null</span>, averageCowWeightInKg<span class="signature-attributes">non-null</span>, forageMetabolisableEnergyInMJ<span class="signature-attributes">non-null</span>, concentrateMetabolisableEnergyInMJ<span class="signature-attributes">non-null</span>, milkingAreaInHa<span class="signature-attributes">non-null</span>, utilisationFactor<span class="signature-attributes">non-null</span>, nitrogenFromFertiliserInKg<span class="signature-attributes">non-null</span>, legumePercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Calculates total Nitrogen nutrient imported on to the farm in legumes</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>milkSoldPerYearInLitre</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkFatInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkProteinInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>numberOfMilkingCows</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>numberOfMilkingDays</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>averageCowWeightInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>forageMetabolisableEnergyInMJ</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>concentrateMetabolisableEnergyInMJ</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkingAreaInHa</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>utilisationFactor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nitrogenFromFertiliserInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>legumePercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line33">line 33</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Nitrogen nutrient data imported on the farm in legumes purchased</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".utilisationFactors"><span class="type-signature">(static) </span>utilisationFactors<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Utilisation factors reference values</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line99">line 99</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>utilisationFactors</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">concentrates-purchased/types.src.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator/concentrateTypes singleton
+ * @module nutrientCalculator/concentrateTypes
+ */
+angular.module('farmbuild.nutrientCalculator')
+  .factory('concentrateTypes',
+  function (collections, validations,
+            nutrientMediumTypes, concentrateDefaults, $log) {
+
+    var concentrateTypes,
+      _types = angular.copy(concentrateDefaults.types),
+      _validate = nutrientMediumTypes.validate;
+
+    function _add(name, dryMatterPercentage,
+                  sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
+                  metabolisableEnergyInMJPerKg) {
+      return nutrientMediumTypes.add(_types, name,
+        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
+        metabolisableEnergyInMJPerKg);
+    };
+
+    /**
+     * Concentrate types collection api
+     * @property {object} Types - concentrate types collection
+     * @public
+     * @static
+     */
+    concentrateTypes = {
+      /**
+       * Adds a new concentrate type for nutrient calculation
+       * @method add
+       * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+       * @param {!number} dryMatterPercentage - value must be > 0
+       * @param {!number} sulphurPercentage - value must be >= 0
+       * @param {!number} potassiumPercentage - value must be >= 0
+       * @param {!number} phosphorusPercentage - value must be >= 0
+       * @param {!number} nitrogenPercentage - value must be >= 0
+       * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
+       * @returns {object} types
+       * @public
+       * @static
+       */
+      add: _add,
+      /**
+       * Returns the concentrateType at specified index
+       * @method at
+       * @returns {object} concentrateType
+       * @public
+       * @static
+       */
+      at: function(index) { return collections.at(_types, index)},
+      size: function() { return collections.size(_types)},
+      byName: function(name) { return collections.byProperty(_types, 'name', name)},
+      defaultTypes: function() { return angular.copy(concentrateDefaults.types)},
+      /**
+       * Returns concentrateTypes collection as an array
+       * @method toArray
+       * @returns {Array} concentrateTypes
+       * @public
+       * @static
+       */
+      toArray: function() { return angular.copy(_types) },
+      /**
+       * Removes the concentrate type at specified index
+       * @method removeAt
+       * @returns {object} concentrateTypes collection
+       * @public
+       * @static
+       */
+      removeAt: function(index) { return collections.removeAt(_types, index)},
+      last: function() { return collections.last(_types) },
+      validate: _validate,
+      /**
+       * Loads the types in concentratesPurchasedSection.types
+       * @method load
+       * @param concentratesPurchasedSection
+       * @returns {object} fertilizersPurchased
+       * @public
+       * @static
+       */
+      load: function(concentratesPurchasedSection) {
+        _types = concentratesPurchasedSection.types;
+      }
+    };
+
+    return concentrateTypes;
+  });</code></pre>
+        </article>
+    </section>
 
 
 
@@ -672,7 +146,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue May 19 2015 15:06:36 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue May 19 2015 17:04:58 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

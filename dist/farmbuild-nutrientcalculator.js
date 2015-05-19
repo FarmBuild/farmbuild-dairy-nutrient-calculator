@@ -2360,8 +2360,7 @@ angular.module("farmbuild.nutrientCalculator").factory("feedBalance", function(v
         if (!validate(summary, concentratesPurchased, foragesPurchased, legumes)) {
             return undefined;
         }
-        var result = {}, milkingAreaInHa = summary.milkingAreaInHa, dryMatterWeightCombined = foragesPurchased.dryMatterWeight + concentratesPurchased.dryMatterWeight, dryMatterConsumedPerHaInKg = legumes.dryMatterConsumedPerHaInKg, dryMatterConsumedPerMilkingAreaInKg = dryMatterConsumedPerHaInKg * milkingAreaInHa, dryMatterTotal = dryMatterWeightCombined + dryMatterConsumedPerMilkingAreaInKg;
-        var forageTotalFeedRatio = 100 * foragesPurchased.dryMatterWeight / dryMatterTotal, supplementTotalFeedRatio = 100 * concentratesPurchased.dryMatterWeight / dryMatterTotal, homegrownTotalFeedRatio = 100 * dryMatterConsumedPerMilkingAreaInKg / dryMatterTotal, supplementHomegrownRatio = 100 * (forageTotalFeedRatio + supplementTotalFeedRatio) / homegrownTotalFeedRatio;
+        var result = {}, milkingAreaInHa = summary.milkingAreaInHa, weightCombined = foragesPurchased.weight + concentratesPurchased.weight, dryMatterConsumedPerHaInKg = legumes.dryMatterConsumedPerHaInKg, dryMatterConsumedPerMilkingAreaInKg = dryMatterConsumedPerHaInKg * milkingAreaInHa, weightTotal = weightCombined + dryMatterConsumedPerMilkingAreaInKg, forageTotalFeedRatio = 100 * foragesPurchased.weight / weightTotal, supplementTotalFeedRatio = 100 * concentratesPurchased.weight / weightTotal, homegrownTotalFeedRatio = 100 * dryMatterConsumedPerMilkingAreaInKg / weightTotal, supplementHomegrownRatio = 100 * (forageTotalFeedRatio + supplementTotalFeedRatio) / homegrownTotalFeedRatio;
         result.homeForageConsumed = dryMatterConsumedPerMilkingAreaInKg / milkingAreaInHa;
         result.forageTotalFeedRatio = forageTotalFeedRatio;
         result.supplementTotalFeedRatio = supplementTotalFeedRatio;
