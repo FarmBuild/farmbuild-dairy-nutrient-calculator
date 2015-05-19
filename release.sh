@@ -32,7 +32,7 @@ git push origin master
 
 npm run dist
 
-sed -i "" "s/$VERSION_CURRENT/$VERSION_NEW/g" README.md
+./update-readme-api-version.sh $VERSION_CURRENT $VERSION_NEW
 
 git add --all .
 #git rm -r $(git ls-files --deleted)

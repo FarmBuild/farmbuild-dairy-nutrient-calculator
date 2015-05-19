@@ -31,7 +31,7 @@
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ",
-    "_comments":"livereload: Run npm run livereload then http://localhost:3000/static/examples/angularjs/",
+    "_comments": "livereload: Run npm run livereload then http://localhost:3000/static/examples/angularjs/",
     "livereload": "static-livereload --path .",
     "_livereloads": "node_modules/.bin/static-livereload --path . --config process.cwd/lslivereload.js",
     "pretest": "npm install",
@@ -50,5 +50,8 @@
     "uglify": "uglifyjs dist/farmbuild-nutrientcalculator.js --source-map dist/farmbuild-nutrientcalculator.min.js.map --source-map-url farmbuild-nutrientcalculator.min.js.map -o dist/farmbuild-nutrientcalculator.min.js -v -c",
     "copy-core": "ncp bower_components/farmbuild-core/dist/ dist/ && ncp bower_components/farmbuild-farmdata/dist/ dist/",
     "dist": "npm run clean && npm run generate-docs && npm run concat && npm run uglify && npm run copy-core"
+  },
+  "dependencies": {
+    "replace": "^0.3.0"
   }
 }
