@@ -13,7 +13,7 @@ describe('farmbuild.nutrientCalculator module', function() {
   // instantiate log
   var $log, nutrientCalculator,
     susanFarmJson = 'farmdata-new.json',
-    susanFarmName = "Susan's Farm",
+    susanFarmName = "My New Farm",
     susanFarmArea = 89.95,
     milkingAreaInHa= 70.39,
     averageCowWeightInKg= 550,
