@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dateCreated": "2015-03-30T21:19:00",
-  "dateLastUpdated": "2015-05-19T04:06:07.090Z",
+  "dateLastUpdated": "2015-05-19T04:33:58.243Z",
   "id": "1234567890",
   "name": "John Smith’s Farm",
   "geometry": {
@@ -121,14 +121,14 @@
     },
     "milkSold": {
       "totalPerYearInLitre": 1851973,
-      "fatInKg": 64819.055,
-      "fatPercentage": 3.5,
-      "proteinInKg": 83338.785,
-      "proteinPercentage": 4.5,
-      "nitrogenInKg": 13165.684834123223,
-      "nitrogenPercentage": 0.7109004739336493,
-      "phosphorusInKg": 1692.703322,
-      "phosphorusPercentage": 0.09140000000000001,
+      "fatInKg": 83338.785,
+      "fatPercentage": 4.500000000000001,
+      "proteinInKg": 64819.055,
+      "proteinPercentage": 3.5000000000000004,
+      "nitrogenInKg": 10239.977093206951,
+      "nitrogenPercentage": 0.5529225908372828,
+      "phosphorusInKg": 1898.2723250000001,
+      "phosphorusPercentage": 0.10250000000000001,
       "potassiumInKg": 2592.7622,
       "potassiumPercentage": 0.14,
       "sulphurInKg": 1111.1837999999998,
@@ -1211,8 +1211,18 @@
         }
       ]
     },
-    "balance": {},
-    "efficiency": {},
+    "balance": {
+      "nitrogen": 211.7012586780751,
+      "potassium": 88.96892433333332,
+      "phosphorus": 38.326101477777776,
+      "sulphur": 40.25428066666666
+    },
+    "efficiency": {
+      "nitrogen": 28.148054999776264,
+      "potassium": 14.512590776354006,
+      "phosphorus": 23.72582288361439,
+      "sulphur": 18.22403847000298
+    },
     "stockingReate": {},
     "stockingRate": {
       "milkingArea": 1.5555555555555556,
@@ -1234,6 +1244,22 @@
       "milkSoldPerYearInLitre": 1851973,
       "legumePerHaInKg": 1608.2723852102351,
       "legumePercentage": 15
+    },
+    "feedBalance": {
+      "homeForageConsumed": 8041.361926051176,
+      "forageTotalFeedRatio": 9.208001854578404,
+      "supplementTotalFeedRatio": 10.739156880039259,
+      "homegrownTotalFeedRatio": 80.05284126538234,
+      "supplementHomegrownRatio": 24.917490021985657
+    },
+    "milkProduction": {
+      "milkSoldPerYearInLitre": 1851973,
+      "milkSoldPerCowInLitre": 6614.189285714286,
+      "milkSoldPerHectareInLitre": 10288.738888888889,
+      "milkSoldPerCowInKg": 529.1351428571428,
+      "milkSoldPerHectareInInKg": 823.0991111111111,
+      "milkSoldFromImportedFeedInKg": 369415.9940322608,
+      "milkSoldFromHomeGrownFeedInKg": 1482557.0059677393
     }
   }
 }
