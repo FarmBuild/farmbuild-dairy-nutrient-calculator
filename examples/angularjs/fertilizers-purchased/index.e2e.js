@@ -7,7 +7,7 @@ describe('Calculate nutrient of fertilizer purchased (new farm data)', function(
   describe('Using FarmBuild Nutrient Calculator to calculate the weighted average for fertilizer purchased (Dried & Wet)', function() {
 
     var page = 'angularjs/fertilizers-purchased/index.html',
-      title = 'Farmbuild Diary Nutrient Calculator - Fertilizer Purchased (angularJS)'
+      title = 'Farmbuild Dairy Nutrient Calculator - Fertilizer Purchased (angularJS)'
 
     beforeEach(function() {
       browser.get(page);

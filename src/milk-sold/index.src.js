@@ -14,10 +14,26 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('milkSold', function (validations) {
+	.factory('milkSold',
+  function ($log, validations, nutrientCalculatorSession) {
 
 		var milkSold = {},
 				_isPositiveNumber = validations.isPositiveNumber;
+    function createDefault() {
+      return {
+        totalPerYearInLitre: 0,
+        fatInKg: 0,
+        fatPercentage: 0,
+        proteinInKg: 0,
+        proteinPercentage: 0
+      };
+    }
+    milkSold.createDefault = createDefault;
+
+    function saveToSession(result) {
+      nutrientCalculatorSession.saveSection('milkSold', result);
+      return result;
+    }
 
 		/**
 		 * Calculates nutrient from milk sold, input values are in percentage
@@ -32,7 +48,8 @@ angular.module('farmbuild.nutrientCalculator')
 		milkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
 			var milkProteinInKg, milkFatInKg;
 
-			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, '%')){
+			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, '%')) {
+        $log.error('validation failed, ')
 				return undefined;
 			}
 
@@ -42,9 +59,10 @@ angular.module('farmbuild.nutrientCalculator')
 
 			milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
 			milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
-			return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+			var result =  _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
 
-		};
+      return saveToSession(result);
+    };
 
 		/**
 		 * Calculates nutrient from milk sold, input values are in Kg
@@ -60,7 +78,8 @@ angular.module('farmbuild.nutrientCalculator')
 			var milkProteinPercentage, milkFatPercentage;
 
 			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, 'kg')){
-				return undefined;
+				$log.error('validation failed...');
+        return undefined;
 			}
 
 			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
@@ -69,8 +88,9 @@ angular.module('farmbuild.nutrientCalculator')
 
 			milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
 			milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
-			return _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+			var result =  _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
 
+      return saveToSession(result);
 		};
 
 		/**
@@ -126,7 +146,7 @@ angular.module('farmbuild.nutrientCalculator')
 				sulphurInKg = (milkSoldPerYearInLitre * sulphurPercentage / 100),
 				phosphorusInKg = (milkSoldPerYearInLitre * phosphorusPercentage / 100);
 
-			return {
+      var result =  {
 				totalPerYearInLitre: milkSoldPerYearInLitre,
 				fatInKg: milkFatInKg,
 				fatPercentage: milkFatPercentage,
@@ -141,6 +161,10 @@ angular.module('farmbuild.nutrientCalculator')
 				sulphurInKg: sulphurInKg,
 				sulphurPercentage: sulphurPercentage
 			};
+
+      nutrientCalculatorSession.saveSection('milkSold', result);
+
+      return result;
 
 		}
 

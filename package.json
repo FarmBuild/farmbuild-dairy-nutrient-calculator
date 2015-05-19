@@ -6,7 +6,9 @@
   "repository": "https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator",
   "license": "MIT",
   "devDependencies": {
-    "karma": "~0.10",
+    "karma": "^0.12",
+    "karma-html2js-preprocessor": "^0.1",
+    "karma-fixture": "^0.2",
     "protractor": "^2.0",
     "http-server": "^0.6.1",
     "bower": "^1.4",
@@ -21,15 +23,17 @@
     "livereload": "0.3.7",
     "connect": "3.3.5",
     "serve-static": "1.9.2",
-    "static-livereload": "0.1.4"
+    "static-livereload": "0.1.4",
+    "jasmine": "2.3.1"
   },
   "scripts": {
     "bower-update": "bower update",
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ",
+    "_comments": "livereload: Run npm run livereload then http://localhost:3000/static/examples/angularjs/",
     "livereload": "static-livereload --path .",
-    "livereloads": "node_modules/.bin/static-livereload --path . --config process.cwd/lslivereload.js",
+    "_livereloads": "node_modules/.bin/static-livereload --path . --config process.cwd/lslivereload.js",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js  --single-run",
@@ -46,5 +50,8 @@
     "uglify": "uglifyjs dist/farmbuild-nutrientcalculator.js --source-map dist/farmbuild-nutrientcalculator.min.js.map --source-map-url farmbuild-nutrientcalculator.min.js.map -o dist/farmbuild-nutrientcalculator.min.js -v -c",
     "copy-core": "ncp bower_components/farmbuild-core/dist/ dist/ && ncp bower_components/farmbuild-farmdata/dist/ dist/",
     "dist": "npm run clean && npm run generate-docs && npm run concat && npm run uglify && npm run copy-core"
+  },
+  "dependencies": {
+    "replace": "^0.3.0"
   }
 }

@@ -35,18 +35,18 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 			$scope.result = fertilizersPurchased.calculate(fertilizers);
 			$scope.noResult = !$scope.result;
 
-      saveInSessionStorage($scope.result);
+      //saveInSessionStorage($scope.result);
 		};
 
 		$scope.add = function (type, weight, isDry) {
       $log.info('add type: %s, weight: %s, isDry', type, weight, isDry);
 
-      if(!fertilizersPurchased.validate(type, weight, isDry)) {
+      if(!fertilizersPurchased.validateNew(type, weight, isDry)) {
         $scope.noResult = true;
         return;
       }
 
-			isDry = (isDry === 'true');
+			isDry = (isDry !== 'false');
 			$scope.fertilizers = fertilizersPurchased.add(type, weight, isDry).fertilizers();
 			$scope.result = '';
 			$scope.newFertilizer = createNew();
@@ -77,15 +77,11 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 			$scope.fertilizerTypes = fertilizersPurchased.types.removeAt(index);
 		};
 
-    function saveInSessionStorage(result) {
-      nutrientCalculator.session.saveSection('fertilizersPurchased', result);
-    };
-
     if(nutrientCalculator.session.isLoadFlagSet(location)){
       var fertilizersPurchasedData = nutrientCalculator.session.loadSection('fertilizersPurchased');
-
-      fertilizersPurchased.load(fertilizersPurchasedData.fertilizers);
-      $scope.calculate(fertilizersPurchasedData.fertilizers);
-      $scope.fertilizers = fertilizersPurchasedData.fertilizers;
+      fertilizersPurchased.load(fertilizersPurchasedData);
+      $scope.result = fertilizersPurchasedData;
+      $scope.fertilizers = fertilizersPurchased.fertilizers();
+      $scope.fertilizerTypes = fertilizersPurchased.types.toArray();
     }
 	});

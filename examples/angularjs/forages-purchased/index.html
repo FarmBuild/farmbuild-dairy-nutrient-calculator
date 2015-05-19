@@ -13,7 +13,7 @@
 <content>
     <modal ng-if="noResult" ng-include="'../modal-validation-error.html'"></modal>
     <h3>
-        <a ng-href="../index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Forages Purchased
+        <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a> - Forages Purchased
         <small>(angularJS)</small>
     </h3>
     <hr/>
@@ -99,8 +99,8 @@
                     <tr>
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
-                        <th>Dry Matter Weight (kg)</th>
                         <th>Wet/Dry</th>
+                        <th>Dry Matter Weight (kg)</th>
                         <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
@@ -113,16 +113,13 @@
                         <td>
                             <select name="forageType" id="forageType" class="form-control"
                                     ng-options="forageType as forageType.name for forageType in forageTypes"
-                                    ng-model="newForage.Type">
+                                    ng-model="newForage.type">
                                 <option value="">Select</option>
                             </select>
                         </td>
                         <td>
                             <input name="weight" id="weight"
                                    ng-model="newForage.weight" type="number" class="form-control" placeholder="Enter weight"/>
-                        </td>
-                        <td>
-                            N/A
                         </td>
                         <td class="td-is-dry">
                             <select name="isDry" id="isDry" class="form-control"
@@ -131,27 +128,30 @@
                                 <option value="false">Wet</option>
                             </select>
                         </td>
+                      <td>
+                        N/A
+                      </td>
                         <td>
-                            <span ng-bind='newForage.Type.metabolisableEnergyRatio'></span>
+                            <span ng-bind='newForage.type.metabolisableEnergyInMJPerKg'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.dryMatterPercentage'></span>
+                            <span ng-bind='newForage.type.dryMatterPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.sulphurPercentage'></span>
+                            <span ng-bind='newForage.type.sulphurPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.potassiumPercentage'></span>
+                            <span ng-bind='newForage.type.potassiumPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.phosphorusPercentage'></span>
+                            <span ng-bind='newForage.type.phosphorusPercentage'></span>
                         </td>
                         <td>
-                            <span ng-bind='newForage.Type.nitrogenPercentage'></span>
+                            <span ng-bind='newForage.type.nitrogenPercentage'></span>
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    ng-click="addForage(newForage.Type, newForage.weight, newForage.isDry, form)">
+                                    ng-click="addForage(newForage.type, newForage.weight, newForage.isDry, form)">
                                 <i class="icon fa fa-plus"></i>
                                 Add forage
                             </button>
@@ -160,8 +160,8 @@
                     <tr ng-repeat="forage in forages">
                         <td ng-bind="forage.type.name"></td>
                         <td ng-bind="forage.weight | number : decimalPrecision"></td>
-                        <td ng-bind="forage.isDry ? forage.weight : (forage.weight*forage.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="forage.isDry | dryWet"></td>
+                        <td ng-bind="forage.isDry ? forage.weight : (forage.weight*forage.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="forage.type.metabolisableEnergyInMJPerKg | number : decimalPrecision"></td>
                         <td ng-bind="forage.type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="forage.type.sulphurPercentage | number : decimalPrecision"></td>
@@ -217,6 +217,7 @@
         </fieldset>
     </summary>
     <version class="col-md-12">
+        <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a>
         Version: <span ng-bind="appVersion"></span>
     </version>
 </content>

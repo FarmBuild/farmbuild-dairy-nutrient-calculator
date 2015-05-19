@@ -14,13 +14,22 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 	
-	.factory('cowsCulled', function (validations, cowTypes) {
+	.factory('cowsCulled',
+  function (validations,
+            cowTypeDefaults,
+            cowValidator,
+            cowTypes,
+            cows,
+            nutrientCalculatorSession) {
 		
 		var cowsCulled = {},
 			_isPositiveNumber = validations.isPositiveNumber,
 			_isAlphanumeric = validations.isAlphanumeric,
-			_types = angular.copy(cowTypes);
-		
+			_types = angular.copy(cowTypeDefaults),
+      _cows = [],
+      validator = cowValidator;
+
+    cowsCulled.validateNew = cows.validateNew;
 		/**
 		 * Calculates total nutrient exported from the farm in cows culled
 		 * @method calculate
@@ -75,8 +84,8 @@ angular.module('farmbuild.nutrientCalculator')
 					weight: cow.weight
 				});
 			}
-			
-			return {
+
+      var result =  {
 				cows: incomings,
 				numberOfCows: numberOfCows,
 				weight: weight,
@@ -85,7 +94,13 @@ angular.module('farmbuild.nutrientCalculator')
 				potassiumInKg: potassiumInKg,
 				sulphurInKg: sulphurInKg
 			};
-			
+
+      result.types = _types;
+
+      nutrientCalculatorSession.saveSection('cowsCulled', result);
+
+      return result;
+
 		};
 		
 		/**
@@ -169,7 +184,40 @@ angular.module('farmbuild.nutrientCalculator')
 		cowsCulled.types = function () {
 			return _types;
 		};
-		
+
+    cowsCulled.validateType = function (type) {
+      return cowTypes.validate(type);
+    };
+
+
+    /**
+     * Returns current cow types
+     * @method types
+     * @returns {object} Types - cow types array
+     * @public
+     * @static
+     */
+    cowsCulled.cows = function () {
+      return _cows;
+    };
+
+    /**
+     * Loads the fertilizers in cowsCulledSection.fertilizers
+     * @method load
+     * @param cowsCulledSection
+     * @returns {object} cowsPurchased
+     * @public
+     * @static
+     */
+    cowsCulled.load = function(cowsCulledSection) {
+      if(!validator.validateAll(cowsCulledSection.cows)) {
+        return undefined
+      }
+      _cows = cowsCulledSection.cows;
+      _types = cowsCulledSection.types;
+
+      return cowsCulled;
+    }
 		return cowsCulled;
 		
 	});

@@ -1,9 +1,15 @@
 'use strict';
 
 describe('farmbuild.nutrientCalculator module', function() {
+  beforeEach(function() {
+    fixture.setBase('examples/data')
+  })
 
   // instantiate service
-  var nutrientCalculatorSession, nutrientCalculator, milkSold,$log;
+  var nutrientCalculatorSession, nutrientCalculator,
+    milkSold, fertilizersPurchased,
+    susanFarmJson = 'farmdata-susan.json',
+    $log;
 
   beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
     $provide.value('$log', console);
@@ -11,10 +17,14 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
-  beforeEach(inject(function (_nutrientCalculatorSession_, _nutrientCalculator_,_milkSold_,_$log_) {
+  beforeEach(inject(function (_nutrientCalculatorSession_, _nutrientCalculator_,
+                              _milkSold_,
+                              _fertilizersPurchased_,
+                              _$log_) {
     nutrientCalculatorSession = _nutrientCalculatorSession_;
     nutrientCalculator = _nutrientCalculator_;
     milkSold = _milkSold_;
+    fertilizersPurchased = _fertilizersPurchased_;
     $log = _$log_;
   }));
 
@@ -30,30 +40,30 @@ describe('farmbuild.nutrientCalculator module', function() {
 
       var data = nutrientCalculatorSession.loadSection();
 
-      expect(data).toBe(null);
+      expect(data).toBe(undefined);
     }));
   });
 
-//  describe('save an existing farmdata to session', function(){
-//
-//    it('farmdataSession.load should return undefined.', inject(function() {
-//
-//      var nutrientByKg = milkSold.calculateByKg(100, 10, 90),
-//        nutrientCalculatorData = nutrientCalculator.load({name:'My Farm'}),
-//        section = 'milkSold';
-//
-//      expect(nutrientCalculatorData).toBeDefined();
-//      $log.info('nutrientCalculatorData: %j', nutrientCalculatorData);
-//
-//      nutrientCalculatorData = nutrientCalculatorSession.save(nutrientCalculatorData);
-//
-//      nutrientCalculatorSession.saveSection(section, nutrientByKg);
-//
-//      var found = nutrientCalculatorSession.loadSection(section);
-//
-//      expect(found).toBeDefined();
-//    }));
-//  });
+  describe('save an existing farmdata to session', function(){
 
+    it('farmdataSession.load.', inject(function() {
+      var loaded = fixture.load(susanFarmJson),
+        typesSize = 30,
+        section = 'fertilizersPurchased';
+
+      loaded = nutrientCalculator.load(loaded)
+
+      var found = nutrientCalculatorSession.loadSection(section);
+
+      expect(found).toBeDefined();
+      expect(found.types).toBeDefined();
+      expect(found.types.length).toBe(typesSize);
+    }));
+  });
+
+
+  afterEach(function() {
+    fixture.cleanup()
+  });
 
 });

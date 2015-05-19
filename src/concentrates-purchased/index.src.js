@@ -15,15 +15,27 @@
 angular.module('farmbuild.nutrientCalculator')
 
   .factory('concentratesPurchased',
-  function (validations, concentrateDefaults, concentrateTypes, concentrateValidator, concentrateCalculator,
+  function (validations,
+            nutrientMedium,
+            concentrateDefaults, concentrateTypes,
+            nutrientMediumValidator, concentrateCalculator,
             collections,
+            nutrientCalculatorSession,
             $log) {
 
     var concentratesPurchased = {types:concentrateTypes, calculator:concentrateCalculator},
       _concentrates = [],
       calculator = concentrateCalculator,
-      validator = concentrateValidator;
-    
+      validator = nutrientMediumValidator;
+
+    function createDefault() {
+      return {
+        types:concentrateTypes.toArray(),
+        concentrates:[]
+      };
+    }
+    concentratesPurchased.createDefault = createDefault;
+
     /**
      * Removes the concentrate at specified index
      * @method removeAt
@@ -33,9 +45,7 @@ angular.module('farmbuild.nutrientCalculator')
      */
     function _removeAt(index) {
       $log.info('removing concentrate at index ' + index);
-
-      collections.removeAt(_concentrates, index);
-
+      nutrientMedium.removeAt(_concentrates, index);
       return concentratesPurchased;
     };
     concentratesPurchased.removeAt = _removeAt;
@@ -43,35 +53,28 @@ angular.module('farmbuild.nutrientCalculator')
     /**
      * Returns the current instance of concentrates purchased
      * @method concentrates
-     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-     * @param {!number} weight - value must be > 0
-     * @param {!boolean} isDry -true if the concentrate is dry, false if it's wet
-     * @returns {object} concentratesPurchased
+     * @returns {object} concentrates
      * @public
      * @static
      */
     concentratesPurchased.concentrates = function() { return _concentrates};
 
-    function _create(type, weight, isDry) {
-      return {type: type, weight:weight, isDry:isDry};
-    }
-    concentratesPurchased.create = _create;
-
     /**
      * Returns true if the arguments are valid, false otherwise
-     * @method validate
+     * @method validateNew
      * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} weight - value must be > 0
-     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @param {!boolean} isDry -true if the concentrate is dry, false if it's wet
      * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    function validate(type, weight, isDry) {
-      var fertilizer = _create(type, weight, isDry);
-      return validator.validate(fertilizer);
+    function validateNew(type, weight, isDry) {
+      var concentrate = nutrientMedium.create(type, weight, isDry);
+      return validator.validate(concentrate);
     };
-    concentratesPurchased.validate = validate;
+
+    concentratesPurchased.validateNew = validateNew;
     concentratesPurchased.validateAll = validator.validateAll;
 
     /**
@@ -85,13 +88,7 @@ angular.module('farmbuild.nutrientCalculator')
      * @static
      */
     function _add(type, weight, isDry) {
-      var concentrate = _create(type, weight, isDry);
-      $log.info('concentratesPurchased.add concentrate ...', concentrate);
-      if (!validator.validate(concentrate)) {
-        $log.error('concentratesPurchased.add unable to add as the validation has been failed');
-        return undefined;
-      }
-      collections.add(_concentrates, concentrate);
+      _concentrates = nutrientMedium.add(_concentrates, type, weight, isDry);
       return concentratesPurchased;
     };
     concentratesPurchased.add = _add;
@@ -112,20 +109,29 @@ angular.module('farmbuild.nutrientCalculator')
         $log.error('concentratesPurchased.calculate invalid concentrates, see the error above and fix based on API...');
         return undefined;
       }
+      var result = calculator.calculate(concentrates);
 
-      return calculator.calculate(concentrates);
+      result.types = concentrateTypes.toArray();
+
+      nutrientCalculatorSession.saveSection('concentratesPurchased', result);
+
+      return result;
     }
 
     /**
-     * Loads the concentrates
+     * Loads the concentratesPurchasedSection
      * @method load
-     * @param concentrates
+     * @param concentratesPurchasedSection
      * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    concentratesPurchased.load = function(concentrates) {
-      _concentrates = concentrates;
+    concentratesPurchased.load = function(concentratesPurchasedSection) {
+      if(!validator.validateAll(concentratesPurchasedSection.concentrates)) {
+        return undefined
+      }
+      _concentrates = concentratesPurchasedSection.concentrates;
+      concentrateTypes.load(concentratesPurchasedSection);
       return concentratesPurchased;
     }
 

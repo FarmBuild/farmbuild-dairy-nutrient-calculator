@@ -36,12 +36,12 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 		};
 
 		$scope.addConcentrate = function (type, weight, isDry) {
-      if(!concentratesPurchased.validate(type, weight, isDry)) {
+      if(!concentratesPurchased.validateNew(type, weight, isDry)) {
         $scope.noResult = true;
         return;
       }
 
-			isDry = (isDry === 'true');
+      isDry = (isDry !== 'false');
 			$scope.concentrates = concentratesPurchased.add(type, weight, isDry).concentrates();
 			$scope.result = '';
 			$scope.newConcentrate = createNew();
@@ -50,7 +50,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 
 		$scope.removeConcentrate = function (index) {
 			$scope.result = '';
-			$scope.concentrates = concentratesPurchased.removeAt(index);
+			$scope.concentrates = concentratesPurchased.removeAt(index).concentrates();
 		};
 
 		$scope.addConcentrateType = function (type) {
@@ -58,9 +58,9 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
         $scope.noResult = true;
         return;
       }
-			$scope.concentrateTypes = concentratesPurchased.types.add(type.name, type.metabolisableEnergyInMJPerKg, type.dryMatterPercentage,
+			$scope.concentrateTypes = concentratesPurchased.types.add(type.name, type.dryMatterPercentage,
 																									type.sulphurPercentage, type.potassiumPercentage,
-																									type.phosphorusPercentage, type.nitrogenPercentage);
+																									type.phosphorusPercentage, type.nitrogenPercentage,type.metabolisableEnergyInMJPerKg);
 			$scope.result = '';
 			$scope.type = {};
 			$scope.noResult = !$scope.concentrates;
@@ -77,10 +77,10 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
 
     if(nutrientCalculator.session.isLoadFlagSet(location)){
       var concentratesPurchasedData = nutrientCalculator.session.loadSection('concentratesPurchased');
-
-      concentratesPurchased.load(concentratesPurchasedData.concentrates);
-      $scope.calculate(concentratesPurchasedData.concentrates);
-      $scope.concentrates =  concentratesPurchasedData.concentrates;
+      concentratesPurchased.load(concentratesPurchasedData);
+      $scope.result =  concentratesPurchasedData;
+      $scope.concentrates =  concentratesPurchased.concentrates();
+      $scope.concentrateTypes =  concentratesPurchased.types.toArray();
     }
 
 	});

@@ -14,85 +14,35 @@
  */
 
 angular.module('farmbuild.nutrientCalculator')
-
-	.factory('forageTypes', function (validations, forageTypeValues, $log) {
-		var _isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
+	.factory('forageTypes',
+  function (collections, validations, nutrientMediumTypes, forageDefaults, $log) {
+		var
 			_isDefined = validations.isDefined,
-			_types = angular.copy(forageTypeValues),
+			_types = angular.copy(forageDefaults.types),
       _isEmpty = validations.isEmpty,
-			forageTypes = {};
-
-		function _validate(type) {
-			$log.info('validating type  ...', type);
-
-			return !(_isEmpty(type)) &&
-        !(!_isAlphanumeric(type.name) || !_isPositiveNumber(type.metabolisableEnergyInMJPerKg) || !_isPositiveNumber(type.dryMatterPercentage) || !_isPositiveNumber(type.potassiumPercentage) || !_isPositiveNumber(type.phosphorusPercentage) || !_isPositiveNumber(type.nitrogenPercentage) || !_isPositiveNumber(type.sulphurPercentage));
-
-		}
-
-		function _create(name, metabolisableEnergyPercentage, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-			return {
-				name: name,
-				metabolisableEnergyInMJPerKg: metabolisableEnergyPercentage,
-				dryMatterPercentage: dryMatterPercentage,
-				sulphurPercentage: sulphurPercentage,
-				potassiumPercentage: potassiumPercentage,
-				phosphorusPercentage: phosphorusPercentage,
-				nitrogenPercentage: nitrogenPercentage
-			};
-		}
+			forageTypes = {},
+      _validate = nutrientMediumTypes.validate;
 
 		/**
 		 * Adds a new forage type for nutrient calculation
 		 * @method add
 		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
 		 * @param {!number} dryMatterPercentage - value must be > 0
 		 * @param {!number} sulphurPercentage - value must be > 0
 		 * @param {!number} potassiumPercentage - value must be > 0
 		 * @param {!number} phosphorusPercentage - value must be > 0
 		 * @param {!number} nitrogenPercentage - value must be > 0
+     * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
 		 * @returns {object} types - useful for chaining multiple add()
 		 * @public
 		 * @static
 		 */
-		function _addType(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-
-			var type = _create(name, metabolisableEnergyInMJPerKg, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-			$log.info('adding forage type ...', type);
-
-			if (!_validate(type)) {
-				return undefined;
-			}
-
-			if (_isDefined(index)) {
-				_types.splice(index, 0, type)
-			} else {
-				_types.push(type);
-			}
-
-			return forageTypes;
+		function add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
+                      metabolisableEnergyInMJPerKg) {
+      return nutrientMediumTypes.add(_types, name,
+        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
+        metabolisableEnergyInMJPerKg);
 		};
-
-
-		/**
-		 * Returns the forageType at specified index
-		 * @method at
-		 * @returns {object} forageType
-		 * @public
-		 * @static
-		 */
-		function _at(index) {
-			var type;
-			$log.info('getting forage type at index: ', index);
-			if (!_isDefined(index) || index < 0) {
-				return undefined;
-			}
-
-			return _types[index];
-		};
-
 
 		function _last() {
 			$log.info('getting last forage type ...');
@@ -100,49 +50,15 @@ angular.module('farmbuild.nutrientCalculator')
 			return _types[length - 1];
 		};
 
-
 		function _first() {
 			$log.info('getting first forage type ...');
 			return _types[0];
 		};
 
-
 		function _count() {
 			$log.info('counting forage types ...', _types);
 			return _types.length;
 		};
-
-
-		/**
-		 * Returns forageTypes collection as an array
-		 * @method toArray
-		 * @returns {Array} forageTypes
-		 * @public
-		 * @static
-		 */
-		function _toArray() {
-			$log.info('toArray types ...', _types);
-			return _types;
-		};
-
-		/**
-		 * Removes the forage type at specified index
-		 * @method removeAt
-		 * @returns {object} forageTypes collection
-		 * @public
-		 * @static
-		 */
-		function _removeAt(index) {
-			$log.info('removing forage type at index ' + index);
-			if (!_isDefined(index) || index < 0 || index > _types.length - 1) {
-				return forageTypes;
-			}
-
-			_types.splice(index, 1);
-
-			return forageTypes;
-		};
-
 
 		function _remove(type) {
 			$log.info('removing forage type ', type);
@@ -153,7 +69,7 @@ angular.module('farmbuild.nutrientCalculator')
 
 			angular.forEach(_types, function (item, index) {
 				if (angular.equals(item, type)) {
-					_removeAt(index);
+          forageTypes.removeAt(index);
 				}
 			});
 
@@ -161,16 +77,41 @@ angular.module('farmbuild.nutrientCalculator')
 		};
 
 		forageTypes = {
-			add: _addType,
-			at: _at,
-			size: _count,
-			toArray: _toArray,
-			removeAt: _removeAt,
+			add: add,
+      /**
+       * Returns the forageType at specified index
+       * @method at
+       * @returns {object} fertilizerType
+       * @public
+       * @static
+       */
+      at: function(index) { return collections.at(_types, index)},
+      size: function() { return collections.size(_types)},
+      toArray: function() { return angular.copy(_types) },
+      /**
+       * Removes the forage type at specified index
+       * @method removeAt
+       * @returns {object} forageTypes collection
+       * @public
+       * @static
+       */
+      removeAt: function(index) { return collections.removeAt(_types, index)},
 			remove: _remove,
 			first: _first,
 			last: _last,
 			isEmpty: _isEmpty,
-			validate: _validate
+      validate: _validate,
+      /**
+       * Loads the types in foragesPurchasedSection.types
+       * @method load
+       * @param foragesPurchasedSection
+       * @returns {object} fertilizersPurchased
+       * @public
+       * @static
+       */
+      load: function(foragesPurchasedSection) {
+        _types = foragesPurchasedSection.types;
+      }
 		};
 
 		return forageTypes;

@@ -13,53 +13,15 @@
  * @module nutrientCalculator/fertilizerTypes
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('fertilizerTypes', function (collections, validations, fertilizerDefaults, $log) {
+  .factory('fertilizerTypes', function (collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
 
     var fertilizerTypes,
-      _isPositiveNumber = validations.isPositiveNumber,
-      _isPositiveNumberOrZero = validations.isPositiveNumberOrZero,
-      _isEmpty = validations.isEmpty,
-      _types = angular.copy(fertilizerDefaults.types);
+      _types = angular.copy(fertilizerDefaults.types),
+      _validate = nutrientMediumTypes.validate;
 
-    function _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-      return {
-        name: name,
-        dryMatterPercentage: dryMatterPercentage,
-        sulphurPercentage: sulphurPercentage,
-        potassiumPercentage: potassiumPercentage,
-        phosphorusPercentage: phosphorusPercentage,
-        nitrogenPercentage: nitrogenPercentage
-      };
-    }
-
-    function _validate(type) {
-      $log.info('validating type  ...', type);
-
-
-      var valid =
-        !(_isEmpty(type)) &&
-        !(_isEmpty(type.name) ||
-        !_isPositiveNumber(type.dryMatterPercentage) ||
-        !_isPositiveNumberOrZero(type.potassiumPercentage) ||
-        !_isPositiveNumberOrZero(type.phosphorusPercentage) ||
-        !_isPositiveNumberOrZero(type.nitrogenPercentage) ||
-        !_isPositiveNumberOrZero(type.sulphurPercentage));
-
-      if(!valid) {
-        $log.error('invalid type: %j', type);
-      }
-      return valid;
-    }
-
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage, index) {
-      var type = _create(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-      $log.info('adding fertilizer type ...', type);
-
-      if (!_validate(type)) {
-        return undefined;
-      }
-
-      return collections.add(_types, type, index);
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
+      return nutrientMediumTypes.add(_types, name,
+        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
     };
 
     /**
@@ -74,10 +36,10 @@ angular.module('farmbuild.nutrientCalculator')
        * @method add
        * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
        * @param {!number} dryMatterPercentage - value must be > 0
-       * @param {!number} sulphurPercentage - value must be > 0
-       * @param {!number} potassiumPercentage - value must be > 0
-       * @param {!number} phosphorusPercentage - value must be > 0
-       * @param {!number} nitrogenPercentage - value must be > 0
+       * @param {!number} sulphurPercentage - value must be >= 0
+       * @param {!number} potassiumPercentage - value must be >= 0
+       * @param {!number} phosphorusPercentage - value must be >= 0
+       * @param {!number} nitrogenPercentage - value must be >= 0
        * @returns {object} fertilizers
        * @public
        * @static
@@ -110,11 +72,19 @@ angular.module('farmbuild.nutrientCalculator')
        * @static
        */
       removeAt: function(index) { return collections.removeAt(_types, index)},
-//      remove: _removeType,
-//      first: _getFirstType,
       last: function() { return collections.last(_types) },
-//      isEmpty: _isTypesEmpty
-      validate: _validate
+      validate: _validate,
+      /**
+       * Loads the types in fertilizersPurchasedSection.types
+       * @method load
+       * @param fertilizersPurchasedSection
+       * @returns {object} fertilizersPurchased
+       * @public
+       * @static
+       */
+      load: function(fertilizersPurchasedSection) {
+        _types = fertilizersPurchasedSection.types;
+      }
     };
 
     return fertilizerTypes;

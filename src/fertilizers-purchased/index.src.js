@@ -15,15 +15,26 @@
 angular.module('farmbuild.nutrientCalculator')
 
   .factory('fertilizersPurchased',
-  function (validations, fertilizerDefaults, fertilizerTypes, fertilizerValidator, fertilizerCalculator,
+  function (validations,
+            nutrientMedium,
+            fertilizerDefaults, fertilizerTypes,
+            nutrientMediumValidator,
+            fertilizerCalculator,
             collections,
+            nutrientCalculatorSession,
             $log) {
 
     var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
       _fertilizers = [],
       calculator = fertilizerCalculator,
-      validator = fertilizerValidator;
-
+      validator = nutrientMediumValidator;
+    function createDefault() {
+      return {
+        types:fertilizerTypes.toArray(),
+        fertilizers:[]
+      };
+    }
+    fertilizersPurchased.createDefault = createDefault;
 
     /**
      * Removes the fertilizer at specified index
@@ -34,9 +45,7 @@ angular.module('farmbuild.nutrientCalculator')
      */
     function _removeAt(index) {
       $log.info('removing fertilizer at index ' + index);
-
-      collections.removeAt(_fertilizers, index);
-
+      nutrientMedium.removeAt(_fertilizers, index);
       return fertilizersPurchased;
     };
     fertilizersPurchased.removeAt = _removeAt;
@@ -53,11 +62,6 @@ angular.module('farmbuild.nutrientCalculator')
      */
     fertilizersPurchased.fertilizers = function() { return _fertilizers};
 
-    function _create(type, weight, isDry) {
-      return {type: type, weight:weight, isDry:isDry};
-    }
-    fertilizersPurchased.create = _create;
-
     /**
      * Adds a new fertilizer for nutrient calculation
      * @method add
@@ -69,20 +73,15 @@ angular.module('farmbuild.nutrientCalculator')
      * @static
      */
     function _add(type, weight, isDry) {
-      var fertilizer = _create(type, weight, isDry);
-      $log.info('fertilizersPurchased.add fertilizer ...', fertilizer);
-      if (!validator.validate(fertilizer)) {
-        $log.error('fertilizersPurchased.add unable to add as the validation has been failed');
-        return undefined;
-      }
-      collections.add(_fertilizers, fertilizer);
+      _fertilizers = nutrientMedium.add(_fertilizers, type, weight, isDry);
       return fertilizersPurchased;
     };
+
     fertilizersPurchased.add = _add;
 
     /**
      * Returns true if the arguments are valid, false otherwise
-     * @method validate
+     * @method validateNew
      * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
      * @param {!number} weight - value must be > 0
      * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
@@ -90,11 +89,12 @@ angular.module('farmbuild.nutrientCalculator')
      * @public
      * @static
      */
-    function validate(type, weight, isDry) {
-      var fertilizer = _create(type, weight, isDry);
+    function validateNew(type, weight, isDry) {
+      var fertilizer = nutrientMedium.create(type, weight, isDry);
       return validator.validate(fertilizer);
     };
-    fertilizersPurchased.validate = validate;
+
+    fertilizersPurchased.validateNew = validateNew;
     fertilizersPurchased.validateAll = validator.validateAll;
 
     fertilizersPurchased.asArray = function() { return _fertilizers};
@@ -114,19 +114,29 @@ angular.module('farmbuild.nutrientCalculator')
         return undefined;
       }
 
-      return calculator.calculate(fertilizers);
+      var result = calculator.calculate(fertilizers);
+
+      result.types = fertilizerTypes.toArray();
+
+      nutrientCalculatorSession.saveSection('fertilizersPurchased', result);
+
+      return result;
     }
 
     /**
-     * Loads the fertilizers
+     * Loads the fertilizers in fertilizersPurchasedSection.fertilizers
      * @method load
-     * @param fertilizers
+     * @param fertilizersPurchasedSection
      * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    fertilizersPurchased.load = function(fertilizers) {
-      _fertilizers = fertilizers;
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+        return undefined
+      }
+      _fertilizers = fertilizersPurchasedSection.fertilizers;
+      fertilizerTypes.load(fertilizersPurchasedSection);
       return fertilizersPurchased;
     }
 

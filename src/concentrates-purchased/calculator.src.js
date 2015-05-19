@@ -14,9 +14,11 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-  .factory('concentrateCalculator', function (concentrateValidator, concentrateDefaults, concentrateTypes, $log) {
+  .factory('concentrateCalculator', 
+  function (nutrientMediumCalculator, nutrientMediumValidator,
+            concentrateDefaults, concentrateTypes, $log) {
     var calculator = {},
-      validator = concentrateValidator;
+      validator = nutrientMediumValidator;
 
     function createResult(total) {
       return {

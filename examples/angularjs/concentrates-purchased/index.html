@@ -13,7 +13,7 @@
 <content>
     <modal ng-if="noResult" ng-include="'../modal-validation-error.html'"></modal>
     <h3>
-      <a ng-href="../index.html?load=true">FarmBuild Diary Nutrient Calculator</a> - Concentrates Purchased
+      <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a> - Concentrates Purchased
         <small>(angularJS)</small>
     </h3>
     <hr/>
@@ -101,8 +101,8 @@
                     <tr>
                         <th>Type</th>
                         <th>Total Weight (kg)</th>
+                      <th>Wet/Dry</th>
                         <th>Dry Matter Weight (kg)</th>
-                        <th>Wet/Dry</th>
                         <th>Metabolisable Energy (MJ/Kg)</th>
                         <th>Dry Matter (%)</th>
                         <th>Sulphur (%)</th>
@@ -123,9 +123,6 @@
                             <input name="weight" id="weight"
                                    ng-model="newConcentrate.weight" type="number" class="form-control" placeholder="Enter weight"/>
                         </td>
-                        <td>
-                            N/A
-                        </td>
                         <td class="td-is-dry">
                             <select name="isDry" id="isDry" class="form-control"
                                     ng-model="newConcentrate.isDry">
@@ -133,6 +130,9 @@
                                 <option value="false">Wet</option>
                             </select>
                         </td>
+                      <td>
+                        N/A
+                      </td>
                         <td>
                             <span ng-bind='newConcentrate.type.metabolisableEnergyInMJPerKg'></span>
                         </td>
@@ -162,8 +162,8 @@
                     <tr ng-repeat="concentrate in concentrates">
                         <td ng-bind="concentrate.type.name"></td>
                         <td ng-bind="concentrate.weight | number : decimalPrecision"></td>
-                        <td ng-bind="concentrate.isDry ? concentrate.weight : (concentrate.weight*concentrate.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.isDry | dryWet"></td>
+                        <td ng-bind="concentrate.isDry ? concentrate.weight : (concentrate.weight*concentrate.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.metabolisableEnergyInMJPerKg | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.sulphurPercentage | number : decimalPrecision"></td>
@@ -172,7 +172,7 @@
                         <td ng-bind="concentrate.type.nitrogenPercentage | number : decimalPrecision"></td>
                         <td>
                             <button type="button" class="btn btn-link" ng-click="removeConcentrate($index, form)">
-                                Remove
+                                Remove {{concentrate.isDry}}
                             </button>
                         </td>
                     </tr>
@@ -219,13 +219,14 @@
         </fieldset>
     </summary>
     <version class="col-md-12">
+      <a ng-href="../index.html?load=true">FarmBuild Dairy Nutrient Calculator</a>
         Version: <span ng-bind="appVersion"></span>
     </version>
 </content>
 
 <script src="../../../dist/farmbuild-core.js"></script>
 <script src="../../../dist/farmbuild-farmdata.js"></script>
-<script src="../../../dist/farmbuild-nutrientcalculator.min.js"></script>
+<script src="../../../dist/farmbuild-nutrientcalculator.js"></script>
 <script src="../../config.js"></script>
 <script src="index.js"></script>
 

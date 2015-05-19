@@ -8,29 +8,12 @@
 
 'use strict';
 
-/**
- * nutrientCalculator/nutrientCalculatorSession singleton
- * @private-module nutrientCalculator/nutrientCalculatorSession
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('nutrientCalculatorSession',
   function ($log, farmdata, validations) {
 
     var nutrientCalculatorSession = {},
       _isDefined = validations.isDefined;
-
-
-    function findInSessionStorage() {
-      var root = farmdata.session.find();
-      return root.nutrientCalculator.milkSold;
-    };
-
-    function saveInSessionStorage(result) {
-      var farmData = farmdata.session.find();
-      farmData.dateLastUpdated = new Date();
-      farmData.nutrientCalculator.milkSold = result;
-      farmdata.session.save(farmData);
-    };
 
     function load() {
       var root = farmdata.session.find();
@@ -42,14 +25,7 @@ angular.module('farmbuild.nutrientCalculator')
       return root.nutrientCalculator;
     }
 
-    /**
-     * Saves the farmData.nutrientCalculator into the sessionStorage
-     * @method saveSection
-     * @param {!object} farmData.nutrientCalculator
-     * @returns {Object} farmData.nutrientCalculator
-     * @private
-     * @static
-     */
+
     nutrientCalculatorSession.saveSection = function(section, value) {
       var loaded = load();
 
@@ -63,14 +39,6 @@ angular.module('farmbuild.nutrientCalculator')
       return save(loaded);
     }
 
-    /**
-     * Saves the farmData.nutrientCalculator into the sessionStorage
-     * @method save
-     * @param {!object} farmData.nutrientCalculator
-     * @returns {Object} farmData.nutrientCalculator
-     * @public
-     * @static
-     */
     function save(toSave) {
       var farmData = farmdata.session.find();
 
@@ -83,30 +51,16 @@ angular.module('farmbuild.nutrientCalculator')
 
       farmData.nutrientCalculator = toSave;
       farmdata.session.save(farmData);
+
       return toSave;
     }
     nutrientCalculatorSession.save = save;
 
-    /**
-     * Returns a section of the farmData as an object from the sessionStorage
-     * @method loadSection
-     * @returns {Object} the farmdata, null, if not found.
-     * @public
-     * @static
-     */
     nutrientCalculatorSession.loadSection = function(section) {
       var loaded = load();
       return loaded?loaded[section]:null;
     }
 
-    /**
-     * Returns true if the location.search has ?load=true, false otherwise
-     * @method isLoadFlagSet
-     * @param {object} location instance
-     * @returns {boolean} Returns true if the location.search has ?load=true, false otherwise
-     * @public
-     * @static
-     */
     nutrientCalculatorSession.isLoadFlagSet = function(location) {
       var load = false;
 
@@ -116,6 +70,10 @@ angular.module('farmbuild.nutrientCalculator')
       }
 
       return load;
+    }
+
+    nutrientCalculatorSession.find = function() {
+      return farmdata.session.find();
     }
 
     return nutrientCalculatorSession;

@@ -14,9 +14,10 @@
  */
 angular.module('farmbuild.nutrientCalculator')
 
-  .factory('fertilizerCalculator', function (fertilizerValidator, fertilizerDefaults, fertilizerTypes, $log) {
+  .factory('fertilizerCalculator', function (nutrientMediumCalculator, nutrientMediumValidator,
+                                             fertilizerDefaults, fertilizerTypes, $log) {
     var calculator = {},
-      validator = fertilizerValidator;
+      validator = nutrientMediumValidator;
 
     function createResult(total) {
       return {
