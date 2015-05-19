@@ -7,7 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "karma": "^0.12",
-    "karma-html2js-preprocessor": "^0.0",
+    "karma-html2js-preprocessor": "^0.1",
     "karma-fixture": "^0.2",
     "protractor": "^2.0",
     "http-server": "^0.6.1",
