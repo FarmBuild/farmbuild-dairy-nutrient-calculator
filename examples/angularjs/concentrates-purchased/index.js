@@ -41,7 +41,7 @@ angular.module('farmbuild.nutrientCalculator.examples.concentratesPurchased', ['
         return;
       }
 
-			isDry = (isDry === 'true');
+			//isDry = (isDry === 'true');
 			$scope.concentrates = concentratesPurchased.add(type, weight, isDry).concentrates();
 			$scope.result = '';
 			$scope.newConcentrate = createNew();

@@ -162,8 +162,8 @@
                     <tr ng-repeat="concentrate in concentrates">
                         <td ng-bind="concentrate.type.name"></td>
                         <td ng-bind="concentrate.weight | number : decimalPrecision"></td>
-                        <td ng-bind="concentrate.isDry ? concentrate.weight : (concentrate.weight*concentrate.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.isDry | dryWet"></td>
+                        <td ng-bind="concentrate.isDry ? concentrate.weight : (concentrate.weight*concentrate.type.dryMatterPercentage)/100 | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.metabolisableEnergyInMJPerKg | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.dryMatterPercentage | number : decimalPrecision"></td>
                         <td ng-bind="concentrate.type.sulphurPercentage | number : decimalPrecision"></td>
@@ -172,7 +172,7 @@
                         <td ng-bind="concentrate.type.nitrogenPercentage | number : decimalPrecision"></td>
                         <td>
                             <button type="button" class="btn btn-link" ng-click="removeConcentrate($index, form)">
-                                Remove
+                                Remove {{concentrate.isDry}}
                             </button>
                         </td>
                     </tr>

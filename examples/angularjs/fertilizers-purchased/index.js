@@ -46,7 +46,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
         return;
       }
 
-			isDry = (isDry === 'true');
+			//isDry = (isDry === 'true');
 			$scope.fertilizers = fertilizersPurchased.add(type, weight, isDry).fertilizers();
 			$scope.result = '';
 			$scope.newFertilizer = createNew();

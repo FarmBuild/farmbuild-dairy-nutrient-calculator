@@ -239,7 +239,7 @@
             "dryMatterPercentage": 100
           },
           "weight": 60000,
-          "isDry": false
+          "isDry": true
         },
         {
           "type": {
@@ -251,7 +251,7 @@
             "dryMatterPercentage": 100
           },
           "weight": 80000,
-          "isDry": false
+          "isDry": true
         },
         {
           "type": {
@@ -263,7 +263,7 @@
             "dryMatterPercentage": 100
           },
           "weight": 40000,
-          "isDry": false
+          "isDry": true
         }
       ],
       "weight": 180000,
