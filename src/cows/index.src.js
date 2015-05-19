@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * nutrientCalculator/cows singleton
- * @module nutrientCalculator/cows
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('cows',
   function (validations,

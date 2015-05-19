@@ -81,7 +81,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
     }
 
 		/**
-		 * Loads the farmData into session.
+		 * Loads the farmData into the session.
      * If the farmData has no nutrientCalculator section, then append one
 		 * @method load
 		 * @param {!object} farmData -
@@ -106,7 +106,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 
     /**
      * Calculates balance and updates the farmData
-     * @method balance
+     * @method calculate
      * @param {!Object} farmData
      * @returns {Object} the farmData calculated
      * @public

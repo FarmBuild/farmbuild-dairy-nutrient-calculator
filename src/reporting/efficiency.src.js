@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * nutrientEfficiency
- * @module nutrientEfficiency
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('nutrientEfficiency',
   function (validations,
@@ -20,15 +16,6 @@ angular.module('farmbuild.nutrientCalculator')
       _isPositiveNumber = validations.isPositiveNumber,
       _isDefined = validations.isDefined;
 
-    /**
-     * Calculates efficiency
-     * @method efficiency
-     * @param {!Number} importedValue
-     * @param {!Number} exportedValue
-     * @returns {Number} efficiency, undefined if the params are not positive number
-     * @private
-     * @static
-     */
     function _efficiency(importedValue, exportedValue) {
       if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue)) {
         return undefined;
@@ -37,14 +24,6 @@ angular.module('farmbuild.nutrientCalculator')
       return (exportedValue / importedValue ) * 100;
     };
 
-    /**
-     * Calculates efficiency
-     * @method calculate
-     * @param {!Object} The aggregated nutrientValues (use aggregator)
-     * @returns {Object} efficiency of the farm
-     * @public
-     * @static
-     */
     nutrientEfficiency.calculate = function (nutrientValues) {
       return {
         nitrogen: _efficiency(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg),

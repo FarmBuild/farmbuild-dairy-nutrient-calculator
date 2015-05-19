@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * milkProduction
- * @module milkProduction
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('milkProduction',
   function (validations,
@@ -83,14 +79,6 @@ angular.module('farmbuild.nutrientCalculator')
       return result;
     }
 
-    /**
-     * Calculates milk production
-     * @method calculate
-     * @param {!Object} farmData
-     * @returns {Object} milkProduction
-     * @public
-     * @static
-     */
     milkProduction.calculate = calculate;
 
     return milkProduction;

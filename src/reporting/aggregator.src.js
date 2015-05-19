@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * nutrientAggregator
- * @module nutrientAggregator
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('nutrientAggregator',
   function (validations,
@@ -77,14 +73,6 @@ angular.module('farmbuild.nutrientCalculator')
       }
     }
 
-    /**
-     * calculate incomings/outgoings from each module
-     * @method aggregate
-     * @param {!Object} farmData
-     * @returns {Object} the farmData calculated
-     * @public
-     * @static
-     */
     nutrientAggregator.calculate = function (farmData) {
       return _aggregate(farmData);
     };

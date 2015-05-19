@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * nutrientBalance
- * @module nutrientBalance
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('nutrientBalance',
   function (validations,
@@ -20,16 +16,6 @@ angular.module('farmbuild.nutrientCalculator')
       _isPositiveNumber = validations.isPositiveNumber,
       _isDefined = validations.isDefined;
 
-    /**
-     * Calculates balance
-     * @method balance
-     * @param {!Number} importedValue
-     * @param {!Number} exportedValue
-     * @param {!Number} milkingArea
-     * @returns {Number} balance
-     * @private
-     * @static
-     */
     function _balance(importedValue, exportedValue, milkingArea) {
       if (!_isPositiveNumber(importedValue) || !_isPositiveNumber(exportedValue) || !_isPositiveNumber(milkingArea)) {
         return undefined;
@@ -38,14 +24,6 @@ angular.module('farmbuild.nutrientCalculator')
       return (importedValue - exportedValue) / milkingArea;
     };
 
-    /**
-     * Calculates balance
-     * @method calculate
-     * @param {!Object} farmData
-     * @returns {Object} balance of the farm
-     * @public
-     * @static
-     */
     nutrientBalance.calculate = function (nutrientValues, milkingArea) {
       return {
         nitrogen: _balance(nutrientValues.incomings.nitrogenInKg, nutrientValues.outgoings.nitrogenInKg, milkingArea),

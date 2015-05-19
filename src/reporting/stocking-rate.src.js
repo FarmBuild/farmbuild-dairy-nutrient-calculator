@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * stockingRate
- * @module stockingRate
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('stockingRate',
   function (validations,
@@ -35,13 +31,6 @@ angular.module('farmbuild.nutrientCalculator')
       return true;
     }
 
-    /**
-     *
-     * document.getElementById('stocking_rate_milker').value = (totalmilkingcows / parseFloat(milkingarea)).toFixed(2);
-     * document.getElementById('stocking_rate_whole_farm').value = (totalmilkingcows / parseFloat(totalfarmarea)).toFixed(2);
-     * @param nutrientCalculator
-     * @returns {*}
-     */
     function calculate(nutrientCalculator, area) {
       var summary = nutrientCalculator.summary;
 
@@ -59,14 +48,6 @@ angular.module('farmbuild.nutrientCalculator')
       return result;
     }
 
-    /**
-     * Calculates stocking rate
-     * @method calculate
-     * @param {!Object} farmData
-     * @returns {Object} stockingRate
-     * @public
-     * @static
-     */
     stockingRate.calculate = calculate;
 
     return stockingRate;

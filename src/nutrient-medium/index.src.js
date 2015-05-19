@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * nutrientCalculator/nutrientMedium singleton
- * @module nutrientCalculator/nutrientMedium
- */
 angular.module('farmbuild.nutrientCalculator')
 
   .factory('nutrientMedium',

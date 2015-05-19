@@ -8,10 +8,6 @@
 
 'use strict';
 
-/**
- * feedBalance
- * @module feedBalance
- */
 angular.module('farmbuild.nutrientCalculator')
   .factory('feedBalance',
   function (validations,
@@ -19,20 +15,6 @@ angular.module('farmbuild.nutrientCalculator')
     var feedBalance = {},
       _isPositiveNumber = validations.isPositiveNumber,
       _isDefined = validations.isDefined;
-
-//      //calculate feed balance
-//      var B8 = parseFloat(forms_data['concentrates_purchased_frm'].mass);
-//      var B9 = parseFloat(forms_data['forages_purchased_frm'].mass);
-//      var B15 = parseFloat(decommafy(document.getElementById("DM_Consumed_kg_per_ha").value)) * parseFloat(milkingarea) / 1000;
-//DM_Consumed_kg_per_ha in legume
-//
-//      var forage_totalfeed_ratio = 100 * B9 / (B8 + B9 + B15);
-//      var supplement_totalfeed_ratio = 100 * B8 / (B8 + B9 + B15);
-//      var homegrown_totalfeed_ratio = 100 * B15 / (B8 + B9 + B15);
-//    document.getElementById("forage_totalfeed_ratio").value = commafy(forage_totalfeed_ratio.toFixed(0));
-//    document.getElementById("supplement_totalfeed_ratio").value = commafy(supplement_totalfeed_ratio.toFixed(0));
-//    document.getElementById("homegrown_totalfeed_ratio").value = commafy(homegrown_totalfeed_ratio.toFixed(0));
-//    document.getElementById("supplement_homegrown_ratio").value = commafy((100*(forage_totalfeed_ratio+supplement_totalfeed_ratio)/homegrown_totalfeed_ratio).toFixed(0));
 
     function validate(summary, concentratesPurchased, foragesPurchased, legumes) {
       if(!_isDefined(summary) ||
@@ -99,14 +81,6 @@ angular.module('farmbuild.nutrientCalculator')
       return result;
     }
 
-    /**
-     * Calculates milk production
-     * @method calculate
-     * @param {!Object} farmData
-     * @returns {Object} milkProduction
-     * @public
-     * @static
-     */
     feedBalance.calculate = calculate;
 
     return feedBalance;
