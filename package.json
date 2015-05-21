@@ -19,7 +19,7 @@
     "uglify-js": "2.4.19",
     "jshint": "2.6.3",
     "ncp": "2.0.0",
-    "replace": "0.3.0",
+    "replace": "^0.3",
     "livereload": "0.3.7",
     "connect": "3.3.5",
     "serve-static": "1.9.2",
