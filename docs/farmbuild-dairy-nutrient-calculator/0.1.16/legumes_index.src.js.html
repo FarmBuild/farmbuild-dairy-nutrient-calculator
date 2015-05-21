@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows/types.src.js - Documentation</title>
+    <title>legumes/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows/types.src.js</h1>
+    <h1 class="page-title">legumes/index.src.js</h1>
     
 
     
@@ -49,106 +49,112 @@
 'use strict';
 
 /**
- * nutrientCalculator/cowTypes singleton
- * @module nutrientCalculator/cowTypes
+ * nutrientCalculator/legume singleton
+ * @module nutrientCalculator/legume
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('cowTypes',
-  function (cowTypeDefaults, collections, validations, $log) {
 
-    var cowTypes,
-      _isPositiveNumber = validations.isPositiveNumber,
-      _isEmpty = validations.isEmpty,
-      _types = angular.copy(cowTypeDefaults);
+	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
 
-    function _create(name, weight) {
-      var type = {
-        name: name,
-        weight: weight
-      };
-      return type
-    }
+		var legumes,
+			_isDefined = validations.isDefined,
+			_isPositiveNumber = validations.isPositiveNumber,
+			_utilisationFactors = angular.copy(utilisationFactorsValues);
 
-    function _validate(type) {
-      $log.info('validating type  ...', type);
+		function _validate(legume) {
+			$log.info('validating legume ...', legume);
 
-      var valid =
-        !(_isEmpty(type)) &amp;&amp;
-        !(_isEmpty(type.name) ||
-        !_isPositiveNumber(type.weight));
+			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
+				return false;
+			}
+			return true;
+		};
 
-      if(!valid) {
-        $log.error('invalid type: %j', type);
-      }
+		/**
+		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
+		 * @method calculate
+		 * @param {!Number} milkSoldPerYearInLitre 
+		 * @param {!Number} milkFatInKg
+		 * @param {!Number} milkProteinInKg
+		 * @param {!Number} numberOfMilkingCows 
+		 * @param {!Number} numberOfMilkingDays 
+		 * @param {!Number} averageCowWeightInKg
+		 * @param {!Number} forageMetabolisableEnergyInMJ
+		 * @param {!Number} concentrateMetabolisableEnergyInMJ
+		 * @param {!Number} milkingAreaInHa
+		 * @param {!Number} utilisationFactor 
+		 * @param {!Number} nitrogenFromFertiliserInKg
+		 * @param {!Number} legumePercentage 
+		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
+		 * @public
+		 * @static
+		 */
+		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
+		                    milkProteinInKg, numberOfMilkingCows,
+		                    numberOfMilkingDays, averageCowWeightInKg,
+		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
+		                    milkingAreaInHa, utilisationFactor,
+		                    nitrogenFromFertiliserInKg, legumePercentage) {
+			$log.info('calculating legumes nutrient ...');
 
-      return valid;
-    }
+			if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProteinInKg) ||
+				!_isPositiveNumber(milkFatInKg) || !_isPositiveNumber(numberOfMilkingCows) ||
+				!_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(averageCowWeightInKg) ||
+				!_isPositiveNumber(forageMetabolisableEnergyInMJ) || !_isPositiveNumber(concentrateMetabolisableEnergyInMJ) ||
+				!_isPositiveNumber(milkingAreaInHa) || !_isPositiveNumber(utilisationFactor) ||
+				!_isPositiveNumber(nitrogenFromFertiliserInKg) || !_isPositiveNumber(legumePercentage)) {
+				return undefined;
+			}
 
-    function _add(types, name, weight) {
-      var type = _create(name, weight);
-      $log.info('adding a type ...', type);
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
+				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
+				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
+				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
+				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
+				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
 
-      if (!_validate(type)) {
-        return undefined;
-      }
+			return {
+				importedEnergyConsumedInMJ: importedEnergyConsumed,
+				utilisationFactor: utilisationFactor,
+				dryMatterConsumedPerHaInKg: dryMatterConsumed,
+				dryMatterGrownPerHaInKg: dryMatterGrown,
+				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
+				availableNitrogenFromLegumesPerHaInKg: availableNitrogenFromLegumes,
+				availableNitrogenToPasturePerHaInKg: availableNitrogenToPasture,
+				cattleEnergyUsedInMJ: cattleEnergyUsed,
+				milkEnergyInMJ: milkEnergy.total,
+				milkEnergyNotSoldInMJ: milkEnergy.notSold,
+				milkProteinInKg: milkProteinInKg,
+				milkFatInKg: milkFatInKg,
+				milkSoldPerYearInLitre: milkSoldPerYearInLitre,
+				legumePerHaInKg: totalLegume,
+				legumePercentage: legumePercentage
+			};
 
-      return collections.add(types, type);
-    };
+		};
 
-    /**
-     * cowTypes types collection api
-     * @property {object} Types - cowTypes types collection
-     * @public
-     * @static
-     */
-    cowTypes = {
-      /**
-       * Adds a new cowTypes type for nutrient calculation
-       * @method add
-       * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-       * @param {!number} dryMatterPercentage - value must be > 0
-       * @param {!number} sulphurPercentage - value must be > 0
-       * @param {!number} potassiumPercentage - value must be > 0
-       * @param {!number} phosphorusPercentage - value must be > 0
-       * @param {!number} nitrogenPercentage - value must be > 0
-       * @returns {object} cowTypess
-       * @public
-       * @static
-       */
-      add: _add,
-      /**
-       * Returns the cowTypes at specified index
-       * @method at
-       * @returns {object} cowTypes
-       * @public
-       * @static
-       */
-      at: function(index) { return collections.at(_types, index)},
-      size: function() { return collections.size(_types)},
-      byName: function(name) { return collections.byProperty(_types, 'name', name)},
-      /**
-       * Returns cowTypes collection as an array
-       * @method toArray
-       * @returns {Array} cowTypes
-       * @public
-       * @static
-       */
-      toArray: function() { return angular.copy(_types) },
-      /**
-       * Removes the fertilizer type at specified index
-       * @method removeAt
-       * @returns {object} cowTypes collection
-       * @public
-       * @static
-       */
-      removeAt: function(index) { return collections.removeAt(_types, index)},
-      last: function() { return collections.last(_types) },
-      validate: _validate,
-      create: _create
-    };
+		/**
+		 * Utilisation factors reference values
+		 * @method utilisationFactors
+		 * @returns {Array} utilisationFactors
+		 * @public
+		 * @static
+		 */
+		function utilisationFactors(){
+			return _utilisationFactors;
+		}
 
-    return cowTypes;
-  });</code></pre>
+		legumes = {
+			calculate: _calculate,
+			utilisationFactors: utilisationFactors
+		};
+
+		return legumes;
+	});
+</code></pre>
         </article>
     </section>
 
@@ -160,7 +166,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue May 19 2015 17:04:58 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 13:40:45 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

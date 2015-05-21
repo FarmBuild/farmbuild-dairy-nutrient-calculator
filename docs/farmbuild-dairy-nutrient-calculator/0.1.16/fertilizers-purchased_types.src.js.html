@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>concentrates-purchased/types.src.js - Documentation</title>
+    <title>fertilizers-purchased/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">concentrates-purchased/types.src.js</h1>
+    <h1 class="page-title">fertilizers-purchased/types.src.js</h1>
     
 
     
@@ -49,35 +49,30 @@
 'use strict';
 
 /**
- * nutrientCalculator/concentrateTypes singleton
- * @module nutrientCalculator/concentrateTypes
+ * nutrientCalculator/fertilizerTypes singleton
+ * @module nutrientCalculator/fertilizerTypes
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('concentrateTypes',
-  function (collections, validations,
-            nutrientMediumTypes, concentrateDefaults, $log) {
+  .factory('fertilizerTypes', function (collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
 
-    var concentrateTypes,
-      _types = angular.copy(concentrateDefaults.types),
+    var fertilizerTypes,
+      _types = angular.copy(fertilizerDefaults.types),
       _validate = nutrientMediumTypes.validate;
 
-    function _add(name, dryMatterPercentage,
-                  sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
-                  metabolisableEnergyInMJPerKg) {
+    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
       return nutrientMediumTypes.add(_types, name,
-        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage,
-        metabolisableEnergyInMJPerKg);
+        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
     };
 
     /**
-     * Concentrate types collection api
-     * @property {object} Types - concentrate types collection
+     * Fertilizer types collection api
+     * @property {object} Types - fertilizer types collection
      * @public
      * @static
      */
-    concentrateTypes = {
+    fertilizerTypes = {
       /**
-       * Adds a new concentrate type for nutrient calculation
+       * Adds a new fertilizer type for nutrient calculation
        * @method add
        * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
        * @param {!number} dryMatterPercentage - value must be > 0
@@ -85,35 +80,34 @@ angular.module('farmbuild.nutrientCalculator')
        * @param {!number} potassiumPercentage - value must be >= 0
        * @param {!number} phosphorusPercentage - value must be >= 0
        * @param {!number} nitrogenPercentage - value must be >= 0
-       * @param {!number} metabolisableEnergyInMJPerKg - value must be > 0
-       * @returns {object} types
+       * @returns {object} fertilizers
        * @public
        * @static
        */
       add: _add,
       /**
-       * Returns the concentrateType at specified index
+       * Returns the fertilizerType at specified index
        * @method at
-       * @returns {object} concentrateType
+       * @returns {object} fertilizerType
        * @public
        * @static
        */
       at: function(index) { return collections.at(_types, index)},
       size: function() { return collections.size(_types)},
       byName: function(name) { return collections.byProperty(_types, 'name', name)},
-      defaultTypes: function() { return angular.copy(concentrateDefaults.types)},
+      defaultTypes: function() { return angular.copy(fertilizerDefaults.types)},
       /**
-       * Returns concentrateTypes collection as an array
+       * Returns fertilizerTypes collection as an array
        * @method toArray
-       * @returns {Array} concentrateTypes
+       * @returns {Array} fertilizerTypes
        * @public
        * @static
        */
       toArray: function() { return angular.copy(_types) },
       /**
-       * Removes the concentrate type at specified index
+       * Removes the fertilizer type at specified index
        * @method removeAt
-       * @returns {object} concentrateTypes collection
+       * @returns {object} fertilizerTypes collection
        * @public
        * @static
        */
@@ -121,19 +115,19 @@ angular.module('farmbuild.nutrientCalculator')
       last: function() { return collections.last(_types) },
       validate: _validate,
       /**
-       * Loads the types in concentratesPurchasedSection.types
+       * Loads the types in fertilizersPurchasedSection.types
        * @method load
-       * @param concentratesPurchasedSection
+       * @param fertilizersPurchasedSection
        * @returns {object} fertilizersPurchased
        * @public
        * @static
        */
-      load: function(concentratesPurchasedSection) {
-        _types = concentratesPurchasedSection.types;
+      load: function(fertilizersPurchasedSection) {
+        _types = fertilizersPurchasedSection.types;
       }
     };
 
-    return concentrateTypes;
+    return fertilizerTypes;
   });</code></pre>
         </article>
     </section>
@@ -146,7 +140,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue May 19 2015 17:04:58 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 13:40:45 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
