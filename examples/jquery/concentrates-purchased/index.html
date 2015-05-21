@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Farm Build Nutrient Calculator - Concentrates Purchased (jQuery)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body">
+<content>
+    <h3>
+        Farmbuild Diary Nutrient Calculator - Concentrates Purchased
+        <small>(jQuery)</small>
+    </h3>
+    <hr/>
+    <form id="addConcentrateType" role="form" novalidate>
+        <fieldset>
+            <legend>
+                Here is a list of concentrates available, please add a new type if necessary.
+            </legend>
+           <error  class="errorMsg col-sm-12 bg-danger" style="display: none" ng-show="noResult">
+                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
+            </error>
+            <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
+                <notification message="msgVehicle"
+                              show="true" invalid="form.registration.$error.required"></notification>
+                <table id="concentrateTypesTbl" class="table table-striped table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Metabolisable Energy (MJ/Kg)</th>
+                        <th>Dry Matter (%)</th>
+                        <th>Sulphur (%)</th>
+                        <th>Potassium (%)</th>
+                        <th>Phosphorus (%)</th>
+                        <th>Nitrogen (%)</th>
+                        <th></th>
+                    </tr>
+                    <tr class="form-input">
+                        <td>
+                            <input name="name" id="name"
+                                  type="text" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="metabolisableEnergyRatio" id="metabolisableEnergyInMJPerKg"
+                                   type="number" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="dryMatterPercentage" id="dryMatterPercentage"
+                                    type="number" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="sulphurPercentage" id="sulphurPercentage"
+                                    type="number" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="potassiumPercentage" id="potassiumPercentage"
+                                    type="number" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="phosphorusPercentage" id="phosphorusPercentage"
+                                   type="number" class="form-control"/>
+                        </td>
+                        <td>
+                            <input name="nitrogenPercentage" id="nitrogenPercentage"
+                                    type="number" class="form-control"/>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="icon fa fa-plus"></i>
+                                Add Type
+                            </button>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </form-item>
+        </fieldset>
+    </form>
+    <hr/>
+    <form role="form" name="form" id="calculate" novalidate>
+        <fieldset>
+            <legend>
+                Please enter the combination of concentrates available in the farm to calculate the nutrient
+            </legend>
+            <error  class="errorMsg col-sm-12 bg-danger" style="display: none" ng-show="noResult">
+                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
+            </error>
+            <form-item class="form-group col-lg-12 col-md-12 col-sm-12">
+                <notification message="msgVehicle"
+                              show="true" invalid="form.registration.$error.required"></notification>
+                <table id="concentratesTbl" class="table table-striped table-hover">
+                    <tr>
+                        <th>Type</th>
+                        <th>Total Weight (kg)</th>
+                        <th>Dry Matter Weight (kg)</th>
+                        <th>Wet/Dry</th>
+                        <th>Metabolisable Energy (MJ/Kg)</th>
+                        <th>Dry Matter (%)</th>
+                        <th>Sulphur (%)</th>
+                        <th>Potassium (%)</th>
+                        <th>Phosphorus (%)</th>
+                        <th>Nitrogen (%)</th>
+                        <th></th>
+                    </tr>
+                    <tr class="form-input">
+                        <td>
+                            <select name="concentrateTypeSelect" id="concentrateTypeSelect" class="form-control"                                    >
+                                <option value="default">Select type</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input name="newConcentrateWeight" id="newConcentrateWeight"
+                                   type="number" class="form-control" placeholder="Enter weight"/>
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            <select name="isDry" id="isDry" class="form-control">
+								<option value="default">Select wet/dry</option>
+                                <option value="true">Dry</option>
+                                <option value="false">Wet</option>                               
+                            </select>
+                        </td>
+                        <td>
+                            <span id='newConcentrateType_metabolisableEnergyInMJPerKg'></span>
+                        </td>
+                        <td>
+                            <span id='newConcentrateType_dryMatterPercentage'></span>
+                        </td>
+                        <td>
+                            <span id='newConcentrateType_sulphurPercentage'></span>
+                        </td>
+                        <td>
+                            <span id='newConcentrateType_potassiumPercentage'></span>
+                        </td>
+                        <td>
+                            <span id='newConcentrateType_phosphorusPercentage'></span>
+                        </td>
+                        <td>
+                            <span id='newConcentrateType_nitrogenPercentage'></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary"
+                                    id="addConcentrate">
+                                <i class="icon fa fa-plus"></i>
+                                Add concentrate
+                            </button>
+                        </td>
+                    </tr>
+                   
+                </table>
+            </form-item>
+        </fieldset>
+        <buttons>
+            <button type="button" id = "calculateNutrient"  class="btn btn-primary">
+                Calculate nutrient
+            </button>
+        </buttons>
+    </form>
+    <summary>
+        <fieldset>
+            <legend>
+                Summary - Total nutrient imported on to the farm in concentrates
+            </legend>
+            <error  class="errorMsg col-sm-12 bg-danger" style="display: none" ng-show="noResult">
+                There is a problem with input values. Please read <a href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for more information
+            </error>
+            <form-item class="form-group col-sm-6">
+                <p>Total weight (Kg): <span id="result_weight"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Total Dry Matter weight (Kg): <span id="result_dryMatterWeight"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Phosphorus (Kg): <span id="result_phosphorusInKg"></span></p>
+                <p>Phosphorus (%): <span id="result_phosphorusPercentage"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Potassium (Kg): <span id="result_potassiumInKg"></span></p>
+                <p>Potassium (%): <span id="result_potassiumPercentage"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Sulphur (Kg): <span id="result_sulphurInKg"></span></p>
+                <p>Sulphur (%): <span id="result_sulphurPercentage"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Nitrogen (Kg): <span id="result_nitrogenInKg"></span></p>
+                <p>Nitrogen (%): <span id="result_nitrogenPercentage"></span></p>
+            </form-item>
+            <form-item class="form-group col-sm-6">
+                <p>Metabolisable Energy (MJ/Kg): <span id="result_metabolisableEnergyInMJPerKg"></span></p>
+                <p>Total Metabolisable Energy (MJ): <span id="result_metabolisableEnergyInMJ"></span></p>
+            </form-item>
+        </fieldset>
+    </summary>
+    <version class="col-md-12">
+        Version: <span id="app-version"></span>
+    </version>
+</content>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="../../../dist/farmbuild-core.js"></script>
+<script src="../../../dist/farmbuild-farmdata.js"></script>
+<script src="../../../dist/farmbuild-nutrientcalculator.js"></script>
+<script src="../../config.js"></script>
+<script src="index.js"></script>
+
+
+</body>
+</html>
