@@ -1,4 +1,4 @@
-# Farm Dairy Nutrient Calculator
+#FarmBuild Dairy Nutrient Calculator
 
 This is the dairy nutrient calculator module of farm build JavaScript library.
 
