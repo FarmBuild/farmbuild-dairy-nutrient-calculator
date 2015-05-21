@@ -17,7 +17,7 @@ exports.config = {
   ],
 
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome'//firefox chrome
   },
 
   baseUrl: 'http://localhost:8000/examples/angularjs',

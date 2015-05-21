@@ -33,7 +33,6 @@ module.exports = function(config){
       'src/legumes/utilisation-factors.conf.src.js',
       'src/legumes/calculator.src.js',
       'src/legumes/index.src.js',
-      'src/collections/index.src.js',
       'src/fertilizers-purchased/defaults.conf.src.js',
       'src/fertilizers-purchased/types.src.js',
       'src/fertilizers-purchased/validator.src.js',
@@ -66,7 +65,6 @@ module.exports = function(config){
 //      'src/concentrates-purchased/types.spec.js',
 //      'src/concentrates-purchased/index.spec.js',
 //      'src/session/index.spec.js',
-//      'src/collections/index.spec.js',
 //      'src/ga/index.spec.js',
       'src/**/*.spec.js',
       {pattern: 'examples/data/*.json'}
