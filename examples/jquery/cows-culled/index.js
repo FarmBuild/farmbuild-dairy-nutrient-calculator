@@ -1,0 +1,182 @@
+'use strict';
+
+$(function(){
+	
+	var nc = farmbuild.nutrientcalculator,
+		decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
+	
+
+	$('#app-version').text(farmbuild.examples.nutrientcalculator.version);
+
+	var errorMsg = $('.errorMsg');
+	
+	errorMsg.hide();		
+	
+	var result={};
+	var noResult = false;
+	
+	var cows = [];
+	var cowTypes = nc.cowsCulled.types();
+	var cowtypesel = $('#cowTypeSelect');	
+	for(var i=0; i<cowTypes.length; i++){
+		$('#cowTypesTbl').append('<tr><td>'+cowTypes[i].name+'</td><td>'+cowTypes[i].weight+'</td><td></td></tr>');		
+		//add select options
+		cowtypesel
+         .append($("<option></option>")
+         .attr("value",cowTypes[i].name)
+         .text(cowTypes[i].name+' ('+cowTypes[i].weight+' Kg)')); 
+	}
+	
+	
+	function addCowType(type) {
+
+			//Validate type
+			if(!type || !type.name || !type.weight){
+				noResult = true;
+				return;
+			}
+
+			noResult = !nc.cowsCulled.addType(type.name, type.weight);			
+			cowTypes = nc.cowsCulled.types();
+			type = '';
+			
+			
+		};	
+	//select onchange function
+	cowtypesel.on('change', function() {
+		var noselection=true;
+		
+		for(var i=0; i<cowTypes.length; i++){
+		if(cowTypes[i].name==this.value) {			
+			$('#avgCowWeight').text(cowTypes[i].weight);
+			noselection=false;
+		}
+		}
+		if(noselection==true) $('#avgCowWeight').text('');
+	});
+	function isPositiveInteger(s)
+	{    
+		return /^\d+$/.test(s);	
+	}
+	//Calculate total weight to show in the table
+	$("#numberOfCows").keyup(function() {
+			var numofcows = $('#numberOfCows').val();
+			
+		     if(!isPositiveInteger(numofcows)){
+				 noResult = true;
+				 errorMsg.show();				
+			 }else{ 
+				$("#totalCowWeight").text(parseFloat($('#avgCowWeight').text())*parseInt($('#numberOfCows').val()));			
+				errorMsg.hide();
+			 }
+	});
+	
+	
+    //add cow type to the API and also to the cowTypesTbl table
+	$('#addCowType').submit(function(event){
+		
+		var newtype={name:'', weight:''};
+		newtype.name=$('#typeName').val();
+		newtype.weight=$('#typeWeight').val();
+		addCowType(newtype);
+		
+		if(noResult==true){
+			errorMsg.show();
+		}else{
+			errorMsg.hide();
+			$('#cowTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.weight+'</td><td></td></tr>');
+				//add to select
+				cowtypesel
+					.append($("<option></option>")
+					.attr("value",newtype.name)
+					.text(newtype.name+' ('+newtype.weight+' Kg)')); 
+						
+		 
+		}
+		
+		//reset form
+		$('#typeName').val('');
+		$('#typeWeight').val('');
+		//event.preventDefault();
+		return false;
+	});
+	//adds cows to the cow table and also in cows array/object to be used in later calculate
+	$("#addCows").click(function() {
+            
+			noResult = false;
+			var cowType; 
+			for(var i=0; i<cowTypes.length; i++){
+				if(cowTypes[i].name==cowtypesel.val()) cowType=cowTypes[i];
+			} //get curretnly selected cowType
+			
+			var numberOfCows = parseInt($("#numberOfCows").val());
+			
+			//Validate numberOfCows to be a valid number
+			if(!cowType || !isPositiveInteger(numberOfCows)){
+				noResult = true;
+				//errorMsg.show();
+				//return;
+			}            
+				
+			if(noResult==false){
+				cows.push({
+					name: cowType.name,
+					weight: cowType.weight,
+					numberOfCows: numberOfCows
+				});		
+				errorMsg.hide();
+				//add to cowsTbl
+				$('#cowsTbl').append('<tr><td>'+cowType.name+'</td><td>'+numberOfCows+'</td><td>'+cowType.weight+'</td><td>'+numberOfCows * cowType.weight+'</td><td><button type="button" class="btn btn-link" id="deleteRow"  > Remove</button></td></tr>');
+			}else{
+				errorMsg.show();
+			}
+			
+			//reset form 
+			$("#numberOfCows").val('');
+			$("#cowTypeSelect").val("default");	
+			$('#avgCowWeight').text('');
+			$("#totalCowWeight").text('');
+			cowType = '';
+			numberOfCows = '';
+			result = {};
+		});
+		
+	//this function is used to remove a row of cows added
+	$("body").on("click", "#deleteRow", function(e){	
+		
+		var index = $(this).closest('tr').index()-2; //cows array row i = table row index - 2 to exclude two top rows
+		
+		if(index > -1) {
+			$(this).closest('tr').remove(); //remove the table row
+			cows.splice(index, 1); //remove from the cows array
+		}
+		
+	});
+	
+	$("#calculateNutrient").click(function () {
+			//call the nutrient calculator API function
+			result = nc.cowsCulled.calculate(cows);
+						
+			noResult = !result;
+			if(noResult==false){
+				errorMsg.hide();
+				
+				var resultNumberOfCows = $('#resultNumberOfCows');
+				var resultWeight = $('#resultWeight');
+				var resultPhosphorusInKg= $('#resultPhosphorusInKg');
+				var resultPotassiumInKg= $('#resultPotassiumInKg');
+				var resultSulphurInKg= $('#resultSulphurInKg');
+				var resultNitrogenInKg= $('#resultNitrogenInKg');
+			
+				resultNumberOfCows.text(parseInt(result.numberOfCows));
+				resultWeight.text(parseFloat(result.weight));
+				resultPhosphorusInKg.text(parseFloat(result.phosphorusInKg).toFixed(decimalPrecision));
+				resultPotassiumInKg.text(parseFloat(result.potassiumInKg).toFixed(decimalPrecision));
+				resultSulphurInKg.text(parseFloat(result.sulphurInKg).toFixed(decimalPrecision));
+				resultNitrogenInKg.text(parseFloat(result.nitrogenInKg).toFixed(decimalPrecision));
+			}else{
+				errorMsg.show();
+			}
+			});
+	
+});
