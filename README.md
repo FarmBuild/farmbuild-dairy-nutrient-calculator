@@ -18,7 +18,7 @@ Unzip the downloaded folder and go to "examples" and open one of the html files 
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/concentrates-purchased/index.html" target="_blank">Concentrates Purchased - angularJS example</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/legumes/index.html" target="_blank">Legumes - angularJS example</a>
 
-<a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/docs/farmbuild-dairy-nutrient-calculator/0.1.18/index.html" target="_blank">API documentation</a>
+<a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/docs/farmbuild-dairy-nutrient-calculator/0.1.19/index.html" target="_blank">API documentation</a>
 
 
 For more information about API and Testing see the [Wiki](https://github.com/SpatialVision/farm-build-nutrient-calculator/wiki) section.

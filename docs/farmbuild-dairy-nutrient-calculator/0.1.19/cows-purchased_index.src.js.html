@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>milk-sold/index.src.js - Documentation</title>
+    <title>cows-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">milk-sold/index.src.js</h1>
+    <h1 class="page-title">cows-purchased/index.src.js</h1>
     
 
     
@@ -39,200 +39,229 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
-* @since 0.0.1
-* @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
-* @license The MIT License
-* @author Spatial Vision
-* @version 0.1.0
-*/
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
 
 'use strict';
 
 /**
- * nutrientCalculator/milkSold singleton
- * @module nutrientCalculator/milkSold
+ * nutrientCalculator/cowsPurchased singleton
+ * @module nutrientCalculator/cowsPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('milkSold',
-  function ($log, validations, nutrientCalculatorSession) {
+	.factory('cowsPurchased',
+  function (validations,
+            cowTypeDefaults,
+            cowValidator,
+            cowTypes,
+            cows,
+            nutrientCalculatorSession
+    ) {
 
-		var milkSold = {},
-				_isPositiveNumber = validations.isPositiveNumber;
-    function createDefault() {
-      return {
-        totalPerYearInLitre: 0,
-        fatInKg: 0,
-        fatPercentage: 0,
-        proteinInKg: 0,
-        proteinPercentage: 0
-      };
-    }
-    milkSold.createDefault = createDefault;
+		var cowsPurchased = {},
+			_isPositiveNumber = validations.isPositiveNumber,
+			_isAlphanumeric = validations.isAlphanumeric,
+			_isDefined = validations.isDefined,
+			_types = angular.copy(cowTypeDefaults),
+      _cows = [],
+      validator = cowValidator;
 
-    function saveToSession(result) {
-      nutrientCalculatorSession.saveSection('milkSold', result);
-      return result;
-    }
+    cowsPurchased.validateNew = cows.validateNew;
 
 		/**
-		 * Calculates nutrient from milk sold, input values are in percentage
-		 * @method calculateByPercent
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0
-		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0
-		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0
-		 * @returns {object} milk nutrient data
+		 * Calculates total nutrient imported on to the farm in cows
+		 * @method calculate
+		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type{name, weight}, numberOfCows}
+		 * @returns {object} nutrient data of cows purchased
 		 * @public
 		 * @static
 		 */
-		milkSold.calculateByPercent = function(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage) {
-			var milkProteinInKg, milkFatInKg;
+		cowsPurchased.calculate = function (cows) {
+			var numberOfCows = 0,
+				weight = 0,
+				nitrogenInKg = 0,
+				phosphorusInKg = 0,
+				potassiumInKg = 0,
+				sulphurInKg = 0,
+				nitrogenPercentage = 2.8,
+				phosphorusPercentage = 0.72,
+				potassiumPercentage = 0.2,
+				sulphurPercentage = 0.8,
+				incomings = [],
+				i = 0;
 
-			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinPercentage, milkFatPercentage, '%')) {
-        $log.error('validation failed, ')
+			if (!cows || cows.length === 0) {
 				return undefined;
 			}
 
-			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-			milkProteinPercentage = parseFloat(milkProteinPercentage);
-			milkFatPercentage = parseFloat(milkFatPercentage);
+			for (i; i &lt; cows.length; i++) {
+				var cowWeight,
+					cowCount,
+					cow = cows[i];
 
-			milkProteinInKg = _percentageToKg(milkProteinPercentage, milkSoldPerYearInLitre);
-			milkFatInKg = _percentageToKg(milkFatPercentage, milkSoldPerYearInLitre);
-			var result =  _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+				if (!cow.name || !cow.weight) {
+					return undefined;
+				}
 
-      return saveToSession(result);
-    };
+				cowWeight = cow.weight;
+				cowCount = cow.numberOfCows;
 
-		/**
-		 * Calculates nutrient from milk sold, input values are in Kg
-		 * @method calculateByKg
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0
-		 * @param {!number} milkFatInKg - Quantity of milk fat in Kg, value must be > 0
-		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kg, value must be > 0
-		 * @returns {object} milk nutrient data
-		 * @public
-		 * @static
-		 */
-		milkSold.calculateByKg = function(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg) {
-			var milkProteinPercentage, milkFatPercentage;
+				if (!_isPositiveNumber(cowCount)) {
+					return undefined;
+				}
 
-			if(!_validateInputs(milkSoldPerYearInLitre, milkProteinInKg, milkFatInKg, 'kg')){
-				$log.error('validation failed...');
-        return undefined;
+				weight += cowWeight * cowCount;
+				numberOfCows += cowCount;
+				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
+				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
+				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
+				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
+				incomings.push({
+					name: cow.name,
+					numberOfCows: cowCount,
+					weight: cow.weight
+				});
 			}
 
-			milkSoldPerYearInLitre = parseFloat(milkSoldPerYearInLitre);
-			milkProteinInKg = parseFloat(milkProteinInKg);
-			milkFatInKg = parseFloat(milkFatInKg);
+      var result =  {
+				cows: incomings,
+				numberOfCows: numberOfCows,
+				weight: weight,
+				nitrogenInKg: nitrogenInKg,
+				phosphorusInKg: phosphorusInKg,
+				potassiumInKg: potassiumInKg,
+				sulphurInKg: sulphurInKg
+			};
 
-			milkFatPercentage = _kgToPercentage(milkFatInKg, milkSoldPerYearInLitre);
-			milkProteinPercentage = _kgToPercentage(milkProteinInKg, milkSoldPerYearInLitre);
-			var result =  _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage);
+      result.types = _types;
 
-      return saveToSession(result);
+      nutrientCalculatorSession.saveSection('cowsPurchased', result);
+
+      return result;
 		};
 
 		/**
-		 * Returns true if input values are valid
-		 * @method _validateInputs
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0
-		 * @param {!number} milkProtein - Quantity of milk fat in Kg/Percentage, value must be > 0
-		 * @param {!number} milkFat - Quantity of milk protein in Kg/Percentage, value must be > 0
-		 * @param {!string} unit - Percentage or Kg
-		 * @returns {boolean} validity of input values
-		 * @private
+		 * Adds a new cow type for nutrient calculation
+		 * @method addType
+		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
+		 * @returns {object} cowsPurchased - useful for chaining multiple add()
+		 * @public
+		 * @static
 		 */
-		function _validateInputs(milkSoldPerYearInLitre, milkProtein, milkFat, unit){
-
-			if (!milkSoldPerYearInLitre || !milkProtein || !milkFat || !unit) {
-				return false;
+		cowsPurchased.addType = function (name, weight) {
+			if (!_isPositiveNumber(weight)) {
+				return undefined;
 			}
 
-			if(!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProtein) || !_isPositiveNumber(milkFat)){
-				return false;
+			if (!name || !_isAlphanumeric(name)) {
+				return undefined;
 			}
 
-			if(unit === '%' &amp;&amp; milkProtein + milkFat > 100){
-				return false;
+			weight = parseFloat(weight);
+
+			_types.push({
+				name: name,
+				weight: weight
+			});
+
+			return cowsPurchased;
+		};
+		
+				/**
+		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
+		 * @method removeTypeByName
+		 * @param {!String} name - name of the type you want to remove.
+		 * @returns {Object} CowsCulled - useful for chaining functions
+		 * @public
+		 * @static
+		 */
+		cowsPurchased.removeTypeByName = function (name) {
+
+			if (!name) {
+				return undefined;
 			}
 
-			if(unit === 'kg' &amp;&amp; milkProtein + milkFat > milkSoldPerYearInLitre){
-				return false;
-			}
+			angular.forEach(_types, function(type, i){
+				if(type.name === name){
+					_types.splice(i, 1);
+				}
+			});
 
-			return true;
-
-		}
+			return _types;
+		};
 
 		/**
-		 * Returns nutrient data of milk
-		 * @method _calculate
-		 * @param {!number} milkSoldPerYearInLitre - Quantity of milk sold in a year in litre, value must be > 0 and can have up to 2 decimal places
-		 * @param {!number} milkFatInKg - Quantity of milk fat in Kilograms, value must be > 0
-		 * @param {!number} milkProteinInKg - Quantity of milk protein in Kilograms, value must be > 0
-		 * @param {!number} milkProteinPercentage - Percentage of milk protein, value must be > 0
-		 * @param {!number} milkFatPercentage - Percentage of milk fat, value must be > 0
-		 * @returns {object} milk nutrient data
-		 * @private
+		 * Remove this cow from cow types
+		 * @method removeTypeByIndex
+		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
+		 * @returns {Object} CowsCulled - useful for chaining functions
+		 * @public
+		 * @static
 		 */
-		function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, milkProteinPercentage, milkFatPercentage) {
+		cowsPurchased.removeTypeByIndex = function (index) {
 
-			var nitrogenPercentage = milkProteinPercentage / 6.33,
-				phosphorusPercentage = (0.0111 * milkFatPercentage + 0.05255),
-				potassiumPercentage = 0.14, sulphurPercentage = 0.06,
-				nitrogenInKg = (milkSoldPerYearInLitre * nitrogenPercentage / 100),
-				potassiumInKg = (milkSoldPerYearInLitre * potassiumPercentage / 100),
-				sulphurInKg = (milkSoldPerYearInLitre * sulphurPercentage / 100),
-				phosphorusInKg = (milkSoldPerYearInLitre * phosphorusPercentage / 100);
+			if (!_isDefined(index) || index &lt; 0 || index > _types.length-1) {
+				return undefined;
+			}
 
-      var result =  {
-				totalPerYearInLitre: milkSoldPerYearInLitre,
-				fatInKg: milkFatInKg,
-				fatPercentage: milkFatPercentage,
-				proteinInKg: milkProteinInKg,
-				proteinPercentage: milkProteinPercentage,
-				nitrogenInKg: nitrogenInKg,
-				nitrogenPercentage: nitrogenPercentage,
-				phosphorusInKg: phosphorusInKg,
-				phosphorusPercentage: phosphorusPercentage,
-				potassiumInKg: potassiumInKg,
-				potassiumPercentage: potassiumPercentage,
-				sulphurInKg: sulphurInKg,
-				sulphurPercentage: sulphurPercentage
-			};
+			_types.splice(index, 1);
 
-      nutrientCalculatorSession.saveSection('milkSold', result);
+			return _types;
+		};
 
-      return result;
-
-		}
 
 		/**
-		 * Returns nutrient value in percentage
-		 * @method _kgToPercentage
-		 * @param {!number} valueInKg - Quantity of milk protein in Kilograms
-		 * @param {!number} totalInLitre - Percentage of milk protein
-		 * @returns {number} nutrient value in percentage
-		 * @private
+		 * Returns current cow types
+		 * @method types
+		 * @returns {object} Types - cow types array
+		 * @public
+		 * @static
 		 */
-		function _kgToPercentage(valueInKg, totalInLitre) {
-			return (valueInKg / totalInLitre) * 100;
-		}
+		cowsPurchased.types = function () {
+			return _types;
+		};
 
-		/**
-		 * Returns nutrient value in Kg
-		 * @method _percentageToKg
-		 * @param {!number} valuePercentage - Quantity of milk protein in Kilograms
-		 * @param {!number} totalInLitre - Percentage of milk protein
-		 * @returns {number} nutrient value in Kg
-		 * @private
-		 */
-		function _percentageToKg(valuePercentage, totalInLitre) {
-			return (valuePercentage * totalInLitre) / 100;
-		}
+    cowsPurchased.validateType = function (type) {
+      return cowTypes.validate(type);
+    };
 
-		return milkSold;
+
+    /**
+     * Returns current cow types
+     * @method types
+     * @returns {object} Types - cow types array
+     * @public
+     * @static
+     */
+    cowsPurchased.cows = function () {
+      return _cows;
+    };
+
+    /**
+     * Loads the fertilizers in cowsPurchasedSection.fertilizers
+     * @method load
+     * @param cowsPurchasedSection
+     * @returns {object} cowsPurchased
+     * @public
+     * @static
+     */
+    cowsPurchased.load = function(cowsPurchasedSection) {
+      if(!validator.validateAll(cowsPurchasedSection.cows)) {
+        return undefined
+      }
+      _cows = cowsPurchasedSection.cows;
+      _types = cowsPurchasedSection.types;
+
+      return cowsPurchased;
+    }
+
+		return cowsPurchased;
 
 	});
 </code></pre>
@@ -247,7 +276,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 13:51:36 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 14:38:12 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
