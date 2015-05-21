@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>fertilizers-purchased/types.src.js - Documentation</title>
+    <title>legumes/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">fertilizers-purchased/types.src.js</h1>
+    <h1 class="page-title">legumes/index.src.js</h1>
     
 
     
@@ -49,86 +49,112 @@
 'use strict';
 
 /**
- * nutrientCalculator/fertilizerTypes singleton
- * @module nutrientCalculator/fertilizerTypes
+ * nutrientCalculator/legume singleton
+ * @module nutrientCalculator/legume
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('fertilizerTypes', function (collections, validations, nutrientMediumTypes, fertilizerDefaults, $log) {
 
-    var fertilizerTypes,
-      _types = angular.copy(fertilizerDefaults.types),
-      _validate = nutrientMediumTypes.validate;
+	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
 
-    function _add(name, dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage) {
-      return nutrientMediumTypes.add(_types, name,
-        dryMatterPercentage, sulphurPercentage, potassiumPercentage, phosphorusPercentage, nitrogenPercentage);
-    };
+		var legumes,
+			_isDefined = validations.isDefined,
+			_isPositiveNumber = validations.isPositiveNumber,
+			_utilisationFactors = angular.copy(utilisationFactorsValues);
 
-    /**
-     * Fertilizer types collection api
-     * @property {object} Types - fertilizer types collection
-     * @public
-     * @static
-     */
-    fertilizerTypes = {
-      /**
-       * Adds a new fertilizer type for nutrient calculation
-       * @method add
-       * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-       * @param {!number} dryMatterPercentage - value must be > 0
-       * @param {!number} sulphurPercentage - value must be >= 0
-       * @param {!number} potassiumPercentage - value must be >= 0
-       * @param {!number} phosphorusPercentage - value must be >= 0
-       * @param {!number} nitrogenPercentage - value must be >= 0
-       * @returns {object} fertilizers
-       * @public
-       * @static
-       */
-      add: _add,
-      /**
-       * Returns the fertilizerType at specified index
-       * @method at
-       * @returns {object} fertilizerType
-       * @public
-       * @static
-       */
-      at: function(index) { return collections.at(_types, index)},
-      size: function() { return collections.size(_types)},
-      byName: function(name) { return collections.byProperty(_types, 'name', name)},
-      defaultTypes: function() { return angular.copy(fertilizerDefaults.types)},
-      /**
-       * Returns fertilizerTypes collection as an array
-       * @method toArray
-       * @returns {Array} fertilizerTypes
-       * @public
-       * @static
-       */
-      toArray: function() { return angular.copy(_types) },
-      /**
-       * Removes the fertilizer type at specified index
-       * @method removeAt
-       * @returns {object} fertilizerTypes collection
-       * @public
-       * @static
-       */
-      removeAt: function(index) { return collections.removeAt(_types, index)},
-      last: function() { return collections.last(_types) },
-      validate: _validate,
-      /**
-       * Loads the types in fertilizersPurchasedSection.types
-       * @method load
-       * @param fertilizersPurchasedSection
-       * @returns {object} fertilizersPurchased
-       * @public
-       * @static
-       */
-      load: function(fertilizersPurchasedSection) {
-        _types = fertilizersPurchasedSection.types;
-      }
-    };
+		function _validate(legume) {
+			$log.info('validating legume ...', legume);
 
-    return fertilizerTypes;
-  });</code></pre>
+			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
+				return false;
+			}
+			return true;
+		};
+
+		/**
+		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
+		 * @method calculate
+		 * @param {!Number} milkSoldPerYearInLitre 
+		 * @param {!Number} milkFatInKg
+		 * @param {!Number} milkProteinInKg
+		 * @param {!Number} numberOfMilkingCows 
+		 * @param {!Number} numberOfMilkingDays 
+		 * @param {!Number} averageCowWeightInKg
+		 * @param {!Number} forageMetabolisableEnergyInMJ
+		 * @param {!Number} concentrateMetabolisableEnergyInMJ
+		 * @param {!Number} milkingAreaInHa
+		 * @param {!Number} utilisationFactor 
+		 * @param {!Number} nitrogenFromFertiliserInKg
+		 * @param {!Number} legumePercentage 
+		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
+		 * @public
+		 * @static
+		 */
+		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
+		                    milkProteinInKg, numberOfMilkingCows,
+		                    numberOfMilkingDays, averageCowWeightInKg,
+		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
+		                    milkingAreaInHa, utilisationFactor,
+		                    nitrogenFromFertiliserInKg, legumePercentage) {
+			$log.info('calculating legumes nutrient ...');
+
+			if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProteinInKg) ||
+				!_isPositiveNumber(milkFatInKg) || !_isPositiveNumber(numberOfMilkingCows) ||
+				!_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(averageCowWeightInKg) ||
+				!_isPositiveNumber(forageMetabolisableEnergyInMJ) || !_isPositiveNumber(concentrateMetabolisableEnergyInMJ) ||
+				!_isPositiveNumber(milkingAreaInHa) || !_isPositiveNumber(utilisationFactor) ||
+				!_isPositiveNumber(nitrogenFromFertiliserInKg) || !_isPositiveNumber(legumePercentage)) {
+				return undefined;
+			}
+
+			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
+				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
+				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
+				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
+				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
+				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
+				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
+				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
+				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
+
+			return {
+				importedEnergyConsumedInMJ: importedEnergyConsumed,
+				utilisationFactor: utilisationFactor,
+				dryMatterConsumedPerHaInKg: dryMatterConsumed,
+				dryMatterGrownPerHaInKg: dryMatterGrown,
+				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
+				availableNitrogenFromLegumesPerHaInKg: availableNitrogenFromLegumes,
+				availableNitrogenToPasturePerHaInKg: availableNitrogenToPasture,
+				cattleEnergyUsedInMJ: cattleEnergyUsed,
+				milkEnergyInMJ: milkEnergy.total,
+				milkEnergyNotSoldInMJ: milkEnergy.notSold,
+				milkProteinInKg: milkProteinInKg,
+				milkFatInKg: milkFatInKg,
+				milkSoldPerYearInLitre: milkSoldPerYearInLitre,
+				legumePerHaInKg: totalLegume,
+				legumePercentage: legumePercentage
+			};
+
+		};
+
+		/**
+		 * Utilisation factors reference values
+		 * @method utilisationFactors
+		 * @returns {Array} utilisationFactors
+		 * @public
+		 * @static
+		 */
+		function utilisationFactors(){
+			return _utilisationFactors;
+		}
+
+		legumes = {
+			calculate: _calculate,
+			utilisationFactors: utilisationFactors
+		};
+
+		return legumes;
+	});
+</code></pre>
         </article>
     </section>
 
@@ -140,7 +166,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 13:46:47 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 13:51:36 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
