@@ -1,7 +1,7 @@
 {
   "name": "farmbuild-dairy-nutrient-calculator",
   "private": true,
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "This project is the dairy nutrient calculator module of farm build JavaScript library",
   "repository": "https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator",
   "license": "MIT",
@@ -19,7 +19,6 @@
     "http-server": "^0.6.1",
     "bower": "^1.4",
     "shelljs": "^0.2",
-    "karma-junit-reporter": "^0.2.2",
     "minami": "~1.1.0",
     "jsdoc": "3.3.0-beta3",
     "uglify-js": "2.4.19",
