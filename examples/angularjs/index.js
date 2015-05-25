@@ -7,11 +7,6 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
   .controller('FarmCtrl', function ($scope, $log, nutrientCalculator) {
 
-    var load = false;
-    if (location.href.split('?').length > 1 && location.href.split('?')[1].indexOf('load') === 0) {
-      load = (location.href.split('?')[1].split('=')[1] === 'true');
-    }
-
     $scope.farmData = {};
 
     $scope.loadFarmData = function ($fileContent) {
