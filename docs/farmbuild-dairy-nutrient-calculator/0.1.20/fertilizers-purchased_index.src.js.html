@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>legumes/index.src.js - Documentation</title>
+    <title>fertilizers-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">legumes/index.src.js</h1>
+    <h1 class="page-title">fertilizers-purchased/index.src.js</h1>
     
 
     
@@ -49,112 +49,140 @@
 'use strict';
 
 /**
- * nutrientCalculator/legume singleton
- * @module nutrientCalculator/legume
+ * nutrientCalculator/fertilizersPurchased singleton
+ * @module nutrientCalculator/fertilizersPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('legumes', function (validations, utilisationFactorsValues, legumeCalculator, $log) {
+  .factory('fertilizersPurchased',
+  function (validations,
+            nutrientMedium,
+            fertilizerDefaults, fertilizerTypes,
+            nutrientMediumValidator,
+            fertilizerCalculator,
+            collections,
+            nutrientCalculatorSession,
+            $log) {
 
-		var legumes,
-			_isDefined = validations.isDefined,
-			_isPositiveNumber = validations.isPositiveNumber,
-			_utilisationFactors = angular.copy(utilisationFactorsValues);
+    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
+      _fertilizers = [],
+      calculator = fertilizerCalculator,
+      validator = nutrientMediumValidator;
+    function createDefault() {
+      return {
+        types:fertilizerTypes.toArray(),
+        fertilizers:[]
+      };
+    }
+    fertilizersPurchased.createDefault = createDefault;
 
-		function _validate(legume) {
-			$log.info('validating legume ...', legume);
+    /**
+     * Removes the fertilizer at specified index
+     * @method removeAt
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _removeAt(index) {
+      $log.info('removing fertilizer at index ' + index);
+      nutrientMedium.removeAt(_fertilizers, index);
+      return fertilizersPurchased;
+    };
+    fertilizersPurchased.removeAt = _removeAt;
 
-			if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
-				return false;
-			}
-			return true;
-		};
+    /**
+     * Returns the current instance of fertilizers purchased
+     * @method fertilizers
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.fertilizers = function() { return _fertilizers};
 
-		/**
-		 * Calculates total Nitrogen nutrient imported on to the farm in legumes
-		 * @method calculate
-		 * @param {!Number} milkSoldPerYearInLitre 
-		 * @param {!Number} milkFatInKg
-		 * @param {!Number} milkProteinInKg
-		 * @param {!Number} numberOfMilkingCows 
-		 * @param {!Number} numberOfMilkingDays 
-		 * @param {!Number} averageCowWeightInKg
-		 * @param {!Number} forageMetabolisableEnergyInMJ
-		 * @param {!Number} concentrateMetabolisableEnergyInMJ
-		 * @param {!Number} milkingAreaInHa
-		 * @param {!Number} utilisationFactor 
-		 * @param {!Number} nitrogenFromFertiliserInKg
-		 * @param {!Number} legumePercentage 
-		 * @returns {object} Nitrogen nutrient data imported on the farm in legumes purchased
-		 * @public
-		 * @static
-		 */
-		function _calculate(milkSoldPerYearInLitre, milkFatInKg,
-		                    milkProteinInKg, numberOfMilkingCows,
-		                    numberOfMilkingDays, averageCowWeightInKg,
-		                    forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
-		                    milkingAreaInHa, utilisationFactor,
-		                    nitrogenFromFertiliserInKg, legumePercentage) {
-			$log.info('calculating legumes nutrient ...');
+    /**
+     * Adds a new fertilizer for nutrient calculation
+     * @method add
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _add(type, weight, isDry) {
+      _fertilizers = nutrientMedium.add(_fertilizers, type, weight, isDry);
+      return fertilizersPurchased;
+    };
 
-			if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProteinInKg) ||
-				!_isPositiveNumber(milkFatInKg) || !_isPositiveNumber(numberOfMilkingCows) ||
-				!_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(averageCowWeightInKg) ||
-				!_isPositiveNumber(forageMetabolisableEnergyInMJ) || !_isPositiveNumber(concentrateMetabolisableEnergyInMJ) ||
-				!_isPositiveNumber(milkingAreaInHa) || !_isPositiveNumber(utilisationFactor) ||
-				!_isPositiveNumber(nitrogenFromFertiliserInKg) || !_isPositiveNumber(legumePercentage)) {
-				return undefined;
-			}
+    fertilizersPurchased.add = _add;
 
-			var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg),
-				cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg),
-				importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ),
-				dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa),
-				dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor),
-				averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa),
-				totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor),
-				availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied),
-				availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
+    /**
+     * Returns true if the arguments are valid, false otherwise
+     * @method validateNew
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function validateNew(type, weight, isDry) {
+      var fertilizer = nutrientMedium.create(type, weight, isDry);
+      return validator.validate(fertilizer);
+    };
 
-			return {
-				importedEnergyConsumedInMJ: importedEnergyConsumed,
-				utilisationFactor: utilisationFactor,
-				dryMatterConsumedPerHaInKg: dryMatterConsumed,
-				dryMatterGrownPerHaInKg: dryMatterGrown,
-				averageNitrogenAppliedPerHaInKg: averageNitrogenApplied,
-				availableNitrogenFromLegumesPerHaInKg: availableNitrogenFromLegumes,
-				availableNitrogenToPasturePerHaInKg: availableNitrogenToPasture,
-				cattleEnergyUsedInMJ: cattleEnergyUsed,
-				milkEnergyInMJ: milkEnergy.total,
-				milkEnergyNotSoldInMJ: milkEnergy.notSold,
-				milkProteinInKg: milkProteinInKg,
-				milkFatInKg: milkFatInKg,
-				milkSoldPerYearInLitre: milkSoldPerYearInLitre,
-				legumePerHaInKg: totalLegume,
-				legumePercentage: legumePercentage
-			};
+    fertilizersPurchased.validateNew = validateNew;
+    fertilizersPurchased.validateAll = validator.validateAll;
 
-		};
+    fertilizersPurchased.asArray = function() { return _fertilizers};
 
-		/**
-		 * Utilisation factors reference values
-		 * @method utilisationFactors
-		 * @returns {Array} utilisationFactors
-		 * @public
-		 * @static
-		 */
-		function utilisationFactors(){
-			return _utilisationFactors;
-		}
+    /**
+     * Calculates the nutrient of the fertilizers purchased
+     * @method calculate
+     * @param fertilizers
+     * @returns {object} the result of the fertilizers purchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizersPurchased.calculate...');
+      if(!validator.validateAll(fertilizers)) {
+        $log.error('fertilizersPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
+        return undefined;
+      }
 
-		legumes = {
-			calculate: _calculate,
-			utilisationFactors: utilisationFactors
-		};
+      var result = calculator.calculate(fertilizers);
 
-		return legumes;
-	});
-</code></pre>
+      result.types = fertilizerTypes.toArray();
+
+      nutrientCalculatorSession.saveSection('fertilizersPurchased', result);
+
+      return result;
+    }
+
+    /**
+     * Loads the fertilizers in fertilizersPurchasedSection.fertilizers
+     * @method load
+     * @param fertilizersPurchasedSection
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+        return undefined
+      }
+      _fertilizers = fertilizersPurchasedSection.fertilizers;
+      fertilizerTypes.load(fertilizersPurchasedSection);
+      return fertilizersPurchased;
+    }
+
+
+    return fertilizersPurchased;
+  });</code></pre>
         </article>
     </section>
 
@@ -166,7 +194,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu May 21 2015 14:38:12 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 25 2015 11:24:47 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
