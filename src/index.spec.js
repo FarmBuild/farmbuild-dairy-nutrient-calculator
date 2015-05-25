@@ -3,14 +3,18 @@
 describe('farmbuild.nutrientCalculator module', function() {
 
  // define nutrientCalculator service
-  var nutrientCalculator;
+  var $log, nutrientCalculator;
+  beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
+    $provide.value('$log', console)
+  }));
 
   // inject farmbuild.nutrientCalculator module
   beforeEach(module('farmbuild.nutrientCalculator'));
 
   // inject nutrientCalculator service
-  beforeEach(inject(function (_nutrientCalculator_) {
+  beforeEach(inject(function (_nutrientCalculator_, _$log_) {
     nutrientCalculator = _nutrientCalculator_;
+    $log = _$log_;
   }));
 
   describe('nutrientCalculator factory', function(){
@@ -36,13 +40,13 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('nutrientCalculator.load should add nutrientCalculator block', inject(function() {
-      var farmData = {name: 'Susan\'s farm'};
+      var farmData = {name: 'Susan\'s farm', area:0, areaUnit:'hectare'};
       farmData = nutrientCalculator.load(farmData);
       expect(farmData.nutrientCalculator).toBeDefined();
     }));
 
     it('nutrientCalculator.load return value should have the correct name', inject(function() {
-      var name = 'Susan\'s farm', farmData = {name: name};
+      var farmData = {name: 'Susan\'s farm', area:0, areaUnit:'hectare'};
       farmData = nutrientCalculator.load(farmData);
       expect(farmData.name).toMatch(name);
     }));

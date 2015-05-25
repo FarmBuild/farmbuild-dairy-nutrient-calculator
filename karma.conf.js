@@ -58,7 +58,7 @@ module.exports = function(config){
 //      'src/index.spec.js',
 //      'src/legumes/calculator.spec.js',
 //      'src/legumes/index.spec.js',
-//      'src/forages-purchased/index.spec.js',
+//    'src/forages-purchased/index.spec.js',
 //      'src/forages-purchased/types.spec.js',
 //      'src/fertilizers-purchased/types.spec.js',
 //      'src/fertilizers-purchased/index.spec.js',
@@ -66,6 +66,7 @@ module.exports = function(config){
 //      'src/concentrates-purchased/index.spec.js',
 //      'src/session/index.spec.js',
 //      'src/ga/index.spec.js',
+//        'src/index.spec.js',
       'src/**/*.spec.js',
       {pattern: 'examples/data/*.json'}
     ],

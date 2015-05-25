@@ -3,13 +3,17 @@
 describe('farmbuild.nutrientCalculator module', function() {
 
  // instantiate service
-  var foragesPurchased, averageCrop;
+  var $log, foragesPurchased, averageCrop;
+  beforeEach(module('farmbuild.nutrientCalculator', function($provide) {
+    $provide.value('$log', console)
+  }));
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
-  beforeEach(inject(function (_foragesPurchased_) {
+  beforeEach(inject(function (_foragesPurchased_, _$log_) {
     foragesPurchased = _foragesPurchased_;
     averageCrop = foragesPurchased.types.at(0);
+    $log = _$log_;
   }));
 
   describe('foragesPurchased factory', function(){
