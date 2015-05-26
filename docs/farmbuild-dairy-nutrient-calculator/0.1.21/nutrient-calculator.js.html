@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>nutrient-calculator.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,44 +28,166 @@
 
 <div id="main">
     
+    <h1 class="page-title">nutrient-calculator.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
 
+'use strict';
 
+/**
+ * nutrientCalculator
+ * @module nutrientCalculator
+ */
+angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+	.factory('nutrientCalculator',
+  function (milkSold,
+            cowsPurchased, cowsCulled, cows,
+            foragesPurchased, fertilizersPurchased, concentratesPurchased,
+            legumes,
+            nutrientCalculatorSession,
+            farmdata,
+            validations,
+            nutrientAggregator,nutrientBalance,nutrientEfficiency,
+            feedBalance, milkProduction, stockingRate,
+            googleAnalyticsCalculator,
+            $log) {
+		var nutrientCalculator = {farmdata:farmdata},
+			_isPositiveNumber = validations.isPositiveNumber,
+			_isDefined = validations.isDefined;
 
+    // Provide a shortcut for modules
+    nutrientCalculator.milkSold = milkSold;
+    nutrientCalculator.cowsPurchased = cowsPurchased;
+    nutrientCalculator.cowsCulled = cowsCulled;
+    nutrientCalculator.foragesPurchased = foragesPurchased;
+    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.concentratesPurchased = concentratesPurchased;
+    nutrientCalculator.legumes = legumes;
+    nutrientCalculator.aggregator = nutrientAggregator;
+    nutrientCalculator.balance = nutrientBalance;
+    nutrientCalculator.efficiency = nutrientEfficiency;
+    nutrientCalculator.version = '0.1.0';
+    nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.session = nutrientCalculatorSession;
 
+		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
+      'this should only be initialised once! why we see twice in the example?');
+    function createDefault() {
+      return {
+        summary: {
+          milkingAreaInHa: 0,
+          averageCowWeightInKg: 0,
+          numberOfMilkingCows: 0,
+          numberOfMilkingDays: 365
+        },
+        milkSold: milkSold.createDefault(),
+        cowsCulled: cows.createDefault(),
+        cowsPurchased: cows.createDefault(),
+        fertilizersPurchased: fertilizersPurchased.createDefault(),
+        foragesPurchased: foragesPurchased.createDefault(),
+        legumes: {},
+        concentratesPurchased: concentratesPurchased.createDefault(),
+        balance:{},
+        efficiency:{},
+        stockingReate:{},
+        milkProduction:{},
+        feedBalance:{}
+      };
+    }
 
+    /**
+     * Finds the farmData from the session.
+     * @method find
+     * @returns {object} the farmData stored in session, undefined if the farmData is found in session
+     * @public
+     * @static
+     */
+    nutrientCalculator.find = function () {
+      return nutrientCalculatorSession.find();
+    }
 
+		/**
+		 * Loads the farmData into the session.
+     * If the farmData has no nutrientCalculator section, then append one
+		 * @method load
+		 * @param {!object} farmData -
+		 * @returns {object} the farmData stored in session, undefined if the farmData is invalid
+		 * @public
+		 * @static
+		 */
+		nutrientCalculator.load = function (farmData) {
+      var loaded = farmdata.load(farmData);
 
+			if (!_isDefined(loaded)) {
+				return undefined;
+			}
 
+			if (!loaded.hasOwnProperty('nutrientCalculator')) {
+        loaded.nutrientCalculator = createDefault();
+        loaded = farmdata.update(loaded);
+			}
 
-    
+			return loaded;
+		};
 
+    /**
+     * Calculates balance and updates the farmData
+     * @method calculate
+     * @param {!Object} farmData
+     * @returns {Object} the farmData calculated
+     * @public
+     * @static
+     */
+    nutrientCalculator.calculate = function (farmData) {
+      var nutrientValues = nutrientAggregator.calculate(farmData),
+        milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
 
-    <section class="readme">
-        <article><h1>FarmBuild Dairy Nutrient Calculator</h1><p>This is the dairy nutrient calculator module of farm build JavaScript library.</p>
-<h2>Getting Started</h2><p>To get you started use the navigation on the left side of this page to explore different function of nutrient calculator.</p>
-<h2>Units</h2><p>In all calculations we are using metric units.</p>
-<ul>
-<li>Weight unit is Kg. If you need other units, like tonnes, you need to convert it in your application.</li>
-</ul>
-<h2>Exception handling</h2><p>All functions return undefined in case that there is an error related to wrong input values.</p>
-<h2>Google Analytics for tracking API usage</h2><p>DEDJTR wants to understand the usage of the API, so please include the below API when you call calculate function.
-The track API calls GA using its own tracking name so you can embedded in your application even though you already have
-GA implementation.</p>
-<p>Example</p>
-<pre class="prettyprint source"><code>//Calling the calculate API
-farmbuild.nutrientCalculator.calculate(farmData);
-var organisationName = 'Spatial Vision';
-//Calling the track API for the usage
-farmbuild.nutrientCalculator.ga.trackCalculate(organisationName);</code></pre></article>
+      farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
+      farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
+      farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
+      farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
+
+      farmData.nutrientCalculator.stockingRate = stockingRate.calculate(farmData.nutrientCalculator, farmData.area);
+
+      return farmdata.update(farmData);
+    };
+
+    /**
+     * Saves and exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
+     * It creates &lt;a> element with 'download' attribute, the data is attached to href
+     * and invoke click() function so the user gets the file save dialogue or something equivalent.
+     * @method export
+     * @param {object} document
+     * @param {object} farmData
+     */
+    nutrientCalculator.export = nutrientCalculatorSession.export;
+
+		if (typeof window.farmbuild === 'undefined') {
+			window.farmbuild = {
+				nutrientcalculator: nutrientCalculator
+			};
+		} else {
+			window.farmbuild.nutrientcalculator = nutrientCalculator;
+		}
+
+		return nutrientCalculator;
+	});</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -75,7 +197,7 @@ farmbuild.nutrientCalculator.ga.trackCalculate(organisationName);</code></pre></
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue May 26 2015 13:25:15 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue May 26 2015 13:28:26 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
