@@ -5,7 +5,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
     $rootScope.decimalPrecision = farmbuild.examples.nutrientcalculator.decimalPrecision;
   })
 
-  .controller('FarmCtrl', function ($scope, $log, nutrientCalculator) {
+  .controller('FarmCtrl', function ($scope, $log, farmdata, nutrientCalculator) {
 
     $scope.farmData = {};
 
@@ -30,9 +30,10 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
     };
 
     $scope.exportFarmData = function (farmData) {
-      var url = 'data:application/json;charset=utf8,' + encodeURIComponent(JSON.stringify(farmData, undefined, 2));
-      window.open(url, '_blank');
-      window.focus();
+      nutrientCalculator.export(document, farmData);
+//      var url = 'data:application/json;charset=utf8,' + encodeURIComponent(JSON.stringify(farmData, undefined, 2));
+//      window.open(url, '_blank');
+//      window.focus();
     };
 
     $scope.calculate = function () {
@@ -47,9 +48,9 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
     $scope.clear = function () {
       $scope.farmData ={};
       nutrientCalculator.farmdata.session.clear();
-      var path = location.href.toString(),
-        path = path.substring(0, path.indexOf('?'));
-      location.href = path;
+//      var path = location.href.toString(),
+//        path = path.substring(0, path.indexOf('?'));
+      location.href = farmdata.session.clearLoadFlag(location);
     }
 
     if (nutrientCalculator.session.isLoadFlagSet(location)) {

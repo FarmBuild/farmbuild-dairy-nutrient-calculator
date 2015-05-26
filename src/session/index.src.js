@@ -61,19 +61,14 @@ angular.module('farmbuild.nutrientCalculator')
       return loaded?loaded[section]:null;
     }
 
-    nutrientCalculatorSession.isLoadFlagSet = function(location) {
-      var load = false;
-
-      if(location.href.split('?').length > 1 &&
-        location.href.split('?')[1].indexOf('load') === 0){
-        load = (location.href.split('?')[1].split('=')[1] === 'true');
-      }
-
-      return load;
-    }
+    nutrientCalculatorSession.isLoadFlagSet = farmdata.session.isLoadFlagSet;
 
     nutrientCalculatorSession.find = function() {
       return farmdata.session.find();
+    }
+
+    nutrientCalculatorSession.export = function(document, farmData) {
+      return farmdata.session.export(document, save(farmData));
     }
 
     return nutrientCalculatorSession;
