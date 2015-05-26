@@ -8,9 +8,9 @@ $(function(){
 	$('#app-version').text(farmbuild.examples.nutrientcalculator.version);
 
 	$('#calculateByPercentage').submit(function(event){
-		var milkSoldPerYearInLitre = $('#milkSoldPerYearInLitreP').val(),
-			milkProteinPercentage = $('#milkProteinPercentage').val(),
-			milkFatPercentage = $('#milkFatPercentage').val(),
+		var milkSoldPerYearInLitre = parseFloat($('#milkSoldPerYearInLitreP').val()),
+			milkProteinPercentage = parseFloat($('#milkProteinPercentage').val()),
+			milkFatPercentage = parseFloat($('#milkFatPercentage').val()),
 			resultMilkSoldPerYearInLitre = $('#resultMilkSoldPerYearInLitre'),
 			resultMilkFatInKg = $('#resultMilkFatInKg'),
 			resultMilkFatPercentage = $('#resultMilkFatPercentage'),
@@ -53,9 +53,9 @@ $(function(){
 	});
 
 	$('#calculateByKg').submit(function(event){
-		var milkSoldPerYearInLitre = $('#milkSoldPerYearInLitreKg').val(),
-			milkProteinInKg = $('#milkProteinInKg').val(),
-			milkFatInKg = $('#milkFatInKg').val(),
+		var milkSoldPerYearInLitre = parseFloat($('#milkSoldPerYearInLitreKg').val()),
+			milkProteinInKg = parseFloat($('#milkProteinInKg').val()),
+			milkFatInKg = parseFloat($('#milkFatInKg').val()),
 			resultMilkSoldPerYearInLitre = $('#resultMilkSoldPerYearInLitre'),
 			resultMilkFatInKg = $('#resultMilkFatInKg'),
 			resultMilkFatPercentage = $('#resultMilkFatPercentage'),
