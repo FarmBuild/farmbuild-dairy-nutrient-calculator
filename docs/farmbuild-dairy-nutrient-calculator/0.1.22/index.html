@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows/types.src.js - Documentation</title>
+    <title>Home - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,129 +28,44 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows/types.src.js</h1>
-    
 
     
 
 
 
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
- */
 
-'use strict';
 
-/**
- * nutrientCalculator/cowTypes singleton
- * @module nutrientCalculator/cowTypes
- */
-angular.module('farmbuild.nutrientCalculator')
-  .factory('cowTypes',
-  function (cowTypeDefaults, collections, validations, $log) {
 
-    var cowTypes,
-      _isPositiveNumber = validations.isPositiveNumber,
-      _isEmpty = validations.isEmpty,
-      _types = angular.copy(cowTypeDefaults);
 
-    function _create(name, weight) {
-      var type = {
-        name: name,
-        weight: weight
-      };
-      return type
-    }
 
-    function _validate(type) {
-      $log.info('validating type  ...', type);
 
-      var valid =
-        !(_isEmpty(type)) &amp;&amp;
-        !(_isEmpty(type.name) ||
-        !_isPositiveNumber(type.weight));
 
-      if(!valid) {
-        $log.error('invalid type: %j', type);
-      }
 
-      return valid;
-    }
 
-    function _add(types, name, weight) {
-      var type = _create(name, weight);
-      $log.info('adding a type ...', type);
+    
 
-      if (!_validate(type)) {
-        return undefined;
-      }
 
-      return collections.add(types, type);
-    };
-
-    /**
-     * cowTypes types collection api
-     * @property {object} Types - cowTypes types collection
-     * @public
-     * @static
-     */
-    cowTypes = {
-      /**
-       * Adds a new cowTypes type for nutrient calculation
-       * @method add
-       * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-       * @param {!number} dryMatterPercentage - value must be > 0
-       * @param {!number} sulphurPercentage - value must be > 0
-       * @param {!number} potassiumPercentage - value must be > 0
-       * @param {!number} phosphorusPercentage - value must be > 0
-       * @param {!number} nitrogenPercentage - value must be > 0
-       * @returns {object} cowTypess
-       * @public
-       * @static
-       */
-      add: _add,
-      /**
-       * Returns the cowTypes at specified index
-       * @method at
-       * @returns {object} cowTypes
-       * @public
-       * @static
-       */
-      at: function(index) { return collections.at(_types, index)},
-      size: function() { return collections.size(_types)},
-      byName: function(name) { return collections.byProperty(_types, 'name', name)},
-      /**
-       * Returns cowTypes collection as an array
-       * @method toArray
-       * @returns {Array} cowTypes
-       * @public
-       * @static
-       */
-      toArray: function() { return angular.copy(_types) },
-      /**
-       * Removes the fertilizer type at specified index
-       * @method removeAt
-       * @returns {object} cowTypes collection
-       * @public
-       * @static
-       */
-      removeAt: function(index) { return collections.removeAt(_types, index)},
-      last: function() { return collections.last(_types) },
-      validate: _validate,
-      create: _create
-    };
-
-    return cowTypes;
-  });</code></pre>
-        </article>
+    <section class="readme">
+        <article><h1>FarmBuild Dairy Nutrient Calculator</h1><p>This is the dairy nutrient calculator module of farm build JavaScript library.</p>
+<h2>Getting Started</h2><p>To get you started use the navigation on the left side of this page to explore different function of nutrient calculator.</p>
+<h2>Units</h2><p>In all calculations we are using metric units.</p>
+<ul>
+<li>Weight unit is Kg. If you need other units, like tonnes, you need to convert it in your application.</li>
+</ul>
+<h2>Exception handling</h2><p>All functions return undefined in case that there is an error related to wrong input values.</p>
+<h2>Google Analytics for tracking API usage</h2><p>DEDJTR wants to understand the usage of the API, so please include the below API when you call calculate function.
+The track API calls GA using its own tracking name so you can embedded in your application even though you already have
+GA implementation.</p>
+<p>Example</p>
+<pre class="prettyprint source"><code>//Calling the calculate API
+farmbuild.nutrientCalculator.calculate(farmData);
+var organisationName = 'Spatial Vision';
+//Calling the track API for the usage
+farmbuild.nutrientCalculator.ga.trackCalculate(organisationName);</code></pre></article>
     </section>
+
+
 
 
 
@@ -160,7 +75,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:22:42 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:23:47 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

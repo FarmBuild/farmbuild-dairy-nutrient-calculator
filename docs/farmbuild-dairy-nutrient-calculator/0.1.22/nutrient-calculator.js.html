@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/milkSold - Documentation</title>
+    <title>nutrient-calculator.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,529 +28,168 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/milkSold</h1>
-    
-
-    
-
-
-
-
-<section>
-
-<header>
-    
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>nutrientCalculator/milkSold singleton</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".calculateByKg"><span class="type-signature">(static) </span>calculateByKg<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkFatInKg<span class="signature-attributes">non-null</span>, milkProteinInKg<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Calculates nutrient from milk sold, input values are in Kg</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>milkSoldPerYearInLitre</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Quantity of milk sold in a year in litre, value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkFatInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Quantity of milk fat in Kg, value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkProteinInKg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Quantity of milk protein in Kg, value must be &gt; 0</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line67">line 67</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>milk nutrient data</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".calculateByPercent"><span class="type-signature">(static) </span>calculateByPercent<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkProteinPercentage<span class="signature-attributes">non-null</span>, milkFatPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Calculates nutrient from milk sold, input values are in percentage</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>milkSoldPerYearInLitre</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Quantity of milk sold in a year in litre, value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkProteinPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Percentage of milk protein, value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>milkFatPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Percentage of milk fat, value must be &gt; 0</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="milk-sold_index.src.js.html">milk-sold/index.src.js</a>, <a href="milk-sold_index.src.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>milk nutrient data</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <h1 class="page-title">nutrient-calculator.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @since 0.0.1
+ * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
+ * @license The MIT License
+ * @author Spatial Vision
+ * @version 0.1.0
+ */
+
+'use strict';
+
+/**
+ * nutrientCalculator
+ * @module nutrientCalculator
+ */
+angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+	.factory('nutrientCalculator',
+  function (milkSold,
+            cowsPurchased, cowsCulled, cows,
+            foragesPurchased, fertilizersPurchased, concentratesPurchased,
+            legumes,
+            nutrientCalculatorSession,
+            farmdata,
+            validations,
+            nutrientAggregator,nutrientBalance,nutrientEfficiency,
+            feedBalance, milkProduction, stockingRate,
+            googleAnalyticsCalculator,
+            $log) {
+		var nutrientCalculator = {farmdata:farmdata},
+			_isPositiveNumber = validations.isPositiveNumber,
+			_isDefined = validations.isDefined;
+
+    // Provide a shortcut for modules
+    nutrientCalculator.milkSold = milkSold;
+    nutrientCalculator.cowsPurchased = cowsPurchased;
+    nutrientCalculator.cowsCulled = cowsCulled;
+    nutrientCalculator.foragesPurchased = foragesPurchased;
+    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.concentratesPurchased = concentratesPurchased;
+    nutrientCalculator.legumes = legumes;
+    nutrientCalculator.aggregator = nutrientAggregator;
+    nutrientCalculator.balance = nutrientBalance;
+    nutrientCalculator.efficiency = nutrientEfficiency;
+    nutrientCalculator.version = '0.1.0';
+    nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.session = nutrientCalculatorSession;
+
+		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
+      'this should only be initialised once! why we see twice in the example?');
+    function createDefault() {
+      return {
+        summary: {
+          milkingAreaInHa: 0,
+          averageCowWeightInKg: 0,
+          numberOfMilkingCows: 0,
+          numberOfMilkingDays: 365
+        },
+        milkSold: milkSold.createDefault(),
+        cowsCulled: cows.createDefault(),
+        cowsPurchased: cows.createDefault(),
+        fertilizersPurchased: fertilizersPurchased.createDefault(),
+        foragesPurchased: foragesPurchased.createDefault(),
+        legumes: {
+          dryMatterConsumedPerHaInKg: 0
+        },
+        concentratesPurchased: concentratesPurchased.createDefault(),
+        balance:{},
+        efficiency:{},
+        stockingRate:{},
+        milkProduction:{},
+        feedBalance:{}
+      };
+    }
+
+    /**
+     * Finds the farmData from the session.
+     * @method find
+     * @returns {object} the farmData stored in session, undefined if the farmData is found in session
+     * @public
+     * @static
+     */
+    nutrientCalculator.find = function () {
+      return nutrientCalculatorSession.find();
+    }
+
+		/**
+		 * Loads the farmData into the session.
+     * If the farmData has no nutrientCalculator section, then append one
+		 * @method load
+		 * @param {!object} farmData -
+		 * @returns {object} the farmData stored in session, undefined if the farmData is invalid
+		 * @public
+		 * @static
+		 */
+		nutrientCalculator.load = function (farmData) {
+      var loaded = farmdata.load(farmData);
+
+			if (!_isDefined(loaded)) {
+				return undefined;
+			}
+
+			if (!loaded.hasOwnProperty('nutrientCalculator')) {
+        loaded.nutrientCalculator = createDefault();
+        loaded = farmdata.update(loaded);
+			}
+
+			return loaded;
+		};
+
+    /**
+     * Calculates balance and updates the farmData
+     * @method calculate
+     * @param {!Object} farmData
+     * @returns {Object} the farmData calculated
+     * @public
+     * @static
+     */
+    nutrientCalculator.calculate = function (farmData) {
+      var nutrientValues = nutrientAggregator.calculate(farmData),
+        milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
+
+      farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
+      farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
+      farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
+      farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
+
+      farmData.nutrientCalculator.stockingRate = stockingRate.calculate(farmData.nutrientCalculator, farmData.area);
+
+      return farmdata.update(farmData);
+    };
+
+    /**
+     * Saves and exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
+     * It creates &lt;a> element with 'download' attribute, the data is attached to href
+     * and invoke click() function so the user gets the file save dialogue or something equivalent.
+     * @method export
+     * @param {object} document
+     * @param {object} farmData
+     */
+    nutrientCalculator.export = nutrientCalculatorSession.export;
+
+		if (typeof window.farmbuild === 'undefined') {
+			window.farmbuild = {
+				nutrientcalculator: nutrientCalculator
+			};
+		} else {
+			window.farmbuild.nutrientcalculator = nutrientCalculator;
+		}
+
+		return nutrientCalculator;
+	});</code></pre>
+        </article>
+    </section>
 
 
 
@@ -560,7 +199,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:22:42 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:23:47 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

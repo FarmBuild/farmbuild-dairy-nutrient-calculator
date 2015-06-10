@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>cows/types.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">cows/types.src.js</h1>
     
 
     
@@ -49,145 +49,106 @@
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/cowTypes singleton
+ * @module nutrientCalculator/cowTypes
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
-	.factory('nutrientCalculator',
-  function (milkSold,
-            cowsPurchased, cowsCulled, cows,
-            foragesPurchased, fertilizersPurchased, concentratesPurchased,
-            legumes,
-            nutrientCalculatorSession,
-            farmdata,
-            validations,
-            nutrientAggregator,nutrientBalance,nutrientEfficiency,
-            feedBalance, milkProduction, stockingRate,
-            googleAnalyticsCalculator,
-            $log) {
-		var nutrientCalculator = {farmdata:farmdata},
-			_isPositiveNumber = validations.isPositiveNumber,
-			_isDefined = validations.isDefined;
+angular.module('farmbuild.nutrientCalculator')
+  .factory('cowTypes',
+  function (cowTypeDefaults, collections, validations, $log) {
 
-    // Provide a shortcut for modules
-    nutrientCalculator.milkSold = milkSold;
-    nutrientCalculator.cowsPurchased = cowsPurchased;
-    nutrientCalculator.cowsCulled = cowsCulled;
-    nutrientCalculator.foragesPurchased = foragesPurchased;
-    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
-    nutrientCalculator.concentratesPurchased = concentratesPurchased;
-    nutrientCalculator.legumes = legumes;
-    nutrientCalculator.aggregator = nutrientAggregator;
-    nutrientCalculator.balance = nutrientBalance;
-    nutrientCalculator.efficiency = nutrientEfficiency;
-    nutrientCalculator.version = '0.1.0';
-    nutrientCalculator.ga = googleAnalyticsCalculator;
-    nutrientCalculator.session = nutrientCalculatorSession;
+    var cowTypes,
+      _isPositiveNumber = validations.isPositiveNumber,
+      _isEmpty = validations.isEmpty,
+      _types = angular.copy(cowTypeDefaults);
 
-		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
-      'this should only be initialised once! why we see twice in the example?');
-    function createDefault() {
-      return {
-        summary: {
-          milkingAreaInHa: 0,
-          averageCowWeightInKg: 0,
-          numberOfMilkingCows: 0,
-          numberOfMilkingDays: 365
-        },
-        milkSold: milkSold.createDefault(),
-        cowsCulled: cows.createDefault(),
-        cowsPurchased: cows.createDefault(),
-        fertilizersPurchased: fertilizersPurchased.createDefault(),
-        foragesPurchased: foragesPurchased.createDefault(),
-        legumes: {
-          dryMatterConsumedPerHaInKg: 0
-        },
-        concentratesPurchased: concentratesPurchased.createDefault(),
-        balance:{},
-        efficiency:{},
-        stockingRate:{},
-        milkProduction:{},
-        feedBalance:{}
+    function _create(name, weight) {
+      var type = {
+        name: name,
+        weight: weight
       };
+      return type
     }
 
-    /**
-     * Finds the farmData from the session.
-     * @method find
-     * @returns {object} the farmData stored in session, undefined if the farmData is found in session
-     * @public
-     * @static
-     */
-    nutrientCalculator.find = function () {
-      return nutrientCalculatorSession.find();
+    function _validate(type) {
+      $log.info('validating type  ...', type);
+
+      var valid =
+        !(_isEmpty(type)) &amp;&amp;
+        !(_isEmpty(type.name) ||
+        !_isPositiveNumber(type.weight));
+
+      if(!valid) {
+        $log.error('invalid type: %j', type);
+      }
+
+      return valid;
     }
 
-		/**
-		 * Loads the farmData into the session.
-     * If the farmData has no nutrientCalculator section, then append one
-		 * @method load
-		 * @param {!object} farmData -
-		 * @returns {object} the farmData stored in session, undefined if the farmData is invalid
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-      var loaded = farmdata.load(farmData);
+    function _add(types, name, weight) {
+      var type = _create(name, weight);
+      $log.info('adding a type ...', type);
 
-			if (!_isDefined(loaded)) {
-				return undefined;
-			}
+      if (!_validate(type)) {
+        return undefined;
+      }
 
-			if (!loaded.hasOwnProperty('nutrientCalculator')) {
-        loaded.nutrientCalculator = createDefault();
-        loaded = farmdata.update(loaded);
-			}
-
-			return loaded;
-		};
-
-    /**
-     * Calculates balance and updates the farmData
-     * @method calculate
-     * @param {!Object} farmData
-     * @returns {Object} the farmData calculated
-     * @public
-     * @static
-     */
-    nutrientCalculator.calculate = function (farmData) {
-      var nutrientValues = nutrientAggregator.calculate(farmData),
-        milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
-
-      farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
-      farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
-      farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
-      farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
-
-      farmData.nutrientCalculator.stockingRate = stockingRate.calculate(farmData.nutrientCalculator, farmData.area);
-
-      return farmdata.update(farmData);
+      return collections.add(types, type);
     };
 
     /**
-     * Saves and exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
-     * It creates &lt;a> element with 'download' attribute, the data is attached to href
-     * and invoke click() function so the user gets the file save dialogue or something equivalent.
-     * @method export
-     * @param {object} document
-     * @param {object} farmData
+     * cowTypes types collection api
+     * @property {object} Types - cowTypes types collection
+     * @public
+     * @static
      */
-    nutrientCalculator.export = nutrientCalculatorSession.export;
+    cowTypes = {
+      /**
+       * Adds a new cowTypes type for nutrient calculation
+       * @method add
+       * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+       * @param {!number} dryMatterPercentage - value must be > 0
+       * @param {!number} sulphurPercentage - value must be > 0
+       * @param {!number} potassiumPercentage - value must be > 0
+       * @param {!number} phosphorusPercentage - value must be > 0
+       * @param {!number} nitrogenPercentage - value must be > 0
+       * @returns {object} cowTypess
+       * @public
+       * @static
+       */
+      add: _add,
+      /**
+       * Returns the cowTypes at specified index
+       * @method at
+       * @returns {object} cowTypes
+       * @public
+       * @static
+       */
+      at: function(index) { return collections.at(_types, index)},
+      size: function() { return collections.size(_types)},
+      byName: function(name) { return collections.byProperty(_types, 'name', name)},
+      /**
+       * Returns cowTypes collection as an array
+       * @method toArray
+       * @returns {Array} cowTypes
+       * @public
+       * @static
+       */
+      toArray: function() { return angular.copy(_types) },
+      /**
+       * Removes the fertilizer type at specified index
+       * @method removeAt
+       * @returns {object} cowTypes collection
+       * @public
+       * @static
+       */
+      removeAt: function(index) { return collections.removeAt(_types, index)},
+      last: function() { return collections.last(_types) },
+      validate: _validate,
+      create: _create
+    };
 
-		if (typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
-
-		return nutrientCalculator;
-	});</code></pre>
+    return cowTypes;
+  });</code></pre>
         </article>
     </section>
 
@@ -199,7 +160,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:22:42 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:23:47 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

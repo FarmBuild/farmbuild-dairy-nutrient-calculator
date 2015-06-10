@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows-purchased/index.src.js - Documentation</title>
+    <title>fertilizers-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows-purchased/index.src.js</h1>
+    <h1 class="page-title">fertilizers-purchased/index.src.js</h1>
     
 
     
@@ -49,222 +49,141 @@
 'use strict';
 
 /**
- * nutrientCalculator/cowsPurchased singleton
- * @module nutrientCalculator/cowsPurchased
+ * nutrientCalculator/fertilizersPurchased singleton
+ * @module nutrientCalculator/fertilizersPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
 
-	.factory('cowsPurchased',
+  .factory('fertilizersPurchased',
   function (validations,
-            cowTypeDefaults,
-            cowValidator,
-            cowTypes,
-            cows,
-            nutrientCalculatorSession
-    ) {
+            nutrientMedium,
+            fertilizerDefaults, fertilizerTypes,
+            nutrientMediumValidator,
+            fertilizerCalculator,
+            collections,
+            nutrientCalculatorSession,
+            $log) {
 
-		var cowsPurchased = {},
-			_isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
-			_isDefined = validations.isDefined,
-			_types = angular.copy(cowTypeDefaults),
-      _cows = [],
-      validator = cowValidator;
+    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
+      _fertilizers = [],
+      calculator = fertilizerCalculator,
+      validator = nutrientMediumValidator;
+    function createDefault() {
+      return {
+        types:fertilizerTypes.toArray(),
+        fertilizers:[],
+        dryMatterWeight: 0
+      };
+    }
+    fertilizersPurchased.createDefault = createDefault;
 
-    cowsPurchased.validateNew = cows.validateNew;
+    /**
+     * Removes the fertilizer at specified index
+     * @method removeAt
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _removeAt(index) {
+      $log.info('removing fertilizer at index ' + index);
+      nutrientMedium.removeAt(_fertilizers, index);
+      return fertilizersPurchased;
+    };
+    fertilizersPurchased.removeAt = _removeAt;
 
-		/**
-		 * Calculates total nutrient imported on to the farm in cows
-		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type{name, weight}, numberOfCows}
-		 * @returns {object} nutrient data of cows purchased
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.calculate = function (cows) {
-			var numberOfCows = 0,
-				weight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				nitrogenPercentage = 2.8,
-				phosphorusPercentage = 0.72,
-				potassiumPercentage = 0.2,
-				sulphurPercentage = 0.8,
-				incomings = [],
-				i = 0;
+    /**
+     * Returns the current instance of fertilizers purchased
+     * @method fertilizers
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.fertilizers = function() { return _fertilizers};
 
-			if (!cows || cows.length === 0) {
-				return undefined;
-			}
+    /**
+     * Adds a new fertilizer for nutrient calculation
+     * @method add
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _add(type, weight, isDry) {
+      _fertilizers = nutrientMedium.add(_fertilizers, type, weight, isDry);
+      return fertilizersPurchased;
+    };
 
-			for (i; i &lt; cows.length; i++) {
-				var cowWeight,
-					cowCount,
-					cow = cows[i];
+    fertilizersPurchased.add = _add;
 
-				if (!cow.name || !cow.weight) {
-					return undefined;
-				}
+    /**
+     * Returns true if the arguments are valid, false otherwise
+     * @method validateNew
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function validateNew(type, weight, isDry) {
+      var fertilizer = nutrientMedium.create(type, weight, isDry);
+      return validator.validate(fertilizer);
+    };
 
-				cowWeight = cow.weight;
-				cowCount = cow.numberOfCows;
+    fertilizersPurchased.validateNew = validateNew;
+    fertilizersPurchased.validateAll = validator.validateAll;
 
-				if (!_isPositiveNumber(cowCount)) {
-					return undefined;
-				}
+    fertilizersPurchased.asArray = function() { return _fertilizers};
 
-				weight += cowWeight * cowCount;
-				numberOfCows += cowCount;
-				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
-				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
-				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
-				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
-				incomings.push({
-					name: cow.name,
-					numberOfCows: cowCount,
-					weight: cow.weight
-				});
-			}
+    /**
+     * Calculates the nutrient of the fertilizers purchased
+     * @method calculate
+     * @param fertilizers
+     * @returns {object} the result of the fertilizers purchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizersPurchased.calculate...');
+      if(!validator.validateAll(fertilizers)) {
+        $log.error('fertilizersPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
+        return undefined;
+      }
 
-      var result =  {
-				cows: incomings,
-				numberOfCows: numberOfCows,
-				weight: weight,
-				nitrogenInKg: nitrogenInKg,
-				phosphorusInKg: phosphorusInKg,
-				potassiumInKg: potassiumInKg,
-				sulphurInKg: sulphurInKg
-			};
+      var result = calculator.calculate(fertilizers);
 
-      result.types = _types;
+      result.types = fertilizerTypes.toArray();
 
-      nutrientCalculatorSession.saveSection('cowsPurchased', result);
+      nutrientCalculatorSession.saveSection('fertilizersPurchased', result);
 
       return result;
-		};
-
-		/**
-		 * Adds a new cow type for nutrient calculation
-		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} cowsPurchased - useful for chaining multiple add()
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.addType = function (name, weight) {
-			if (!_isPositiveNumber(weight)) {
-				return undefined;
-			}
-
-			if (!name || !_isAlphanumeric(name)) {
-				return undefined;
-			}
-
-			weight = parseFloat(weight);
-
-			_types.push({
-				name: name,
-				weight: weight
-			});
-
-			return cowsPurchased;
-		};
-		
-				/**
-		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
-		 * @method removeTypeByName
-		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByName = function (name) {
-
-			if (!name) {
-				return undefined;
-			}
-
-			angular.forEach(_types, function(type, i){
-				if(type.name === name){
-					_types.splice(i, 1);
-				}
-			});
-
-			return _types;
-		};
-
-		/**
-		 * Remove this cow from cow types
-		 * @method removeTypeByIndex
-		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByIndex = function (index) {
-
-			if (!_isDefined(index) || index &lt; 0 || index > _types.length-1) {
-				return undefined;
-			}
-
-			_types.splice(index, 1);
-
-			return _types;
-		};
-
-
-		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - cow types array
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.types = function () {
-			return _types;
-		};
-
-    cowsPurchased.validateType = function (type) {
-      return cowTypes.validate(type);
-    };
-
-
-    /**
-     * Returns current cow types
-     * @method types
-     * @returns {object} Types - cow types array
-     * @public
-     * @static
-     */
-    cowsPurchased.cows = function () {
-      return _cows;
-    };
-
-    /**
-     * Loads the fertilizers in cowsPurchasedSection.fertilizers
-     * @method load
-     * @param cowsPurchasedSection
-     * @returns {object} cowsPurchased
-     * @public
-     * @static
-     */
-    cowsPurchased.load = function(cowsPurchasedSection) {
-      if(!validator.validateAll(cowsPurchasedSection.cows)) {
-        return undefined
-      }
-      _cows = cowsPurchasedSection.cows;
-      _types = cowsPurchasedSection.types;
-
-      return cowsPurchased;
     }
 
-		return cowsPurchased;
+    /**
+     * Loads the fertilizers in fertilizersPurchasedSection.fertilizers
+     * @method load
+     * @param fertilizersPurchasedSection
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+        return undefined
+      }
+      _fertilizers = fertilizersPurchasedSection.fertilizers;
+      fertilizerTypes.load(fertilizersPurchasedSection);
+      return fertilizersPurchased;
+    }
 
-	});
-</code></pre>
+
+    return fertilizersPurchased;
+  });</code></pre>
         </article>
     </section>
 
@@ -276,7 +195,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:22:42 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 17:23:47 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
