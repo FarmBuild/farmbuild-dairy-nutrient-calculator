@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>forages-purchased/index.src.js - Documentation</title>
+    <title>fertilizers-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">forages-purchased/index.src.js</h1>
+    <h1 class="page-title">fertilizers-purchased/index.src.js</h1>
     
 
     
@@ -49,259 +49,140 @@
 'use strict';
 
 /**
- * nutrientCalculator/foragesPurchased singleton
- * @module nutrientCalculator/foragesPurchased
+ * nutrientCalculator/fertilizersPurchased singleton
+ * @module nutrientCalculator/fertilizersPurchased
  */
 angular.module('farmbuild.nutrientCalculator')
-  .factory('foragesPurchased',
-  function (validations, nutrientMedium, forageTypes, forageValidator, nutrientMediumValidator, nutrientCalculatorSession, $log) {
 
-    var foragesPurchased = {},
-      _isDefined = validations.isDefined,
-      _forages = [],
+  .factory('fertilizersPurchased',
+  function (validations,
+            nutrientMedium,
+            fertilizerDefaults, fertilizerTypes,
+            nutrientMediumValidator,
+            fertilizerCalculator,
+            collections,
+            nutrientCalculatorSession,
+            $log) {
+
+    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
+      _fertilizers = [],
+      calculator = fertilizerCalculator,
       validator = nutrientMediumValidator;
     function createDefault() {
       return {
-        types:forageTypes.toArray(),
-        forages:[],
+        types:fertilizerTypes.toArray(),
+        fertilizers:[],
         dryMatterWeight: 0
       };
     }
+    fertilizersPurchased.createDefault = createDefault;
 
     /**
-     * Adds a forage to foragesPurchased collection
+     * Removes the fertilizer at specified index
+     * @method removeAt
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _removeAt(index) {
+      $log.info('removing fertilizer at index ' + index);
+      nutrientMedium.removeAt(_fertilizers, index);
+      return fertilizersPurchased;
+    };
+    fertilizersPurchased.removeAt = _removeAt;
+
+    /**
+     * Returns the current instance of fertilizers purchased
+     * @method fertilizers
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.fertilizers = function() { return _fertilizers};
+
+    /**
+     * Adds a new fertilizer for nutrient calculation
      * @method add
-     * @param {!object} type - Type of this forage.
-     * @param {!number} weight
-     * @param {!boolean} isDry - Whether it is dry (true/false)
-     * @returns {object} nutrient data of foragesPurchased purchased
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
     function _add(type, weight, isDry) {
-      _forages = nutrientMedium.add(_forages, type, weight, isDry);
-      return foragesPurchased;
+      _fertilizers = nutrientMedium.add(_fertilizers, type, weight, isDry);
+      return fertilizersPurchased;
     };
 
+    fertilizersPurchased.add = _add;
+
     /**
-     * Calculates total nutrient imported on to the farm in foragesPurchased
-     * @method calculate
-     * @param {!array} foragesPurchased - Array of purchased foragesPurchased, each item contains details of the forage {type, weight, isDry}
-     * @returns {object} nutrient data of foragesPurchased purchased
+     * Returns true if the arguments are valid, false otherwise
+     * @method validateNew
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    function _calculate(forages) {
-      $log.info('calculating foragesPurchased nutrient ...', forages);
+    function validateNew(type, weight, isDry) {
+      var fertilizer = nutrientMedium.create(type, weight, isDry);
+      return validator.validate(fertilizer);
+    };
 
-      var totalWeight = 0,
-        totalDMWeight = 0,
-        nitrogenInKg = 0,
-        phosphorusInKg = 0,
-        potassiumInKg = 0,
-        sulphurInKg = 0,
-        meInMJ = 0,
-        incomings = [],
-        i = 0;
+    fertilizersPurchased.validateNew = validateNew;
+    fertilizersPurchased.validateAll = validator.validateAll;
 
-      if (!forages || forages.length === 0) {
+    fertilizersPurchased.asArray = function() { return _fertilizers};
+
+    /**
+     * Calculates the nutrient of the fertilizers purchased
+     * @method calculate
+     * @param fertilizers
+     * @returns {object} the result of the fertilizers purchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizersPurchased.calculate...');
+      if(!validator.validateAll(fertilizers)) {
+        $log.error('fertilizersPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
         return undefined;
       }
 
-      for (i; i &lt; forages.length; i++) {
-        var weight = 0,
-          dmWeight = 0,
-          forage = forages[i],
-          type = forage.type;
+      var result = calculator.calculate(fertilizers);
 
-        if (!validator.validate(forage)) {
-          return undefined;
-        }
+      result.types = fertilizerTypes.toArray();
 
-        weight = forage.weight;
-        dmWeight = weight;
-        if (!forage.isDry) {
-          dmWeight = (weight * forage.type.dryMatterPercentage) / 100;
-        }
-        totalWeight += weight;
-        totalDMWeight += dmWeight;
-        nitrogenInKg += (type.nitrogenPercentage * dmWeight) / 100;
-        phosphorusInKg += (type.phosphorusPercentage * dmWeight) / 100;
-        potassiumInKg += (type.potassiumPercentage * dmWeight) / 100;
-        sulphurInKg += (type.sulphurPercentage * dmWeight) / 100;
-        meInMJ += (type.metabolisableEnergyInMJPerKg * dmWeight);
-        incomings.push({
-          type: forage.type,
-          weight: forage.weight,
-          isDry: forage.isDry
-        });
-
-      }
-
-      var result = {
-        forages: incomings,
-        weight: totalWeight,
-        dryMatterWeight: totalDMWeight,
-        nitrogenInKg: nitrogenInKg,
-        nitrogenPercentage: (nitrogenInKg / totalDMWeight) * 100,
-        phosphorusInKg: phosphorusInKg,
-        phosphorusPercentage: (phosphorusInKg / totalDMWeight) * 100,
-        potassiumInKg: potassiumInKg,
-        potassiumPercentage: (potassiumInKg / totalDMWeight) * 100,
-        sulphurInKg: sulphurInKg,
-        sulphurPercentage: (sulphurInKg / totalDMWeight) * 100,
-        metabolisableEnergyInMJ: meInMJ,
-        metabolisableEnergyInMJPerKg: parseFloat(type.metabolisableEnergyInMJPerKg)
-      };
-
-      result.types = forageTypes.toArray();
-      nutrientCalculatorSession.saveSection('foragesPurchased', result);
+      nutrientCalculatorSession.saveSection('fertilizersPurchased', result);
 
       return result;
-    };
-
-    function _isEmpty() {
-      return _forages.length === 0;
-    };
-
-    function _count() {
-      return _forages.length;
-    };
+    }
 
     /**
-     * Returns foragesPurchased collection as an array
-     * @method toArray
-     * @returns {Array} foragesPurchased
+     * Loads the fertilizers in fertilizersPurchasedSection.fertilizers
+     * @method load
+     * @param fertilizersPurchasedSection
+     * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    function _toArray() {
-      return _forages;
-    };
-
-
-    /**
-     * Returns the forage at specified index
-     * @method at
-     * @returns {object} forage
-     * @public
-     * @static
-     */
-    function _at(index) {
-      return _forages[index];
-    };
-
-
-    /**
-     * Removes the forage at specified index
-     * @method removeAt
-     * @returns {object} foragesPurchased collection
-     * @public
-     * @static
-     */
-    function _removeIndex(index) {
-      $log.info('removing forage at index ' + index);
-      if (!_isDefined(index) || index &lt; 0 || index > _forages.length - 1) {
-        return foragesPurchased;
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+        return undefined
       }
-      _forages.splice(index, 1);
+      _fertilizers = fertilizersPurchasedSection.fertilizers;
+      fertilizerTypes.load(fertilizersPurchasedSection);
+      return fertilizersPurchased;
+    }
 
-      return foragesPurchased;
-    };
 
-
-    function _remove(forage) {
-      $log.info('removing forage ', forage);
-
-      if (!_isDefined(forage)) {
-        return foragesPurchased;
-      }
-
-      angular.forEach(_forages, function (item, index) {
-        if (angular.equals(item, forage)) {
-          _removeIndex(index);
-        }
-      });
-
-      return foragesPurchased;
-    };
-
-    function _first() {
-      return _forages[0];
-    };
-
-    function _last() {
-      $log.info('getting last forage ...');
-      var length = _count();
-      return _forages[length - 1];
-    };
-
-    foragesPurchased = {
-      add: _add,
-      at: _at,
-      size: _count,
-      toArray: _toArray,
-      removeAt: _removeIndex,
-      remove: _remove,
-      first: _first,
-      last: _last,
-      isEmpty: _isEmpty,
-      calculate: _calculate,
-
-      /**
-       * Returns the current instance of forages purchased
-       * @method forages
-       * @returns {object} forages
-       * @public
-       * @static
-       */
-      forages: function() {
-        return _forages;
-      },
-      /**
-       * types Forage types collection api
-       * @property {object} Types - forage types collection
-       * @public
-       * @static
-       */
-      types: forageTypes,
-
-      /**
-       * Returns true if the arguments are valid, false otherwise
-       * @method validateNew
-       * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-       * @param {!number} weight - value must be > 0
-       * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
-       * @returns {object} fertilizersPurchased
-       * @public
-       * @static
-       */
-      validateNew: function (type, weight, isDry) {
-        var forage = nutrientMedium.create(type, weight, isDry);
-        return validator.validate(forage);
-      },
-      validateAll: validator.validateAll,
-
-      /**
-       * Loads the foragesPurchasedSection
-       * @method load
-       * @param foragesPurchasedSection
-       * @returns {object} fertilizersPurchased
-       * @public
-       * @static
-       */
-      load: function (foragesPurchasedSection) {
-        if (!validator.validateAll(foragesPurchasedSection.forages)) {
-          return undefined
-        }
-        _forages = foragesPurchasedSection.forages;
-        forageTypes.load(foragesPurchasedSection);
-        return foragesPurchased;
-      },
-      createDefault: createDefault
-    };
-
-    return foragesPurchased;
+    return fertilizersPurchased;
   });</code></pre>
         </article>
     </section>
@@ -314,7 +195,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:06:09 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:07:35 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
