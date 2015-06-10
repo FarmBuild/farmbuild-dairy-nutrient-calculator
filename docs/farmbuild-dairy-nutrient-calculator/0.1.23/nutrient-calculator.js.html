@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows-purchased/index.src.js - Documentation</title>
+    <title>nutrient-calculator.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows-purchased/index.src.js</h1>
+    <h1 class="page-title">nutrient-calculator.js</h1>
     
 
     
@@ -49,222 +49,145 @@
 'use strict';
 
 /**
- * nutrientCalculator/cowsPurchased singleton
- * @module nutrientCalculator/cowsPurchased
+ * nutrientCalculator
+ * @module nutrientCalculator
  */
-angular.module('farmbuild.nutrientCalculator')
-
-	.factory('cowsPurchased',
-  function (validations,
-            cowTypeDefaults,
-            cowValidator,
-            cowTypes,
-            cows,
-            nutrientCalculatorSession
-    ) {
-
-		var cowsPurchased = {},
+angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
+	.factory('nutrientCalculator',
+  function (milkSold,
+            cowsPurchased, cowsCulled, cows,
+            foragesPurchased, fertilizersPurchased, concentratesPurchased,
+            legumes,
+            nutrientCalculatorSession,
+            farmdata,
+            validations,
+            nutrientAggregator,nutrientBalance,nutrientEfficiency,
+            feedBalance, milkProduction, stockingRate,
+            googleAnalyticsCalculator,
+            $log) {
+		var nutrientCalculator = {farmdata:farmdata},
 			_isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
-			_isDefined = validations.isDefined,
-			_types = angular.copy(cowTypeDefaults),
-      _cows = [],
-      validator = cowValidator;
+			_isDefined = validations.isDefined;
 
-    cowsPurchased.validateNew = cows.validateNew;
+    // Provide a shortcut for modules
+    nutrientCalculator.milkSold = milkSold;
+    nutrientCalculator.cowsPurchased = cowsPurchased;
+    nutrientCalculator.cowsCulled = cowsCulled;
+    nutrientCalculator.foragesPurchased = foragesPurchased;
+    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
+    nutrientCalculator.concentratesPurchased = concentratesPurchased;
+    nutrientCalculator.legumes = legumes;
+    nutrientCalculator.aggregator = nutrientAggregator;
+    nutrientCalculator.balance = nutrientBalance;
+    nutrientCalculator.efficiency = nutrientEfficiency;
+    nutrientCalculator.version = '0.1.0';
+    nutrientCalculator.ga = googleAnalyticsCalculator;
+    nutrientCalculator.session = nutrientCalculatorSession;
 
-		/**
-		 * Calculates total nutrient imported on to the farm in cows
-		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type{name, weight}, numberOfCows}
-		 * @returns {object} nutrient data of cows purchased
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.calculate = function (cows) {
-			var numberOfCows = 0,
-				weight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				nitrogenPercentage = 2.8,
-				phosphorusPercentage = 0.72,
-				potassiumPercentage = 0.2,
-				sulphurPercentage = 0.8,
-				incomings = [],
-				i = 0;
-
-			if (!cows || cows.length === 0) {
-				return undefined;
-			}
-
-			for (i; i &lt; cows.length; i++) {
-				var cowWeight,
-					cowCount,
-					cow = cows[i];
-
-				if (!cow.name || !cow.weight) {
-					return undefined;
-				}
-
-				cowWeight = cow.weight;
-				cowCount = cow.numberOfCows;
-
-				if (!_isPositiveNumber(cowCount)) {
-					return undefined;
-				}
-
-				weight += cowWeight * cowCount;
-				numberOfCows += cowCount;
-				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
-				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
-				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
-				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
-				incomings.push({
-					name: cow.name,
-					numberOfCows: cowCount,
-					weight: cow.weight
-				});
-			}
-
-      var result =  {
-				cows: incomings,
-				numberOfCows: numberOfCows,
-				weight: weight,
-				nitrogenInKg: nitrogenInKg,
-				phosphorusInKg: phosphorusInKg,
-				potassiumInKg: potassiumInKg,
-				sulphurInKg: sulphurInKg
-			};
-
-      result.types = _types;
-
-      nutrientCalculatorSession.saveSection('cowsPurchased', result);
-
-      return result;
-		};
-
-		/**
-		 * Adds a new cow type for nutrient calculation
-		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} cowsPurchased - useful for chaining multiple add()
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.addType = function (name, weight) {
-			if (!_isPositiveNumber(weight)) {
-				return undefined;
-			}
-
-			if (!name || !_isAlphanumeric(name)) {
-				return undefined;
-			}
-
-			weight = parseFloat(weight);
-
-			_types.push({
-				name: name,
-				weight: weight
-			});
-
-			return cowsPurchased;
-		};
-		
-				/**
-		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
-		 * @method removeTypeByName
-		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByName = function (name) {
-
-			if (!name) {
-				return undefined;
-			}
-
-			angular.forEach(_types, function(type, i){
-				if(type.name === name){
-					_types.splice(i, 1);
-				}
-			});
-
-			return _types;
-		};
-
-		/**
-		 * Remove this cow from cow types
-		 * @method removeTypeByIndex
-		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByIndex = function (index) {
-
-			if (!_isDefined(index) || index &lt; 0 || index > _types.length-1) {
-				return undefined;
-			}
-
-			_types.splice(index, 1);
-
-			return _types;
-		};
-
-
-		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - cow types array
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.types = function () {
-			return _types;
-		};
-
-    cowsPurchased.validateType = function (type) {
-      return cowTypes.validate(type);
-    };
-
-
-    /**
-     * Returns current cow types
-     * @method types
-     * @returns {object} Types - cow types array
-     * @public
-     * @static
-     */
-    cowsPurchased.cows = function () {
-      return _cows;
-    };
-
-    /**
-     * Loads the fertilizers in cowsPurchasedSection.fertilizers
-     * @method load
-     * @param cowsPurchasedSection
-     * @returns {object} cowsPurchased
-     * @public
-     * @static
-     */
-    cowsPurchased.load = function(cowsPurchasedSection) {
-      if(!validator.validateAll(cowsPurchasedSection.cows)) {
-        return undefined
-      }
-      _cows = cowsPurchasedSection.cows;
-      _types = cowsPurchasedSection.types;
-
-      return cowsPurchased;
+		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
+      'this should only be initialised once! why we see twice in the example?');
+    function createDefault() {
+      return {
+        summary: {
+          milkingAreaInHa: 0,
+          averageCowWeightInKg: 0,
+          numberOfMilkingCows: 0,
+          numberOfMilkingDays: 365
+        },
+        milkSold: milkSold.createDefault(),
+        cowsCulled: cows.createDefault(),
+        cowsPurchased: cows.createDefault(),
+        fertilizersPurchased: fertilizersPurchased.createDefault(),
+        foragesPurchased: foragesPurchased.createDefault(),
+        legumes: {
+          dryMatterConsumedPerHaInKg: 0
+        },
+        concentratesPurchased: concentratesPurchased.createDefault(),
+        balance:{},
+        efficiency:{},
+        stockingRate:{},
+        milkProduction:{},
+        feedBalance:{}
+      };
     }
 
-		return cowsPurchased;
+    /**
+     * Finds the farmData from the session.
+     * @method find
+     * @returns {object} the farmData stored in session, undefined if the farmData is found in session
+     * @public
+     * @static
+     */
+    nutrientCalculator.find = function () {
+      return nutrientCalculatorSession.find();
+    }
 
-	});
-</code></pre>
+		/**
+		 * Loads the farmData into the session.
+     * If the farmData has no nutrientCalculator section, then append one
+		 * @method load
+		 * @param {!object} farmData -
+		 * @returns {object} the farmData stored in session, undefined if the farmData is invalid
+		 * @public
+		 * @static
+		 */
+		nutrientCalculator.load = function (farmData) {
+      var loaded = farmdata.load(farmData);
+
+			if (!_isDefined(loaded)) {
+				return undefined;
+			}
+
+			if (!loaded.hasOwnProperty('nutrientCalculator')) {
+        loaded.nutrientCalculator = createDefault();
+        loaded = farmdata.update(loaded);
+			}
+
+			return loaded;
+		};
+
+    /**
+     * Calculates balance and updates the farmData
+     * @method calculate
+     * @param {!Object} farmData
+     * @returns {Object} the farmData calculated
+     * @public
+     * @static
+     */
+    nutrientCalculator.calculate = function (farmData) {
+      var nutrientValues = nutrientAggregator.calculate(farmData),
+        milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
+
+      farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
+      farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
+      farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
+      farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
+
+      farmData.nutrientCalculator.stockingRate = stockingRate.calculate(farmData.nutrientCalculator, farmData.area);
+
+      return farmdata.update(farmData);
+    };
+
+    /**
+     * Saves and exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
+     * It creates &lt;a> element with 'download' attribute, the data is attached to href
+     * and invoke click() function so the user gets the file save dialogue or something equivalent.
+     * @method export
+     * @param {object} document
+     * @param {object} farmData
+     */
+    nutrientCalculator.export = nutrientCalculatorSession.export;
+
+		if (typeof window.farmbuild === 'undefined') {
+			window.farmbuild = {
+				nutrientcalculator: nutrientCalculator
+			};
+		} else {
+			window.farmbuild.nutrientcalculator = nutrientCalculator;
+		}
+
+		return nutrientCalculator;
+	});</code></pre>
         </article>
     </section>
 
@@ -276,7 +199,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:05:07 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:06:09 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/fertilizerTypes - Documentation</title>
+    <title>nutrientCalculator/cowsCulled - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/fertilizerTypes</h1>
+    <h1 class="page-title">nutrientCalculator/cowsCulled</h1>
     
 
     
@@ -50,7 +50,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>nutrientCalculator/fertilizerTypes singleton</p></div>
+            <div class="description"><p>nutrientCalculator/cowsCulled singleton</p></div>
         
 
         
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line11">line 11</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -140,124 +140,6 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".fertilizerTypes"><span class="type-signature">(static) </span>fertilizerTypes<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Fertilizer types collection api</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>Types</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>fertilizer types collection</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line33">line 33</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -267,14 +149,14 @@
 
     
 
-    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(name<span class="signature-attributes">non-null</span>, dryMatterPercentage<span class="signature-attributes">non-null</span>, sulphurPercentage<span class="signature-attributes">non-null</span>, potassiumPercentage<span class="signature-attributes">non-null</span>, phosphorusPercentage<span class="signature-attributes">non-null</span>, nitrogenPercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".addType"><span class="type-signature">(static) </span>addType<span class="signature">(name<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Adds a new fertilizer type for nutrient calculation</p>
+    <p>Adds a new cow type for nutrient calculation</p>
 </div>
 
 
@@ -333,7 +215,7 @@
 
         <tr>
             
-                <td class="name"><code>dryMatterPercentage</code></td>
+                <td class="name"><code>weight</code></td>
             
 
             <td class="type">
@@ -349,99 +231,7 @@
 
             
 
-            <td class="description last"><p>value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>sulphurPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>value must be &gt;= 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>potassiumPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>value must be &gt;= 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>phosphorusPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>value must be &gt;= 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nitrogenPercentage</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>value must be &gt;= 0</p></td>
+            <td class="description last"><p>average weight of this type in Kg, value must be &gt; 0</p></td>
         </tr>
 
     
@@ -482,7 +272,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line34">line 34</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -509,7 +299,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizers</p>
+    <p>cowsCulled - useful for chaining multiple add()</p>
 </div>
 
 
@@ -535,118 +325,14 @@
 
     
 
-    <h4 class="name" id=".at"><span class="type-signature">(static) </span>at<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(cows<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns the fertilizerType at specified index</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line48">line 48</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>fertilizerType</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(fertilizersPurchasedSection)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Loads the types in fertilizersPurchasedSection.types</p>
+    <p>Calculates total nutrient exported from the farm in cows culled</p>
 </div>
 
 
@@ -682,7 +368,160 @@
 
         <tr>
             
-                <td class="name"><code>fertilizersPurchasedSection</code></td>
+                <td class="name"><code>cows</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of culled cows, each item contains details of the cow {type{name, weight}, numberOfCows}</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>nutrient data of cows culled</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(cowsCulledSection)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Loads the fertilizers in cowsCulledSection.fertilizers</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cowsCulledSection</code></td>
             
 
             <td class="type">
@@ -734,7 +573,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line77">line 77</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line204">line 204</a>
     </li></ul></dd>
     
 
@@ -761,7 +600,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizersPurchased</p>
+    <p>cowsPurchased</p>
 </div>
 
 
@@ -787,14 +626,320 @@
 
     
 
-    <h4 class="name" id=".removeAt"><span class="type-signature">(static) </span>removeAt<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".removeTypeByIndex"><span class="type-signature">(static) </span>removeTypeByIndex<span class="signature">(index<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Removes the fertilizer type at specified index</p>
+    <p>Remove this cow from cow types</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>index (starts from 0) of the type you want to remove in types Array</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>cowsCulled - useful for chaining functions</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeTypeByName"><span class="type-signature">(static) </span>removeTypeByName<span class="signature">(name<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the type you want to remove.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line134">line 134</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>cowsCulled - useful for chaining functions</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns current cow types</p>
 </div>
 
 
@@ -838,7 +983,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line67">line 67</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line177">line 177</a>
     </li></ul></dd>
     
 
@@ -865,7 +1010,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizerTypes collection</p>
+    <p>Types - cow types array</p>
 </div>
 
 
@@ -891,14 +1036,14 @@
 
     
 
-    <h4 class="name" id=".toArray"><span class="type-signature">(static) </span>toArray<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id=".types"><span class="type-signature">(static) </span>types<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns fertilizerTypes collection as an array</p>
+    <p>Returns current cow types</p>
 </div>
 
 
@@ -942,7 +1087,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_types.src.js.html">fertilizers-purchased/types.src.js</a>, <a href="fertilizers-purchased_types.src.js.html#line59">line 59</a>
+        <a href="cows-culled_index.src.js.html">cows-culled/index.src.js</a>, <a href="cows-culled_index.src.js.html#line193">line 193</a>
     </li></ul></dd>
     
 
@@ -969,7 +1114,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizerTypes</p>
+    <p>Types - cow types array</p>
 </div>
 
 
@@ -980,7 +1125,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -1008,7 +1153,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:05:08 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:06:09 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
