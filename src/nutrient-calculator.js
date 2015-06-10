@@ -90,6 +90,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 		 * @static
 		 */
 		nutrientCalculator.load = function (farmData) {
+      console.log(farmData)
       var loaded = farmdata.load(farmData);
 
 			if (!_isDefined(loaded)) {

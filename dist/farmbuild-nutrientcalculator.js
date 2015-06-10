@@ -44,6 +44,7 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
         return nutrientCalculatorSession.find();
     };
     nutrientCalculator.load = function(farmData) {
+        console.log(farmData);
         var loaded = farmdata.load(farmData);
         if (!_isDefined(loaded)) {
             return undefined;
