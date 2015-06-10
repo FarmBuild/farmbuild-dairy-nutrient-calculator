@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>cows-purchased/index.src.js - Documentation</title>
+    <title>nutrientCalculator - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,245 +28,698 @@
 
 <div id="main">
     
-    <h1 class="page-title">cows-purchased/index.src.js</h1>
+    <h1 class="page-title">nutrientCalculator</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
- */
+        
+            
+        
+    
+</header>
 
-'use strict';
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>nutrientCalculator</p></div>
+        
 
-/**
- * nutrientCalculator/cowsPurchased singleton
- * @module nutrientCalculator/cowsPurchased
- */
-angular.module('farmbuild.nutrientCalculator')
-
-	.factory('cowsPurchased',
-  function (validations,
-            cowTypeDefaults,
-            cowValidator,
-            cowTypes,
-            cows,
-            nutrientCalculatorSession
-    ) {
-
-		var cowsPurchased = {},
-			_isPositiveNumber = validations.isPositiveNumber,
-			_isAlphanumeric = validations.isAlphanumeric,
-			_isDefined = validations.isDefined,
-			_types = angular.copy(cowTypeDefaults),
-      _cows = [],
-      validator = cowValidator;
-
-    cowsPurchased.validateNew = cows.validateNew;
-
-		/**
-		 * Calculates total nutrient imported on to the farm in cows
-		 * @method calculate
-		 * @param {!array} cows - Array of purchased cows, each item contains details of the cow {type{name, weight}, numberOfCows}
-		 * @returns {object} nutrient data of cows purchased
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.calculate = function (cows) {
-			var numberOfCows = 0,
-				weight = 0,
-				nitrogenInKg = 0,
-				phosphorusInKg = 0,
-				potassiumInKg = 0,
-				sulphurInKg = 0,
-				nitrogenPercentage = 2.8,
-				phosphorusPercentage = 0.72,
-				potassiumPercentage = 0.2,
-				sulphurPercentage = 0.8,
-				incomings = [],
-				i = 0;
-
-			if (!cows || cows.length === 0) {
-				return undefined;
-			}
-
-			for (i; i &lt; cows.length; i++) {
-				var cowWeight,
-					cowCount,
-					cow = cows[i];
-
-				if (!cow.name || !cow.weight) {
-					return undefined;
-				}
-
-				cowWeight = cow.weight;
-				cowCount = cow.numberOfCows;
-
-				if (!_isPositiveNumber(cowCount)) {
-					return undefined;
-				}
-
-				weight += cowWeight * cowCount;
-				numberOfCows += cowCount;
-				nitrogenInKg += (nitrogenPercentage * cowWeight * cowCount) / 100;
-				phosphorusInKg += (phosphorusPercentage * cowWeight * cowCount) / 100;
-				potassiumInKg += (potassiumPercentage * cowWeight * cowCount) / 100;
-				sulphurInKg += (sulphurPercentage * cowWeight * cowCount) / 100;
-				incomings.push({
-					name: cow.name,
-					numberOfCows: cowCount,
-					weight: cow.weight
-				});
-			}
-
-      var result =  {
-				cows: incomings,
-				numberOfCows: numberOfCows,
-				weight: weight,
-				nitrogenInKg: nitrogenInKg,
-				phosphorusInKg: phosphorusInKg,
-				potassiumInKg: potassiumInKg,
-				sulphurInKg: sulphurInKg
-			};
-
-      result.types = _types;
-
-      nutrientCalculatorSession.saveSection('cowsPurchased', result);
-
-      return result;
-		};
-
-		/**
-		 * Adds a new cow type for nutrient calculation
-		 * @method addType
-		 * @param {!string} name - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
-		 * @param {!number} weight - average weight of this type in Kg, value must be > 0
-		 * @returns {object} cowsPurchased - useful for chaining multiple add()
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.addType = function (name, weight) {
-			if (!_isPositiveNumber(weight)) {
-				return undefined;
-			}
-
-			if (!name || !_isAlphanumeric(name)) {
-				return undefined;
-			}
-
-			weight = parseFloat(weight);
-
-			_types.push({
-				name: name,
-				weight: weight
-			});
-
-			return cowsPurchased;
-		};
-		
-				/**
-		 * Remove cow(s) with this name from cow types, if there is duplicate in naming all of them would be removed
-		 * @method removeTypeByName
-		 * @param {!String} name - name of the type you want to remove.
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByName = function (name) {
-
-			if (!name) {
-				return undefined;
-			}
-
-			angular.forEach(_types, function(type, i){
-				if(type.name === name){
-					_types.splice(i, 1);
-				}
-			});
-
-			return _types;
-		};
-
-		/**
-		 * Remove this cow from cow types
-		 * @method removeTypeByIndex
-		 * @param {!String} index - index (starts from 0) of the type you want to remove in types Array
-		 * @returns {Object} CowsCulled - useful for chaining functions
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.removeTypeByIndex = function (index) {
-
-			if (!_isDefined(index) || index &lt; 0 || index > _types.length-1) {
-				return undefined;
-			}
-
-			_types.splice(index, 1);
-
-			return _types;
-		};
+        
+            
 
 
-		/**
-		 * Returns current cow types
-		 * @method types
-		 * @returns {object} Types - cow types array
-		 * @public
-		 * @static
-		 */
-		cowsPurchased.types = function () {
-			return _types;
-		};
-
-    cowsPurchased.validateType = function (type) {
-      return cowTypes.validate(type);
-    };
 
 
-    /**
-     * Returns current cow types
-     * @method types
-     * @returns {object} Types - cow types array
-     * @public
-     * @static
-     */
-    cowsPurchased.cows = function () {
-      return _cows;
-    };
 
-    /**
-     * Loads the fertilizers in cowsPurchasedSection.fertilizers
-     * @method load
-     * @param cowsPurchasedSection
-     * @returns {object} cowsPurchased
-     * @public
-     * @static
-     */
-    cowsPurchased.load = function(cowsPurchasedSection) {
-      if(!validator.validateAll(cowsPurchasedSection.cows)) {
-        return undefined
-      }
-      _cows = cowsPurchasedSection.cows;
-      _types = cowsPurchasedSection.types;
 
-      return cowsPurchased;
-    }
 
-		return cowsPurchased;
 
-	});
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Calculates balance and updates the farmData</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>farmData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line109">line 109</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the farmData calculated</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".find"><span class="type-signature">(static) </span>find<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Finds the farmData from the session.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the farmData stored in session, undefined if the farmData is found in session</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(farmData<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Loads the farmData into the session.
+If the farmData has no nutrientCalculator section, then append one</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>farmData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>-</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the farmData stored in session, undefined if the farmData is invalid</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~export"><span class="type-signature">(inner) </span>export<span class="signature">(document, farmData)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Saves and exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
+It creates <a> element with 'download' attribute, the data is attached to href
+and invoke click() function so the user gets the file save dialogue or something equivalent.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>document</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>farmData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nutrient-calculator.js.html">nutrient-calculator.js</a>, <a href="nutrient-calculator.js.html#line131">line 131</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -276,7 +729,7 @@ angular.module('farmbuild.nutrientCalculator')
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:07:35 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:09:11 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
