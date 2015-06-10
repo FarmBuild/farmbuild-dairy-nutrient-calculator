@@ -58,6 +58,7 @@ angular.module('farmbuild.nutrientCalculator')
 
     nutrientCalculatorSession.loadSection = function(section) {
       var loaded = load();
+      debugger;
       return loaded?loaded[section]:null;
     }
 

@@ -31,7 +31,8 @@ angular.module('farmbuild.nutrientCalculator')
     function createDefault() {
       return {
         types:concentrateTypes.toArray(),
-        concentrates:[]
+        concentrates:[],
+        dryMatterWeight: 0
       };
     }
     concentratesPurchased.createDefault = createDefault;

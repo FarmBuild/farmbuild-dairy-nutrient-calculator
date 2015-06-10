@@ -31,7 +31,8 @@ angular.module('farmbuild.nutrientCalculator')
     function createDefault() {
       return {
         types:fertilizerTypes.toArray(),
-        fertilizers:[]
+        fertilizers:[],
+        dryMatterWeight: 0
       };
     }
     fertilizersPurchased.createDefault = createDefault;

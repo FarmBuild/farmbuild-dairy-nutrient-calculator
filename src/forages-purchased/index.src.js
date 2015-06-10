@@ -23,7 +23,8 @@ angular.module('farmbuild.nutrientCalculator')
     function createDefault() {
       return {
         types:forageTypes.toArray(),
-        forages:[]
+        forages:[],
+        dryMatterWeight: 0
       };
     }
 

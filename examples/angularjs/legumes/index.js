@@ -25,7 +25,9 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 				forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ,
 				milkingAreaInHa, utilisationFactor,
 				nitrogenFromFertiliserInKg, legumePercentage);
-			saveInSessionStorage($scope.result);
+			if($scope.result) {
+				saveInSessionStorage($scope.result);
+			}
 			$scope.noResult = !$scope.result;
 		};
 
@@ -35,29 +37,17 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 
 		if (nutrientCalculator.session.isLoadFlagSet(location)) {
 			var legumesData = nutrientCalculator.session.loadSection('legumes'),
+				milkSoldData = nutrientCalculator.session.loadSection('milkSold'),
 				farmSummary = nutrientCalculator.session.loadSection('summary'),
 				foragesPurchasedData = nutrientCalculator.session.loadSection('foragesPurchased'),
 				fertilizersPurchasedData = nutrientCalculator.session.loadSection('fertilizersPurchased'),
 				concentratesPurchased = nutrientCalculator.session.loadSection('concentratesPurchased');
-      $scope.utilisationFactor = 0;
-			$scope.calculate(
-				legumesData.milkSoldPerYearInLitre,
-				legumesData.milkFatInKg,
-				legumesData.milkProteinInKg,
-				farmSummary.numberOfMilkingCows,
-				farmSummary.numberOfMilkingDays,
-				farmSummary.averageCowWeightInKg,
-				foragesPurchasedData.metabolisableEnergyInMJ,
-				concentratesPurchased.metabolisableEnergyInMJ,
-				farmSummary.milkingAreaInHa,
-				legumesData.utilisationFactor,
-				fertilizersPurchasedData.nitrogenInKg,
-				legumesData.legumePercentage
-			);
+			$scope.result = legumesData;
 
-			$scope.milkSoldPerYearInLitre = $scope.result.milkSoldPerYearInLitre,
-				$scope.milkFatInKg = $scope.result.milkFatInKg,
-				$scope.milkProteinInKg = $scope.result.milkProteinInKg,
+
+			$scope.milkSoldPerYearInLitre = milkSoldData.totalPerYearInLitre,
+				$scope.milkFatInKg = milkSoldData.fatInKg,
+				$scope.milkProteinInKg = milkSoldData.proteinInKg,
 				$scope.numberOfMilkingCows = farmSummary.numberOfMilkingCows,
 				$scope.numberOfMilkingDays = farmSummary.numberOfMilkingDays,
 				$scope.averageCowWeightInKg = farmSummary.averageCowWeightInKg,
