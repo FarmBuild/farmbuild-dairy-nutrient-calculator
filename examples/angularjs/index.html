@@ -281,7 +281,31 @@
       a complete farm data to see feed balance!
     </empty-message>
   </fieldset>
+  <fieldset>
+    <legend>Mass Import Export Charts</legend>
+    <div id="chart_div_mass_import" style="float: left; width:49%">
+    </div>
+    <div id="chart_div_mass_export" style="float: left;width:49%">
+    </div>
+  </fieldset>
 
+  <fieldset id="nutrient_impexp_fieldset">
+    <legend>Nutrients Import Export Charts</legend>
+
+    <div id="nutrients_import_chart" style=" float: left;  width:49%;height:auto">
+      <div id="chart_div_nitrogen_import" style="float: left; page-break-inside:avoid"></div>
+      <div id="chart_div_phosphorus_import" style="float: left; page-break-inside:avoid"></div>
+      <div id="chart_div_potassium_import" style="float: left; page-break-inside:avoid"></div>
+      <div id="chart_div_sulphur_import" style="float: left; page-break-inside:avoid"></div>
+    </div>
+
+    <div id="nutrients_export_chart" style="float: left;  width:49%; height:auto">
+      <div id="chart_div_nitrogen_export" style="float: left"></div>
+      <div id="chart_div_phosphorus_export" style="float: left"></div>
+      <div id="chart_div_potassium_export" style="float: left"></div>
+      <div id="chart_div_sulphur_export" style="float: left"></div>
+    </div>
+  </fieldset>
 </summary>
 <version>
   Version: <span ng-bind="appVersion"></span>
@@ -312,6 +336,8 @@
 </script>
 <script src="../config.js"></script>
 <script src="index.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load('visualization', '1.0', {'packages':['corechart']});</script>
 
 
 </body>
