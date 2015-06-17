@@ -1,6 +1,8 @@
 #FarmBuild Dairy Nutrient Calculator
 
-This is the dairy nutrient calculator component of FarmBuild project. In order to register please visit <a href="http://farmbuild.github.io/farmbuild/">FarmBuild website</a>.
+This is the dairy nutrient calculator component of FarmBuild project. 
+
+For more information on the FarmBuild project and its registration process, please visit the <a href="http://farmbuild.github.io/farmbuild/">FarmBuild website</a>.
 
 
 ## Getting Started
@@ -31,5 +33,6 @@ For more information about API and Testing see the [Wiki](https://github.com/Far
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/jquery/concentrates-purchased/index.html" target="_blank">Concentrates Purchased</a>
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/jquery/legumes/index.html" target="_blank">Legumes</a>
 
+***
 
 [![Build Status](https://travis-ci.org/FarmBuild/farmbuild-dairy-nutrient-calculator.svg?branch=master)](https://travis-ci.org/FarmBuild/farmbuild-dairy-nutrient-calculator)
