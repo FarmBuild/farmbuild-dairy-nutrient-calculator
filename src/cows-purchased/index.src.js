@@ -193,9 +193,9 @@ angular.module('farmbuild.nutrientCalculator')
 
 
     /**
-     * Returns current cow types
-     * @method types
-     * @returns {object} Types - cow types array
+     * Returns current cows
+     * @method cows
+     * @returns {object} Cows - cows array
      * @public
      * @static
      */
