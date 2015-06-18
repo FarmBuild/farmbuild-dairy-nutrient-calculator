@@ -2,7 +2,7 @@
 
 window.farmbuild.examples = {
 	nutrientcalculator: {
-		version: '0.1',
+		version: '1.0.0',
 		decimalPrecision: 2
 	}
 };

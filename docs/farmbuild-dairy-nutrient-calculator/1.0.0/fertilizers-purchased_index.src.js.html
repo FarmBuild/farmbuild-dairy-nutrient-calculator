@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrient-calculator.js - Documentation</title>
+    <title>fertilizers-purchased/index.src.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrient-calculator.js</h1>
+    <h1 class="page-title">fertilizers-purchased/index.src.js</h1>
     
 
     
@@ -40,154 +40,150 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
+ * @copyright 2015 State of Victoria.
+
+ * @author State of Victoria
+ * @version 1.0.0
  */
 
 'use strict';
 
 /**
- * nutrientCalculator
- * @module nutrientCalculator
+ * nutrientCalculator/fertilizersPurchased singleton
+ * @module nutrientCalculator/fertilizersPurchased
  */
-angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farmdata'])
-	.factory('nutrientCalculator',
-  function (milkSold,
-            cowsPurchased, cowsCulled, cows,
-            foragesPurchased, fertilizersPurchased, concentratesPurchased,
-            legumes,
+angular.module('farmbuild.nutrientCalculator')
+
+  .factory('fertilizersPurchased',
+  function (validations,
+            nutrientMedium,
+            fertilizerDefaults, fertilizerTypes,
+            nutrientMediumValidator,
+            fertilizerCalculator,
+            collections,
             nutrientCalculatorSession,
-            farmdata,
-            validations,
-            nutrientAggregator,nutrientBalance,nutrientEfficiency,
-            feedBalance, milkProduction, stockingRate,
-            googleAnalyticsCalculator,
             $log) {
-		var nutrientCalculator = {farmdata:farmdata},
-			_isPositiveNumber = validations.isPositiveNumber,
-			_isDefined = validations.isDefined;
 
-    // Provide a shortcut for modules
-    nutrientCalculator.milkSold = milkSold;
-    nutrientCalculator.cowsPurchased = cowsPurchased;
-    nutrientCalculator.cowsCulled = cowsCulled;
-    nutrientCalculator.foragesPurchased = foragesPurchased;
-    nutrientCalculator.fertilizersPurchased = fertilizersPurchased;
-    nutrientCalculator.concentratesPurchased = concentratesPurchased;
-    nutrientCalculator.legumes = legumes;
-    nutrientCalculator.aggregator = nutrientAggregator;
-    nutrientCalculator.balance = nutrientBalance;
-    nutrientCalculator.efficiency = nutrientEfficiency;
-    nutrientCalculator.version = '0.1.0';
-    nutrientCalculator.ga = googleAnalyticsCalculator;
-    nutrientCalculator.session = nutrientCalculatorSession;
-
-		$log.info('Welcome to Farm Dairy Nutrient Calculator... ' +
-      'this should only be initialised once! why we see twice in the example?');
+    var fertilizersPurchased = {types:fertilizerTypes, calculator:fertilizerCalculator},
+      _fertilizers = [],
+      calculator = fertilizerCalculator,
+      validator = nutrientMediumValidator;
     function createDefault() {
       return {
-        summary: {
-          milkingAreaInHa: 0,
-          averageCowWeightInKg: 0,
-          numberOfMilkingCows: 0,
-          numberOfMilkingDays: 365
-        },
-        milkSold: milkSold.createDefault(),
-        cowsCulled: cows.createDefault(),
-        cowsPurchased: cows.createDefault(),
-        fertilizersPurchased: fertilizersPurchased.createDefault(),
-        foragesPurchased: foragesPurchased.createDefault(),
-        legumes: {
-          dryMatterConsumedPerHaInKg: 0
-        },
-        concentratesPurchased: concentratesPurchased.createDefault(),
-        balance:{},
-        efficiency:{},
-        stockingRate:{},
-        milkProduction:{},
-        feedBalance:{}
+        types:fertilizerTypes.toArray(),
+        fertilizers:[],
+        dryMatterWeight: 0
       };
     }
+    fertilizersPurchased.createDefault = createDefault;
 
     /**
-     * Finds the farmData from the session.
-     * @method find
-     * @returns {object} the farmData stored in session, undefined if the farmData is found in session
+     * Removes the fertilizer at specified index
+     * @method removeAt
+     * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    nutrientCalculator.find = function () {
-      return nutrientCalculatorSession.find();
-    }
-
-		/**
-		 * Loads the farmData into the session.
-     * If the farmData has no nutrientCalculator section, then append one
-		 * @method load
-		 * @param {!object} farmData -
-		 * @returns {object} the farmData stored in session, undefined if the farmData is invalid
-		 * @public
-		 * @static
-		 */
-		nutrientCalculator.load = function (farmData) {
-      var loaded = farmdata.load(farmData);
-
-			if (!_isDefined(loaded)) {
-				return undefined;
-			}
-
-			if (!loaded.hasOwnProperty('nutrientCalculator')) {
-        loaded.nutrientCalculator = createDefault();
-        loaded = farmdata.update(loaded);
-			}
-
-			return loaded;
-		};
+    function _removeAt(index) {
+      $log.info('removing fertilizer at index ' + index);
+      nutrientMedium.removeAt(_fertilizers, index);
+      return fertilizersPurchased;
+    };
+    fertilizersPurchased.removeAt = _removeAt;
 
     /**
-     * Calculates balance and updates the farmData
-     * @method calculate
-     * @param {!Object} farmData
-     * @returns {Object} the farmData calculated
+     * Returns the current instance of fertilizers purchased
+     * @method fertilizers
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
      * @public
      * @static
      */
-    nutrientCalculator.calculate = function (farmData) {
-      var nutrientValues = nutrientAggregator.calculate(farmData),
-        milkingArea = farmData.nutrientCalculator.summary.milkingAreaInHa;
+    fertilizersPurchased.fertilizers = function() { return _fertilizers};
 
-      farmData.nutrientCalculator.balance = nutrientBalance.calculate(nutrientValues, milkingArea);
-      farmData.nutrientCalculator.efficiency = nutrientEfficiency.calculate(nutrientValues);
-      farmData.nutrientCalculator.feedBalance = feedBalance.calculate(farmData.nutrientCalculator);
-      farmData.nutrientCalculator.milkProduction = milkProduction.calculate(farmData.nutrientCalculator);
-
-      farmData.nutrientCalculator.stockingRate = stockingRate.calculate(farmData.nutrientCalculator, farmData.area);
-
-      return farmdata.update(farmData);
+    /**
+     * Adds a new fertilizer for nutrient calculation
+     * @method add
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    function _add(type, weight, isDry) {
+      _fertilizers = nutrientMedium.add(_fertilizers, type, weight, isDry);
+      return fertilizersPurchased;
     };
 
+    fertilizersPurchased.add = _add;
+
     /**
-     * Saves and exports the farmData.json with a file name: farmdata-NAME_OF_FILE-yyyyMMddHHmmss.json
-     * It creates &lt;a> element with 'download' attribute, the data is attached to href
-     * and invoke click() function so the user gets the file save dialogue or something equivalent.
-     * @method export
-     * @param {object} document
-     * @param {object} farmData
+     * Returns true if the arguments are valid, false otherwise
+     * @method validateNew
+     * @param {!type} type - name of new type, can only contain alphanumeric values with space or underscore but no other special characters
+     * @param {!number} weight - value must be > 0
+     * @param {!boolean} isDry -true if the fertilizer is dry, false if it's wet
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
      */
-    nutrientCalculator.export = nutrientCalculatorSession.export;
+    function validateNew(type, weight, isDry) {
+      var fertilizer = nutrientMedium.create(type, weight, isDry);
+      return validator.validate(fertilizer);
+    };
 
-		if (typeof window.farmbuild === 'undefined') {
-			window.farmbuild = {
-				nutrientcalculator: nutrientCalculator
-			};
-		} else {
-			window.farmbuild.nutrientcalculator = nutrientCalculator;
-		}
+    fertilizersPurchased.validateNew = validateNew;
+    fertilizersPurchased.validateAll = validator.validateAll;
 
-		return nutrientCalculator;
-	});</code></pre>
+    fertilizersPurchased.asArray = function() { return _fertilizers};
+
+    /**
+     * Calculates the nutrient of the fertilizers purchased
+     * @method calculate
+     * @param fertilizers
+     * @returns {object} the result of the fertilizers purchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.calculate = function(fertilizers) {
+      $log.info('fertilizersPurchased.calculate...');
+      if(!validator.validateAll(fertilizers)) {
+        $log.error('fertilizersPurchased.calculate invalid fertilizers, see the error above and fix based on API...');
+        return undefined;
+      }
+
+      var result = calculator.calculate(fertilizers);
+
+      result.types = fertilizerTypes.toArray();
+
+      nutrientCalculatorSession.saveSection('fertilizersPurchased', result);
+
+      return result;
+    }
+
+    /**
+     * Loads the fertilizers in fertilizersPurchasedSection.fertilizers
+     * @method load
+     * @param fertilizersPurchasedSection
+     * @returns {object} fertilizersPurchased
+     * @public
+     * @static
+     */
+    fertilizersPurchased.load = function(fertilizersPurchasedSection) {
+      if(!validator.validateAll(fertilizersPurchasedSection.fertilizers)) {
+        return undefined
+      }
+      _fertilizers = fertilizersPurchasedSection.fertilizers;
+      fertilizerTypes.load(fertilizersPurchasedSection);
+      return fertilizersPurchased;
+    }
+
+
+    return fertilizersPurchased;
+  });</code></pre>
         </article>
     </section>
 
@@ -199,7 +195,7 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:09:11 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu Jun 18 2015 14:35:39 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

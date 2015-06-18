@@ -12,7 +12,7 @@ Unzip the downloaded folder and go to "examples" and open one of the html files 
 
 For more information about API and Testing see the [Wiki](https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator/wiki) section.
 
-<a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/docs/farmbuild-dairy-nutrient-calculator/0.1.25/index.html" target="_blank">API documentation</a>
+<a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/docs/farmbuild-dairy-nutrient-calculator/1.0.0/index.html" target="_blank">API documentation</a>
 
 ### AngularJS example
 * <a href="https://rawgit.com/FarmBuild/farmbuild-dairy-nutrient-calculator/master/examples/angularjs/index.html" target="_blank">Load or create new</a>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>nutrientCalculator/fertilizersPurchased - Documentation</title>
+    <title>nutrientCalculator/legume - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">nutrientCalculator/fertilizersPurchased</h1>
+    <h1 class="page-title">nutrientCalculator/legume</h1>
     
 
     
@@ -50,7 +50,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>nutrientCalculator/fertilizersPurchased singleton</p></div>
+            <div class="description"><p>nutrientCalculator/legume singleton</p></div>
         
 
         
@@ -99,7 +99,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line11">line 11</a>
+        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -149,14 +149,14 @@
 
     
 
-    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(type<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>, isDry<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(milkSoldPerYearInLitre<span class="signature-attributes">non-null</span>, milkFatInKg<span class="signature-attributes">non-null</span>, milkProteinInKg<span class="signature-attributes">non-null</span>, numberOfMilkingCows<span class="signature-attributes">non-null</span>, numberOfMilkingDays<span class="signature-attributes">non-null</span>, averageCowWeightInKg<span class="signature-attributes">non-null</span>, forageMetabolisableEnergyInMJ<span class="signature-attributes">non-null</span>, concentrateMetabolisableEnergyInMJ<span class="signature-attributes">non-null</span>, milkingAreaInHa<span class="signature-attributes">non-null</span>, utilisationFactor<span class="signature-attributes">non-null</span>, nitrogenFromFertiliserInKg<span class="signature-attributes">non-null</span>, legumePercentage<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Adds a new fertilizer for nutrient calculation</p>
+    <p>Calculates total Nitrogen nutrient imported on to the farm in legumes</p>
 </div>
 
 
@@ -192,13 +192,13 @@
 
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>milkSoldPerYearInLitre</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">type</span>
+<span class="param-type">Number</span>
 
 
             
@@ -208,20 +208,20 @@
 
             
 
-            <td class="description last"><p>name of new type, can only contain alphanumeric values with space or underscore but no other special characters</p></td>
+            <td class="description last"></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>weight</code></td>
+                <td class="name"><code>milkFatInKg</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
             
@@ -231,20 +231,20 @@
 
             
 
-            <td class="description last"><p>value must be &gt; 0</p></td>
+            <td class="description last"></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>isDry</code></td>
+                <td class="name"><code>milkProteinInKg</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">Number</span>
 
 
             
@@ -254,147 +254,206 @@
 
             
 
-            <td class="description last"><p>true if the fertilizer is dry, false if it's wet</p></td>
+            <td class="description last"></td>
         </tr>
 
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>fertilizersPurchased</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".calculate"><span class="type-signature">(static) </span>calculate<span class="signature">(fertilizers)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Calculates the nutrient of the fertilizers purchased</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
         <tr>
             
-                <td class="name"><code>fertilizers</code></td>
+                <td class="name"><code>numberOfMilkingCows</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>numberOfMilkingDays</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>averageCowWeightInKg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>forageMetabolisableEnergyInMJ</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>concentrateMetabolisableEnergyInMJ</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>milkingAreaInHa</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>utilisationFactor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nitrogenFromFertiliserInKg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>legumePercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
             
             </td>
 
@@ -443,7 +502,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line103">line 103</a>
+        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -470,7 +529,7 @@
 
         
 <div class="param-desc">
-    <p>the result of the fertilizers purchased</p>
+    <p>Nitrogen nutrient data imported on the farm in legumes purchased</p>
 </div>
 
 
@@ -496,361 +555,14 @@
 
     
 
-    <h4 class="name" id=".fertilizers"><span class="type-signature">(static) </span>fertilizers<span class="signature">(type<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>, isDry<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".utilisationFactors"><span class="type-signature">(static) </span>utilisationFactors<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Returns the current instance of fertilizers purchased</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">type</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>name of new type, can only contain alphanumeric values with space or underscore but no other special characters</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>weight</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isDry</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>true if the fertilizer is dry, false if it's wet</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line54">line 54</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>fertilizersPurchased</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".load"><span class="type-signature">(static) </span>load<span class="signature">(fertilizersPurchasedSection)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Loads the fertilizers in fertilizersPurchasedSection.fertilizers</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>fertilizersPurchasedSection</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line127">line 127</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>fertilizersPurchased</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".removeAt"><span class="type-signature">(static) </span>removeAt<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Removes the fertilizer at specified index</p>
+    <p>Utilisation factors reference values</p>
 </div>
 
 
@@ -894,7 +606,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line40">line 40</a>
+        <a href="legumes_index.src.js.html">legumes/index.src.js</a>, <a href="legumes_index.src.js.html#line100">line 100</a>
     </li></ul></dd>
     
 
@@ -921,7 +633,7 @@
 
         
 <div class="param-desc">
-    <p>fertilizersPurchased</p>
+    <p>utilisationFactors</p>
 </div>
 
 
@@ -932,206 +644,7 @@
     </dt>
     <dd>
         
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".validateNew"><span class="type-signature">(static) </span>validateNew<span class="signature">(type<span class="signature-attributes">non-null</span>, weight<span class="signature-attributes">non-null</span>, isDry<span class="signature-attributes">non-null</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Returns true if the arguments are valid, false otherwise</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">type</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>name of new type, can only contain alphanumeric values with space or underscore but no other special characters</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>weight</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>value must be &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>isDry</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>true if the fertilizer is dry, false if it's wet</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="fertilizers-purchased_index.src.js.html">fertilizers-purchased/index.src.js</a>, <a href="fertilizers-purchased_index.src.js.html#line83">line 83</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>fertilizersPurchased</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
+<span class="param-type">Array</span>
 
 
     </dd>
@@ -1159,7 +672,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed Jun 10 2015 18:09:11 GMT+1000 (AEST) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Thu Jun 18 2015 14:35:39 GMT+1000 (AEST) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
