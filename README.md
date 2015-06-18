@@ -2,7 +2,6 @@
 
 This is the dairy nutrient calculator component of FarmBuild project.
 
-version 1.0.0
 
 For more information on the FarmBuild project and its registration process, please visit the <a href="http://farmbuild.github.io/farmbuild/">FarmBuild website</a>.
 
