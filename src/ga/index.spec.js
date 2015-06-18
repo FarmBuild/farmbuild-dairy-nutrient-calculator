@@ -25,7 +25,7 @@ describe('farmbuild.nutrientCalculator module', function() {
         }));
 
         it('googleAnalyticsCalculator.track should create a track', inject(function() {
-            googleAnalyticsCalculator.trackCalculate('AgSmart')
+            googleAnalyticsCalculator.trackCalculate('farmbuild-test-client')
         }));
     });
 

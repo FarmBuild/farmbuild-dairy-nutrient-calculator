@@ -40,7 +40,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 			updateFarmData($scope, farmData);
 
 			$scope.drawChart();
-			nutrientCalculator.ga.trackCalculate('AgSmart');
+			nutrientCalculator.ga.trackCalculate('farmbuild-test-client');
 		};
 
 		$scope.clear = function () {
