@@ -26,7 +26,7 @@ Example
 ```
 //Calling the calculate API
 farmbuild.nutrientCalculator.calculate(farmData);
-var organisationName = 'State of Victoria';
+var organisationName = 'your organisation name';
 //Calling the track API for the usage
 farmbuild.nutrientCalculator.ga.trackCalculate(organisationName);
 ```
