@@ -1,7 +1,6 @@
 /**
  * @since 0.0.1
  * @copyright 2015 State of Victoria.
-
  * @author State of Victoria
  * @version 1.0.0
  */
