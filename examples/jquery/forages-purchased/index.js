@@ -61,21 +61,20 @@ $(function(){
 		
 		var newtype={name:'', metabolisableEnergyInMJPerKg:'', dryMatterPercentage:'', sulphurPercentage:'', potassiumPercentage:'', phosphorusPercentage:'', nitrogenPercentage:'' };
 		newtype.name=$('#name').val();
-		newtype.metabolisableEnergyInMJPerKg=$('#metabolisableEnergyInMJPerKg').val();
-		newtype.dryMatterPercentage=$('#dryMatterPercentage').val();
-		newtype.sulphurPercentage=$('#sulphurPercentage').val();
-		newtype.potassiumPercentage=$('#potassiumPercentage').val();
-		newtype.phosphorusPercentage=$('#phosphorusPercentage').val();
-		newtype.nitrogenPercentage=$('#nitrogenPercentage').val();
+		newtype.metabolisableEnergyInMJPerKg=parseFloat($('#metabolisableEnergyInMJPerKg').val());
+		newtype.dryMatterPercentage=parseFloat($('#dryMatterPercentage').val());
+		newtype.sulphurPercentage=parseFloat($('#sulphurPercentage').val());
+		newtype.potassiumPercentage=parseFloat($('#potassiumPercentage').val());
+		newtype.phosphorusPercentage=parseFloat($('#phosphorusPercentage').val());
+		newtype.nitrogenPercentage=parseFloat($('#nitrogenPercentage').val());
 		
-		
-		forageTypes = nc.foragesPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage).toArray();			
-		
-		
-		if(noResult==true){
-			errorMsg.show();
-		}else{
+		if(!nc.foragesPurchased.types.validate(newtype)) {
+			noResult = true;			
+		}
+			
+		if(noResult==false){
 			errorMsg.hide();
+			forageTypes = nc.foragesPurchased.types.add(newtype.name, newtype.metabolisableEnergyInMJPerKg, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage);			
 			$('#forageTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.metabolisableEnergyInMJPerKg+'</td><td>'+newtype.dryMatterPercentage+'</td><td>'+newtype.sulphurPercentage+'</td><td>'+newtype.potassiumPercentage+'</td><td>'+newtype.phosphorusPercentage+'</td><td>'+newtype.nitrogenPercentage+'</td><td>'+'<button type="button" class="btn btn-link" id="deleteForageTypeRow"  > Remove</button>'+'</td><td></td></tr>');
 				//add to select
 				foragetypesel
@@ -84,6 +83,9 @@ $(function(){
 					.text(newtype.name)); 
 						
 		 
+		}else{			
+			errorMsg.show();
+			noResult = false;
 		}		
 		
 		newtype = '';
@@ -112,9 +114,12 @@ $(function(){
 			var DryOrWet = isDry ? 'Dry': 'Wet';
 			var weight = parseFloat($("#newForageWeight").val());
 			
-			forages = nc.foragesPurchased.add(forageType, weight, isDry).toArray();
-			noResult = !forages;
-			if(noResult==false){				
+			 if(!nc.foragesPurchased.validateNew(forageType, weight, isDry)) {
+				noResult = true;			
+			 }
+			
+			if(noResult==false){
+				forages = nc.foragesPurchased.add(forageType, weight, isDry).toArray();
 				errorMsg.hide();			  
 				var addedForage = forages[forages.length -1];
 					
@@ -125,6 +130,7 @@ $(function(){
 			  
 			}else{
 				errorMsg.show();
+				noResult=false;
 			}			
 			//reset form 
 			forageType = '';

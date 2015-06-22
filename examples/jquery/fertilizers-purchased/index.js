@@ -62,27 +62,28 @@ $(function(){
 		var newtype={name:'', dryMatterPercentage:'', sulphurPercentage:'', potassiumPercentage:'', phosphorusPercentage:'', nitrogenPercentage:'' };
 		newtype.name=$('#name').val();
 		
-		newtype.dryMatterPercentage=$('#dryMatterPercentage').val();
-		newtype.sulphurPercentage=$('#sulphurPercentage').val();
-		newtype.potassiumPercentage=$('#potassiumPercentage').val();
-		newtype.phosphorusPercentage=$('#phosphorusPercentage').val();
-		newtype.nitrogenPercentage=$('#nitrogenPercentage').val();
+		newtype.dryMatterPercentage=parseFloat($('#dryMatterPercentage').val());
+		newtype.sulphurPercentage=parseFloat($('#sulphurPercentage').val());
+		newtype.potassiumPercentage=parseFloat($('#potassiumPercentage').val());
+		newtype.phosphorusPercentage=parseFloat($('#phosphorusPercentage').val());
+		newtype.nitrogenPercentage=parseFloat($('#nitrogenPercentage').val());
 		
+		if(!nc.fertilizersPurchased.types.validate(newtype)) {
+			noResult = true;			
+		}
 		
-		fertilizerTypes = nc.fertilizersPurchased.types.add(newtype.name, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage);
-		
-		if(noResult==true){
-			errorMsg.show();
-		}else{
+		if(noResult==false){			
 			errorMsg.hide();
+			fertilizerTypes = nc.fertilizersPurchased.types.add(newtype.name, newtype.dryMatterPercentage, newtype.sulphurPercentage, newtype.potassiumPercentage, newtype.phosphorusPercentage, newtype.nitrogenPercentage);
 			$('#fertilizerTypesTbl').append('<tr><td>'+newtype.name+'</td><td>'+newtype.dryMatterPercentage+'</td><td>'+newtype.sulphurPercentage+'</td><td>'+newtype.potassiumPercentage+'</td><td>'+newtype.phosphorusPercentage+'</td><td>'+newtype.nitrogenPercentage+'</td><td>'+'<button type="button" class="btn btn-link" id="deleteFertilizerTypeRow"  > Remove</button>'+'</td><td></td></tr>');
 				//add to select
 				fertilizertypesel
 					.append($("<option></option>")
 					.attr("value",newtype.name)
 					.text(newtype.name)); 
-						
-		 
+		}else{
+			errorMsg.show();							
+			noResult=false;
 		}		
 		
 		newtype = '';
@@ -113,9 +114,12 @@ $(function(){
 			var DryOrWet = isDry ? 'Dry': 'Wet';
 			var weight = parseFloat($("#newFertilizerWeight").val());
 			
-			fertilizers = nc.fertilizersPurchased.add(fertilizerType, weight, isDry).fertilizers();
-			noResult = !fertilizers;
-			if(noResult==false){				
+			 if(!nc.fertilizersPurchased.validateNew(fertilizerType, weight, isDry)) {
+				noResult = true;			
+			 }			
+			
+			if(noResult==false){
+				fertilizers = nc.fertilizersPurchased.add(fertilizerType, weight, isDry).fertilizers();				
 				errorMsg.hide();			  
 				var addedFertilizer = fertilizers[fertilizers.length -1];
 					
