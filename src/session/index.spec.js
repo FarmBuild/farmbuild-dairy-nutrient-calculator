@@ -17,6 +17,10 @@ describe('farmbuild.nutrientCalculator module', function() {
 
   beforeEach(module('farmbuild.nutrientCalculator'));
 
+  beforeEach(function(){
+    this.result = fixture.load(susanFarmJson);
+  });
+
   beforeEach(inject(function (_nutrientCalculatorSession_, _nutrientCalculator_,
                               _milkSold_,
                               _fertilizersPurchased_,

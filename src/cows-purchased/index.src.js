@@ -1,9 +1,9 @@
 /**
  * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
+ * @copyright 2015 State of Victoria.
+
+ * @author State of Victoria
+ * @version 1.0.0
  */
 
 'use strict';
@@ -193,9 +193,9 @@ angular.module('farmbuild.nutrientCalculator')
 
 
     /**
-     * Returns current cow types
-     * @method types
-     * @returns {object} Types - cow types array
+     * Returns current cows
+     * @method cows
+     * @returns {object} Cows - cows array
      * @public
      * @static
      */

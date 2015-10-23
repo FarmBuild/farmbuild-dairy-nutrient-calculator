@@ -31,11 +31,13 @@ angular.module("farmbuild.nutrientCalculator", [ "farmbuild.core", "farmbuild.fa
             cowsPurchased: cows.createDefault(),
             fertilizersPurchased: fertilizersPurchased.createDefault(),
             foragesPurchased: foragesPurchased.createDefault(),
-            legumes: {},
+            legumes: {
+                dryMatterConsumedPerHaInKg: 0
+            },
             concentratesPurchased: concentratesPurchased.createDefault(),
             balance: {},
             efficiency: {},
-            stockingReate: {},
+            stockingRate: {},
             milkProduction: {},
             feedBalance: {}
         };
@@ -379,7 +381,8 @@ angular.module("farmbuild.nutrientCalculator").factory("concentratesPurchased", 
     function createDefault() {
         return {
             types: concentrateTypes.toArray(),
-            concentrates: []
+            concentrates: [],
+            dryMatterWeight: 0
         };
     }
     concentratesPurchased.createDefault = createDefault;
@@ -1119,7 +1122,8 @@ angular.module("farmbuild.nutrientCalculator").factory("fertilizersPurchased", f
     function createDefault() {
         return {
             types: fertilizerTypes.toArray(),
-            fertilizers: []
+            fertilizers: [],
+            dryMatterWeight: 0
         };
     }
     fertilizersPurchased.createDefault = createDefault;
@@ -1473,7 +1477,8 @@ angular.module("farmbuild.nutrientCalculator").factory("foragesPurchased", funct
     function createDefault() {
         return {
             types: forageTypes.toArray(),
-            forages: []
+            forages: [],
+            dryMatterWeight: 0
         };
     }
     function _add(type, weight, isDry) {
@@ -1769,7 +1774,7 @@ angular.module("farmbuild.nutrientCalculator").factory("legumeCalculator", funct
 "use strict";
 
 angular.module("farmbuild.nutrientCalculator").factory("legumes", function(validations, utilisationFactorsValues, legumeCalculator, $log) {
-    var legumes, _isDefined = validations.isDefined, _isPositiveNumber = validations.isPositiveNumber, _utilisationFactors = angular.copy(utilisationFactorsValues);
+    var legumes, _isDefined = validations.isDefined, _isPositiveNumber = validations.isPositiveNumber, _isPositiveNumberOrZero = validations.isPositiveNumberOrZero, _utilisationFactors = angular.copy(utilisationFactorsValues);
     function _validate(legume) {
         $log.info("validating legume ...", legume);
         if (!_isDefined(legume.type) || !_isDefined(legume.weight) || !_isDefined(legume.isDry)) {
@@ -1779,7 +1784,7 @@ angular.module("farmbuild.nutrientCalculator").factory("legumes", function(valid
     }
     function _calculate(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg, forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ, milkingAreaInHa, utilisationFactor, nitrogenFromFertiliserInKg, legumePercentage) {
         $log.info("calculating legumes nutrient ...");
-        if (!_isPositiveNumber(milkSoldPerYearInLitre) || !_isPositiveNumber(milkProteinInKg) || !_isPositiveNumber(milkFatInKg) || !_isPositiveNumber(numberOfMilkingCows) || !_isPositiveNumber(numberOfMilkingDays) || !_isPositiveNumber(averageCowWeightInKg) || !_isPositiveNumber(forageMetabolisableEnergyInMJ) || !_isPositiveNumber(concentrateMetabolisableEnergyInMJ) || !_isPositiveNumber(milkingAreaInHa) || !_isPositiveNumber(utilisationFactor) || !_isPositiveNumber(nitrogenFromFertiliserInKg) || !_isPositiveNumber(legumePercentage)) {
+        if (!_isPositiveNumberOrZero(milkSoldPerYearInLitre) || !_isPositiveNumberOrZero(milkProteinInKg) || !_isPositiveNumberOrZero(milkFatInKg) || !_isPositiveNumberOrZero(numberOfMilkingCows) || !_isPositiveNumberOrZero(numberOfMilkingDays) || !_isPositiveNumberOrZero(averageCowWeightInKg) || !_isPositiveNumberOrZero(forageMetabolisableEnergyInMJ) || !_isPositiveNumberOrZero(concentrateMetabolisableEnergyInMJ) || !_isPositiveNumberOrZero(milkingAreaInHa) || !_isPositiveNumberOrZero(utilisationFactor) || !_isPositiveNumberOrZero(nitrogenFromFertiliserInKg) || !_isPositiveNumberOrZero(legumePercentage)) {
             return undefined;
         }
         var milkEnergy = legumeCalculator.milkEnergy(milkSoldPerYearInLitre, milkFatInKg, milkProteinInKg), cattleEnergyUsed = legumeCalculator.cattleEnergyUsed(milkEnergy.total, milkEnergy.notSold, numberOfMilkingCows, numberOfMilkingDays, averageCowWeightInKg), importedEnergyConsumed = legumeCalculator.importedEnergyConsumed(forageMetabolisableEnergyInMJ, concentrateMetabolisableEnergyInMJ), dryMatterConsumed = legumeCalculator.dryMatterConsumed(cattleEnergyUsed, importedEnergyConsumed, milkingAreaInHa), dryMatterGrown = legumeCalculator.dryMatterGrown(dryMatterConsumed, utilisationFactor), averageNitrogenApplied = legumeCalculator.averageNitrogenApplied(nitrogenFromFertiliserInKg, milkingAreaInHa), totalLegume = legumeCalculator.totalLegume(dryMatterConsumed, legumePercentage, utilisationFactor), availableNitrogenFromLegumes = legumeCalculator.availableNitrogenFromLegumes(totalLegume, averageNitrogenApplied), availableNitrogenToPasture = legumeCalculator.availableNitrogenToPasture(totalLegume, averageNitrogenApplied);
@@ -2385,6 +2390,7 @@ angular.module("farmbuild.nutrientCalculator").factory("nutrientCalculatorSessio
     nutrientCalculatorSession.save = save;
     nutrientCalculatorSession.loadSection = function(section) {
         var loaded = load();
+        debugger;
         return loaded ? loaded[section] : null;
     };
     nutrientCalculatorSession.isLoadFlagSet = farmdata.session.isLoadFlagSet;

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dateCreated": "2015-03-30T21:19:00",
-  "dateLastUpdated": "2015-05-19T04:33:58.243Z",
+  "dateLastUpdated": "2015-06-23T03:58:24.433Z",
   "id": "1234567890",
   "name": "John Smith’s Farm",
   "geometry": {
@@ -1231,18 +1231,18 @@
     "legumes": {
       "importedEnergyConsumedInMJ": 3389030.6044400004,
       "utilisationFactor": 75,
-      "dryMatterConsumedPerHaInKg": 8041.361926051176,
-      "dryMatterGrownPerHaInKg": 10721.815901401567,
+      "dryMatterConsumedPerHaInKg": 8353.824615680214,
+      "dryMatterGrownPerHaInKg": 11138.432820906952,
       "averageNitrogenAppliedPerHaInKg": 230.22222222222223,
-      "availableNitrogenFromLegumesPerHaInKg": 44.28381586615016,
-      "availableNitrogenToPasturePerHaInKg": 274.5060380883724,
-      "cattleEnergyUsedInMJ": 18587204.644676723,
-      "milkEnergyInMJ": 10122312.158343,
-      "milkEnergyNotSoldInMJ": 404892.48633372004,
-      "milkProteinInKg": 83338.785,
-      "milkFatInKg": 64819.055,
+      "availableNitrogenFromLegumesPerHaInKg": 46.004549286660335,
+      "availableNitrogenToPasturePerHaInKg": 276.22677150888256,
+      "cattleEnergyUsedInMJ": 19177759.128075603,
+      "milkEnergyInMJ": 10690153.007765003,
+      "milkEnergyNotSoldInMJ": 427606.1203106001,
+      "milkProteinInKg": 64819.055,
+      "milkFatInKg": 83338.785,
       "milkSoldPerYearInLitre": 1851973,
-      "legumePerHaInKg": 1608.2723852102351,
+      "legumePerHaInKg": 1670.7649231360429,
       "legumePercentage": 15
     },
     "feedBalance": {

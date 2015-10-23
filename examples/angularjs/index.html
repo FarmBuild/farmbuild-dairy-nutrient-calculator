@@ -22,7 +22,7 @@
     Calculate incomings/outgoings of the dairy nutrient of your farm
   </h4>
   <p>
-    You don't need to have a farmData in order to calculate each incoming/outcoing.
+    You don't need to have a farmData in order to calculate each incomings/outgoings.
   </p>
   <a ng-href="cows-purchased/index.html">cows-purchased</a> |
   <a ng-href="cows-culled/index.html">cows-culled</a> |
@@ -143,7 +143,7 @@
       Balance and efficiency
     </legend>
     <form-item class="form-group col-sm-6">
-      <table ng-if="balance.nitrogen || efficiency.nitrogen" id="foragesTbl"
+      <table ng-if="balance.phosphorus || efficiency.phosphorus" id="foragesTbl"
              class="table table-striped table-hover">
         <tr>
           <th></th>
@@ -281,7 +281,31 @@
       a complete farm data to see feed balance!
     </empty-message>
   </fieldset>
+  <fieldset>
+    <legend>Mass Import Export Charts</legend>
+    <div id="chart_div_mass_import" style="float: left; width:49%">
+    </div>
+    <div id="chart_div_mass_export" style="float: left;width:49%">
+    </div>
+  </fieldset>
 
+  <fieldset id="nutrient_impexp_fieldset">
+    <legend>Nutrients Import Export Charts</legend>
+
+    <div id="nutrients_import_chart" style=" float: left;  width:49%;height:auto">
+      <div id="chart_div_nitrogen_import" style="float: left; page-break-inside:avoid"></div>
+      <div id="chart_div_phosphorus_import" style="float: left; page-break-inside:avoid"></div>
+      <div id="chart_div_potassium_import" style="float: left; page-break-inside:avoid"></div>
+      <div id="chart_div_sulphur_import" style="float: left; page-break-inside:avoid"></div>
+    </div>
+
+    <div id="nutrients_export_chart" style="float: left;  width:49%; height:auto">
+      <div id="chart_div_nitrogen_export" style="float: left"></div>
+      <div id="chart_div_phosphorus_export" style="float: left"></div>
+      <div id="chart_div_potassium_export" style="float: left"></div>
+      <div id="chart_div_sulphur_export" style="float: left"></div>
+    </div>
+  </fieldset>
 </summary>
 <version>
   Version: <span ng-bind="appVersion"></span>
@@ -291,26 +315,29 @@
 <script src="../../dist/farmbuild-core.js"></script>
 <script src="../../dist/farmbuild-farmdata.js"></script>
 <script src="../../dist/farmbuild-nutrientcalculator.js"></script>
+<script type="text/ng-template" id="modal-validation-error.html" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Validation failed</h3>
+      </div>
+      <div class="modal-body">
+        There is a problem with input values.
+        Please see the console for the error log or
+        read <a
+              href="https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator">API documentation</a> for
+        more information
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$parent.$parent.noResult=undefined">Ok</button>
+      </div>
+    </div>
+  </div>
+</script>
 <script src="../config.js"></script>
 <script src="index.js"></script>
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-<script>
-  (function (i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;
-    i[r] = i[r] || function () {
-      (i[r].q = i[r].q || []).push(arguments)
-    }, i[r].l = 1 * new Date();
-    a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-    a.async = 1;
-    a.src = g;
-    m.parentNode.insertBefore(a, m)
-  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-  var GA_TRACKING_CODE = 'UA-53478356-1';
-
-  ga('create', GA_TRACKING_CODE, 'auto');
-</script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load('visualization', '1.0', {'packages':['corechart']});</script>
 
 
 </body>

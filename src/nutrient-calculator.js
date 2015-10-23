@@ -1,9 +1,9 @@
 /**
  * @since 0.0.1
- * @copyright 2015 Spatial Vision, Inc. http://spatialvision.com.au
- * @license The MIT License
- * @author Spatial Vision
- * @version 0.1.0
+ * @copyright 2015 State of Victoria.
+
+ * @author State of Victoria
+ * @version 1.0.0
  */
 
 'use strict';
@@ -59,11 +59,13 @@ angular.module('farmbuild.nutrientCalculator', ['farmbuild.core','farmbuild.farm
         cowsPurchased: cows.createDefault(),
         fertilizersPurchased: fertilizersPurchased.createDefault(),
         foragesPurchased: foragesPurchased.createDefault(),
-        legumes: {},
+        legumes: {
+          dryMatterConsumedPerHaInKg: 0
+        },
         concentratesPurchased: concentratesPurchased.createDefault(),
         balance:{},
         efficiency:{},
-        stockingReate:{},
+        stockingRate:{},
         milkProduction:{},
         feedBalance:{}
       };

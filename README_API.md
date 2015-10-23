@@ -12,7 +12,9 @@
 
 #FarmBuild Dairy Nutrient Calculator
 
-This is the dairy nutrient calculator module of farm build JavaScript library.
+This is the dairy nutrient calculator component of FarmBuild project.
+
+version 1.0.0
 
 
 ## Getting Started
@@ -37,7 +39,7 @@ Example
 ```
 //Calling the calculate API
 farmbuild.nutrientCalculator.calculate(farmData);
-var organisationName = 'Spatial Vision';
+var organisationName = 'your organisation name';
 //Calling the track API for the usage
 farmbuild.nutrientCalculator.ga.trackCalculate(organisationName);
 ```

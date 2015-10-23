@@ -40,13 +40,13 @@ describe('farmbuild.nutrientCalculator module', function() {
     }));
 
     it('nutrientCalculator.load should add nutrientCalculator block', inject(function() {
-      var farmData = {name: 'Susan\'s farm', area:0, areaUnit:'hectare'};
+      var farmData = {name: 'Susan\'s farm', area:0, areaUnit:'hectare', "geometry": {"crs": "EPSG:4283"}, paddocks:[]};
       farmData = nutrientCalculator.load(farmData);
       expect(farmData.nutrientCalculator).toBeDefined();
     }));
 
     it('nutrientCalculator.load return value should have the correct name', inject(function() {
-      var farmData = {name: 'Susan\'s farm', area:0, areaUnit:'hectare'};
+      var farmData = {name: 'Susan\'s farm', area:0, areaUnit:'hectare', "geometry": {"crs": "EPSG:4283"}, paddocks:[]};
       farmData = nutrientCalculator.load(farmData);
       expect(farmData.name).toMatch(name);
     }));
