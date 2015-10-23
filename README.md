@@ -1,3 +1,14 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [FarmBuild Dairy Nutrient Calculator](#farmbuild-dairy-nutrient-calculator)
+  - [Getting Started](#getting-started)
+    - [AngularJS example](#angularjs-example)
+    - [jQuery example](#jquery-example)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 #FarmBuild Dairy Nutrient Calculator
 
 This is the dairy nutrient calculator module of farm build JavaScript library.
