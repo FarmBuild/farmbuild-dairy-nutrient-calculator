@@ -16,7 +16,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
   ['farmbuild.nutrientCalculator'])
 
 	/**
-	 * "run" method is executed before any other function in application, so I am putting my initial configs here.
+	 * "run" method is executed before any other function in application, so we are putting my initial configs here.
 	 */
 	.run(function($rootScope){
 		/**
@@ -35,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 	})
 
 	/**
-	 * A custom AngularJS filter, I am using this to show dry/wet based on a boolean value.
+	 * A custom AngularJS filter, we are using this to show dry/wet based on a boolean value.
 	 * A filter formats the value of an expression for display to the user.
 	 * They can be used in view templates, controllers or services and it is easy to define your own filter.
 	 * Read more about filter at: https://docs.angularjs.org/guide/filter
@@ -47,7 +47,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 	})
 
 	/**
-	 * controller is where I put the logic of my application
+	 * controller is where we put the logic of my application
 	 */
 	.controller('FertilizersPurchasedCtrl', function ($scope, $rootScope, $log, nutrientCalculator, fertilizersPurchased) {
 		/**
@@ -150,6 +150,7 @@ angular.module('farmbuild.nutrientCalculator.examples.fertilizersPurchased',
 
 		/**
 		 * Save farmdata into sessionStorage
+		 * call saveSection API function to save farmdata into sessionStorage
 		 */
 		function saveInSessionStorage(result) {
 			nutrientCalculator.session.saveSection('foragesPurchased', result);

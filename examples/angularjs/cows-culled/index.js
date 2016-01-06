@@ -17,7 +17,7 @@
 angular.module('farmbuild.nutrientCalculator.examples.cowsCulled', ['farmbuild.nutrientCalculator'])
 
 	/**
-	 * "run" method is executed before any other function in application, so I am putting my initial configs here.
+	 * "run" method is executed before any other function in application, so we are putting my initial configs here.
 	 */
 	.run(function($rootScope){
 		/**
@@ -36,7 +36,7 @@ angular.module('farmbuild.nutrientCalculator.examples.cowsCulled', ['farmbuild.n
 	})
 
 	/**
-	 * controller is where I put the logic of my application
+	 * controller is where we put the logic of my application
 	 */
 	.controller('CowsCulledCtrl', function ($scope, $rootScope, nutrientCalculator, cowsCulled, validations) {
 

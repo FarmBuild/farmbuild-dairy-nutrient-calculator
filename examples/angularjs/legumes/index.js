@@ -16,7 +16,7 @@
 angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutrientCalculator'])
 
 	/**
-	 * "run" method is executed before any other function in application, so I am putting my initial configs here.
+	 * "run" method is executed before any other function in application, so we are putting my initial configs here.
 	 */
 	.run(function ($rootScope) {
 		/**
@@ -35,7 +35,7 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 	})
 
 	/**
-	 * controller is where I put the logic of my application
+	 * controller is where we put the logic of my application
 	 */
 	.controller('LegumesCtrl', function ($scope, $rootScope, legumes, nutrientCalculator) {
 		/**
@@ -75,6 +75,10 @@ angular.module('farmbuild.nutrientCalculator.examples.legumes', ['farmbuild.nutr
 			$scope.noResult = !$scope.result;
 		};
 
+		/**
+		 * Save farmdata into sessionStorage
+		 * call saveSection API function to save farmdata into sessionStorage
+		 */
 		function saveInSessionStorage(result) {
 			nutrientCalculator.session.saveSection('legumes', result);
 		};

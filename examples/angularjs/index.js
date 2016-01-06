@@ -4,6 +4,7 @@
  * You can find out more about AngularJS at https://angularjs.org
  * In farmbuild project we have used AngularJS as an internal dependency to provide modular structure, but to use FarmBuild JavaScript libraries you are not forced to use AngularJS.
  * All the api function are available via "farmbuild" namespace (eg: farmbuild.webmapping, farmbuild.nutrientcalculator).
+ * Have a look at the jQuery example section to understand more on how to use farmbuild api without directly. (https://github.com/FarmBuild/farmbuild-dairy-nutrient-calculator/tree/master/examples/jquery)
  * If you are using AngularJS in your application you can consume farmbuild component as AngularJS modules, similar to this example.
  */
 
@@ -13,7 +14,7 @@
 angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalculator'])
 
 	/**
-	 * "run" method is executed before any other function in application, so I am putting my initial configs here.
+	 * "run" method is executed before any other function in application, so we are putting my initial configs here.
 	 */
 	.run(function ($rootScope) {
 
@@ -38,7 +39,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 	})
 
 	/**
-	 * This is where I put the logic of my application
+	 * This is where we put the logic of my application
 	 */
 	.controller('FarmCtrl', function ($scope, $log, farmdata, nutrientCalculator) {
 
@@ -49,8 +50,8 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		/**
 		 * Load farmdata
-		 * Here I read farmdata from a JSON file and I load it into nutrientCalculator.
-		 * Because value is a string I need to convert it to JavaScript object using "angular.fromJson"
+		 * Here we read farmdata from a JSON file and we load it into nutrientCalculator.
+		 * Because value is a string we need to convert it to JavaScript object using "angular.fromJson"
 		 */
 		$scope.loadFarmData = function ($fileContent) {
 			$log.info('$scope.loadFarmData $fileContent..');
@@ -85,7 +86,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 		/**
 		 * calculate nutrient values
-		 * Here I am passing the farmdata to calculate method which does all the nutrient calculations and returns updated farmdata with the updated nutrientCalculator block
+		 * Here we are passing the farmdata to calculate method which does all the nutrient calculations and returns updated farmdata with the updated nutrientCalculator block
 		 */
 		$scope.calculate = function () {
 			$log.info('calculate...');
@@ -100,7 +101,7 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 			/**
 			 * Sending api usage statistic for analysis purpose
-			 * Here I am using 'farmbuild-test-client', change this with your own organisation name.
+			 * Here we are using 'farmbuild-test-client', change this with your own organisation name.
 			 */
 			nutrientCalculator.ga.trackCalculate('farmbuild-test-client');
 		};

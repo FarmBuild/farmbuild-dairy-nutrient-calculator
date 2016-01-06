@@ -16,7 +16,7 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
   ['farmbuild.nutrientCalculator', 'farmbuild.farmdata'])
 
 	/**
-	 * "run" method is executed before any other function in application, so I am putting my initial configs here.
+	 * "run" method is executed before any other function in application, so we are putting my initial configs here.
 	 */
 	.run(function($rootScope){
 		/**
@@ -74,8 +74,8 @@ angular.module('farmbuild.nutrientCalculator.examples.milkSold',
 		};
 
 		/**
-		 * Saving calculated values into farmdata
-		 * This is updating farmdata's value in session
+		 * Save farmdata into sessionStorage
+		 * call saveSection API function to save farmdata into sessionStorage
 		 */
 		function saveInSessionStorage(result) {
       nutrientCalculator.session.saveSection('milkSold', result);
