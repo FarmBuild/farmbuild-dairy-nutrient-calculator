@@ -166,6 +166,8 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 
 			drawSpecificChart(farmData, 'sulphur', 'import');
 			drawSpecificChart(farmData, 'sulphur', 'export');
+			
+			drawBenchMarkingCharts();
 		};
 
 		function drawSpecificChart(farmData, what_to_draw, imp_or_exp) {
@@ -277,6 +279,98 @@ angular.module('farmbuild.nutrientCalculator.examples', ['farmbuild.nutrientCalc
 			else chart.draw(data, options);
 
 		}
+/**********code for drawing whisker plots*********/
+		function drawWhiskerChart(dataArray, i) {
+		   
+			var ColHeaderDesc = {'balance.nitrogen':"Net Bal N", 'balance.phosphorus':"Net Bal P",'balance.potassium':"Net Bal K",'balance.sulphur':"Net Bal S",'efficiency.nitrogen':"N Efficiency %",'efficiency.phosphorus':"P Efficiency %",'efficiency.potassium':"K Efficiency %",'efficiency.sulphur':"S Efficiency %",
+			'stockingRate.milkingArea':"Milking area Stocking rate",'feedBalance.homeForageConsumed':"Home Forage consumption (kg DM)",'feedBalance.homegrownTotalFeedRatio':"Home forage as a proportion",'feedBalance.forageTotalFeedRatio':"% Feed Imported",
+			'milkProduction.milkSoldPerCowInLitre':"Milk litres per cow",'milkProduction.milkSoldPerHectareInLitre':"Milk litres per Ha",'TotalFertiliserNImportedperHa':"Total Fertiliser N Imported per Ha",'TotalFeedNImportedperHa':"Total Feed N Imported per ha",'TotalFertiliserPImportedperHa':"Total Fertiliser P Imported per Ha",
+			'TotalFeedPImportedperHa':"Total Feed P Imported per Ha",'TotalFertiliserKImportedperHa':"Total Fertiliser K Imported per Ha",'TotalFeedKImportedperHa':"Total Feed K Imported per Ha",'TotalFertiliserSImportedperHa':"Total Fertiliser S Imported per Ha",'TotalFeedSImportedperHa':"Total Feed S Imported per Ha"
+			 };
+			var ylabel = ColHeaderDesc[dataArray[0]];
+			dataArray[0]='';	
+			var data = google.visualization.arrayToDataTable([
+                   dataArray
+          // Treat first row as data as well.
+			], true);
+		
+		var div_id="chart_div".concat(i);
+	
+		var ac = new google.visualization.ComboChart(document.getElementById(div_id));
+		ac.draw(data, {
+		title : 'Whisker plot for Whole Farm '.concat(ylabel),
+		
+		orientation:'vertical',
+		width: 650,
+		height: 400,		
+		
+		bar: { width: 20 }, 
+		series: { 0: {type: "candlesticks", labelInLegend:'Box (Q1, Q3)'}, 1: {labelInLegend: ylabel, type: "line", pointSize: 20, pointShape:{type: 'star', dent:0.5}, lineWidth:
+	0 },2: {labelInLegend:'Min', type: "line", pointSize: 10, pointShape: 'diamond',lineWidth:0 }, 3: {labelInLegend:'Median', type: "line", pointSize: 10, lineWidth:0 },
+	4: {labelInLegend:'Max', type: "line", pointSize: 10, pointShape: 'triangle',lineWidth:0 }}
+	});
+}
+
+	function drawBenchMarkingCharts(){
+			var ColHeader = ["balance.nitrogen","balance.phosphorus","balance.potassium","balance.sulphur","efficiency.nitrogen","efficiency.phosphorus","efficiency.potassium","efficiency.sulphur","stockingRate.milkingArea","feedBalance.homeForageConsumed","feedBalance.homegrownTotalFeedRatio","feedBalance.forageTotalFeedRatio","milkProduction.milkSoldPerCowInLitre","milkProduction.milkSoldPerHectareInLitre","TotalFertiliserNImportedperHa","TotalFeedNImportedperHa","TotalFertiliserPImportedperHa","TotalFeedPImportedperHa","TotalFertiliserKImportedperHa","TotalFeedKImportedperHa","TotalFertiliserSImportedperHa","TotalFeedSImportedperHa"];
+			var RowHeader= ["Min","FirstQuartile","Median","ThirdQuartile","Max"];
+			var BenchMarkDataArray = [[47,	-7,	9,	-6,	13.9,	6,	9,	6,	0.4,	0.37,	31,	3.14,	3198,	2948,	0,	9.39,	0,	2.13,	0,	7.11,	0,	1.48],
+						  [164,	14,	42,	15,	22.5,	27.8,	14,	17,	1.2,	4.14,	54.85,	26,	5981.5,	7497,	71.66,	60.35,	9.57,	10.79,	14.9,	25.11,	5.54,	5.339],
+						  [233,	27,	81,	27,	25.3,	33,	20,	25,	1.97,	6.69,	67.28,	32.72,	7038,	11445,	143,	94.73,	19,	16,	34.81,	39.74,	15.33,	7.93],
+						  [300,	46,	107,	39,	30.9,	48,	27,	37,	2.6,	10.22,	74,	45.15,	8202,	14428.5,	189.85,	139.11,	29.22,	28.16,	68.27,	68.97,	28.24,	13.16],
+						  [601,	133,	452,	184,	49.7,	158,	68.2,	183,	3.7,	16.47,	96.86,	69,	10445,	36637,	423.91,	544.11,	81.78,	86.38,	176.86,	337.78,	84.67,	72.75]
+						];
+			var BenchMarkingParam = {};						
+			var uinput={};	//will be passed from nutrient topic package
+			var farmData = nutrientCalculator.find();
+			
+        		
+		for(i=0; i<BenchMarkDataArray[0].length; i++){
+   
+			BenchMarkingParam[ColHeader[i]]={"Min":0, "FirstQuartile":0,"Median":0,"ThirdQuartile":0, "Max":0,"UserInput":0};
+			uinput[ColHeader[i]]=Math.floor((Math.random() * 100) + 1);  //uinput = {"Net Bal N":100,...}
+            if (i<=13) {
+				uinput[ColHeader[i]] = Math.floor(eval("$scope."+ColHeader[i]));//eval("$scope.balance."+ColHeader[i]);
+				if(i==9) uinput[ColHeader[i]]/=1000; //home forage consumed is in Tonne of DM
+			}
+			BenchMarkingParam[ColHeader[i]].Min = BenchMarkDataArray[0][i];
+			BenchMarkingParam[ColHeader[i]].FirstQuartile = BenchMarkDataArray[1][i];
+			BenchMarkingParam[ColHeader[i]].Median = BenchMarkDataArray[2][i];
+			BenchMarkingParam[ColHeader[i]].ThirdQuartile = BenchMarkDataArray[3][i];
+			BenchMarkingParam[ColHeader[i]].Max = BenchMarkDataArray[4][i];
+			BenchMarkingParam[ColHeader[i]].UserInput = uinput[ColHeader[i]];
+		    	
+		}
+		//Fertilizers and Feed N, P, K, S Inputs
+		BenchMarkingParam['TotalFertiliserNImportedperHa'].UserInput = Math.floor(farmData.nutrientCalculator.fertilizersPurchased.nitrogenInKg/farmData.area);
+		BenchMarkingParam['TotalFertiliserPImportedperHa'].UserInput = Math.floor(farmData.nutrientCalculator.fertilizersPurchased.phosphorusInKg/farmData.area);
+		BenchMarkingParam['TotalFertiliserKImportedperHa'].UserInput = Math.floor(farmData.nutrientCalculator.fertilizersPurchased.potassiumInKg/farmData.area);
+		BenchMarkingParam['TotalFertiliserSImportedperHa'].UserInput = Math.floor(farmData.nutrientCalculator.fertilizersPurchased.sulphurInKg/farmData.area);
+		
+		BenchMarkingParam['TotalFeedNImportedperHa'].UserInput = Math.floor((farmData.nutrientCalculator.foragesPurchased.nitrogenInKg+farmData.nutrientCalculator.concentratesPurchased.nitrogenInKg)/farmData.area);
+		BenchMarkingParam['TotalFeedPImportedperHa'].UserInput = Math.floor((farmData.nutrientCalculator.foragesPurchased.phosphorusInKg+farmData.nutrientCalculator.concentratesPurchased.phosphorusInKg)/farmData.area);
+		BenchMarkingParam['TotalFeedKImportedperHa'].UserInput = Math.floor((farmData.nutrientCalculator.foragesPurchased.potassiumInKg+farmData.nutrientCalculator.concentratesPurchased.potassiumInKg)/farmData.area);
+		BenchMarkingParam['TotalFeedSImportedperHa'].UserInput = Math.floor((farmData.nutrientCalculator.foragesPurchased.sulphurInKg+farmData.nutrientCalculator.concentratesPurchased.sulphurInKg)/farmData.area);
+				
+		var i=1;
+		var dataArray=new Array(9);
+		var elemDiv;
+	for (var key in BenchMarkingParam) {   
+		
+		dataArray[0] = key; dataArray[1] = BenchMarkingParam[key].Min;dataArray[2] = BenchMarkingParam[key].FirstQuartile;dataArray[3] = BenchMarkingParam[key].ThirdQuartile;
+		dataArray[4] = BenchMarkingParam[key].Max;dataArray[5]=BenchMarkingParam[key].UserInput; dataArray[6] = BenchMarkingParam[key].Min;dataArray[7] = BenchMarkingParam[key].Median;
+		dataArray[8] = BenchMarkingParam[key].Max;		
+   
+		elemDiv = document.createElement('div');
+		elemDiv.id = "chart_div".concat(i);
+		elemDiv.className = 'chart_block';	
+		elemDiv.style.cssText = 'float:left;width:49%;height:auto;';
+		document.getElementById('nutrient_benchmarking_fieldset').appendChild(elemDiv);		
+		drawWhiskerChart(dataArray,i);	
+		i=i+1;
+	}	
+	}
+		
 
 	})
 
